@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */; };
+		C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */; };
+		C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */; };
 		C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C232A39DA350025E693 /* AppDelegate.swift */; };
 		C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C252A39DA350025E693 /* SceneDelegate.swift */; };
-		C8C72C282A39DA350025E693 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* ViewController.swift */; };
+		C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* HomePageViewController.swift */; };
 		C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C292A39DA350025E693 /* Main.storyboard */; };
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C86E3BC92A3AB9220099FD5B /* Murmur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = Murmur.app; path = "/Users/cleopatra/Desktop/Murmur/Murmur/build/Debug-iphoneos/Murmur.app"; sourceTree = "<absolute>"; };
+		C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Murmur.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
+		C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C8C72C232A39DA350025E693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8C72C252A39DA350025E693 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C8C72C272A39DA350025E693 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C8C72C272A39DA350025E693 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		C8C72C2A2A39DA350025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C8C72C2C2A39DA360025E693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -41,6 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				C8C72C222A39DA350025E693 /* Murmur */,
+				C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -49,7 +56,10 @@
 			children = (
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
-				C8C72C272A39DA350025E693 /* ViewController.swift */,
+				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
+				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
+				C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */,
+				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
 				C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */,
@@ -76,7 +86,7 @@
 			);
 			name = Murmur;
 			productName = Murmur;
-			productReference = C86E3BC92A3AB9220099FD5B /* Murmur.app */;
+			productReference = C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -151,9 +161,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8C72C282A39DA350025E693 /* ViewController.swift in Sources */,
+				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
+				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
+				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
+				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
