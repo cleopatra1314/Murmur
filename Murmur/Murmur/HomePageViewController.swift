@@ -6,15 +6,8 @@
 //
 
 import UIKit
-import SnapKit
-import MapKit
-import CoreLocation
 
 class HomePageViewController: UIViewController {
-    
-    // 1.創建 locationManager
-    private let locationManager = CLLocationManager()
-    private var monitoredRegions: Dictionary<String, Date> = [:]
     
     private let nearbyUsersContainerView: UIView = {
         let nearbyUsersContainerView = UIView()
@@ -33,13 +26,7 @@ class HomePageViewController: UIViewController {
     private var switchMode = false
     private let childNearbyUsersViewController = NearbyUsersViewController()
     private let childLocationMessageViewController = LocationMessageViewController()
-    private let mapView: MKMapView = {
-        let mapView = MKMapView()
-        mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.backgroundColor = .white
-
-        return mapView
-    }()
+    
     private let btnStack: UIStackView = {
         let btnStack = UIStackView()
         btnStack.axis = .vertical
@@ -80,32 +67,7 @@ class HomePageViewController: UIViewController {
         
         self.view.backgroundColor = .red
         setMapView()
-        setLocation()
         setContainerView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-//        // 1. 還沒有詢問過用戶以獲得權限
-//        if CLLocationManager.authorizationStatus() == .notDetermined {
-//            locationManager.requestAlwaysAuthorization()
-//        }
-//        // 2. 用戶不同意
-//        else if CLLocationManager.authorizationStatus() == .denied {
-//            present(alertController, animated: true)
-//        }
-//        // 3. 用戶已經同意
-//        else if CLLocationManager.authorizationStatus() == .authorizedAlways {
-//            locationManager.startUpdatingLocation()
-//        }
-        
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-                // 取得定位服務授權
-                locationManager.requestWhenInUseAuthorization()
-                // 開始定位自身位置
-                locationManager.startUpdatingLocation()
-            }
     }
     
     // 切換模式
@@ -184,102 +146,6 @@ class HomePageViewController: UIViewController {
             make.width.equalTo(48)
             make.height.equalTo(locateButton.snp.width)
         }
-    }
-    
-    private func setupData() {
-        // 1. 檢查系統是否能夠監視 region
-        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-
-            // 2.準備 region 會用到的相關屬性
-            let title = "未知玩家"
-            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
-            let regionRadius = 200.0 // 範圍半徑
-
-            // 3. 設置 region 的相關屬性
-            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
-                longitude: coordinate.longitude), radius: regionRadius, identifier: title)
-            locationManager.startMonitoring(for: region)
-
-            // 4. 創建大頭釘(annotation)
-            let restaurantAnnotation = MKPointAnnotation()
-            restaurantAnnotation.coordinate = coordinate
-            restaurantAnnotation.title = "\(title)"
-            mapView.addAnnotation(restaurantAnnotation)
-
-            // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-            let circle = MKCircle(center: coordinate, radius: regionRadius)
-            mapView.addOverlay(circle)
-        } else {
-            print("System can't track regions")
-        }
-    }
-    
-    // MARK: - Comples business logic
-    func updateRegionsWithLocation(_ location: CLLocation) {
-
-        let regionMaxVisiting = 10.0
-        var regionsToDelete: [String] = []
-
-        for regionIdentifier in monitoredRegions.keys {
-            if Date().timeIntervalSince(monitoredRegions[regionIdentifier]!) > regionMaxVisiting {
-                print("Thanks for visiting our restaurant")
-
-                regionsToDelete.append(regionIdentifier)
-            }
-        }
-
-        for regionIdentifier in regionsToDelete {
-            monitoredRegions.removeValue(forKey: regionIdentifier)
-        }
-    }
-    
-}
-
-extension HomePageViewController: MKMapViewDelegate, CLLocationManagerDelegate {
-    
-    private func setLocation() {
-        
-        // 2. 配置 locationManager
-        locationManager.delegate = self
-        locationManager.distanceFilter = kCLLocationAccuracyBestForNavigation
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        
-        // 3. 配置 mapView
-        mapView.delegate = self
-        mapView.mapType = .mutedStandard
-        mapView.showsUserLocation = true
-        mapView.userTrackingMode = .follow
-        
-        // 4. 加入測試數據
-        setupData()
-        
-    }
-    
-    // MARK: - MKMapViewDelegate
-    // 6. 繪製圓圈
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-        let circleRenderer = MKCircleRenderer(overlay: overlay)
-        circleRenderer.strokeColor = UIColor.red
-        circleRenderer.lineWidth = 1.0
-        return circleRenderer
-    }
-    
-    // MARK: - CLLocationManagerDelegate
-    // 1. 當用戶進入一個 region
-    private func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("enter \(region.identifier)")
-        monitoredRegions[region.identifier] = Date()
-    }
-
-    // 2. 當用戶退出一個 region
-    private func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("exit \(region.identifier)")
-        monitoredRegions.removeValue(forKey: region.identifier)
-    }
-    
-    // TODO: internal
-    internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        updateRegionsWithLocation(locations[0])
     }
     
 }
