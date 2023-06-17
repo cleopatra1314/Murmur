@@ -11,15 +11,21 @@ import MapKit
 import CoreLocation
 
 class LocationMessageViewController: UIViewController {
+    
+    private let items = [
+        IdentifiablePlace(lat: 25.03853373485767, long: 121.53185851373266, name: "這日料難吃別去"),
+        IdentifiablePlace(lat: 25.038903111815653, long: 121.53256662420604, name: "四海雲集八方遊龍每次都搞不清楚")
+    ]
+    
     // 1.創建 locationManager
     private let locationManager = CLLocationManager()
     private var monitoredRegions: Dictionary<String, Date> = [:]
+//    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.500702, longitude: -0.124562), latitudinalMeters: 1000, longitudinalMeters: 1000)
+    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 25.038722870138926, longitude: 121.53239166252195), latitudinalMeters: 300, longitudinalMeters: 300)
     
     private let mapView: MKMapView = {
         let mapView = MKMapView()
-        mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.backgroundColor = .white
-
+                
         return mapView
     }()
 
@@ -27,12 +33,13 @@ class LocationMessageViewController: UIViewController {
         super.viewDidLoad()
    
         layoutView()
+        addAnnotations()
         setLocation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        locationManager.startUpdatingLocation()
 //        // 1. 還沒有詢問過用戶以獲得權限
 //        if CLLocationManager.authorizationStatus() == .notDetermined {
 //            locationManager.requestAlwaysAuthorization()
@@ -55,11 +62,27 @@ class LocationMessageViewController: UIViewController {
     }
     
     private func layoutView() {
-        self.view.addSubview(mapView)
-        mapView.snp.makeConstraints { make in
-            make.edges.equalTo(self.view)
-        }
+//        self.view.addSubview(mapView)
+//        mapView.snp.makeConstraints { make in
+//            make.edges.equalTo(self.view)
+//        }
+        mapView.frame = view.bounds
+        
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(mapView)
+        
+        // 設定初始地圖區域
+//        mapView.setRegion(region, animated: true)
     }
+    
+    private func addAnnotations() {
+            for item in items {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = item.location
+                annotation.title = item.name
+                mapView.addAnnotation(annotation)
+            }
+        }
     
     private func setupData() {
         // 1. 檢查系統是否能夠監視 region
@@ -134,9 +157,27 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     // 6. 繪製圓圈
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let circleRenderer = MKCircleRenderer(overlay: overlay)
-        circleRenderer.strokeColor = UIColor.red
+        circleRenderer.fillColor = UIColor(red: 102/255, green: 205/255, blue: 170/255, alpha: 0.15)
+        circleRenderer.strokeColor = UIColor(red: 64/255, green: 224/255, blue: 208/255, alpha: 1)
         circleRenderer.lineWidth = 1.0
         return circleRenderer
+    }
+    
+    // 自訂標註視圖
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard annotation is MKPointAnnotation else { return nil }
+        
+        let identifier = "AnnotationIdentifier"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        return annotationView
     }
     
     // MARK: - CLLocationManagerDelegate
@@ -153,8 +194,20 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     }
     
     // TODO: internal
-    internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        updateRegionsWithLocation(locations[0])
+//    internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//        updateRegionsWithLocation(locations[0])
+//    }
+    
+    // CLLocationManagerDelegate 方法，當位置更新時呼叫
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        
+        // 停止更新位置
+        locationManager.stopUpdatingLocation()
+        
+        // 設定初始地圖區域為使用者當前位置
+//        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        mapView.setRegion(region, animated: false)
     }
     
 }
