@@ -16,11 +16,28 @@ class HomePageViewController: UIViewController {
     private let locationManager = CLLocationManager()
     private var monitoredRegions: Dictionary<String, Date> = [:]
     
+    private let nearbyUsersContainerView: UIView = {
+        let nearbyUsersContainerView = UIView()
+        nearbyUsersContainerView.translatesAutoresizingMaskIntoConstraints = false
+        nearbyUsersContainerView.backgroundColor = .blue
+        nearbyUsersContainerView.isHidden = false
+        return nearbyUsersContainerView
+    }()
+    private let locationMessageContainerView: UIView = {
+        let locationMessageContainerView = UIView()
+        locationMessageContainerView.translatesAutoresizingMaskIntoConstraints = false
+        locationMessageContainerView.backgroundColor = .black
+        locationMessageContainerView.isHidden = true
+        return locationMessageContainerView
+    }()
+    private var switchMode = false
+    private let childNearbyUsersViewController = NearbyUsersViewController()
+    private let childLocationMessageViewController = LocationMessageViewController()
     private let mapView: MKMapView = {
         let mapView = MKMapView()
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.backgroundColor = .white
-        
+
         return mapView
     }()
     private let btnStack: UIStackView = {
@@ -34,11 +51,12 @@ class HomePageViewController: UIViewController {
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
         return filterButton
     }()
-    private let locationMessageButton: UIButton = {
-        let locationMessageButton = UIButton()
-        locationMessageButton.backgroundColor = .blue
-        locationMessageButton.setImage(UIImage(named: "Icons_People"), for: .normal)
-        return locationMessageButton
+    private let switchModeButton: UIButton = {
+        let switchModeButton = UIButton()
+        switchModeButton.backgroundColor = .blue
+        switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
+        switchModeButton.addTarget(self, action: #selector(switchModeButtonTouchUpInside), for: .touchUpInside)
+        return switchModeButton
     }()
     private let locateButton: UIButton = {
         let locateButton = UIButton()
@@ -63,6 +81,7 @@ class HomePageViewController: UIViewController {
         self.view.backgroundColor = .red
         setMapView()
         setLocation()
+        setContainerView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -89,10 +108,44 @@ class HomePageViewController: UIViewController {
             }
     }
     
+    // 切換模式
+    @objc func switchModeButtonTouchUpInside() {
+        
+        if switchMode == false {
+            switchMode.toggle()
+            switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
+        } else {
+            switchMode.toggle()
+            switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
+        }
+        
+        nearbyUsersContainerView.isHidden.toggle()
+        locationMessageContainerView.isHidden.toggle()
+    }
+    
+    private func setContainerView() {
+        
+        addChild(childNearbyUsersViewController)
+        addChild(childLocationMessageViewController)
+        nearbyUsersContainerView.addSubview(childNearbyUsersViewController.view)
+        locationMessageContainerView.addSubview(childLocationMessageViewController.view)
+        
+        childNearbyUsersViewController.view.snp.makeConstraints { make in
+            // 四邊一模一樣貼齊
+            make.edges.equalTo(nearbyUsersContainerView)
+        }
+        childLocationMessageViewController.view.snp.makeConstraints { make in
+            // 四邊一模一樣貼齊
+            make.edges.equalTo(locationMessageContainerView)
+        }
+        
+    }
+    
     private func setMapView() {
-        self.view.addSubview(mapView)
-        self.view.addSubview(btnStack)
-        [filterButton, locationMessageButton, locateButton].forEach { subview in
+        [nearbyUsersContainerView, locationMessageContainerView, btnStack].forEach { subview in
+            self.view.addSubview(subview)
+        }
+        [filterButton, switchModeButton, locateButton].forEach { subview in
             btnStack.addArrangedSubview(subview)
         }
         
@@ -103,7 +156,13 @@ class HomePageViewController: UIViewController {
         //            mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80)
         //        ])
         
-        mapView.snp.makeConstraints { make in
+        nearbyUsersContainerView.snp.makeConstraints { make in
+            make.top.equalTo(self.view)
+            make.leading.equalTo(self.view)
+            make.trailing.equalTo(self.view)
+            make.bottom.equalTo(self.view).offset(-80)
+        }
+        locationMessageContainerView.snp.makeConstraints { make in
             make.top.equalTo(self.view)
             make.leading.equalTo(self.view)
             make.trailing.equalTo(self.view)
@@ -117,9 +176,9 @@ class HomePageViewController: UIViewController {
             make.width.equalTo(48)
             make.height.equalTo(filterButton.snp.width)
         }
-        locationMessageButton.snp.makeConstraints { make in
+        switchModeButton.snp.makeConstraints { make in
             make.width.equalTo(48)
-            make.height.equalTo(locationMessageButton.snp.width)
+            make.height.equalTo(switchModeButton.snp.width)
         }
         locateButton.snp.makeConstraints { make in
             make.width.equalTo(48)
@@ -187,6 +246,7 @@ extension HomePageViewController: MKMapViewDelegate, CLLocationManagerDelegate {
         
         // 3. 配置 mapView
         mapView.delegate = self
+        mapView.mapType = .mutedStandard
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         
@@ -194,7 +254,6 @@ extension HomePageViewController: MKMapViewDelegate, CLLocationManagerDelegate {
         setupData()
         
     }
-    
     
     // MARK: - MKMapViewDelegate
     // 6. 繪製圓圈

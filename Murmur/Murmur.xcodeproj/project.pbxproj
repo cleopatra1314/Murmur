@@ -17,6 +17,7 @@
 		C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C292A39DA350025E693 /* Main.storyboard */; };
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
+		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
 		DC450CD07D10418D1E75917C /* Pods_Murmur.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		C8C72C2C2A39DA360025E693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
 		D51D7A4E17E030FDC9A09813 /* Pods-Murmur.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.release.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.release.xcconfig"; sourceTree = "<group>"; };
 		E9C8B595076B3945BA1BAAC2 /* Pods-Murmur.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.debug.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,6 +85,7 @@
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
 				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
+				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
 				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
 				C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */,
@@ -233,6 +236,7 @@
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
+				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
