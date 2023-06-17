@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */; };
 		C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */; };
 		C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */; };
 		C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessageViewController.swift; sourceTree = "<group>"; };
 		C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Murmur.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
@@ -62,7 +64,6 @@
 				E9C8B595076B3945BA1BAAC2 /* Pods-Murmur.debug.xcconfig */,
 				D51D7A4E17E030FDC9A09813 /* Pods-Murmur.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -82,6 +83,7 @@
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
 				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
+				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
 				C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */,
 				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
@@ -232,6 +234,7 @@
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
+				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
