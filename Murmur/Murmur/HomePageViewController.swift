@@ -45,11 +45,12 @@ class HomePageViewController: UIViewController {
         switchModeButton.addTarget(self, action: #selector(switchModeButtonTouchUpInside), for: .touchUpInside)
         return switchModeButton
     }()
-    private let locateButton: UIButton = {
-        let locateButton = UIButton()
-        locateButton.backgroundColor = .red
-        locateButton.setImage(UIImage(named: "Icons_Locate"), for: .normal)
-        return locateButton
+    private let backToMyLocationButton: UIButton = {
+        let backToMyLocationButton = UIButton()
+        backToMyLocationButton.backgroundColor = .red
+        backToMyLocationButton.setImage(UIImage(named: "Icons_Locate"), for: .normal)
+        backToMyLocationButton.addTarget(self, action: #selector(locateButtonTouchUpInside), for: .touchUpInside)
+        return backToMyLocationButton
     }()
     let alertController: UIAlertController = {
         let alertController = UIAlertController(title: "建議", message: "請開啟你的定位服務以繼續使用 app", preferredStyle: .alert)
@@ -61,6 +62,7 @@ class HomePageViewController: UIViewController {
         // TODO: 加上 handler closure 引導使用者開定位功能
         return alertController
     }()
+    private var backToMyLocationClosure: ((Void) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +87,13 @@ class HomePageViewController: UIViewController {
         locationMessageContainerView.isHidden.toggle()
     }
     
+    // 回到自己的定位位置
+    @objc func locateButtonTouchUpInside() {
+//        self.backToMyLocationClosure!(<#Void#>)
+        childLocationMessageViewController.locationManager.startUpdatingLocation()
+        
+    }
+    
     private func setContainerView() {
         
         addChild(childNearbyUsersViewController)
@@ -107,7 +116,7 @@ class HomePageViewController: UIViewController {
         [nearbyUsersContainerView, locationMessageContainerView, btnStack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [filterButton, switchModeButton, locateButton].forEach { subview in
+        [filterButton, switchModeButton, backToMyLocationButton].forEach { subview in
             btnStack.addArrangedSubview(subview)
         }
         
@@ -142,9 +151,9 @@ class HomePageViewController: UIViewController {
             make.width.equalTo(48)
             make.height.equalTo(switchModeButton.snp.width)
         }
-        locateButton.snp.makeConstraints { make in
+        backToMyLocationButton.snp.makeConstraints { make in
             make.width.equalTo(48)
-            make.height.equalTo(locateButton.snp.width)
+            make.height.equalTo(backToMyLocationButton.snp.width)
         }
     }
     

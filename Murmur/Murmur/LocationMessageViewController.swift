@@ -12,16 +12,17 @@ import CoreLocation
 
 class LocationMessageViewController: UIViewController {
     
+    //放入所在範圍的塗鴉發文資料
     private let items = [
         IdentifiablePlace(lat: 25.03853373485767, long: 121.53185851373266, name: "這日料難吃別去"),
         IdentifiablePlace(lat: 25.038903111815653, long: 121.53256662420604, name: "四海雲集八方遊龍每次都搞不清楚")
     ]
     
     // 1.創建 locationManager
-    private let locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     private var monitoredRegions: Dictionary<String, Date> = [:]
 //    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.500702, longitude: -0.124562), latitudinalMeters: 1000, longitudinalMeters: 1000)
-    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 25.038722870138926, longitude: 121.53239166252195), latitudinalMeters: 300, longitudinalMeters: 300)
+//    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 25.038722870138926, longitude: 121.53239166252195), latitudinalMeters: 300, longitudinalMeters: 300)
     
     private let mapView: MKMapView = {
         let mapView = MKMapView()
@@ -35,6 +36,7 @@ class LocationMessageViewController: UIViewController {
         layoutView()
         addAnnotations()
         setLocation()
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,14 +63,14 @@ class LocationMessageViewController: UIViewController {
             }
     }
     
+    @objc func backButtonTouchUpInside() {
+        locationManager.startUpdatingLocation()
+    }
+    
     private func layoutView() {
-//        self.view.addSubview(mapView)
-//        mapView.snp.makeConstraints { make in
-//            make.edges.equalTo(self.view)
-//        }
+
         mapView.frame = view.bounds
-        
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(mapView)
         
         // 設定初始地圖區域
@@ -206,7 +208,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         locationManager.stopUpdatingLocation()
         
         // 設定初始地圖區域為使用者當前位置
-//        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
         mapView.setRegion(region, animated: false)
     }
     
