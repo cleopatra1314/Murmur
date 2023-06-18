@@ -62,8 +62,20 @@ class PostViewController: UIViewController {
 //        navigationController.navigationBar.barStyle = .default
 //        navigationController.navigationBar.backgroundColor = .blue
         
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.backgroundColor = .white
+//        self.navigationController?.navigationBar.isTranslucent = false
+//        self.navigationController?.navigationBar.backgroundColor = .white
+//        UINavigationBar.appearance().isTranslucent = false
+//        UINavigationBar.appearance().barTintColor = .red
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithDefaultBackground()
+//        navBarAppearance.backgroundColor = .red
+        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+        navBarAppearance.titleTextAttributes = [
+           .foregroundColor: UIColor.black,
+           .font: UIFont.systemFont(ofSize: 18, weight: .regular)
+        ]
+        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        
         self.navigationItem.title = "塗鴉留言"
         
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
@@ -71,6 +83,7 @@ class PostViewController: UIViewController {
         navigationItem.leftBarButtonItem = closeButtonItem
         
         let nextButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonItemTouchUpInside))
+        nextButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
         nextButtonItem.tintColor = .purple
         navigationItem.rightBarButtonItem = nextButtonItem
     }

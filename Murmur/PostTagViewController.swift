@@ -32,6 +32,7 @@ class PostTagViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = .white
         setNav()
     }
     
@@ -50,6 +51,7 @@ class PostTagViewController: UIViewController {
         navigationItem.leftBarButtonItem = closeButtonItem
         
         let postButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonItemTouchUpInside))
+        postButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
         postButtonItem.tintColor = .purple
         navigationItem.rightBarButtonItem = postButtonItem
     }
