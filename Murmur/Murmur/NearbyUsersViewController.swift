@@ -12,6 +12,8 @@ import CoreLocation
 
 class NearbyUsersViewController: UIViewController {
     
+//    var currentCoordinate = CLLocationCoordinate2D()
+    
     // 1.創建 locationManager
     private let locationManager = CLLocationManager()
     private var monitoredRegions: Dictionary<String, Date> = [:]
@@ -33,7 +35,7 @@ class NearbyUsersViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        locationManager.startUpdatingLocation()
 //        // 1. 還沒有詢問過用戶以獲得權限
 //        if CLLocationManager.authorizationStatus() == .notDetermined {
 //            locationManager.requestAlwaysAuthorization()
@@ -155,7 +157,11 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     
     // TODO: internal
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        updateRegionsWithLocation(locations[0])
+        //        updateRegionsWithLocation(locations[0])
+        
+//        guard let location = locations.last else { return }
+//        currentCoordinate = location.coordinate
+        // 在这里处理获取到的坐标（currentCoordinate）
     }
     
 }

@@ -6,8 +6,14 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
+
+var currentCoordinate = CLLocationCoordinate2D()
 
 class HomePageViewController: UIViewController {
+    
+    private let locationManager = CLLocationManager()
     
     let nearbyUsersContainerView: UIView = {
         let nearbyUsersContainerView = UIView()
@@ -66,6 +72,9 @@ class HomePageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         
         self.view.backgroundColor = .red
         setMapView()
@@ -157,4 +166,14 @@ class HomePageViewController: UIViewController {
         }
     }
     
+}
+
+extension HomePageViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //        updateRegionsWithLocation(locations[0])
+        
+        guard let location = locations.last else { return }
+        currentCoordinate = location.coordinate
+        // 在这里处理获取到的坐标（currentCoordinate）
+    }
 }

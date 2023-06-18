@@ -41,6 +41,8 @@ class PostViewController: UIViewController {
     }()
     
     let postTagVC = PostTagViewController()
+    
+    var sendMurmurMessageClosure: ((String) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +95,8 @@ class PostViewController: UIViewController {
     }
     
     @objc func nextButtonItemTouchUpInside() {
+//        self.sendMurmurMessageClosure?(murmurTextField.text!)
+        postTagVC.murmurData["murmurMessage"] = murmurTextField.text
         self.navigationController?.pushViewController(postTagVC, animated: true)
     }
     
@@ -105,7 +109,7 @@ class PostViewController: UIViewController {
         }
         
         murmurTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.view).offset(16)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(16)
             make.leading.equalTo(self.view).offset(16)
             make.trailing.equalTo(self.view).offset(-16)
             make.height.equalTo(180)

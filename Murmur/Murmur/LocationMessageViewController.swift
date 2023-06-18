@@ -12,7 +12,7 @@ import CoreLocation
 
 class LocationMessageViewController: UIViewController {
     
-    //放入所在範圍的塗鴉發文資料
+    // 放入所在範圍的塗鴉發文資料
     private let items = [
         IdentifiablePlace(lat: 25.03853373485767, long: 121.53185851373266, name: "這日料難吃別去"),
         IdentifiablePlace(lat: 25.038903111815653, long: 121.53256662420604, name: "四海雲集八方遊龍每次都搞不清楚")

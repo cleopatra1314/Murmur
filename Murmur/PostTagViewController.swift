@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import FirebaseFirestore
 
 class PostTagViewController: UIViewController {
     
@@ -28,12 +29,22 @@ class PostTagViewController: UIViewController {
 //        let allTagStack = UICollectionView()
 //        return allTagStack
 //    }()
+    var murmurData: [String: Any] = [
+        "userEmail": "hand1@gmail.com",
+        "location": ["25.040094628617304", "121.53261288219679"],
+        "murmurMessage": "給我一份卡啦雞腿堡",
+        "murmurImage": "png",
+        "selectedTags": ["食物", "耍廢"]
+        ]
+    
+    let db = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
         setNav()
+ 
     }
     
     private func setNav() {
@@ -66,12 +77,34 @@ class PostTagViewController: UIViewController {
 //        self.navigationController?.popToViewController((self.tabBarController?.viewControllers![0])!, animated: true)
 //        present((self.tabBarController?.viewControllers![0])!, animated: true)
         
+        // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
+        
         self.tabBarController?.selectedIndex = 0
         let VC = self.tabBarController?.viewControllers![0] as? HomePageViewController
         VC?.switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
         VC?.nearbyUsersContainerView.isHidden = true
         VC?.locationMessageContainerView.isHidden = false
         VC?.switchMode = true
+        
+//        let postVC = self.navigationController?.viewControllers[0] as? PostViewController
+//        postVC!.sendMurmurMessageClosure = { [self] murmurMessage in
+//            self.murmurData["murmurMessage"] = murmurMessage
+//        }
+        
+//        murmurData["location"]![0] = "currentCoordinate.latitude"
+        if var location = murmurData["location"] as? [String] {
+            location[0] = "\(currentCoordinate.latitude)"
+            location[1] = "\(currentCoordinate.longitude)"
+            murmurData["location"] = location
+        }
+
+        createMurmur()
+    }
+    
+    func createMurmur() {
+                
+            let documentReference = db.collection("murmurs").addDocument(data: murmurData)
+            print(documentReference.documentID)
     }
     
 }
