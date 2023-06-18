@@ -10,6 +10,8 @@
 		C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */; };
 		C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */; };
 		C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */; };
+		C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */; };
+		C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AE775D2A3F4D760027CB0D /* TagButton.swift */; };
 		C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */; };
 		C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */; };
 		C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */; };
@@ -28,6 +30,8 @@
 		C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
 		C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessageViewController.swift; sourceTree = "<group>"; };
+		C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTagViewController.swift; sourceTree = "<group>"; };
+		C8AE775D2A3F4D760027CB0D /* TagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagButton.swift; sourceTree = SOURCE_ROOT; };
 		C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Murmur.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +80,7 @@
 		C8C72C172A39DA350025E693 = {
 			isa = PBXGroup;
 			children = (
+				C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */,
 				C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */,
 				C8C72C222A39DA350025E693 /* Murmur */,
 				C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */,
@@ -87,6 +92,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8AE775D2A3F4D760027CB0D /* TagButton.swift */,
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
 				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
@@ -243,6 +249,8 @@
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
+				C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */,
+				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
 				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,

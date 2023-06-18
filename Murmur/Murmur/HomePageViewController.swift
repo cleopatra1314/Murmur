@@ -9,21 +9,21 @@ import UIKit
 
 class HomePageViewController: UIViewController {
     
-    private let nearbyUsersContainerView: UIView = {
+    let nearbyUsersContainerView: UIView = {
         let nearbyUsersContainerView = UIView()
         nearbyUsersContainerView.translatesAutoresizingMaskIntoConstraints = false
         nearbyUsersContainerView.backgroundColor = .blue
         nearbyUsersContainerView.isHidden = false
         return nearbyUsersContainerView
     }()
-    private let locationMessageContainerView: UIView = {
+    let locationMessageContainerView: UIView = {
         let locationMessageContainerView = UIView()
         locationMessageContainerView.translatesAutoresizingMaskIntoConstraints = false
         locationMessageContainerView.backgroundColor = .black
         locationMessageContainerView.isHidden = true
         return locationMessageContainerView
     }()
-    private var switchMode = false
+    var switchMode = false
     private let childNearbyUsersViewController = NearbyUsersViewController()
     private let childLocationMessageViewController = LocationMessageViewController()
     
@@ -38,7 +38,7 @@ class HomePageViewController: UIViewController {
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
         return filterButton
     }()
-    private let switchModeButton: UIButton = {
+    let switchModeButton: UIButton = {
         let switchModeButton = UIButton()
         switchModeButton.backgroundColor = .blue
         switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
