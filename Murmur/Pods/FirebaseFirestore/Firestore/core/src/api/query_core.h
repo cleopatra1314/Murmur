@@ -20,15 +20,12 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "Firestore/core/src/api/api_fwd.h"
 #include "Firestore/core/src/core/core_fwd.h"
+#include "Firestore/core/src/core/field_filter.h"
 #include "Firestore/core/src/core/query.h"
-#include "Firestore/core/src/model/aggregate_field.h"
 #include "Firestore/core/src/nanopb/message.h"
-
-using firebase::firestore::model::AggregateField;
 
 namespace firebase {
 namespace firestore {
@@ -37,14 +34,7 @@ namespace model {
 class FieldValue;
 }  // namespace model
 
-namespace core {
-class Filter;
-class CompositeFilter;
-}  // namespace core
-
 namespace api {
-
-class AggregateQuery;
 
 /**
  * A `Query` refers to a Firestore Query which you can read or listen to. You
@@ -90,7 +80,7 @@ class Query {
       core::ListenOptions options, QuerySnapshotListener&& listener);
 
   /**
-   * Creates and returns a new `FieldFilter` that ensures documents
+   * Creates and returns a new `Query` with the additional filter that documents
    * must contain the specified field and the value must be equal to the
    * specified value.
    *
@@ -100,21 +90,12 @@ class Query {
    * @param type_describer A function that will produce a description of the
    *     type of field_value.
    *
-   * @return The created `FieldFilter`.
-   */
-  core::FieldFilter ParseFieldFilter(
-      const model::FieldPath& field_path,
-      core::FieldFilter::Operator op,
-      nanopb::SharedMessage<google_firestore_v1_Value> value,
-      const std::function<std::string()>& type_describer) const;
-
-  /**
-   * Creates and returns a new `Query` with the additional filter.
-   *
-   * @param filter The filter to add.
    * @return The created `Query`.
    */
-  Query AddNewFilter(core::Filter&& filter) const;
+  Query Filter(const model::FieldPath& field_path,
+               core::FieldFilter::Operator op,
+               nanopb::SharedMessage<google_firestore_v1_Value> value,
+               const std::function<std::string()>& type_describer) const;
 
   /**
    * Creates and returns a new `Query` that's additionally sorted by the
@@ -190,31 +171,8 @@ class Query {
     return Query(std::move(chained_query), firestore_);
   }
 
-  /**
-   * Creates a new `AggregateQuery` that performs the specified aggregations.
-   *
-   * @param aggregations The aggregations to be performed by the created
-   * `AggregateQuery`.
-   *
-   * @return The created `AggregateQuery`.
-   */
-  AggregateQuery Aggregate(std::vector<AggregateField>&& aggregations) const;
-
-  // TODO(b/280805906) Remove this count specific API after the c++ SDK migrates
-  // to the new Aggregate API
-  /**
-   * Creates a new `AggregateQuery` counting the number of documents matching
-   * this query. This API is preserved for backward-compatibility with
-   * the c++ SDK.
-   *
-   * @return The created `AggregateQuery`.
-   */
-  AggregateQuery Count() const;
-
  private:
   void ValidateNewFilter(const core::Filter& filter) const;
-  void ValidateNewFieldFilter(const core::Query& query,
-                              const core::FieldFilter& filter) const;
   void ValidateNewOrderByPath(const model::FieldPath& field_path) const;
   void ValidateOrderByField(const model::FieldPath& order_by_field,
                             const model::FieldPath& inequality_field) const;

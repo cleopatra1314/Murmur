@@ -21,8 +21,6 @@
 #include <utility>
 
 #import "FIRFirestoreSettings+Internal.h"
-#import "FIRTransactionOptions+Internal.h"
-#import "FIRTransactionOptions.h"
 
 #import "FirebaseCore/Extension/FIRAppInternal.h"
 #import "FirebaseCore/Extension/FIRComponentContainer.h"
@@ -74,8 +72,6 @@ using firebase::firestore::util::ByteStreamApple;
 using firebase::firestore::util::Empty;
 using firebase::firestore::util::Executor;
 using firebase::firestore::util::ExecutorLibdispatch;
-using firebase::firestore::util::kLogLevelDebug;
-using firebase::firestore::util::kLogLevelNotice;
 using firebase::firestore::util::LogSetLevel;
 using firebase::firestore::util::MakeCallback;
 using firebase::firestore::util::MakeNSError;
@@ -85,9 +81,10 @@ using firebase::firestore::util::ObjcThrowHandler;
 using firebase::firestore::util::SetThrowHandler;
 using firebase::firestore::util::Status;
 using firebase::firestore::util::StatusOr;
-using firebase::firestore::util::StreamReadResult;
 using firebase::firestore::util::ThrowIllegalState;
 using firebase::firestore::util::ThrowInvalidArgument;
+using firebase::firestore::util::kLogLevelDebug;
+using firebase::firestore::util::kLogLevelNotice;
 
 using UserUpdateBlock = id _Nullable (^)(FIRTransaction *, NSError **);
 using UserTransactionCompletion = void (^)(id _Nullable, NSError *_Nullable);
@@ -128,6 +125,23 @@ NS_ASSUME_NONNULL_BEGIN
   return [self firestoreForApp:app database:MakeNSString(DatabaseId::kDefault)];
 }
 
+// TODO(b/62410906): make this public
++ (instancetype)firestoreForApp:(FIRApp *)app database:(NSString *)database {
+  if (!app) {
+    ThrowInvalidArgument("FirebaseApp instance may not be nil. Use FirebaseApp.app() if you'd like "
+                         "to use the default FirebaseApp instance.");
+  }
+  if (!database) {
+    ThrowInvalidArgument("Database identifier may not be nil. Use '%s' if you want the default "
+                         "database",
+                         DatabaseId::kDefault);
+  }
+
+  id<FSTFirestoreMultiDBProvider> provider =
+      FIR_COMPONENT(FSTFirestoreMultiDBProvider, app.container);
+  return [provider firestoreForDatabase:database];
+}
+
 - (instancetype)initWithDatabaseID:(model::DatabaseId)databaseID
                     persistenceKey:(std::string)persistenceKey
            authCredentialsProvider:
@@ -166,31 +180,6 @@ NS_ASSUME_NONNULL_BEGIN
   return self;
 }
 
-+ (instancetype)firestoreForApp:(FIRApp *)app database:(NSString *)database {
-  if (!app) {
-    ThrowInvalidArgument("FirebaseApp instance may not be nil. Use FirebaseApp.app() if you'd like "
-                         "to use the default FirebaseApp instance.");
-  }
-  if (!database) {
-    ThrowInvalidArgument("Database identifier may not be nil. Use '%s' if you want the default "
-                         "database",
-                         DatabaseId::kDefault);
-  }
-
-  id<FSTFirestoreMultiDBProvider> provider =
-      FIR_COMPONENT(FSTFirestoreMultiDBProvider, app.container);
-  return [provider firestoreForDatabase:database];
-}
-
-+ (instancetype)firestoreForDatabase:(NSString *)database {
-  FIRApp *app = [FIRApp defaultApp];
-  if (!app) {
-    ThrowIllegalState("Failed to get FirebaseApp instance. Please call FirebaseApp.configure() "
-                      "before using Firestore");
-  }
-  return [self firestoreForApp:app database:database];
-}
-
 - (FIRFirestoreSettings *)settings {
   // Disallow mutation of our internal settings
   return [_settings copy];
@@ -213,31 +202,6 @@ NS_ASSUME_NONNULL_BEGIN
 
     _firestore->set_user_executor(std::move(user_executor));
   }
-}
-
-- (void)setIndexConfigurationFromJSON:(NSString *)json
-                           completion:(nullable void (^)(NSError *_Nullable error))completion {
-  _firestore->SetIndexConfiguration(MakeString(json), MakeCallback(completion));
-}
-
-- (void)setIndexConfigurationFromStream:(NSInputStream *)stream
-                             completion:(nullable void (^)(NSError *_Nullable error))completion {
-  auto input = absl::make_unique<ByteStreamApple>(stream);
-  auto callback = MakeCallback(completion);
-
-  std::string json;
-  bool eof = false;
-  while (!eof) {
-    StreamReadResult result = input->Read(1024ul);
-    if (!result.ok()) {
-      callback(result.status());
-      return;
-    }
-    eof = result.eof();
-    json.append(std::move(result).ValueOrDie());
-  }
-
-  _firestore->SetIndexConfiguration(json, callback);
 }
 
 - (FIRCollectionReference *)collectionWithPath:(NSString *)collectionPath {
@@ -290,10 +254,9 @@ NS_ASSUME_NONNULL_BEGIN
   return [FIRWriteBatch writeBatchWithDataReader:self.dataReader writeBatch:_firestore->GetBatch()];
 }
 
-- (void)runTransactionWithOptions:(FIRTransactionOptions *_Nullable)options
-                            block:(UserUpdateBlock)updateBlock
-                    dispatchQueue:(dispatch_queue_t)queue
-                       completion:(UserTransactionCompletion)completion {
+- (void)runTransactionWithBlock:(UserUpdateBlock)updateBlock
+                  dispatchQueue:(dispatch_queue_t)queue
+                     completion:(UserTransactionCompletion)completion {
   if (!updateBlock) {
     ThrowInvalidArgument("Transaction block cannot be nil.");
   }
@@ -372,37 +335,21 @@ NS_ASSUME_NONNULL_BEGIN
     result_capture->HandleFinalStatus(status);
   };
 
-  int max_attempts = [FIRTransactionOptions defaultMaxAttempts];
-  if (options) {
-    // Note: The cast of `maxAttempts` from `NSInteger` to `int` is safe (i.e. lossless) because
-    // `FIRTransactionOptions` does not allow values greater than `INT32_MAX` to be set.
-    max_attempts = static_cast<int>(options.maxAttempts);
-  }
-
-  _firestore->RunTransaction(std::move(internalUpdateBlock), std::move(objcTranslator),
-                             max_attempts);
+  _firestore->RunTransaction(std::move(internalUpdateBlock), std::move(objcTranslator));
 }
 
 - (void)runTransactionWithBlock:(id _Nullable (^)(FIRTransaction *, NSError **error))updateBlock
                      completion:
                          (void (^)(id _Nullable result, NSError *_Nullable error))completion {
-  [self runTransactionWithOptions:nil block:updateBlock completion:completion];
-}
-
-- (void)runTransactionWithOptions:(FIRTransactionOptions *_Nullable)options
-                            block:(id _Nullable (^)(FIRTransaction *, NSError **))updateBlock
-                       completion:
-                           (void (^)(id _Nullable result, NSError *_Nullable error))completion {
   static dispatch_queue_t transactionDispatchQueue;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     transactionDispatchQueue = dispatch_queue_create("com.google.firebase.firestore.transaction",
                                                      DISPATCH_QUEUE_CONCURRENT);
   });
-  [self runTransactionWithOptions:options
-                            block:updateBlock
-                    dispatchQueue:transactionDispatchQueue
-                       completion:completion];
+  [self runTransactionWithBlock:updateBlock
+                  dispatchQueue:transactionDispatchQueue
+                     completion:completion];
 }
 
 + (void)enableLogging:(BOOL)logging {
@@ -543,17 +490,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)terminateInternalWithCompletion:(nullable void (^)(NSError *_Nullable error))completion {
   _firestore->Terminate(MakeCallback(completion));
-}
-
-#pragma mark - Force Link Unreferenced Symbols
-
-extern void FSTIncludeFSTFirestoreComponent(void);
-
-/// This method forces the linker to include all the Analytics categories without requiring app
-/// developers to include the '-ObjC' linker flag in their projects. DO NOT CALL THIS METHOD.
-+ (void)notCalled {
-  NSAssert(NO, @"+notCalled should never be called");
-  FSTIncludeFSTFirestoreComponent();
 }
 
 @end

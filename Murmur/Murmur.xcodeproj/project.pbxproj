@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C840F4592A3F6E4F000604E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C840F4582A3F6E4F000604E6 /* GoogleService-Info.plist */; };
 		C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */; };
+		C8499F412A4009E00019D83F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8499F402A4009E00019D83F /* GoogleService-Info.plist */; };
 		C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */; };
 		C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */; };
 		C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */; };
@@ -29,8 +29,8 @@
 
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C840F4582A3F6E4F000604E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
+		C8499F402A4009E00019D83F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
 		C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessageViewController.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
 				C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */,
-				C840F4582A3F6E4F000604E6 /* GoogleService-Info.plist */,
+				C8499F402A4009E00019D83F /* GoogleService-Info.plist */,
 				C8C72C312A39DA360025E693 /* Info.plist */,
 			);
 			path = Murmur;
@@ -178,7 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */,
-				C840F4592A3F6E4F000604E6 /* GoogleService-Info.plist in Resources */,
+				C8499F412A4009E00019D83F /* GoogleService-Info.plist in Resources */,
 				C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */,
 				C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */,
 			);
@@ -414,6 +414,7 @@
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Murmur/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Murmur 需要訪問你的位置以提供更好的服務";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -444,6 +445,7 @@
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Murmur/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Murmur 需要訪問你的位置以提供更好的服務";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

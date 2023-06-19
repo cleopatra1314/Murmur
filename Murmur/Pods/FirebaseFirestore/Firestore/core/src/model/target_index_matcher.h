@@ -93,7 +93,7 @@ class TargetIndexMatcher {
 
   absl::optional<core::FieldFilter> inequality_filter_;
   std::vector<core::FieldFilter> equality_filters_;
-  std::vector<core::OrderBy> order_bys_;
+  core::OrderByList order_bys_;
 };
 
 }  // namespace model

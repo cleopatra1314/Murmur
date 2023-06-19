@@ -194,7 +194,7 @@ typedef NS_ENUM(NSInteger, FIRActionCodeOperation) {
   /** Action code for email link operation. */
   FIRActionCodeOperationEmailLink = 4,
 
-  /** Action code for verifying and changing email */
+  /** Action code for verifing and changing email */
   FIRActionCodeOperationVerifyAndChangeEmail = 5,
 
   /** Action code for reverting second factor addition */
@@ -820,7 +820,7 @@ NS_SWIFT_NAME(Auth)
     @param URL The URL received by the application delegate from any of the openURL method.
     @return Whether or the URL is handled. YES means the URL is for Firebase Auth
         so the caller should ignore the URL from further processing, and NO means the
-        the URL is for the app (or another library) so the caller should continue handling
+        the URL is for the app (or another libaray) so the caller should continue handling
         this URL as usual.
     @remarks If swizzling is disabled, URLs received by the application delegate must be forwarded
         to this method for phone number auth to work.
@@ -843,20 +843,12 @@ NS_SWIFT_NAME(Auth)
         notification in question.
     @return Whether or the notification is handled. A return value of true means the notification
         is for Firebase Auth so the caller should ignore the notification from further processing,
-        and false means the notification is for the app (or another library) so the caller
+        and false means the the notification is for the app (or another libaray) so the caller
    should continue handling this notification as usual.
     @remarks If swizzling is disabled, related remote notifications must be forwarded to this method
         for phone number auth to work.
  */
 - (BOOL)canHandleNotification:(NSDictionary *)userInfo API_UNAVAILABLE(macos, tvos, watchos);
-
-/** @fn revokeTokenWithAuthorizationCode:Completion
-    @brief Revoke the users token with authorization code.
-    @param completion (Optional) the block invoked when the request to revoke the token is
-        complete, or fails. Invoked asynchronously on the main thread in the future.
- */
-- (void)revokeTokenWithAuthorizationCode:(NSString *)authorizationCode
-                              completion:(nullable void (^)(NSError *_Nullable error))completion;
 
 #pragma mark - User sharing
 

@@ -80,44 +80,43 @@ void MemoryIndexManager::DeleteFieldIndex(const model::FieldIndex& index) {
 }
 
 std::vector<model::FieldIndex> MemoryIndexManager::GetFieldIndexes(
-    const std::string& collection_group) const {
+    const std::string& collection_group) {
   (void)collection_group;
   return {};
 }
 
-std::vector<model::FieldIndex> MemoryIndexManager::GetFieldIndexes() const {
+std::vector<model::FieldIndex> MemoryIndexManager::GetFieldIndexes() {
   return {};
 }
 
-model::IndexOffset MemoryIndexManager::GetMinOffset(const core::Target&) {
-  return model::IndexOffset::None();
-}
-
-model::IndexOffset MemoryIndexManager::GetMinOffset(const std::string&) const {
-  return model::IndexOffset::None();
-}
-
-IndexManager::IndexType MemoryIndexManager::GetIndexType(const core::Target&) {
-  return IndexManager::IndexType::NONE;
+absl::optional<model::FieldIndex> MemoryIndexManager::GetFieldIndex(
+    core::Target target) {
+  (void)target;
+  return absl::nullopt;
 }
 
 absl::optional<std::vector<model::DocumentKey>>
-MemoryIndexManager::GetDocumentsMatchingTarget(const core::Target&) {
-  // Field indices are not supported with memory persistence.
+MemoryIndexManager::GetDocumentsMatchingTarget(model::FieldIndex fieldIndex,
+                                               core::Target target) {
+  (void)fieldIndex;
+  (void)target;
+  return {};
+}
+
+absl::optional<std::string>
+MemoryIndexManager::GetNextCollectionGroupToUpdate() {
   return absl::nullopt;
 }
 
-absl::optional<std::string> MemoryIndexManager::GetNextCollectionGroupToUpdate()
-    const {
-  return absl::nullopt;
+void MemoryIndexManager::UpdateCollectionGroup(
+    const std::string& collection_group, model::IndexOffset offset) {
+  (void)collection_group;
+  (void)offset;
 }
 
-void MemoryIndexManager::UpdateCollectionGroup(const std::string&,
-                                               model::IndexOffset) {
-  // Field indices are not supported with memory persistence.
-}
-
-void MemoryIndexManager::UpdateIndexEntries(const model::DocumentMap&) {
+void MemoryIndexManager::UpdateIndexEntries(
+    const model::DocumentMap& documents) {
+  (void)documents;
 }
 
 }  // namespace local

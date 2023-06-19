@@ -17,7 +17,6 @@
 #ifndef FIRESTORE_CORE_SRC_CREDENTIALS_CREDENTIALS_PROVIDER_H_
 #define FIRESTORE_CORE_SRC_CREDENTIALS_CREDENTIALS_PROVIDER_H_
 
-#include <atomic>
 #include <functional>
 #include <string>
 
@@ -47,7 +46,6 @@ template <class TokenType, class ValueType>
 class CredentialsProvider {
  public:
   CredentialsProvider() : change_listener_(nullptr) {
-    force_refresh_ = false;
   }
 
   virtual ~CredentialsProvider() = default;
@@ -83,7 +81,7 @@ class CredentialsProvider {
    */
   CredentialChangeListener<ValueType> change_listener_;
 
-  std::atomic<bool> force_refresh_;
+  bool force_refresh_ = false;
 };
 
 }  // namespace credentials

@@ -17,7 +17,6 @@
 #include "Firestore/core/src/core/target.h"
 
 #include <ostream>
-#include <set>
 #include <unordered_map>
 #include <vector>
 
@@ -29,7 +28,6 @@
 #include "Firestore/core/src/nanopb/nanopb_util.h"
 #include "Firestore/core/src/util/equality.h"
 #include "Firestore/core/src/util/hashing.h"
-#include "Firestore/core/src/util/maps.h"
 #include "absl/strings/str_cat.h"
 
 namespace firebase {
@@ -39,7 +37,6 @@ namespace core {
 using model::DocumentKey;
 using model::FieldPath;
 using model::Segment;
-using util::MapWithInsertionOrder;
 
 namespace {
 
@@ -55,6 +52,19 @@ std::vector<google_firestore_v1_Value> MakeValueVector(
   return result;
 }
 
+// Moves the values from the given unordered_map into the resulting vector.
+std::vector<google_firestore_v1_Value> ValuesFrom(
+    std::unordered_map<std::string, google_firestore_v1_Value>&&
+        field_value_map) {
+  std::vector<google_firestore_v1_Value> result;
+
+  for (auto& entry_pair : field_value_map) {
+    result.push_back(entry_pair.second);
+  }
+
+  return result;
+}
+
 }  // namespace
 
 // MARK: - Accessors
@@ -64,57 +74,22 @@ bool Target::IsDocumentQuery() const {
          filters_.empty();
 }
 
-size_t Target::GetSegmentCount() const {
-  std::set<FieldPath> fields;
-  bool has_array_segment = false;
-  for (const Filter& filter : filters_) {
-    for (const FieldFilter& sub_filter : filter.GetFlattenedFilters()) {
-      // __name__ is not an explicit segment of any index, so we don't need to
-      // count it.
-      if (sub_filter.field().IsKeyFieldPath()) {
-        continue;
-      }
-
-      // ARRAY_CONTAINS or ARRAY_CONTAINS_ANY filters must be counted
-      // separately. For instance, it is possible to have an index for "a ARRAY
-      // a ASC". Even though these are on the same field, they should be counted
-      // as two separate segments in an index.
-      if (sub_filter.op() == FieldFilter::Operator::ArrayContains ||
-          sub_filter.op() == FieldFilter::Operator::ArrayContainsAny) {
-        has_array_segment = true;
-      } else {
-        fields.insert(sub_filter.field());
-      }
-    }
-  }
-  for (const auto& order_by : order_bys_) {
-    // __name__ is not an explicit segment of any index, so we don't need to
-    // count it.
-    if (!order_by.field().IsKeyFieldPath()) {
-      fields.insert(order_by.field());
-    }
-  }
-  return fields.size() + (has_array_segment ? 1 : 0);
-}
+// MARK: - Indexing support
 
 std::vector<FieldFilter> Target::GetFieldFiltersForPath(
-    const model::FieldPath& path) const {
+    const model::FieldPath& path) {
   std::vector<FieldFilter> result;
+
   for (const Filter& filter : filters_) {
-    if (filter.IsAFieldFilter()) {
-      FieldFilter field_filter(filter);
-      if (field_filter.field() != path) {
-        continue;
-      }
-      result.push_back(std::move(field_filter));
+    if (filter.IsAFieldFilter() && filter.field() == path) {
+      result.push_back(FieldFilter(filter));
     }
   }
 
   return result;
 }
 
-IndexedValues Target::GetArrayValues(
-    const model::FieldIndex& field_index) const {
+IndexedValues Target::GetArrayValues(const model::FieldIndex& field_index) {
   auto segment = field_index.GetArraySegment();
   if (!segment.has_value()) return absl::nullopt;
 
@@ -137,9 +112,8 @@ IndexedValues Target::GetArrayValues(
   return absl::nullopt;
 }
 
-IndexedValues Target::GetNotInValues(
-    const model::FieldIndex& field_index) const {
-  MapWithInsertionOrder<std::string, google_firestore_v1_Value> field_value_map;
+IndexedValues Target::GetNotInValues(const model::FieldIndex& field_index) {
+  std::unordered_map<std::string, google_firestore_v1_Value> field_value_map;
   for (const auto& segment : field_index.GetDirectionalSegments()) {
     for (const auto& field_filter :
          GetFieldFiltersForPath(segment.field_path())) {
@@ -149,15 +123,15 @@ IndexedValues Target::GetNotInValues(
           // Encode equality prefix, which is encoded in the index value before
           // the inequality (e.g. `a == 'a' && b != 'b'` is encoded to `value !=
           // 'ab'`).
-          field_value_map.Put(segment.field_path().CanonicalString(),
-                              field_filter.value());
+          field_value_map[segment.field_path().CanonicalString()] =
+              field_filter.value();
           break;
         case FieldFilter::Operator::NotIn:
         case FieldFilter::Operator::NotEqual:
-          field_value_map.Put(segment.field_path().CanonicalString(),
-                              field_filter.value());
-          return field_value_map
-              .ConsumeValues();  // NotIn/NotEqual is always a suffix
+          field_value_map[segment.field_path().CanonicalString()] =
+              field_filter.value();
+          return ValuesFrom(
+              std::move(field_value_map));  // NotIn/NotEqual is always a suffix
         default:
           continue;
       }
@@ -167,8 +141,8 @@ IndexedValues Target::GetNotInValues(
   return absl::nullopt;
 }
 
-IndexBoundValues Target::GetLowerBound(
-    const model::FieldIndex& field_index) const {
+absl::optional<IndexBoundValues> Target::GetLowerBound(
+    const model::FieldIndex& field_index) {
   std::vector<google_firestore_v1_Value> values;
   bool inclusive = true;
 
@@ -179,15 +153,20 @@ IndexBoundValues Target::GetLowerBound(
                              ? GetAscendingBound(segment, start_at_)
                              : GetDescendingBound(segment, start_at_);
 
-    values.push_back(std::move(segment_bound.value));
+    if (!segment_bound.value.has_value()) {
+      // No lower bound exists
+      return absl::nullopt;
+    }
+
+    values.push_back(std::move(segment_bound.value.value()));
     inclusive = (inclusive && segment_bound.inclusive);
   }
 
   return IndexBoundValues{inclusive, std::move(values)};
 }
 
-IndexBoundValues Target::GetUpperBound(
-    const model::FieldIndex& field_index) const {
+absl::optional<IndexBoundValues> Target::GetUpperBound(
+    const model::FieldIndex& field_index) {
   std::vector<google_firestore_v1_Value> values;
   bool inclusive = true;
 
@@ -198,7 +177,12 @@ IndexBoundValues Target::GetUpperBound(
                              ? GetDescendingBound(segment, end_at_)
                              : GetAscendingBound(segment, end_at_);
 
-    values.push_back(std::move(segment_bound.value));
+    if (!segment_bound.value.has_value()) {
+      // No lower bound exists
+      return absl::nullopt;
+    }
+
+    values.push_back(std::move(segment_bound.value.value()));
     inclusive = (inclusive && segment_bound.inclusive);
   }
 
@@ -206,14 +190,14 @@ IndexBoundValues Target::GetUpperBound(
 }
 
 Target::IndexBoundValue Target::GetAscendingBound(
-    const Segment& segment, const absl::optional<Bound>& bound) const {
-  google_firestore_v1_Value segment_value = model::MinValue();
+    const Segment& segment, const absl::optional<Bound>& bound) {
+  absl::optional<google_firestore_v1_Value> segment_value;
   bool segment_inclusive = true;
 
   // Process all filters to find a value for the current field segment
   for (const auto& field_filter :
        GetFieldFiltersForPath(segment.field_path())) {
-    google_firestore_v1_Value filter_value = model::MinValue();
+    absl::optional<google_firestore_v1_Value> filter_value;
     bool filter_inclusive = true;
 
     switch (field_filter.op()) {
@@ -240,12 +224,14 @@ Target::IndexBoundValue Target::GetAscendingBound(
         continue;
     }
 
-    // Increase segment_value to filter_value if filter_value is larger.
-    if (model::LowerBoundCompare(segment_value, segment_inclusive, filter_value,
-                                 filter_inclusive) ==
-        util::ComparisonResult::Ascending) {
-      segment_value = std::move(filter_value);
-      segment_inclusive = filter_inclusive;
+    // Set segment_value to max(segment_value, filter_value)
+    if (filter_value.has_value()) {
+      if (!segment_value.has_value() ||
+          (model::Compare(segment_value.value(), filter_value.value()) ==
+           util::ComparisonResult::Ascending)) {
+        segment_value = std::move(filter_value);
+        segment_inclusive = filter_inclusive;
+      }
     }
   }
 
@@ -256,10 +242,9 @@ Target::IndexBoundValue Target::GetAscendingBound(
       const auto& order_by = order_bys_[i];
       if (order_by.field() == segment.field_path()) {
         auto cursor_value = bound.value().position()->values[i];
-        // Increase segment_value to cursor_value if cursor_value is larger.
-        if (model::LowerBoundCompare(segment_value, segment_inclusive,
-                                     cursor_value, bound.value().inclusive()) ==
-            util::ComparisonResult::Ascending) {
+        if (!segment_value.has_value() ||
+            model::Compare(segment_value.value(), cursor_value) ==
+                util::ComparisonResult::Ascending) {
           segment_value = cursor_value;
           segment_inclusive = bound.value().inclusive();
         }
@@ -271,14 +256,14 @@ Target::IndexBoundValue Target::GetAscendingBound(
 }
 
 Target::IndexBoundValue Target::GetDescendingBound(
-    const Segment& segment, const absl::optional<Bound>& bound) const {
-  google_firestore_v1_Value segment_value = model::MaxValue();
+    const Segment& segment, const absl::optional<Bound>& bound) {
+  absl::optional<google_firestore_v1_Value> segment_value;
   bool segment_inclusive = true;
 
   // Process all filters to find a value for the current field segment
   for (const auto& field_filter :
        GetFieldFiltersForPath(segment.field_path())) {
-    google_firestore_v1_Value filter_value = model::MaxValue();
+    absl::optional<google_firestore_v1_Value> filter_value;
     bool filter_inclusive = true;
 
     switch (field_filter.op()) {
@@ -306,12 +291,14 @@ Target::IndexBoundValue Target::GetDescendingBound(
         continue;
     }
 
-    // Decrease segment_value to filter_value if filter_value is smaller.
-    if (model::UpperBoundCompare(segment_value, segment_inclusive, filter_value,
-                                 filter_inclusive) ==
-        util::ComparisonResult::Descending) {
-      segment_value = std::move(filter_value);
-      segment_inclusive = filter_inclusive;
+    // Set segment_value to min(segment_value, filter_value)
+    if (filter_value.has_value()) {
+      if (!segment_value.has_value() ||
+          (model::Compare(segment_value.value(), filter_value.value()) ==
+           util::ComparisonResult::Descending)) {
+        segment_value = std::move(filter_value);
+        segment_inclusive = filter_inclusive;
+      }
     }
   }
 
@@ -322,10 +309,9 @@ Target::IndexBoundValue Target::GetDescendingBound(
       const auto& order_by = order_bys_[i];
       if (order_by.field() == segment.field_path()) {
         auto cursor_value = bound.value().position()->values[i];
-        // Decrease segment_value to cursor_value if cursor_value is smaller.
-        if (model::UpperBoundCompare(segment_value, segment_inclusive,
-                                     cursor_value, bound.value().inclusive()) ==
-            util::ComparisonResult::Descending) {
+        if (!segment_value.has_value() ||
+            model::Compare(segment_value.value(), cursor_value) ==
+                util::ComparisonResult::Descending) {
           segment_value = cursor_value;
           segment_inclusive = bound.value().inclusive();
         }

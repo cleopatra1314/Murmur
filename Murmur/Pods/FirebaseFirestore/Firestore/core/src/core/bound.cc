@@ -19,6 +19,7 @@
 #include <ostream>
 
 #include "Firestore/core/src/core/order_by.h"
+#include "Firestore/core/src/immutable/append_only_list.h"
 #include "Firestore/core/src/model/document.h"
 #include "Firestore/core/src/model/document_key.h"
 #include "Firestore/core/src/model/value_util.h"
@@ -44,7 +45,7 @@ Bound Bound::FromValue(SharedMessage<google_firestore_v1_ArrayValue> position,
   return Bound(std::move(position), inclusive);
 }
 
-bool Bound::SortsBeforeDocument(const std::vector<OrderBy>& order_by,
+bool Bound::SortsBeforeDocument(const OrderByList& order_by,
                                 const model::Document& document) const {
   auto comparison = CompareToDocument(order_by, document);
   return inclusive_ ? (comparison == ComparisonResult::Ascending ||
@@ -52,7 +53,7 @@ bool Bound::SortsBeforeDocument(const std::vector<OrderBy>& order_by,
                     : (comparison == ComparisonResult::Ascending);
 }
 
-bool Bound::SortsAfterDocument(const std::vector<OrderBy>& order_by,
+bool Bound::SortsAfterDocument(const OrderByList& order_by,
                                const model::Document& document) const {
   auto comparison = CompareToDocument(order_by, document);
   return inclusive_ ? (comparison == ComparisonResult::Descending ||
@@ -61,8 +62,7 @@ bool Bound::SortsAfterDocument(const std::vector<OrderBy>& order_by,
 }
 
 ComparisonResult Bound::CompareToDocument(
-    const std::vector<OrderBy>& order_by,
-    const model::Document& document) const {
+    const OrderByList& order_by, const model::Document& document) const {
   HARD_ASSERT(position_->values_count <= order_by.size(),
               "Bound has more components than the provided order by.");
 

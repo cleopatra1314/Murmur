@@ -19,7 +19,6 @@
 #include <utility>
 
 #include "Firestore/core/src/local/target_data.h"
-#include "Firestore/core/src/util/testing_hooks.h"
 
 namespace firebase {
 namespace firestore {
@@ -35,7 +34,6 @@ using model::MutableDocument;
 using model::SnapshotVersion;
 using model::TargetId;
 using nanopb::ByteString;
-using util::TestingHooks;
 
 // TargetChange
 
@@ -241,8 +239,6 @@ void WatchChangeAggregator::HandleExistenceFilter(
         // snapshot with `isFromCache:true`.
         ResetTarget(target_id);
         pending_target_resets_.insert(target_id);
-        TestingHooks::GetInstance().NotifyOnExistenceFilterMismatch(
-            {current_size, expected_count});
       }
     }
   }

@@ -9,13 +9,18 @@ import UIKit
 import SnapKit
 import MapKit
 import CoreLocation
+import FirebaseFirestore
+import FirebaseCore
 
 class LocationMessageViewController: UIViewController {
     
+    private let db = Firestore.firestore()
+    private var murmurData: [Murmur]?
+    
     // 放入所在範圍的塗鴉發文資料
-    private let items = [
-        IdentifiablePlace(lat: 25.03853373485767, long: 121.53185851373266, name: "這日料難吃別去"),
-        IdentifiablePlace(lat: 25.038903111815653, long: 121.53256662420604, name: "四海雲集八方遊龍每次都搞不清楚")
+    private var items = [
+        IdentifiablePlace(lat: 25.03853373485767, long: 121.53185851373266, murmurWord: "這日料難吃別去"),
+        IdentifiablePlace(lat: 25.038903111815653, long: 121.53256662420604, murmurWord: "四海雲集八方遊龍每次都搞不清楚")
     ]
     
     // 1.創建 locationManager
@@ -26,22 +31,32 @@ class LocationMessageViewController: UIViewController {
     
     private let mapView: MKMapView = {
         let mapView = MKMapView()
-                
         return mapView
     }()
+    private var timer = Timer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        fetchMurmur()
+        // 创建一个定时器，每隔5秒执行一次函数
+//        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+//
+//            self.fetchMurmur()
+//        }
+        // 将定时器添加到当前运行循环中
+//        RunLoop.current.add(timer, forMode: .common)
    
         layoutView()
-        addAnnotations()
+//        addAnnotations()
+        filterLocationMessage()
         setLocation()
 
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        locationManager.startUpdatingLocation()
+        
 //        // 1. 還沒有詢問過用戶以獲得權限
 //        if CLLocationManager.authorizationStatus() == .notDetermined {
 //            locationManager.requestAlwaysAuthorization()
@@ -63,10 +78,11 @@ class LocationMessageViewController: UIViewController {
             }
     }
     
-    @objc func backButtonTouchUpInside() {
-        locationManager.startUpdatingLocation()
+    override func viewDidDisappear(_ animated: Bool) {
+        // 當使用者不在此頁面時，即可不用 fetchMurmur
+        timer.invalidate()
     }
-    
+
     private func layoutView() {
 
         mapView.frame = view.bounds
@@ -78,13 +94,20 @@ class LocationMessageViewController: UIViewController {
     }
     
     private func addAnnotations() {
-            for item in items {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = item.location
-                annotation.title = item.name
-                mapView.addAnnotation(annotation)
-            }
+//        for item in items {
+//            let annotation = MKPointAnnotation()
+//            annotation.coordinate = item.location
+//            annotation.title = item.murmurWord
+//            mapView.addAnnotation(annotation)
+//        }
+        
+        for item in murmurData! {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = item.location.coordinate
+            annotation.title = item.murmurMessage
+            mapView.addAnnotation(annotation)
         }
+    }
     
     private func setupData() {
         // 1. 檢查系統是否能夠監視 region
@@ -132,7 +155,56 @@ class LocationMessageViewController: UIViewController {
             monitoredRegions.removeValue(forKey: regionIdentifier)
         }
     }
-
+    
+    // 使用者在這個頁面時，每隔幾秒 fetch 一次資料
+    func fetchMurmur() {
+        
+        db.collection("murmurs").getDocuments { snapshot, error in
+            
+            guard let snapshot else { return }
+            
+//            let murmurs = snapshot.documents.compactMap { snapshot in
+//                try? snapshot.data(as: Murmur.self)
+//            }
+            let murmurs = snapshot.documents.compactMap { snapshot in
+                do {
+                    return try snapshot.data(as: Murmur.self)
+                } catch {
+                    print("******", error)
+                    return nil
+                }
+            }
+            
+            self.murmurData = murmurs
+            print("讀取到的資料為 \(murmurs)")
+            
+            DispatchQueue.main.async {
+                self.addAnnotations()
+            }
+            
+        }
+    }
+    
+    func filterLocationMessage() {
+        
+        guard let murmurData else { return }
+        
+        for item in murmurData {
+            
+            let latSquare = pow(item.location.coordinate.latitude - currentCoordinate.latitude, 2)
+            let longSquare = pow(item.location.coordinate.longitude - currentCoordinate.longitude, 2)
+            let distanceBetweenMeAndMessage = sqrt(latSquare + longSquare)
+            
+            if distanceBetweenMeAndMessage <= 300 {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = item.location.coordinate
+                annotation.title = item.murmurMessage
+                mapView.addAnnotation(annotation)
+            }
+            
+        }
+    }
+    
 }
 
 extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDelegate {

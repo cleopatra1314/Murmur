@@ -104,8 +104,7 @@ class ViewSnapshot {
                model::DocumentKeySet mutated_keys,
                bool from_cache,
                bool sync_state_changed,
-               bool excludes_metadata_changes,
-               bool has_cached_results);
+               bool excludes_metadata_changes);
 
   /**
    * Returns a view snapshot as if all documents in the snapshot were
@@ -115,8 +114,7 @@ class ViewSnapshot {
                                            model::DocumentSet documents,
                                            model::DocumentKeySet mutated_keys,
                                            bool from_cache,
-                                           bool excludes_metadata_changes,
-                                           bool has_cached_results);
+                                           bool excludes_metadata_changes);
 
   /** The query this view is tracking the results for. */
   const Query& query() const;
@@ -139,11 +137,6 @@ class ViewSnapshot {
   /** Whether any document in the snapshot was served from the local cache. */
   bool from_cache() const {
     return from_cache_;
-  }
-
-  /** Whether the snapshot has cached data. */
-  bool has_cached_results() const {
-    return has_cached_results_;
   }
 
   /** Whether any document in the snapshot has pending local writes. */
@@ -181,7 +174,6 @@ class ViewSnapshot {
   bool from_cache_ = false;
   bool sync_state_changed_ = false;
   bool excludes_metadata_changes_ = false;
-  bool has_cached_results_ = false;
 };
 
 using ViewSnapshotListener = std::unique_ptr<EventListener<ViewSnapshot>>;

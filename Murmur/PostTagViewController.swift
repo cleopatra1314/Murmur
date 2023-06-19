@@ -31,10 +31,11 @@ class PostTagViewController: UIViewController {
 //    }()
     var murmurData: [String: Any] = [
         "userEmail": "hand1@gmail.com",
-        "location": ["25.040094628617304", "121.53261288219679"],
+        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679],
         "murmurMessage": "給我一份卡啦雞腿堡",
         "murmurImage": "png",
-        "selectedTags": ["食物", "耍廢"]
+        "selectedTags": ["食物", "耍廢"],
+        "createTime": Timestamp(date: Date())
         ]
     
     let db = Firestore.firestore()
@@ -52,7 +53,6 @@ class PostTagViewController: UIViewController {
 //        navigationController.modalPresentationStyle = .fullScreen
 //        navigationController.navigationBar.barStyle = .default
 //        navigationController.navigationBar.backgroundColor = .blue
-        
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.title = "塗鴉標籤"
@@ -92,9 +92,9 @@ class PostTagViewController: UIViewController {
 //        }
         
 //        murmurData["location"]![0] = "currentCoordinate.latitude"
-        if var location = murmurData["location"] as? [String] {
-            location[0] = "\(currentCoordinate.latitude)"
-            location[1] = "\(currentCoordinate.longitude)"
+        if var location = murmurData["location"] as? [String : Double] {
+            location["latitude"] = currentCoordinate.latitude
+            location["longitude"] = currentCoordinate.longitude
             murmurData["location"] = location
         }
 
@@ -102,9 +102,16 @@ class PostTagViewController: UIViewController {
     }
     
     func createMurmur() {
-                
-            let documentReference = db.collection("murmurs").addDocument(data: murmurData)
-            print(documentReference.documentID)
+        
+//        let documentReference = db.collection("murmurs").addDocument(data: murmurData)
+        // TODO: 為了方便測試，先用塗鴉留言當作 document name
+        db.collection("murmurs").document((murmurData["murmurMessage"] as? String)!).setData(murmurData)
+//        do {
+//            try db.collection("murmurs").document("陪你很久很久").setData(murmurData)
+//        } catch {
+//            print(error)
+//        }
+//        print(documentReference.documentID)
     }
     
 }

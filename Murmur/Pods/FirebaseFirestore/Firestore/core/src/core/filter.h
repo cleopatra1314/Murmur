@@ -20,16 +20,18 @@
 #include <iosfwd>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "Firestore/core/src/model/model_fwd.h"
 
 namespace firebase {
 namespace firestore {
 
-namespace core {
+namespace immutable {
+template <typename T>
+class AppendOnlyList;
+}  // namespace immutable
 
-class FieldFilter;
+namespace core {
 
 /** Interface used for all query filters. All filters are immutable. */
 class Filter {
@@ -37,11 +39,9 @@ class Filter {
   // For lack of RTTI, all subclasses must identify themselves so that
   // comparisons properly take type into account.
   enum class Type {
-    kFilter,
-    kFieldFilter,
-    kCompositeFilter,
     kArrayContainsAnyFilter,
     kArrayContainsFilter,
+    kFieldFilter,
     kInFilter,
     kNotInFilter,
     kKeyFieldFilter,
@@ -64,12 +64,13 @@ class Filter {
     return rep_->IsAFieldFilter();
   }
 
-  bool IsACompositeFilter() const {
-    return rep_->IsACompositeFilter();
-  }
-
   bool IsInequality() const {
     return rep_->IsInequality();
+  }
+
+  /** Returns the field the Filter operates over. */
+  const model::FieldPath& field() const {
+    return rep_->field();
   }
 
   /** Returns true if a document matches the filter. */
@@ -87,34 +88,8 @@ class Filter {
     return rep_->ToString();
   }
 
-  /**
-   * Returns true if and only if the filter is a composite filter that
-   * doesn't contain any field filters.
-   */
-  bool IsEmpty() const {
-    return rep_->IsEmpty();
-  }
-
-  /**
-   * Returns the first inequality filter contained within this filter.
-   * Returns nullptr if it does not contain any inequalities.
-   */
-  const model::FieldPath* GetFirstInequalityField() const {
-    return rep_->GetFirstInequalityField();
-  }
-
-  /**
-   * Returns a list of all field filters that are contained within this filter.
-   */
-  const std::vector<FieldFilter>& GetFlattenedFilters() const {
-    return rep_->GetFlattenedFilters();
-  }
-
-  /**
-   * Returns a list of all filters that are contained within this filter
-   */
-  std::vector<Filter> GetFilters() const {
-    return rep_->GetFilters();
+  size_t Hash() const {
+    return rep_->Hash();
   }
 
   friend bool operator==(const Filter& lhs, const Filter& rhs);
@@ -124,21 +99,18 @@ class Filter {
    public:
     virtual ~Rep() = default;
 
-    virtual Type type() const {
-      return Type::kFilter;
-    }
+    virtual Type type() const = 0;
 
     virtual bool IsAFieldFilter() const {
-      return false;
-    }
-
-    virtual bool IsACompositeFilter() const {
       return false;
     }
 
     virtual bool IsInequality() const {
       return false;
     }
+
+    /** Returns the field the Filter operates over. */
+    virtual const model::FieldPath& field() const = 0;
 
     /** Returns true if a document matches the filter. */
     virtual bool Matches(const model::Document& doc) const = 0;
@@ -148,25 +120,13 @@ class Filter {
 
     virtual bool Equals(const Rep& other) const = 0;
 
+    virtual size_t Hash() const = 0;
+
     /** A debug description of the Filter. */
     virtual std::string ToString() const = 0;
-
-    virtual bool IsEmpty() const = 0;
-
-    virtual const model::FieldPath* GetFirstInequalityField() const = 0;
-
-    virtual const std::vector<FieldFilter>& GetFlattenedFilters() const = 0;
-
-    virtual std::vector<Filter> GetFilters() const = 0;
-
-    /**
-     * Memoized list of all field filters that can be found by
-     * traversing the tree of filters contained in this composite filter.
-     */
-    mutable std::vector<FieldFilter> memoized_flattened_filters_;
   };
 
-  explicit Filter(std::shared_ptr<const Rep>&& rep) : rep_(rep) {
+  explicit Filter(std::shared_ptr<const Rep> rep) : rep_(rep) {
   }
 
   const Rep& rep() const {
@@ -180,6 +140,9 @@ class Filter {
 inline bool operator!=(const Filter& lhs, const Filter& rhs) {
   return !(lhs == rhs);
 }
+
+/** A list of Filters, as used in Queries and elsewhere. */
+using FilterList = immutable::AppendOnlyList<Filter>;
 
 std::ostream& operator<<(std::ostream& os, const Filter& filter);
 

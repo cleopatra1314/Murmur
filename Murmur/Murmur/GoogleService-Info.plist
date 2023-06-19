@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>936184212502-k22cb34ag6l33dns4mvee3pmgkeujdpp.apps.googleusercontent.com</string>
+	<string>936184212502-145os6r69olhcabjk5rthuj66nk6bn37.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.936184212502-k22cb34ag6l33dns4mvee3pmgkeujdpp</string>
+	<string>com.googleusercontent.apps.936184212502-145os6r69olhcabjk5rthuj66nk6bn37</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAp6dUM8O6-_yHBU04sj8tWNVndMHRP5NQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>Cleopatra.Murmur</string>
+	<string>cleopatra.Murmur</string>
 	<key>PROJECT_ID</key>
 	<string>murmur-e5e16</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:936184212502:ios:039306db8d587636981937</string>
+	<string>1:936184212502:ios:60b92eae5dbdafb4981937</string>
 </dict>
 </plist>

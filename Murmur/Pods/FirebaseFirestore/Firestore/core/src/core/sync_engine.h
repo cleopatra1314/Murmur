@@ -47,10 +47,6 @@ class LocalStore;
 class TargetData;
 }  // namespace local
 
-namespace model {
-class AggregateField;
-}  // namespace model
-
 namespace core {
 
 class SyncEngineCallback;
@@ -130,24 +126,17 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
    * Runs the given transaction block up to retries times and then calls
    * completion.
    *
-   * @param max_attempts The maximum number of times to try before giving up.
+   * @param retries The number of times to try before giving up.
    * @param worker_queue The queue to dispatch sync engine calls to.
    * @param update_callback The callback to call to execute the user's
    * transaction.
    * @param result_callback The callback to call when the transaction is
    * finished or failed.
    */
-  void Transaction(int max_attempts,
+  void Transaction(int retries,
                    const std::shared_ptr<util::AsyncQueue>& worker_queue,
                    core::TransactionUpdateCallback update_callback,
                    core::TransactionResultCallback result_callback);
-
-  /**
-   * Executes an aggregation query.
-   */
-  void RunAggregateQuery(const core::Query& query,
-                         const std::vector<model::AggregateField>& aggregates,
-                         api::AggregateQueryCallback&& result_callback);
 
   void HandleCredentialChange(const credentials::User& user);
 
@@ -238,10 +227,8 @@ class SyncEngine : public remote::RemoteStoreCallback, public QueryEventSource {
 
   void AssertCallbackExists(absl::string_view source);
 
-  ViewSnapshot InitializeViewAndComputeSnapshot(
-      const Query& query,
-      model::TargetId target_id,
-      nanopb::ByteString resume_token);
+  ViewSnapshot InitializeViewAndComputeSnapshot(const Query& query,
+                                                model::TargetId target_id);
 
   void RemoveAndCleanupTarget(model::TargetId target_id, util::Status status);
 

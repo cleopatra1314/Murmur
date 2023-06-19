@@ -18,7 +18,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-dispatch_queue_t FIRAuthGlobalWorkQueue(void) {
+dispatch_queue_t FIRAuthGlobalWorkQueue() {
   static dispatch_once_t once;
   static dispatch_queue_t queue;
   dispatch_once(&once, ^{

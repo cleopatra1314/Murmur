@@ -147,13 +147,6 @@ class LruGarbageCollector {
 
   local::LruResults Collect(const LiveQueryMap& live_targets);
 
-  /**
-   * Visible for testing only!
-   */
-  void set_lru_params(LruParams params) {
-    params_ = params;
-  }
-
  private:
   LruResults RunGarbageCollection(const LiveQueryMap& live_targets);
 

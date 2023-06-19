@@ -72,6 +72,10 @@ class EventListener;
 
 using CollectionGroupId = std::shared_ptr<const std::string>;
 
+using FilterList = immutable::AppendOnlyList<Filter>;
+
+using OrderByList = immutable::AppendOnlyList<OrderBy>;
+
 using TransactionResultCallback = util::StatusCallback;
 
 using TransactionUpdateCallback = std::function<void(

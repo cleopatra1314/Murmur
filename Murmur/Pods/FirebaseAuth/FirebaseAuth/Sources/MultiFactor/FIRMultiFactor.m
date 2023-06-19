@@ -32,8 +32,6 @@
 
 #import "FirebaseAuth/Sources/AuthProvider/Phone/FIRPhoneAuthCredential_Internal.h"
 #import "FirebaseAuth/Sources/MultiFactor/Phone/FIRPhoneMultiFactorAssertion+Internal.h"
-#import "FirebaseAuth/Sources/MultiFactor/Phone/FIRPhoneMultiFactorInfo+Internal.h"
-
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
@@ -157,11 +155,9 @@ static NSString *kUserCodingKey = @"user";
   if (self) {
     NSMutableArray<FIRMultiFactorInfo *> *multiFactorInfoArray = [[NSMutableArray alloc] init];
     for (FIRAuthProtoMFAEnrollment *MFAEnrollment in MFAEnrollments) {
-      if (MFAEnrollment.phoneInfo) {
-        FIRMultiFactorInfo *multiFactorInfo =
-            [[FIRPhoneMultiFactorInfo alloc] initWithProto:MFAEnrollment];
-        [multiFactorInfoArray addObject:multiFactorInfo];
-      }
+      FIRMultiFactorInfo *multiFactorInfo =
+          [[FIRMultiFactorInfo alloc] initWithProto:MFAEnrollment];
+      [multiFactorInfoArray addObject:multiFactorInfo];
     }
     _enrolledFactors = [multiFactorInfoArray copy];
   }
@@ -178,20 +174,18 @@ static NSString *kUserCodingKey = @"user";
 - (nullable instancetype)initWithCoder:(NSCoder *)aDecoder {
   self = [self init];
   if (self) {
-    NSSet *enrolledFactorsClasses = [NSSet setWithArray:@[
-      [NSArray class], [FIRMultiFactorInfo class], [FIRPhoneMultiFactorInfo class]
-    ]];
     NSArray<FIRMultiFactorInfo *> *enrolledFactors =
-        [aDecoder decodeObjectOfClasses:enrolledFactorsClasses forKey:kEnrolledFactorsCodingKey];
+        [aDecoder decodeObjectOfClass:[NSArray<FIRMultiFactorInfo *> class]
+                               forKey:kEnrolledFactorsCodingKey];
     _enrolledFactors = enrolledFactors;
-    // Do not decode `user` weak property.
+    _user = [aDecoder decodeObjectOfClass:[FIRUser class] forKey:kUserCodingKey];
   }
   return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
   [aCoder encodeObject:_enrolledFactors forKey:kEnrolledFactorsCodingKey];
-  // Do not encode `user` weak property.
+  [aCoder encodeObject:_user forKey:kUserCodingKey];
 }
 
 @end

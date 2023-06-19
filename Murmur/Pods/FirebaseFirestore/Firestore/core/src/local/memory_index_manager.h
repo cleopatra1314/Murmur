@@ -63,24 +63,21 @@ class MemoryIndexManager : public IndexManager {
   void DeleteFieldIndex(const model::FieldIndex& index) override;
 
   std::vector<model::FieldIndex> GetFieldIndexes(
-      const std::string& collection_group) const override;
+      const std::string& collection_group) override;
 
-  std::vector<model::FieldIndex> GetFieldIndexes() const override;
+  std::vector<model::FieldIndex> GetFieldIndexes() override;
 
-  model::IndexOffset GetMinOffset(const core::Target&) override;
-
-  model::IndexOffset GetMinOffset(const std::string&) const override;
-
-  IndexType GetIndexType(const core::Target&) override;
+  absl::optional<model::FieldIndex> GetFieldIndex(core::Target target) override;
 
   absl::optional<std::vector<model::DocumentKey>> GetDocumentsMatchingTarget(
-      const core::Target&) override;
+      model::FieldIndex fieldIndex, core::Target target) override;
 
-  absl::optional<std::string> GetNextCollectionGroupToUpdate() const override;
+  absl::optional<std::string> GetNextCollectionGroupToUpdate() override;
 
-  void UpdateCollectionGroup(const std::string&, model::IndexOffset) override;
+  void UpdateCollectionGroup(const std::string& collection_group,
+                             model::IndexOffset offset) override;
 
-  void UpdateIndexEntries(const model::DocumentMap&) override;
+  void UpdateIndexEntries(const model::DocumentMap& documents) override;
 
  private:
   MemoryCollectionParentIndex collection_parents_index_;

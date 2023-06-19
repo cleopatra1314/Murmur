@@ -49,8 +49,8 @@ static NSString *kStoredUserCoderKey = @"firebase_auth_stored_user_coder_key";
 
 #pragma mark - User Access Group
 
-- (NSString *_Nullable)getStoredUserAccessGroup {
-  NSData *data = [self.userDefaults dataForKey:kStoredUserAccessGroupKey error:NULL];
+- (NSString *_Nullable)getStoredUserAccessGroupWithError:(NSError *_Nullable *_Nullable)outError {
+  NSData *data = [self.userDefaults dataForKey:kStoredUserAccessGroupKey error:outError];
   if (data) {
     NSString *userAccessGroup = [NSString stringWithUTF8String:data.bytes];
     return userAccessGroup;
@@ -59,12 +59,13 @@ static NSString *kStoredUserCoderKey = @"firebase_auth_stored_user_coder_key";
   }
 }
 
-- (BOOL)setStoredUserAccessGroup:(NSString *_Nullable)accessGroup {
+- (BOOL)setStoredUserAccessGroup:(NSString *_Nullable)accessGroup
+                           error:(NSError *_Nullable *_Nullable)outError {
   NSData *data = [accessGroup dataUsingEncoding:NSUTF8StringEncoding];
   if (!data) {
-    return [self.userDefaults removeDataForKey:kStoredUserAccessGroupKey error:NULL];
+    return [self.userDefaults removeDataForKey:kStoredUserAccessGroupKey error:outError];
   } else {
-    return [self.userDefaults setData:data forKey:kStoredUserAccessGroupKey error:NULL];
+    return [self.userDefaults setData:data forKey:kStoredUserAccessGroupKey error:outError];
   }
 }
 

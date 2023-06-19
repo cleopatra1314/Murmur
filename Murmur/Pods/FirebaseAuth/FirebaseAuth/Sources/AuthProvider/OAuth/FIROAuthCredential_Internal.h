@@ -41,19 +41,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property(nonatomic, readonly, nullable) NSString *pendingToken;
 
-/** @property fullName
-    @brief The full name of the user associated with this OAuthCredential.
- */
-@property(nonatomic, readonly, nullable) NSPersonNameComponents *fullName;
-
-/** @fn initWithProviderId:IDToken:rawNonce:accessToken:secret:fullName:pendingToken
+/** @fn initWithProviderId:IDToken:accessToken:secret:pendingToken
     @brief Designated initializer.
     @param providerID The provider ID associated with the credential being created.
     @param IDToken The ID Token associated with the credential being created.
     @param rawNonce The raw nonce associated with the Auth credential being created.
     @param accessToken The access token associated with the credential being created.
     @param secret The secret associated with the credential being created.
-    @param fullName The full name associated with the credential being created.
     @param pendingToken The pending token associated with the credential being created.
  */
 - (instancetype)initWithProviderID:(NSString *)providerID
@@ -61,7 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
                           rawNonce:(nullable NSString *)rawNonce
                        accessToken:(nullable NSString *)accessToken
                             secret:(nullable NSString *)secret
-                          fullName:(nullable NSPersonNameComponents *)fullName
                       pendingToken:(nullable NSString *)pendingToken NS_DESIGNATED_INITIALIZER;
 
 /** @fn initWithProviderId:sessionID:OAuthResponseURLString:

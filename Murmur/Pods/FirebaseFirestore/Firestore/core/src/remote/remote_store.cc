@@ -39,7 +39,6 @@ using core::Transaction;
 using local::LocalStore;
 using local::QueryPurpose;
 using local::TargetData;
-using model::AggregateField;
 using model::BatchId;
 using model::DocumentKeySet;
 using model::kBatchIdUnknown;
@@ -191,7 +190,7 @@ void RemoteStore::StopListening(TargetId target_id) {
 }
 
 void RemoteStore::SendWatchRequest(const TargetData& target_data) {
-  // We need to increment the expected number of pending responses we're due
+  // We need to increment the the expected number of pending responses we're due
   // from watch so we wait for the ack to process any messages from this target.
   watch_change_aggregator_->RecordPendingTargetRequest(target_data.target_id());
   watch_stream_->WatchQuery(target_data);
@@ -363,19 +362,6 @@ void RemoteStore::ProcessTargetError(const WatchTargetChange& change) {
       watch_change_aggregator_->RemoveTarget(target_id);
       sync_engine_->HandleRejectedListen(target_id, change.cause());
     }
-  }
-}
-
-void RemoteStore::RunAggregateQuery(
-    const core::Query& query,
-    const std::vector<AggregateField>& aggregates,
-    api::AggregateQueryCallback&& result_callback) {
-  if (CanUseNetwork()) {
-    datastore_->RunAggregateQuery(query, aggregates,
-                                  std::move(result_callback));
-  } else {
-    result_callback(Status::FromErrno(Error::kErrorUnavailable,
-                                      "Failed to get result from server."));
   }
 }
 

@@ -58,7 +58,7 @@ static NSString *kIdentityPlatformStagingAPIHost =
     // Automatically set the tenant ID. If the request is initialized before FIRAuth is configured,
     // set tenant ID to nil.
     @try {
-      _tenantID = [self requestConfiguration].auth.tenantID;
+      _tenantID = [FIRAuth auth].tenantID;
     } @catch (NSException *e) {
       _tenantID = nil;
     }

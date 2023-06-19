@@ -25,8 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic) NSString *MFAPendingCredential;
 
 - (instancetype)initWithMFAPendingCredential:(NSString *_Nullable)MFAPendingCredential
-                                       hints:(NSArray<FIRMultiFactorInfo *> *)hints
-                                        auth:(FIRAuth *)auth;
+                                       hints:(NSArray<FIRMultiFactorInfo *> *)hints;
 
 @end
 

@@ -46,8 +46,6 @@ struct Empty;
 
 namespace api {
 
-extern const int kDefaultTransactionMaxAttempts;
-
 class Firestore : public std::enable_shared_from_this<Firestore> {
  public:
   Firestore() = default;
@@ -93,10 +91,8 @@ class Firestore : public std::enable_shared_from_this<Firestore> {
   WriteBatch GetBatch();
   core::Query GetCollectionGroup(std::string collection_id);
 
-  // The default value for `max_attempts` is `kDefaultTransactionMaxAttempts`.
   void RunTransaction(core::TransactionUpdateCallback update_callback,
-                      core::TransactionResultCallback result_callback,
-                      int max_attempts);
+                      core::TransactionResultCallback result_callback);
 
   void Terminate(util::StatusCallback callback);
   void ClearPersistence(util::StatusCallback callback);
@@ -106,9 +102,6 @@ class Firestore : public std::enable_shared_from_this<Firestore> {
 
   void EnableNetwork(util::StatusCallback callback);
   void DisableNetwork(util::StatusCallback callback);
-
-  void SetIndexConfiguration(const std::string& config,
-                             const util::StatusCallback& callback);
 
   std::shared_ptr<api::LoadBundleTask> LoadBundle(
       std::unique_ptr<util::ByteStream> bundle_data);

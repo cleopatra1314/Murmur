@@ -12,11 +12,11 @@ import CoreLocation
 class IdentifiablePlace: NSObject {
     let id: UUID
     let location: CLLocationCoordinate2D
-    let name: String
+    let murmurWord: String
     
-    init(lat: Double, long: Double, name: String) {
+    init(lat: Double, long: Double, murmurWord: String) {
         id = UUID()
         location = CLLocationCoordinate2D(latitude: lat, longitude: long)
-        self.name = name
+        self.murmurWord = murmurWord
     }
 }

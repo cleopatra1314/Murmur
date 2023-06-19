@@ -23,49 +23,39 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FIRSignInWithGameCenterResponse : NSObject <FIRAuthRPCResponse>
 
 /** @property IDToken
-    @brief Either an authorization code suitable for performing an STS token exchange, or the access
+    @breif Either an authorization code suitable for performing an STS token exchange, or the access
     token from Secure Token Service, depending on whether @c returnSecureToken is set on the
     request.
  */
 @property(nonatomic, copy, readonly, nullable) NSString *IDToken;
 
 /** @property refreshToken
-    @brief The refresh token from Secure Token Service.
+    @breif @breif The refresh token from Secure Token Service.
  */
 @property(nonatomic, copy, readonly, nullable) NSString *refreshToken;
 
 /** @property localID
-    @brief The Firebase Auth user ID.
+    @breif @breif The Firebase Auth user ID.
  */
 @property(nonatomic, copy, readonly, nullable) NSString *localID;
 
 /** @property playerID
-    @brief The verified player ID.
+    @breif @breif The verified player ID.
  */
 @property(nonatomic, copy, readonly, nullable) NSString *playerID;
 
-/** @property teamPlayerID
-    @brief The verified team player ID.
- */
-@property(nonatomic, copy, readonly, nullable) NSString *teamPlayerID;
-
-/** @property gamePlayerID
-    @brief The verified game player ID.
- */
-@property(nonatomic, copy, readonly, nullable) NSString *gamePlayerID;
-
 /** @property approximateExpirationDate
-    @brief The approximate expiration date of the access token.
+    @breif The approximate expiration date of the access token.
  */
 @property(nonatomic, copy, readonly, nullable) NSDate *approximateExpirationDate;
 
 /** @property isNewUser
-    @brief Flag indicating that the user signing in is a new user and not a returning user.
+    @breif Flag indicating that the user signing in is a new user and not a returning user.
  */
 @property(nonatomic, assign) BOOL isNewUser;
 
 /** @property displayName
-    @brief The user's Game Center display name.
+    @breif The user's Game Center display name.
  */
 @property(nonatomic, copy, readonly, nullable) NSString *displayName;
 

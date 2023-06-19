@@ -6,8 +6,12 @@ target 'Murmur' do
   use_frameworks!
 
   pod 'SnapKit'
-  pod 'FirebaseAuth'
-  pod 'FirebaseFirestore'
+  pod 'FirebaseCore', '9.0'
+  pod 'FirebaseAuth', '9.0'
+  pod 'FirebaseFirestore', '9.0'
+  pod 'FirebaseStorage', '9.0'
+  pod 'FirebaseDatabase', '9.0'
+  pod 'FirebaseFirestoreSwift', '9.0'
 
   # Pods for Murmur
 
