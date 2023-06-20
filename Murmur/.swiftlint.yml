@@ -3,6 +3,7 @@ excluded:
   - /Murmur/AppDelegate.swift
   - SceneDelegate.swift
 disabled_rules:
+  - line_length
   - trailing_whitespace
   - discarded_notification_center_observer
   - notification_center_detachment

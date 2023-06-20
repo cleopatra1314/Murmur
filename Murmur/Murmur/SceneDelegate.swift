@@ -9,9 +9,9 @@ import UIKit
 
 // swiftlint:disable line_length
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -33,17 +33,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let secondViewController = ChatRoomViewController()
         let thirdViewController = PostViewController()
         let fourthViewController = ProfileViewController()
-
-        // 将视图控制器添加到 TabBarController
-        tabBarController.viewControllers = [firstViewController, secondViewController, thirdViewController, fourthViewController]
         
+        // 将视图控制器添加到 TabBarController
+        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+        tabBarController.viewControllers = [firstViewController, secondViewController, thirdNavigationController, fourthViewController]
+        
+//        tabBarController.viewControllers?[2] = thirdNavigationController
+
         // 设置 TabBarController 为根视图控制器
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         
         // 設定 tabBarItem
         if let tabBarItems = tabBarController.tabBar.items {
-                
+            
             let homeTabBarItem: UITabBarItem = {
                 // 根据索引找到目标 TabBarItem
                 let homeTabBarItem = tabBarItems[0]
@@ -79,8 +82,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
                 return profileTabBarItem
             }()
-                
-            }
+            
+//            let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+            
+        }
         
     }
 

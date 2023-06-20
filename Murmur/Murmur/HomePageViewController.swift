@@ -6,24 +6,34 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
+
+var currentCoordinate: CLLocationCoordinate2D! {
+    didSet {
+        print(currentCoordinate)
+    }
+}
 
 class HomePageViewController: UIViewController {
     
-    private let nearbyUsersContainerView: UIView = {
+    private let locationManager = CLLocationManager()
+    
+    let nearbyUsersContainerView: UIView = {
         let nearbyUsersContainerView = UIView()
         nearbyUsersContainerView.translatesAutoresizingMaskIntoConstraints = false
         nearbyUsersContainerView.backgroundColor = .blue
         nearbyUsersContainerView.isHidden = false
         return nearbyUsersContainerView
     }()
-    private let locationMessageContainerView: UIView = {
+    let locationMessageContainerView: UIView = {
         let locationMessageContainerView = UIView()
         locationMessageContainerView.translatesAutoresizingMaskIntoConstraints = false
         locationMessageContainerView.backgroundColor = .black
         locationMessageContainerView.isHidden = true
         return locationMessageContainerView
     }()
-    private var switchMode = false
+    var switchMode = false
     private let childNearbyUsersViewController = NearbyUsersViewController()
     private let childLocationMessageViewController = LocationMessageViewController()
     
@@ -38,7 +48,7 @@ class HomePageViewController: UIViewController {
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
         return filterButton
     }()
-    private let switchModeButton: UIButton = {
+    let switchModeButton: UIButton = {
         let switchModeButton = UIButton()
         switchModeButton.backgroundColor = .blue
         switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
@@ -66,6 +76,9 @@ class HomePageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
         
         self.view.backgroundColor = .red
         setMapView()
@@ -157,4 +170,14 @@ class HomePageViewController: UIViewController {
         }
     }
     
+}
+
+extension HomePageViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //        updateRegionsWithLocation(locations[0])
+        
+        guard let location = locations.last else { return }
+        currentCoordinate = location.coordinate
+        // 在这里处理获取到的坐标（currentCoordinate）
+    }
 }

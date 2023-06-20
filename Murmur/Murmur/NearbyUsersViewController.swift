@@ -12,6 +12,8 @@ import CoreLocation
 
 class NearbyUsersViewController: UIViewController {
     
+//    var currentCoordinate = CLLocationCoordinate2D()
+    
     // 1.創建 locationManager
     private let locationManager = CLLocationManager()
     private var monitoredRegions: Dictionary<String, Date> = [:]
@@ -33,7 +35,7 @@ class NearbyUsersViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        locationManager.startUpdatingLocation()
 //        // 1. 還沒有詢問過用戶以獲得權限
 //        if CLLocationManager.authorizationStatus() == .notDetermined {
 //            locationManager.requestAlwaysAuthorization()
@@ -77,9 +79,8 @@ class NearbyUsersViewController: UIViewController {
             locationManager.startMonitoring(for: region)
 
             // 4. 創建大頭釘(annotation)
-            let restaurantAnnotation = MKPointAnnotation()
-            restaurantAnnotation.coordinate = coordinate
-            restaurantAnnotation.title = "\(title)"
+            let restaurantAnnotation = OtherUsersAnnotation(coordinate: coordinate)
+            restaurantAnnotation.title = title
             mapView.addAnnotation(restaurantAnnotation)
 
             // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
@@ -88,6 +89,10 @@ class NearbyUsersViewController: UIViewController {
         } else {
             print("System can't track regions")
         }
+    }
+    
+    private func set() {
+        
     }
     
     // MARK: - Comples business logic
@@ -140,6 +145,36 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         return circleRenderer
     }
     
+    // 自訂標註視圖
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        if annotation is OtherUsersAnnotation {
+            let identifier = "\(OtherUsersAnnotation.self)"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            
+            if annotationView == nil {
+                annotationView = OtherUsersAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+            } else {
+                annotationView?.annotation = annotation
+             }
+            return annotationView
+        } else {
+            let identifier = "MeAnnotation"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            
+            if annotationView == nil {
+                annotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+            } else {
+                annotationView?.annotation = annotation
+            }
+            
+            return annotationView
+        }
+        
+    }
+    
     // MARK: - CLLocationManagerDelegate
     // 1. 當用戶進入一個 region
     private func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
@@ -155,7 +190,14 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     
     // TODO: internal
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        updateRegionsWithLocation(locations[0])
+        
+        //?? 自己位置一有變動就更新到 currentCoordinate
+        guard let location = locations.last else { return }
+        currentCoordinate = location.coordinate
+        
+        // 設定初始地圖區域為使用者當前位置
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+        mapView.setRegion(region, animated: false)
     }
     
 }
