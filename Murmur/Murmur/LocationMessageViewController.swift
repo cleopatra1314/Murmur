@@ -325,6 +325,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     
     // CLLocationManagerDelegate 方法，當位置更新時呼叫
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //        updateRegionsWithLocation(locations[0])
         
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
