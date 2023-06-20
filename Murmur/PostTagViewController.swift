@@ -38,7 +38,7 @@ class PostTagViewController: UIViewController {
         "createTime": Timestamp(date: Date())
         ]
     
-    let db = Firestore.firestore()
+    let database = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,14 +77,14 @@ class PostTagViewController: UIViewController {
 //        self.navigationController?.popToViewController((self.tabBarController?.viewControllers![0])!, animated: true)
 //        present((self.tabBarController?.viewControllers![0])!, animated: true)
         
-        // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
-        
         self.tabBarController?.selectedIndex = 0
-        let VC = self.tabBarController?.viewControllers![0] as? HomePageViewController
-        VC?.switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
-        VC?.nearbyUsersContainerView.isHidden = true
-        VC?.locationMessageContainerView.isHidden = false
-        VC?.switchMode = true
+        
+        // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
+        let homeVC = self.tabBarController?.viewControllers![0] as? HomePageViewController
+        homeVC?.switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
+        homeVC?.nearbyUsersContainerView.isHidden = true
+        homeVC?.locationMessageContainerView.isHidden = false
+        homeVC?.switchMode = true
         
 //        let postVC = self.navigationController?.viewControllers[0] as? PostViewController
 //        postVC!.sendMurmurMessageClosure = { [self] murmurMessage in
@@ -92,10 +92,9 @@ class PostTagViewController: UIViewController {
 //        }
         
 //        murmurData["location"]![0] = "currentCoordinate.latitude"
-        if var location = murmurData["location"] as? [String : Double] {
+        if var location = murmurData["location"] as? [String: Double] {
             location["latitude"] = currentCoordinate.latitude
             location["longitude"] = currentCoordinate.longitude
-            murmurData["location"] = location
         }
 
         createMurmur()
@@ -105,7 +104,7 @@ class PostTagViewController: UIViewController {
         
 //        let documentReference = db.collection("murmurs").addDocument(data: murmurData)
         // TODO: 為了方便測試，先用塗鴉留言當作 document name
-        db.collection("murmurs").document((murmurData["murmurMessage"] as? String)!).setData(murmurData)
+        database.collection("murmurs").document((murmurData["murmurMessage"] as? String)!).setData(murmurData)
 //        do {
 //            try db.collection("murmurs").document("陪你很久很久").setData(murmurData)
 //        } catch {

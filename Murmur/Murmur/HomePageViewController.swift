@@ -9,7 +9,11 @@ import UIKit
 import MapKit
 import CoreLocation
 
-var currentCoordinate = CLLocationCoordinate2D()
+var currentCoordinate: CLLocationCoordinate2D! {
+    didSet {
+        print(currentCoordinate)
+    }
+}
 
 class HomePageViewController: UIViewController {
     
@@ -72,7 +76,7 @@ class HomePageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         

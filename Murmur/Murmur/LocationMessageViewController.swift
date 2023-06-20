@@ -14,14 +14,8 @@ import FirebaseCore
 
 class LocationMessageViewController: UIViewController {
     
-    private let db = Firestore.firestore()
+    private let dataBase = Firestore.firestore()
     private var murmurData: [Murmur]?
-    
-    // 放入所在範圍的塗鴉發文資料
-    private var items = [
-        IdentifiablePlace(lat: 25.03853373485767, long: 121.53185851373266, murmurWord: "這日料難吃別去"),
-        IdentifiablePlace(lat: 25.038903111815653, long: 121.53256662420604, murmurWord: "四海雲集八方遊龍每次都搞不清楚")
-    ]
     
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
@@ -33,20 +27,24 @@ class LocationMessageViewController: UIViewController {
         let mapView = MKMapView()
         return mapView
     }()
-    private var timer = Timer()
+    var timer = Timer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         fetchMurmur()
-        // 创建一个定时器，每隔5秒执行一次函数
-//        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+//         创建一个定时器，每隔5秒执行一次函数
+//        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
 //
 //            self.fetchMurmur()
 //        }
-        // 将定时器添加到当前运行循环中
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
+        
+//         将定时器添加到当前运行循环中
 //        RunLoop.current.add(timer, forMode: .common)
    
+        currentCoordinate = locationManager.location?.coordinate
+        
         layoutView()
 //        addAnnotations()
         filterLocationMessage()
@@ -79,6 +77,7 @@ class LocationMessageViewController: UIViewController {
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         // 當使用者不在此頁面時，即可不用 fetchMurmur
         timer.invalidate()
     }
@@ -93,34 +92,37 @@ class LocationMessageViewController: UIViewController {
 //        mapView.setRegion(region, animated: true)
     }
     
-    private func addAnnotations() {
-//        for item in items {
+//    private func addAnnotations() {
+//
+//        for item in murmurData! {
+//
+//            // TODO: 需要先把之前的全部清除 嗎？
+//            if let annotations = mapView.annotations as? [MKAnnotation] {
+//                mapView.removeAnnotations(annotations)
+//            }
+//
 //            let annotation = MKPointAnnotation()
-//            annotation.coordinate = item.location
-//            annotation.title = item.murmurWord
+//            annotation.coordinate = item.location.coordinate
+//            annotation.title = item.murmurMessage
 //            mapView.addAnnotation(annotation)
+//
 //        }
-        
-        for item in murmurData! {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = item.location.coordinate
-            annotation.title = item.murmurMessage
-            mapView.addAnnotation(annotation)
-        }
-    }
+//    }
     
     private func setupData() {
+        
         // 1. 檢查系統是否能夠監視 region
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
 
             // 2.準備 region 會用到的相關屬性
             let title = "未知玩家"
-            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
-            let regionRadius = 200.0 // 範圍半徑
+//            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
+            let coordinate = currentCoordinate!
+            let regionRadius = 300.0 // 範圍半徑
 
             // 3. 設置 region 的相關屬性
             let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
-                longitude: coordinate.longitude), radius: regionRadius, identifier: title)
+                                                                         longitude: coordinate.longitude), radius: regionRadius, identifier: title)
             locationManager.startMonitoring(for: region)
 
             // 4. 創建大頭釘(annotation)
@@ -130,8 +132,8 @@ class LocationMessageViewController: UIViewController {
             mapView.addAnnotation(restaurantAnnotation)
 
             // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-            let circle = MKCircle(center: coordinate, radius: regionRadius)
-            mapView.addOverlay(circle)
+//            let circle = MKCircle(center: coordinate, radius: regionRadius)
+//            mapView.addOverlay(circle)
         } else {
             print("System can't track regions")
         }
@@ -157,15 +159,15 @@ class LocationMessageViewController: UIViewController {
     }
     
     // 使用者在這個頁面時，每隔幾秒 fetch 一次資料
-    func fetchMurmur() {
+    @objc func fetchMurmur() {
         
-        db.collection("murmurs").getDocuments { snapshot, error in
+        dataBase.collection("murmurs").getDocuments { snapshot, error in
             
             guard let snapshot else { return }
             
-//            let murmurs = snapshot.documents.compactMap { snapshot in
-//                try? snapshot.data(as: Murmur.self)
-//            }
+            //            let murmurs = snapshot.documents.compactMap { snapshot in
+            //                try? snapshot.data(as: Murmur.self)
+            //            }
             let murmurs = snapshot.documents.compactMap { snapshot in
                 do {
                     return try snapshot.data(as: Murmur.self)
@@ -178,31 +180,53 @@ class LocationMessageViewController: UIViewController {
             self.murmurData = murmurs
             print("讀取到的資料為 \(murmurs)")
             
-            DispatchQueue.main.async {
-                self.addAnnotations()
-            }
-            
+        }
+        DispatchQueue.main.async {
+//                self.addAnnotations()
+            self.filterLocationMessage()
         }
     }
     
-    func filterLocationMessage() {
+    @objc func filterLocationMessage() {
+        
+//        fetchMurmur()
         
         guard let murmurData else { return }
         
+        // TODO: 先把之前的 annotation 全部清除
+        if let annotations = mapView.annotations as? [MKAnnotation] {
+            mapView.removeAnnotations(annotations)
+        }
+        
         for item in murmurData {
             
-            let latSquare = pow(item.location.coordinate.latitude - currentCoordinate.latitude, 2)
-            let longSquare = pow(item.location.coordinate.longitude - currentCoordinate.longitude, 2)
-            let distanceBetweenMeAndMessage = sqrt(latSquare + longSquare)
+//            let latSquare = pow(item.location.coordinate.latitude - currentCoordinate.latitude, 2)
+//            let longSquare = pow(item.location.coordinate.longitude - currentCoordinate.longitude, 2)
+//            let distanceBetweenMeAndMessage = sqrt(latSquare + longSquare)
+//            print(distanceBetweenMeAndMessage)
             
-            if distanceBetweenMeAndMessage <= 300 {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = item.location.coordinate
+            let coordinate1 = item.location.coordinate
+            guard let coordinate2 = currentCoordinate else { return }
+            let distanceBetweenMeAndMessage = calculateDistance(from: coordinate1, to: coordinate2)
+            print(distanceBetweenMeAndMessage)
+            
+            if distanceBetweenMeAndMessage <= 200 {
+                let annotation = InsideMessageAnnotation(coordinate: item.location.coordinate)
+                annotation.title = item.murmurMessage
+                mapView.addAnnotation(annotation)
+                print(item.murmurMessage)
+            } else {
+                let annotation = OutsideMessageAnnotation(coordinate: item.location.coordinate)
                 annotation.title = item.murmurMessage
                 mapView.addAnnotation(annotation)
             }
-            
         }
+        
+        // 讓範圍跟著用戶移動更新
+        let circle = MKCircle(center: currentCoordinate, radius: 200)
+        mapView.removeOverlays(mapView.overlays)
+        mapView.addOverlay(circle)
+        
     }
     
 }
@@ -223,7 +247,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         mapView.userTrackingMode = .follow
         
         // 4. 加入測試數據
-        setupData()
+//        setupData()
         
     }
     
@@ -239,19 +263,46 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     
     // 自訂標註視圖
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard annotation is MKPointAnnotation else { return nil }
+//        guard annotation is MKPointAnnotation else { return nil }
         
-        let identifier = "AnnotationIdentifier"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
-        
-        if annotationView == nil {
-            annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
+        if annotation is InsideMessageAnnotation {
+            let identifier = "\(InsideMessageAnnotation.self)"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            
+            if annotationView == nil {
+                annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+            } else {
+                annotationView?.annotation = annotation
+             }
+            return annotationView
+            
+        } else if annotation is OutsideMessageAnnotation {
+            let identifier = "\(OutsideMessageAnnotation.self)"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            
+            if annotationView == nil {
+                annotationView = DialogAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+            } else {
+                annotationView?.annotation = annotation
+            }
+            
+            return annotationView
         } else {
-            annotationView?.annotation = annotation
+            let identifier = "MeAnnotation"
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            
+            if annotationView == nil {
+                annotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+            } else {
+                annotationView?.annotation = annotation
+            }
+            
+            return annotationView
         }
         
-        return annotationView
     }
     
     // MARK: - CLLocationManagerDelegate
@@ -274,14 +325,26 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     
     // CLLocationManagerDelegate 方法，當位置更新時呼叫
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
         
+        guard let location = locations.last else { return }
+        currentCoordinate = location.coordinate
         // 停止更新位置
-        locationManager.stopUpdatingLocation()
+//        locationManager.stopUpdatingLocation()
         
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 300, longitudinalMeters: 300)
         mapView.setRegion(region, animated: false)
     }
     
+}
+
+extension LocationMessageViewController {
+    
+    func calculateDistance(from coordinate1: CLLocationCoordinate2D, to coordinate2: CLLocationCoordinate2D) -> CLLocationDistance {
+        let location1 = CLLocation(latitude: coordinate1.latitude, longitude: coordinate1.longitude)
+        let location2 = CLLocation(latitude: coordinate2.latitude, longitude: coordinate2.longitude)
+        
+        return location1.distance(from: location2)
+    }
+
 }
