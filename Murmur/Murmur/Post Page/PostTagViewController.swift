@@ -77,8 +77,6 @@ class PostTagViewController: UIViewController {
 //        self.navigationController?.popToViewController((self.tabBarController?.viewControllers![0])!, animated: true)
 //        present((self.tabBarController?.viewControllers![0])!, animated: true)
         
-        self.tabBarController?.selectedIndex = 0
-        
         // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
         let homeVC = self.tabBarController?.viewControllers![0] as? HomePageViewController
         homeVC?.switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
@@ -91,17 +89,23 @@ class PostTagViewController: UIViewController {
 //            self.murmurData["murmurMessage"] = murmurMessage
 //        }
         
-//        murmurData["location"]![0] = "currentCoordinate.latitude"
+        // 将 location 强制转换为 [String: Double] 类型
         if var location = murmurData["location"] as? [String: Double] {
             location["latitude"] = currentCoordinate.latitude
             location["longitude"] = currentCoordinate.longitude
+            print("目前位置經度", currentCoordinate.latitude)
+            print("上傳的位置經度", location["latitude"]!)
+            
+            createMurmur()
         }
 
-        createMurmur()
+        
+        
+        self.tabBarController?.selectedIndex = 0
     }
     
     func createMurmur() {
-        
+        print("上傳的位置資料", murmurData["location"]!)
 //        let documentReference = db.collection("murmurs").addDocument(data: murmurData)
         // TODO: 為了方便測試，先用塗鴉留言當作 document name
         database.collection("murmurs").document((murmurData["murmurMessage"] as? String)!).setData(murmurData)

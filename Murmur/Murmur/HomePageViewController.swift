@@ -11,7 +11,7 @@ import CoreLocation
 
 var currentCoordinate: CLLocationCoordinate2D! {
     didSet {
-        print(currentCoordinate)
+        print("目前位置", currentCoordinate)
     }
 }
 
@@ -77,12 +77,22 @@ class HomePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        currentCoordinate = locationManager.location?.coordinate
+        
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         
-        self.view.backgroundColor = .red
+        // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
+        childLocationMessageViewController.stopTimer()
+        
         setMapView()
         setContainerView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // TODO: 為什麼這邊不會先跑
+        currentCoordinate = locationManager.location?.coordinate
     }
     
     // 切換模式
@@ -91,9 +101,11 @@ class HomePageViewController: UIViewController {
         if switchMode == false {
             switchMode.toggle()
             switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
+            childLocationMessageViewController.startTimer()
         } else {
             switchMode.toggle()
             switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
+            childLocationMessageViewController.stopTimer()
         }
         
         nearbyUsersContainerView.isHidden.toggle()
@@ -104,7 +116,7 @@ class HomePageViewController: UIViewController {
     @objc func locateButtonTouchUpInside() {
 //        self.backToMyLocationClosure!(<#Void#>)
         childLocationMessageViewController.locationManager.startUpdatingLocation()
-        
+        childNearbyUsersViewController.locationManager.startUpdatingLocation()
     }
     
     private func setContainerView() {

@@ -38,7 +38,6 @@ class LocationMessageViewController: UIViewController {
 //
 //            self.fetchMurmur()
 //        }
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
         
 //         将定时器添加到当前运行循环中
 //        RunLoop.current.add(timer, forMode: .common)
@@ -92,6 +91,17 @@ class LocationMessageViewController: UIViewController {
 //        mapView.setRegion(region, animated: true)
     }
     
+    // 為什麼沒寫 stopTimer() 就會無效
+    func startTimer() {
+        stopTimer()
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
+    }
+    
+    // TODO: 清除 timer 的其他方式
+    func stopTimer() {
+        timer.invalidate()
+    }
+    
 //    private func addAnnotations() {
 //
 //        for item in murmurData! {
@@ -116,15 +126,15 @@ class LocationMessageViewController: UIViewController {
 
             // 2.準備 region 會用到的相關屬性
             let title = "未知玩家"
-//            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
+            //            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
             let coordinate = currentCoordinate!
             let regionRadius = 300.0 // 範圍半徑
-
+            
             // 3. 設置 region 的相關屬性
             let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
                                                                          longitude: coordinate.longitude), radius: regionRadius, identifier: title)
             locationManager.startMonitoring(for: region)
-
+            
             // 4. 創建大頭釘(annotation)
             let restaurantAnnotation = MKPointAnnotation()
             restaurantAnnotation.coordinate = coordinate
