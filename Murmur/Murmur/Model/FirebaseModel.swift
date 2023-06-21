@@ -24,6 +24,15 @@ struct Murmur: Codable, Identifiable {
 //    @ServerTimestamp var createTime: Timestamp
 }
 
+struct Users: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    let userName: String
+    let userPortrait: String
+    let location: [String: Double]
+}
+
+//----------------------------------------
 // 将 CLLocationCoordinate2D 类型转换为 Codable
 struct CodableCoordinate: Codable {
     let latitude: Double

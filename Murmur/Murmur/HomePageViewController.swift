@@ -35,12 +35,12 @@ class HomePageViewController: UIViewController {
     
     private let userEmailTextField: UITextField = {
        let userEmailTextField = UITextField()
-        userEmailTextField.text  = "user4@gmail.com"
+        userEmailTextField.text  = "user3@gmail.com"
         return userEmailTextField
     }()
     private let userPasswardTextField: UITextField = {
         let userPasswardTextField = UITextField()
-        userPasswardTextField.text  = "444444"
+        userPasswardTextField.text  = "333333"
         return userPasswardTextField
     }()
     
@@ -150,11 +150,10 @@ class HomePageViewController: UIViewController {
                 }
             }
         }
-        
-        
     
     }
     
+    // 新增使用者資料到 firebase
     func createUsers() {
 
         userData["userName"] = "Libby"
@@ -167,7 +166,7 @@ class HomePageViewController: UIViewController {
         
 //        let documentReference = database.collection("userTest").document(userUUID)
 
-        //setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUUID).setData([
             
             "userName": "Elle",

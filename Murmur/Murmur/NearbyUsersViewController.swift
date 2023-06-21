@@ -9,8 +9,12 @@ import UIKit
 import SnapKit
 import MapKit
 import CoreLocation
+import FirebaseFirestore
 
 class NearbyUsersViewController: UIViewController {
+    
+    var userData: [Users]?
+    let database = Firestore.firestore()
     
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
@@ -40,12 +44,12 @@ class NearbyUsersViewController: UIViewController {
         //            locationManager.startUpdatingLocation()
         //        }
                 
-                if CLLocationManager.authorizationStatus() == .notDetermined {
-                        // 取得定位服務授權
-                        self.locationManager.requestWhenInUseAuthorization()
-                        // 開始定位自身位置
-                        self.locationManager.startUpdatingLocation()
-                    }
+//                if CLLocationManager.authorizationStatus() == .notDetermined {
+//                        // 取得定位服務授權
+//                        self.locationManager.requestWhenInUseAuthorization()
+//                        // 開始定位自身位置
+//                        self.locationManager.startUpdatingLocation()
+//                    }
 //                currentCoordinate = locationManager.location!.coordinate
                 self.locationManager.startUpdatingLocation()
         
@@ -53,16 +57,48 @@ class NearbyUsersViewController: UIViewController {
         setLocation()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-    }
-    
     private func layoutView() {
         self.view.addSubview(mapView)
         mapView.snp.makeConstraints { make in
             make.edges.equalTo(self.view)
         }
+    }
+    
+    func fetchUserLocation(){
+        
+        database.collectionGroup("userTest").getDocuments { querySnapshot, error in
+            if let querySnapshot = querySnapshot {
+                for document in querySnapshot.documents {
+                    print(document.data())
+                }
+            } else {
+                return
+            }
+            let users = querySnapshot?.documents.compactMap { querySnapshot in
+                try? querySnapshot.data(as: Users.self)
+            }
+            
+            
+            self.userData = users
+            print("解析完後的資料", self.userData)
+            
+            DispatchQueue.main.async {
+                for user in self.userData! {
+                    self.showOtherUsersOnMap(user.userName, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
+                }
+            }
+            
+        }
+        
+    }
+    
+    func showOtherUsersOnMap(_ name: String, _ coordinate: CLLocationCoordinate2D) {
+        
+        let title = name
+        let coordinate = coordinate
+        let annotation = OtherUsersAnnotation(coordinate: coordinate)
+        mapView.addAnnotation(annotation)
+        
     }
     
 //    private func setupData() {
@@ -251,13 +287,15 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     // TODO: internal
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        //?? 自己位置一有變動就更新到 currentCoordinate
+        // ?? 自己位置一有變動就更新到 currentCoordinate
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
         
         // 設定初始地圖區域為使用者當前位置
         let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
         mapView.setRegion(region, animated: false)
+        
+        fetchUserLocation()
     }
     
 }
