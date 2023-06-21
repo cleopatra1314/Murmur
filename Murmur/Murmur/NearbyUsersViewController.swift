@@ -273,8 +273,12 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     
     // 點擊用戶小怪獸可跟他對話
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        // 检查是否点击的是标注视图
+        // ??检查是否点击的是标注视图
         guard let annotation = view.annotation else {
+            return
+        }
+        
+        if view is MeAnnotationView {
             return
         }
         
