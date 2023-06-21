@@ -10,7 +10,6 @@ target 'Murmur' do
   pod 'FirebaseAuth', '9.0'
   pod 'FirebaseFirestore', '9.0'
   pod 'FirebaseStorage', '9.0'
-  pod 'FirebaseDatabase', '9.0'
   pod 'FirebaseFirestoreSwift', '9.0'
 
   # Pods for Murmur

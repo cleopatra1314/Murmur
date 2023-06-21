@@ -42,7 +42,7 @@ class LocationMessageViewController: UIViewController {
 //         将定时器添加到当前运行循环中
 //        RunLoop.current.add(timer, forMode: .common)
    
-        currentCoordinate = locationManager.location?.coordinate
+//        currentCoordinate = locationManager.location?.coordinate
         
         layoutView()
 //        addAnnotations()
@@ -73,13 +73,13 @@ class LocationMessageViewController: UIViewController {
                 // 開始定位自身位置
                 locationManager.startUpdatingLocation()
             }
+        
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        // 當使用者不在此頁面時，即可不用 fetchMurmur
-        timer.invalidate()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        fetchMurmur()
+//    }
 
     private func layoutView() {
 
@@ -186,11 +186,11 @@ class LocationMessageViewController: UIViewController {
                     return nil
                 }
             }
-            
+            // ??
             self.murmurData = murmurs
-            print("讀取到的資料為 \(murmurs)")
             
         }
+        
         DispatchQueue.main.async {
 //                self.addAnnotations()
             self.filterLocationMessage()
@@ -215,18 +215,17 @@ class LocationMessageViewController: UIViewController {
 //            let distanceBetweenMeAndMessage = sqrt(latSquare + longSquare)
 //            print(distanceBetweenMeAndMessage)
             
-            let coordinate1 = item.location.coordinate
+            let coordinate1 = CLLocationCoordinate2D(latitude: item.location["latitude"]!, longitude: item.location["longitude"]!)
             guard let coordinate2 = currentCoordinate else { return }
             let distanceBetweenMeAndMessage = calculateDistance(from: coordinate1, to: coordinate2)
-            print(distanceBetweenMeAndMessage)
             
             if distanceBetweenMeAndMessage <= 200 {
-                let annotation = InsideMessageAnnotation(coordinate: item.location.coordinate)
+                let annotation = InsideMessageAnnotation(coordinate: coordinate1)
                 annotation.title = item.murmurMessage
                 mapView.addAnnotation(annotation)
-                print(item.murmurMessage)
+                print("範圍內的塗鴉", item.murmurMessage, coordinate1)
             } else {
-                let annotation = OutsideMessageAnnotation(coordinate: item.location.coordinate)
+                let annotation = OutsideMessageAnnotation(coordinate: coordinate1)
                 annotation.title = item.murmurMessage
                 mapView.addAnnotation(annotation)
             }
@@ -281,10 +280,12 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             
             if annotationView == nil {
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                print("範圍內的頭標標題", annotation.title)
                 annotationView?.canShowCallout = true
-            } else {
-                annotationView?.annotation = annotation
-             }
+            }
+//            else {
+//                annotationView?.annotation = annotation
+//             }
             return annotationView
             
         } else if annotation is OutsideMessageAnnotation {

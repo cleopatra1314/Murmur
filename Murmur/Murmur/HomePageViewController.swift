@@ -8,6 +8,8 @@
 import UIKit
 import MapKit
 import CoreLocation
+import FirebaseAuth
+import FirebaseFirestore
 
 var currentCoordinate: CLLocationCoordinate2D! {
     didSet {
@@ -17,7 +19,28 @@ var currentCoordinate: CLLocationCoordinate2D! {
 
 class HomePageViewController: UIViewController {
     
+    let database = Firestore.firestore()
+    
+    var userData: [String: Any] = [
+        "userEmail": "",
+        "userPassward": "",
+        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679]
+//        "postedMurmur": [String: Any].self,
+//        "savedMurmur": [String: Any].self
+    ]
+    
     private let locationManager = CLLocationManager()
+    
+    private let userEmailTextField: UITextField = {
+       let userEmailTextField = UITextField()
+//        userEmailTextField.text  = "user3@gmail.com"
+        return userEmailTextField
+    }()
+    private let userPasswardTextField: UITextField = {
+        let userPasswardTextField = UITextField()
+//        userPasswardTextField.text  = "333333"
+        return userPasswardTextField
+    }()
     
     let nearbyUsersContainerView: UIView = {
         let nearbyUsersContainerView = UIView()
@@ -76,7 +99,7 @@ class HomePageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         currentCoordinate = locationManager.location?.coordinate
         
         locationManager.delegate = self
@@ -85,6 +108,7 @@ class HomePageViewController: UIViewController {
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
         childLocationMessageViewController.stopTimer()
         
+        userSignIn()
         setMapView()
         setContainerView()
     }
@@ -93,6 +117,53 @@ class HomePageViewController: UIViewController {
         super.viewWillAppear(animated)
         // TODO: 為什麼這邊不會先跑
         currentCoordinate = locationManager.location?.coordinate
+    }
+    
+    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
+    func userSignUp() {
+        
+        Auth.auth().createUser(withEmail: "user5@gmail.com", password: "111111") { result, error in
+            guard let user = result?.user,
+                  error == nil else {
+                print(error?.localizedDescription ?? "no error?.localizedDescription")
+                return
+            }
+            print(user.email ?? "no user email", user.uid)
+        }
+        
+    }
+    
+    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
+    func userSignIn() {
+        
+        guard let userEmail = userEmailTextField.text else { return }
+        guard let userPassward = userEmailTextField.text else { return }
+        
+        Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
+            guard error == nil else {
+                print(error?.localizedDescription ?? "no error?.localizedDescription")
+                return
+            }
+            print("success")
+            
+        }
+        // TODO: 使用者登入
+//        createUsers()
+    }
+    
+    func createUsers() {
+//
+//        userData["userEmail"] = userEmailTextField.text
+        userData["userEmail"] = "user2@gmail.com"
+//        userData["userPassward"] = userPasswardTextField.text
+        userData["userPassward"] = "222222"
+        
+        userData["location"] = ["latitude": currentCoordinate.latitude, "longitude": currentCoordinate.longitude]
+        //        userData["postedMurmur"] = [String: Any].self
+        //        userData["savedMurmur"] = [String: Any].self
+        print("準備上推的 userEmail", userData["userEmail"], userData["userPassward"])
+        database.collection("user").document(userEmailTextField.text!).setData(userData)
+        
     }
     
     // 切換模式
@@ -114,7 +185,7 @@ class HomePageViewController: UIViewController {
     
     // 回到自己的定位位置
     @objc func locateButtonTouchUpInside() {
-//        self.backToMyLocationClosure!(<#Void#>)
+        //        self.backToMyLocationClosure!(<#Void#>)
         childLocationMessageViewController.locationManager.startUpdatingLocation()
         childNearbyUsersViewController.locationManager.startUpdatingLocation()
     }
@@ -142,18 +213,18 @@ class HomePageViewController: UIViewController {
             self.view.addSubview(subview)
         }
         [filterButton, switchModeButton, backToMyLocationButton].forEach { subview in
-            btnStack.addArrangedSubview(subview)
-        }
-        
-        //        NSLayoutConstraint.activate([
-        //            mapView.topAnchor.constraint(equalTo: self.view.topAnchor),
-        //            mapView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-        //            mapView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-        //            mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80)
-        //        ])
-        
-        nearbyUsersContainerView.snp.makeConstraints { make in
-            make.top.equalTo(self.view)
+                btnStack.addArrangedSubview(subview)
+            }
+            
+            //        NSLayoutConstraint.activate([
+            //            mapView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            //            mapView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            //            mapView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            //            mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80)
+            //        ])
+            
+            nearbyUsersContainerView.snp.makeConstraints { make in
+                make.top.equalTo(self.view)
             make.leading.equalTo(self.view)
             make.trailing.equalTo(self.view)
             make.bottom.equalTo(self.view).offset(-80)

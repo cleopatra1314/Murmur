@@ -93,13 +93,10 @@ class PostTagViewController: UIViewController {
         if var location = murmurData["location"] as? [String: Double] {
             location["latitude"] = currentCoordinate.latitude
             location["longitude"] = currentCoordinate.longitude
-            print("目前位置經度", currentCoordinate.latitude)
-            print("上傳的位置經度", location["latitude"]!)
-            
-            createMurmur()
+            murmurData["location"] = location
         }
 
-        
+        createMurmur()
         
         self.tabBarController?.selectedIndex = 0
     }
