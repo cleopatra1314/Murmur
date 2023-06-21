@@ -5,7 +5,7 @@ target 'Murmur' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'SnapKit'
+  pod 'SnapKit', '~> 5.6.0'
   pod 'FirebaseCore', '9.0'
   pod 'FirebaseAuth', '9.0'
   pod 'FirebaseFirestore', '9.0'
