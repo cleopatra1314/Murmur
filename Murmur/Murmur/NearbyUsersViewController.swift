@@ -12,10 +12,8 @@ import CoreLocation
 
 class NearbyUsersViewController: UIViewController {
     
-//    var currentCoordinate = CLLocationCoordinate2D()
-    
     // 1.創建 locationManager
-    private let locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     private var monitoredRegions: Dictionary<String, Date> = [:]
     
     private let mapView: MKMapView = {
@@ -29,6 +27,8 @@ class NearbyUsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
    
+        currentCoordinate = locationManager.location?.coordinate
+        
         layoutView()
         setLocation()
     }
@@ -64,35 +64,86 @@ class NearbyUsersViewController: UIViewController {
         }
     }
     
+//    private func setupData() {
+//        // 1. 檢查系統是否能夠監視 region
+//        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+//
+//            // 2.準備 region 會用到的相關屬性
+//            let title = "未知玩家"
+//            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
+//            let regionRadius = 200.0 // 範圍半徑
+//
+//            // 3. 設置 region 的相關屬性
+//            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
+//                longitude: coordinate.longitude), radius: regionRadius, identifier: title)
+//            locationManager.startMonitoring(for: region)
+//
+//            // 4. 創建大頭釘(annotation)
+//            let restaurantAnnotation = OtherUsersAnnotation(coordinate: coordinate)
+//            restaurantAnnotation.title = title
+//            mapView.addAnnotation(restaurantAnnotation)
+//
+//            // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
+//            let circle = MKCircle(center: coordinate, radius: regionRadius)
+//            mapView.addOverlay(circle)
+//        } else {
+//            print("System can't track regions")
+//        }
+//    }
+    
     private func setupData() {
+        // 1. 检查系统是否支持监视区域
+        guard CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) else {
+            print("System can't track regions")
+            return
+        }
+
+        // 2. 准备区域相关属性
+        let title = "自我"
+        let coordinate = CLLocationCoordinate2D(latitude: 25.09119, longitude: 121.45720)
+        let regionRadius = 200.0 // 区域半径
+
+        // 3. 设置区域
+//        let region = CLCircularRegion(center: coordinate, radius: regionRadius, identifier: title)
+//        region.notifyOnEntry = true // 当用户进入区域时触发通知
+//        locationManager.startMonitoring(for: region)
+
+        // 4. 创建大头针
+        let annotation = OtherUsersAnnotation(coordinate: coordinate)
+        annotation.title = title
+        mapView.addAnnotation(annotation)
+
+        // 5. 绘制区域圆形
+//        let circle = MKCircle(center: coordinate, radius: regionRadius)
+//        mapView.addOverlay(circle)
+    }
+
+    private func setupMyRangeMonitor() {
         // 1. 檢查系統是否能夠監視 region
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
 
             // 2.準備 region 會用到的相關屬性
-            let title = "未知玩家"
-            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
+            let title = "It's me"
+//            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
             let regionRadius = 200.0 // 範圍半徑
 
             // 3. 設置 region 的相關屬性
-            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
-                longitude: coordinate.longitude), radius: regionRadius, identifier: title)
+            let region = CLCircularRegion(center: currentCoordinate, radius: regionRadius, identifier: title)
+            region.notifyOnEntry = true // 当用户进入区域时触发通知
             locationManager.startMonitoring(for: region)
 
             // 4. 創建大頭釘(annotation)
-            let restaurantAnnotation = OtherUsersAnnotation(coordinate: coordinate)
-            restaurantAnnotation.title = title
-            mapView.addAnnotation(restaurantAnnotation)
+            let meAnnotation = MeAnnotation(coordinate: currentCoordinate)
+            meAnnotation.title = title
+            mapView.addAnnotation(meAnnotation)
 
             // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-            let circle = MKCircle(center: coordinate, radius: regionRadius)
+            let circle = MKCircle(center: currentCoordinate, radius: regionRadius)
             mapView.addOverlay(circle)
+            
         } else {
             print("System can't track regions")
         }
-    }
-    
-    private func set() {
-        
     }
     
     // MARK: - Comples business logic
@@ -133,6 +184,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         
         // 4. 加入測試數據
         setupData()
+        setupMyRangeMonitor()
         
     }
     
@@ -140,8 +192,9 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     // 6. 繪製圓圈
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let circleRenderer = MKCircleRenderer(overlay: overlay)
-        circleRenderer.strokeColor = UIColor.red
-        circleRenderer.lineWidth = 1.0
+//        circleRenderer.strokeColor = UIColor(red: 171/255, green: 130/255, blue: 255/255, alpha: 1)
+        circleRenderer.fillColor = UIColor(red: 147/255, green: 112/255, blue: 219/255, alpha: 0.15)
+//        circleRenderer.lineWidth = 1
         return circleRenderer
     }
     
@@ -178,8 +231,14 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     // MARK: - CLLocationManagerDelegate
     // 1. 當用戶進入一個 region
     private func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("enter \(region.identifier)")
-        monitoredRegions[region.identifier] = Date()
+//        print("enter \(region.identifier)")
+//        monitoredRegions[region.identifier] = Date()
+        
+        if let annotation = mapView.annotations.first(where: { $0.title == region.identifier }) as? OtherUsersAnnotation {
+                // 在此处理其他用户进入区域的逻辑
+                // 可以更新UI、发送通知等操作
+                print("Other user entered the region: \(region.identifier)")
+            }
     }
 
     // 2. 當用戶退出一個 region
@@ -196,7 +255,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         currentCoordinate = location.coordinate
         
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
         mapView.setRegion(region, animated: false)
     }
     

@@ -30,6 +30,7 @@
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
+		C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */; };
 		DC450CD07D10418D1E75917C /* Pods_Murmur.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
+		C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotation.swift; sourceTree = "<group>"; };
 		D51D7A4E17E030FDC9A09813 /* Pods-Murmur.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.release.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.release.xcconfig"; sourceTree = "<group>"; };
 		E9C8B595076B3945BA1BAAC2 /* Pods-Murmur.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.debug.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */,
+				C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */,
 			);
 			path = "Post Page";
 			sourceTree = "<group>";
@@ -108,6 +111,7 @@
 				C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */,
 				C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */,
 				C8AF2DB22A41430900B703E8 /* InsideMessageAnnotation.swift */,
+				C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */,
 				C8AF2DB42A4145A300B703E8 /* OutsideMessageAnnotation.swift */,
 				C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */,
 				C8499F422A4093B60019D83F /* DialogAnnotationView.swift */,
@@ -139,7 +143,6 @@
 				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
 				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
-				C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */,
 				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
@@ -303,6 +306,7 @@
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
+				C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */,
 				C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
