@@ -281,6 +281,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             if annotationView == nil {
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 print("範圍內的頭標標題", annotation.title)
+                // 是否要讓點擊 annotation 時顯示 title
                 annotationView?.canShowCallout = true
             }
 //            else {
@@ -294,7 +295,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             
             if annotationView == nil {
                 annotationView = DialogAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.canShowCallout = true
+                annotationView?.canShowCallout = false
             } else {
                 annotationView?.annotation = annotation
             }

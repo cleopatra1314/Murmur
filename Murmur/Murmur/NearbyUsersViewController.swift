@@ -265,6 +265,28 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         
     }
     
+    // 點擊用戶小怪獸可跟他對話
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        // 检查是否点击的是标注视图
+        guard let annotation = view.annotation else {
+            return
+        }
+        
+        // 实例化目标视图控制器
+        let chatVC = ChatRoomViewController()
+        
+        // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
+        // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
+//        chatVC.annotation = annotation
+        
+        // 执行视图控制器的跳转
+        modalPresentationStyle = .fullScreen
+        modalTransitionStyle = .coverVertical
+        present(chatVC, animated: true)
+        
+//        navigationController?.pushViewController(chatVC, animated: true)
+    }
+    
     // MARK: - CLLocationManagerDelegate
     // 1. 當用戶進入一個 region
     private func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
