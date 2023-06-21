@@ -30,7 +30,7 @@ class NearbyUsersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        relocateMyself()
         //        // 1. 還沒有詢問過用戶以獲得權限
         //        if CLLocationManager.authorizationStatus() == .notDetermined {
         //            locationManager.requestAlwaysAuthorization()
@@ -99,6 +99,12 @@ class NearbyUsersViewController: UIViewController {
         let annotation = OtherUsersAnnotation(coordinate: coordinate)
         mapView.addAnnotation(annotation)
         
+    }
+    
+    func relocateMyself(){
+        // 設定初始地圖區域為使用者當前位置
+        let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 500, longitudinalMeters: 500)
+        mapView.setRegion(region, animated: false)
     }
     
 //    private func setupData() {
@@ -280,8 +286,8 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
 //        chatVC.annotation = annotation
         
         // 执行视图控制器的跳转
-        modalPresentationStyle = .fullScreen
-        modalTransitionStyle = .coverVertical
+        chatVC.modalPresentationStyle = .fullScreen
+        chatVC.modalTransitionStyle = .crossDissolve
         present(chatVC, animated: true)
         
 //        navigationController?.pushViewController(chatVC, animated: true)
@@ -314,8 +320,8 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         currentCoordinate = location.coordinate
         
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
-        mapView.setRegion(region, animated: false)
+//        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+//        mapView.setRegion(region, animated: false)
         
         fetchUserLocation()
     }

@@ -196,8 +196,8 @@ class HomePageViewController: UIViewController {
     
     // 回到自己的定位位置
     @objc func locateButtonTouchUpInside() {
-        childLocationMessageViewController.locationManager.startUpdatingLocation()
-        childNearbyUsersViewController.locationManager.startUpdatingLocation()
+        childLocationMessageViewController.relocateMyself()
+        childNearbyUsersViewController.relocateMyself()
     }
     
     private func setContainerView() {

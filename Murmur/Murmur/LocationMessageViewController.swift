@@ -53,7 +53,7 @@ class LocationMessageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        relocateMyself()
 //        // 1. 還沒有詢問過用戶以獲得權限
 //        if CLLocationManager.authorizationStatus() == .notDetermined {
 //            locationManager.requestAlwaysAuthorization()
@@ -100,6 +100,12 @@ class LocationMessageViewController: UIViewController {
     // TODO: 清除 timer 的其他方式
     func stopTimer() {
         timer.invalidate()
+    }
+    
+    func relocateMyself(){
+        // 設定初始地圖區域為使用者當前位置
+        let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 300, longitudinalMeters: 300)
+        mapView.setRegion(region, animated: false)
     }
     
 //    private func addAnnotations() {
@@ -343,10 +349,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         currentCoordinate = location.coordinate
         // 停止更新位置
 //        locationManager.stopUpdatingLocation()
-        
-        // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 300, longitudinalMeters: 300)
-        mapView.setRegion(region, animated: false)
+    
     }
     
 }
