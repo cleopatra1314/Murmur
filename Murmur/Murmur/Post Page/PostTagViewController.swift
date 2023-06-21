@@ -91,8 +91,8 @@ class PostTagViewController: UIViewController {
         
         // 将 location 强制转换为 [String: Double] 类型
         if var location = murmurData["location"] as? [String: Double] {
-            location["latitude"] = currentCoordinate.latitude
-            location["longitude"] = currentCoordinate.longitude
+            location["latitude"] = currentCoordinate?.latitude
+            location["longitude"] = currentCoordinate?.longitude
             murmurData["location"] = location
         }
 

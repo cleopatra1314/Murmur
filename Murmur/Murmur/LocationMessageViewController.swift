@@ -127,7 +127,7 @@ class LocationMessageViewController: UIViewController {
             // 2.準備 region 會用到的相關屬性
             let title = "未知玩家"
             //            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
-            let coordinate = currentCoordinate!
+            guard let coordinate = currentCoordinate else { return }
             let regionRadius = 300.0 // 範圍半徑
             
             // 3. 設置 region 的相關屬性
@@ -232,7 +232,7 @@ class LocationMessageViewController: UIViewController {
         }
         
         // 讓範圍跟著用戶移動更新
-        let circle = MKCircle(center: currentCoordinate, radius: 200)
+        let circle = MKCircle(center: currentCoordinate!, radius: 200)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
         

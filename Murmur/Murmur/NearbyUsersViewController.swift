@@ -26,8 +26,28 @@ class NearbyUsersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-   
-        currentCoordinate = locationManager.location?.coordinate
+        
+        //        // 1. 還沒有詢問過用戶以獲得權限
+        //        if CLLocationManager.authorizationStatus() == .notDetermined {
+        //            locationManager.requestAlwaysAuthorization()
+        //        }
+        //        // 2. 用戶不同意
+        //        else if CLLocationManager.authorizationStatus() == .denied {
+        //            present(alertController, animated: true)
+        //        }
+        //        // 3. 用戶已經同意
+        //        else if CLLocationManager.authorizationStatus() == .authorizedAlways {
+        //            locationManager.startUpdatingLocation()
+        //        }
+                
+                if CLLocationManager.authorizationStatus() == .notDetermined {
+                        // 取得定位服務授權
+                        self.locationManager.requestWhenInUseAuthorization()
+                        // 開始定位自身位置
+                        self.locationManager.startUpdatingLocation()
+                    }
+//                currentCoordinate = locationManager.location!.coordinate
+                self.locationManager.startUpdatingLocation()
         
         layoutView()
         setLocation()
@@ -35,26 +55,7 @@ class NearbyUsersViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        locationManager.startUpdatingLocation()
-//        // 1. 還沒有詢問過用戶以獲得權限
-//        if CLLocationManager.authorizationStatus() == .notDetermined {
-//            locationManager.requestAlwaysAuthorization()
-//        }
-//        // 2. 用戶不同意
-//        else if CLLocationManager.authorizationStatus() == .denied {
-//            present(alertController, animated: true)
-//        }
-//        // 3. 用戶已經同意
-//        else if CLLocationManager.authorizationStatus() == .authorizedAlways {
-//            locationManager.startUpdatingLocation()
-//        }
         
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-                // 取得定位服務授權
-                locationManager.requestWhenInUseAuthorization()
-                // 開始定位自身位置
-                locationManager.startUpdatingLocation()
-            }
     }
     
     private func layoutView() {
@@ -128,17 +129,17 @@ class NearbyUsersViewController: UIViewController {
             let regionRadius = 200.0 // 範圍半徑
 
             // 3. 設置 region 的相關屬性
-            let region = CLCircularRegion(center: currentCoordinate, radius: regionRadius, identifier: title)
+            let region = CLCircularRegion(center: currentCoordinate!, radius: regionRadius, identifier: title)
             region.notifyOnEntry = true // 当用户进入区域时触发通知
             locationManager.startMonitoring(for: region)
 
             // 4. 創建大頭釘(annotation)
-            let meAnnotation = MeAnnotation(coordinate: currentCoordinate)
+            let meAnnotation = MeAnnotation(coordinate: currentCoordinate!)
             meAnnotation.title = title
             mapView.addAnnotation(meAnnotation)
 
             // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-            let circle = MKCircle(center: currentCoordinate, radius: regionRadius)
+            let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
             mapView.addOverlay(circle)
             
         } else {

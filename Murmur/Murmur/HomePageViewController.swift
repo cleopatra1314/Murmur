@@ -11,7 +11,7 @@ import CoreLocation
 import FirebaseAuth
 import FirebaseFirestore
 
-var currentCoordinate: CLLocationCoordinate2D! {
+var currentCoordinate: CLLocationCoordinate2D? {
     didSet {
         print("目前位置", currentCoordinate)
     }
@@ -19,11 +19,13 @@ var currentCoordinate: CLLocationCoordinate2D! {
 
 class HomePageViewController: UIViewController {
     
+    var userUUID = String()
+    
     let database = Firestore.firestore()
     
     var userData: [String: Any] = [
-        "userEmail": "",
-        "userPassward": "",
+        "userName": "nickName",
+        "userPortrait": "imageURL",
         "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679]
 //        "postedMurmur": [String: Any].self,
 //        "savedMurmur": [String: Any].self
@@ -33,12 +35,12 @@ class HomePageViewController: UIViewController {
     
     private let userEmailTextField: UITextField = {
        let userEmailTextField = UITextField()
-//        userEmailTextField.text  = "user3@gmail.com"
+        userEmailTextField.text  = "user4@gmail.com"
         return userEmailTextField
     }()
     private let userPasswardTextField: UITextField = {
         let userPasswardTextField = UITextField()
-//        userPasswardTextField.text  = "333333"
+        userPasswardTextField.text  = "444444"
         return userPasswardTextField
     }()
     
@@ -95,28 +97,17 @@ class HomePageViewController: UIViewController {
         // TODO: 加上 handler closure 引導使用者開定位功能
         return alertController
     }()
-    private var backToMyLocationClosure: ((Void) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        currentCoordinate = locationManager.location?.coordinate
-        
+        self.view.backgroundColor = .red
+
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
         childLocationMessageViewController.stopTimer()
-        
-        userSignIn()
-        setMapView()
-        setContainerView()
-    }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // TODO: 為什麼這邊不會先跑
-        currentCoordinate = locationManager.location?.coordinate
     }
     
     // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
@@ -135,34 +126,55 @@ class HomePageViewController: UIViewController {
     
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     func userSignIn() {
+        // Create a dispatch queue
+        let serialQueue = DispatchQueue(label: "SerialQueue")
         
-        guard let userEmail = userEmailTextField.text else { return }
-        guard let userPassward = userEmailTextField.text else { return }
-        
-        Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
-            guard error == nil else {
-                print(error?.localizedDescription ?? "no error?.localizedDescription")
-                return
-            }
-            print("success")
+        // text 屬於 UI，所以要在 main thread 執行
+        DispatchQueue.main.async {
+            guard let userEmail = self.userEmailTextField.text else { return }
+            guard let userPassward = self.userPasswardTextField.text else { return }
             
+            Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
+                guard error == nil else {
+                    print(error?.localizedDescription ?? "no error?.localizedDescription")
+                    print(userEmail, userPassward)
+                    print("登入 failed")
+                    return
+                }
+                guard let userID = result?.user.uid else { return }
+                self.userUUID = userID
+                print("\(result?.user.uid) 登入 success")
+                
+                DispatchQueue.main.async {
+                    self.createUsers()
+                }
+            }
         }
-        // TODO: 使用者登入
-//        createUsers()
+        
+        
+    
     }
     
     func createUsers() {
-//
-//        userData["userEmail"] = userEmailTextField.text
-        userData["userEmail"] = "user2@gmail.com"
-//        userData["userPassward"] = userPasswardTextField.text
-        userData["userPassward"] = "222222"
-        
-        userData["location"] = ["latitude": currentCoordinate.latitude, "longitude": currentCoordinate.longitude]
+
+        userData["userName"] = "Libby"
+        userData["userPortrait"] = "LibbyimageURL"
+        userData["location"] = ["latitude": currentCoordinate?.latitude, "longitude": currentCoordinate?.longitude]
         //        userData["postedMurmur"] = [String: Any].self
         //        userData["savedMurmur"] = [String: Any].self
-        print("準備上推的 userEmail", userData["userEmail"], userData["userPassward"])
-        database.collection("user").document(userEmailTextField.text!).setData(userData)
+        print("準備上推的 userName", userData["userName"], userData["location"], "使用者", userUUID)
+//        database.collection("userTest").document(userUUID).setData(userData)
+        
+//        let documentReference = database.collection("userTest").document(userUUID)
+
+        //setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+        database.collection("userTest").document(userUUID).setData([
+            
+            "userName": "Elle",
+            "userPortrait": "ElleimageURL",
+            "location": ["latitude": currentCoordinate?.latitude, "longitude": currentCoordinate?.longitude]
+
+        ])
         
     }
     
@@ -185,7 +197,6 @@ class HomePageViewController: UIViewController {
     
     // 回到自己的定位位置
     @objc func locateButtonTouchUpInside() {
-        //        self.backToMyLocationClosure!(<#Void#>)
         childLocationMessageViewController.locationManager.startUpdatingLocation()
         childNearbyUsersViewController.locationManager.startUpdatingLocation()
     }
@@ -215,14 +226,7 @@ class HomePageViewController: UIViewController {
         [filterButton, switchModeButton, backToMyLocationButton].forEach { subview in
                 btnStack.addArrangedSubview(subview)
             }
-            
-            //        NSLayoutConstraint.activate([
-            //            mapView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            //            mapView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            //            mapView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            //            mapView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -80)
-            //        ])
-            
+        
             nearbyUsersContainerView.snp.makeConstraints { make in
                 make.top.equalTo(self.view)
             make.leading.equalTo(self.view)
@@ -253,14 +257,40 @@ class HomePageViewController: UIViewController {
         }
     }
     
+    func showAlert(title: String, message: String, viewController: UIViewController) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        viewController.present(alertController, animated: true, completion: nil)
+    }
+    
 }
 
 extension HomePageViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .denied, .restricted:
+            // TODO: 要改成跳 alert
+            showAlert(title: "Oops!", message: "Please check your location setting to get better experience with Murmur Wall.", viewController: self)
+        case .authorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+        default:
+            break
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        updateRegionsWithLocation(locations[0])
         
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
-        // 在这里处理获取到的坐标（currentCoordinate）
+        
+        userSignIn()
+        setMapView()
+        setContainerView()
     }
+    
 }
