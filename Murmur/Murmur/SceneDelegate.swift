@@ -7,16 +7,86 @@
 
 import UIKit
 
+// swiftlint:disable line_length
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
-
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        // MARK: - 實例化 window
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        self.window = UIWindow(windowScene: windowScene)
+        
+        // MARK: - 讓 window 顯示
+        self.window?.makeKeyAndVisible()
+        
+        // 创建 TabBarController
+        let tabBarController = UITabBarController()
+        tabBarController.tabBar.backgroundColor = .lightGray
+        
+        // 创建视图控制器
+        let firstViewController = HomePageViewController()
+        let secondViewController = ChatRoomViewController()
+        let thirdViewController = PostViewController()
+        let fourthViewController = ProfileViewController()
+        
+        // 将视图控制器添加到 TabBarController
+        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+        tabBarController.viewControllers = [firstViewController, secondViewController, thirdNavigationController, fourthViewController]
+        
+//        tabBarController.viewControllers?[2] = thirdNavigationController
+
+        // 设置 TabBarController 为根视图控制器
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+        
+        // 設定 tabBarItem
+        if let tabBarItems = tabBarController.tabBar.items {
+            
+            let homeTabBarItem: UITabBarItem = {
+                // 根据索引找到目标 TabBarItem
+                let homeTabBarItem = tabBarItems[0]
+                // 修改 TabBarItem 的属性
+                homeTabBarItem.title = "首頁"
+                homeTabBarItem.image = UIImage(named: "Icons_Home.png")
+                return homeTabBarItem
+            }()
+            
+            let _: UITabBarItem = {
+                // 根据索引找到目标 TabBarItem
+                let chatRoomTabBarItem = tabBarItems[1]
+                // 修改 TabBarItem 的属性
+                chatRoomTabBarItem.title = "聊天"
+                chatRoomTabBarItem.image = UIImage(named: "Icons_ChatRoom.png")
+                return chatRoomTabBarItem
+            }()
+            
+            let _: UITabBarItem = {
+                // 根据索引找到目标 TabBarItem
+                let postTabBarItem = tabBarItems[2]
+                // 修改 TabBarItem 的属性
+                postTabBarItem.title = "塗鴉"
+                postTabBarItem.image = UIImage(named: "Icons_Post.png")
+                return postTabBarItem
+            }()
+            
+            let _: UITabBarItem = {
+                // 根据索引找到目标 TabBarItem
+                let profileTabBarItem = tabBarItems[3]
+                // 修改 TabBarItem 的属性
+                profileTabBarItem.title = "個人"
+                profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
+                return profileTabBarItem
+            }()
+            
+//            let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+            
+        }
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -47,6 +117,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
 }
 
+// swiftlint:enable line_length
