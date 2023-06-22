@@ -9,7 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    private let murmurTextField: UITextField = {
+    let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
         murmurTextField.placeholder = "想說什麼大聲說出來"
         murmurTextField.contentVerticalAlignment = .top
@@ -91,7 +91,8 @@ class PostViewController: UIViewController {
     }
     
     @objc func closeButtonItemTouchUpInside() {
-        self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.popViewController(animated: true)
+        self.tabBarController?.selectedIndex = 0
     }
     
     @objc func nextButtonItemTouchUpInside() {

@@ -101,7 +101,7 @@ class NearbyUsersViewController: UIViewController {
         
     }
     
-    func relocateMyself(){
+    func relocateMyself() {
         // 設定初始地圖區域為使用者當前位置
         let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 500, longitudinalMeters: 500)
         mapView.setRegion(region, animated: false)
@@ -284,15 +284,16 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         
         // 实例化目标视图控制器
         let chatVC = ChatRoomViewController()
+        let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatVC)
         
         // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
         // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
 //        chatVC.annotation = annotation
         
         // 执行视图控制器的跳转
-        chatVC.modalPresentationStyle = .fullScreen
-        chatVC.modalTransitionStyle = .crossDissolve
-        present(chatVC, animated: true)
+        navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
+        navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
+        present(navigationControllerOfNearbyUsersVC, animated: true)
         
 //        navigationController?.pushViewController(chatVC, animated: true)
     }

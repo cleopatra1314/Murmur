@@ -57,9 +57,9 @@ class PostTagViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.title = "塗鴉標籤"
         
-        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
-        closeButtonItem.tintColor = .black
-        navigationItem.leftBarButtonItem = closeButtonItem
+        let backButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonItemTouchUpInside))
+        backButtonItem.tintColor = .black
+        navigationItem.leftBarButtonItem = backButtonItem
         
         let postButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonItemTouchUpInside))
         postButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
@@ -67,7 +67,7 @@ class PostTagViewController: UIViewController {
         navigationItem.rightBarButtonItem = postButtonItem
     }
     
-    @objc func closeButtonItemTouchUpInside() {
+    @objc func backButtonItemTouchUpInside() {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -98,7 +98,12 @@ class PostTagViewController: UIViewController {
 
         createMurmur()
         
+        let postVC = self.navigationController?.popViewController as? PostViewController
+        print(postVC?.murmurTextField.text)
+        postVC?.murmurTextField.text = ""
         self.tabBarController?.selectedIndex = 0
+        self.navigationController?.popToRootViewController(animated: true)
+        
     }
     
     func createMurmur() {
