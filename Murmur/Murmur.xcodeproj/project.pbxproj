@@ -12,6 +12,9 @@
 		C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8499F422A4093B60019D83F /* DialogAnnotationView.swift */; };
 		C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */; };
 		C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */; };
+		C8ABD8412A43EA1400B76ADC /* UserMeChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ABD8402A43EA1400B76ADC /* UserMeChatTableViewCell.swift */; };
+		C8ABD8432A43EA5800B76ADC /* UserTheOtherTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */; };
+		C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ABD8442A43FCA100B76ADC /* MessageTypeTextField.swift */; };
 		C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */; };
 		C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */; };
 		C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AE775D2A3F4D760027CB0D /* TagButton.swift */; };
@@ -41,6 +44,9 @@
 		C8499F422A4093B60019D83F /* DialogAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogAnnotationView.swift; sourceTree = "<group>"; };
 		C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
 		C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
+		C8ABD8402A43EA1400B76ADC /* UserMeChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserMeChatTableViewCell.swift; path = "Murmur/Chat Page/UserMeChatTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTheOtherTableViewCell.swift; sourceTree = "<group>"; };
+		C8ABD8442A43FCA100B76ADC /* MessageTypeTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypeTextField.swift; sourceTree = "<group>"; };
 		C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessageViewController.swift; sourceTree = "<group>"; };
 		C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTagViewController.swift; sourceTree = "<group>"; };
 		C8AE775D2A3F4D760027CB0D /* TagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TagButton.swift; path = Murmur/Model/TagButton.swift; sourceTree = SOURCE_ROOT; };
@@ -95,6 +101,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C8ABD83F2A43E9C900B76ADC /* Chat Page */ = {
+			isa = PBXGroup;
+			children = (
+				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
+				C8ABD8442A43FCA100B76ADC /* MessageTypeTextField.swift */,
+				C8ABD8402A43EA1400B76ADC /* UserMeChatTableViewCell.swift */,
+				C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */,
+			);
+			path = "Chat Page";
+			sourceTree = "<group>";
+		};
 		C8AF2DB82A41559200B703E8 /* Post Page */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +152,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8ABD83F2A43E9C900B76ADC /* Chat Page */,
 				C8AF2DB92A4155AB00B703E8 /* Model */,
 				C8AF2DB82A41559200B703E8 /* Post Page */,
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
@@ -142,7 +160,6 @@
 				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
 				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
 				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
-				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
 				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
@@ -293,9 +310,12 @@
 				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
 				C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */,
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
+				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,
+				C8ABD8412A43EA1400B76ADC /* UserMeChatTableViewCell.swift in Sources */,
+				C8ABD8432A43EA5800B76ADC /* UserTheOtherTableViewCell.swift in Sources */,
 				C8AF2DB32A41430900B703E8 /* InsideMessageAnnotation.swift in Sources */,
 				C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */,
 				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
