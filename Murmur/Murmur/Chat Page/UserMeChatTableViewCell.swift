@@ -8,14 +8,15 @@
 import Foundation
 import UIKit
 
-
 class UserMeChatTableViewCell: UITableViewCell {
     
    let dialogTextView: UITextView = {
         let dialogTextView = UITextView()
-        dialogTextView.textContainerInset = .init(top: 10, left: 12, bottom: 10, right: 12)
-        dialogTextView.backgroundColor = UIColor(red: 85/255, green: 100/255, blue: 47/255, alpha: 1)
-        dialogTextView.layer.cornerRadius = 20
+        dialogTextView.textContainerInset = .init(top: 8, left: 12, bottom: 8, right: 12)
+        dialogTextView.backgroundColor = UIColor(red: 0/255, green: 104/255, blue: 139/255, alpha: 1)
+        dialogTextView.font = UIFont(name: "PingFangTC-Regular", size: 14)
+        dialogTextView.textColor = UIColor(red: 176/255, green: 266/255, blue: 255/255, alpha: 1)
+        dialogTextView.layer.cornerRadius = 18
         dialogTextView.isScrollEnabled = false
 
         return dialogTextView

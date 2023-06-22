@@ -10,8 +10,10 @@ import SnapKit
 
 class ChatRoomViewController: UIViewController {
     
-    var dataTypeArray = ["default1", "default2"]
+    var messageTypeArray = ["meReply", "otherReply", "meReply", "otherReply"]
+    var messageDataArray = ["小寶想跟媽咪說什麼", "吃核果", "等下拿給你，還想說什麼嗎", "吃核果"]
 //    var dataResult: [Model] = []
+    var meReplyText = String()
     
     let chatRoomTableView: UITableView = {
         let chatRoomTableView = UITableView()
@@ -40,6 +42,7 @@ class ChatRoomViewController: UIViewController {
         sendButton.setBackgroundImage(UIImage(named: "Icons_Unsend.png"), for: .normal)
         sendButton.setBackgroundImage(UIImage(named: "Icons_Send.png"), for: .highlighted)
         sendButton.tintColor = UIColor(cgColor: CGColor(red: 85/255, green: 107/255, blue: 47/255, alpha: 1))
+        sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         
         return sendButton
     }()
@@ -94,7 +97,7 @@ class ChatRoomViewController: UIViewController {
         // 创建标签视图
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Libby"
+        label.text = "Beta"
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.sizeToFit()
 
@@ -163,11 +166,12 @@ class ChatRoomViewController: UIViewController {
         guard let text = typingTextField.text,
               !(text.isEmpty) else { return }
         print(text)
+        messageDataArray.append(text)
+        messageTypeArray.append("meReply")
         typingTextField.text = ""
-        dataTypeArray.append("meReply")
 //        dataResult.append(Model.product(Product(id: 0, title: text, description: "", price: 0, texture: "", wash: "", place: "", note: "", story: "", colors: [], sizes: [], variants: [], mainImage: "", images: [], type: "")))
-//        chatBotTableView.reloadData()
-//        chatBotTableView.scrollToRow(at: IndexPath(row: dataTypeArray.count - 1, section: 0), at: .bottom, animated: true)
+        chatRoomTableView.reloadData()
+        chatRoomTableView.scrollToRow(at: IndexPath(row: messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
     }
     
     func setTableView() {
@@ -192,11 +196,34 @@ class ChatRoomViewController: UIViewController {
 extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        <#code#>
+        messageTypeArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        
+        let messageType = messageTypeArray[indexPath.row]
+        
+        switch messageType {
+        case "meReply":
+            // TODO: 寫法??
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
+                cell.dialogTextView.text = messageDataArray[indexPath.row]
+                cell.layoutCell()
+                return cell
+            } else { return UITableViewCell.init() }
+            
+        case "otherReply":
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
+                cell.dialogTextView.text = messageDataArray[indexPath.row]
+                cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+                cell.layoutCell()
+                return cell
+            } else { return UITableViewCell.init() }
+            
+        default:
+            let cell = UserMeChatTableViewCell.init(style: .default, reuseIdentifier: "\(UserMeChatTableViewCell.self)")
+            return cell
+        }
     }
     
 }
