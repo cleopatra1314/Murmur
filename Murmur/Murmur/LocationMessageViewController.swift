@@ -102,7 +102,7 @@ class LocationMessageViewController: UIViewController {
         timer.invalidate()
     }
     
-    func relocateMyself(){
+    func relocateMyself() {
         // 設定初始地圖區域為使用者當前位置
         let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 300, longitudinalMeters: 300)
         mapView.setRegion(region, animated: false)

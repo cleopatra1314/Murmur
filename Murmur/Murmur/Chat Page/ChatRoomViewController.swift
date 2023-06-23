@@ -10,18 +10,20 @@ import SnapKit
 
 class ChatRoomViewController: UIViewController {
     
-    var messageTypeArray = ["meReply", "otherReply", "meReply", "otherReply"]
-    var messageDataArray = ["小寶想跟媽咪說什麼", "吃核果", "等下拿給你，還想說什麼嗎", "吃核果"]
-//    var dataResult: [Model] = []
-    var meReplyText = String()
+    var currentUserUID = String()
     
-    let chatRoomTableView: UITableView = {
+    private var messageTypeArray = ["meReply", "otherReply", "meReply", "otherReply"]
+    private var messageDataArray = ["小寶想跟媽咪說什麼", "吃核果", "等下拿給你，還想說什麼嗎", "吃核果"]
+//    var dataResult: [Model] = []
+    private var meReplyText = String()
+    
+    private let chatRoomTableView: UITableView = {
         let chatRoomTableView = UITableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
         return chatRoomTableView
     }()
-    let typingAreaView: UIView = {
+    private let typingAreaView: UIView = {
         let typingAreaView = UIView()
         typingAreaView.backgroundColor = .white
         typingAreaView.layer.shadowOpacity = 0.5
@@ -30,14 +32,14 @@ class ChatRoomViewController: UIViewController {
         
         return typingAreaView
     }()
-    let typingTextField: MessageTypeTextField = {
+    private let typingTextField: MessageTypeTextField = {
         let typingTextField = MessageTypeTextField()
         typingTextField.backgroundColor = UIColor(cgColor: CGColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1))
         typingTextField.layer.cornerRadius = 20
         
         return typingTextField
     }()
-    let sendButton: UIButton = {
+    private let sendButton: UIButton = {
         let sendButton = UIButton()
         sendButton.setBackgroundImage(UIImage(named: "Icons_Unsend.png"), for: .normal)
         sendButton.setBackgroundImage(UIImage(named: "Icons_Send.png"), for: .highlighted)
@@ -59,7 +61,7 @@ class ChatRoomViewController: UIViewController {
         setTableView()
     }
 
-    func setNav() {
+    private func setNav() {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = UIColor(cgColor: CGColor(red: 1, green: 1, blue: 1, alpha: 1))
         
@@ -134,7 +136,7 @@ class ChatRoomViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    func setTypingArea() {
+    private func setTypingArea() {
         
         self.view.addSubview(typingAreaView)
         typingAreaView.addSubview(typingTextField)
@@ -174,7 +176,7 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.scrollToRow(at: IndexPath(row: messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
     }
     
-    func setTableView() {
+    private func setTableView() {
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")

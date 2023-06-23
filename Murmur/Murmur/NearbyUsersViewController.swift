@@ -31,6 +31,7 @@ class NearbyUsersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         relocateMyself()
+        fetchUserLocation()
         //        // 1. 還沒有詢問過用戶以獲得權限
         //        if CLLocationManager.authorizationStatus() == .notDetermined {
         //            locationManager.requestAlwaysAuthorization()
@@ -64,7 +65,8 @@ class NearbyUsersViewController: UIViewController {
         }
     }
     
-    func fetchUserLocation(){
+    // 設定每 20 秒 fetch 一次
+    func fetchUserLocation() {
         
         database.collectionGroup("userTest").getDocuments { querySnapshot, error in
             if let querySnapshot = querySnapshot {
@@ -78,13 +80,13 @@ class NearbyUsersViewController: UIViewController {
                 try? querySnapshot.data(as: Users.self)
             }
             
-            
             self.userData = users
             print("解析完後的資料", self.userData)
             
             DispatchQueue.main.async {
                 for user in self.userData! {
-                    self.showOtherUsersOnMap(user.userName, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
+                    print("應該要是地圖上各個用戶的 UUID", user.id)
+                    self.showOtherUsersOnMap(user.id!, user.userName, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
                 }
             }
             
@@ -92,11 +94,12 @@ class NearbyUsersViewController: UIViewController {
         
     }
     
-    func showOtherUsersOnMap(_ name: String, _ coordinate: CLLocationCoordinate2D) {
+    func showOtherUsersOnMap(_ userUID: String, _ name: String, _ coordinate: CLLocationCoordinate2D) {
         
+        let userUID = userUID
         let title = name
         let coordinate = coordinate
-        let annotation = OtherUsersAnnotation(coordinate: coordinate)
+        let annotation = OtherUsersAnnotation(userUID: userUID, coordinate: coordinate)
         mapView.addAnnotation(annotation)
         
     }
@@ -152,7 +155,7 @@ class NearbyUsersViewController: UIViewController {
 //        locationManager.startMonitoring(for: region)
 
         // 4. 创建大头针
-        let annotation = OtherUsersAnnotation(coordinate: coordinate)
+        let annotation = MeAnnotation(coordinate: coordinate)
         annotation.title = title
         mapView.addAnnotation(annotation)
 
@@ -176,9 +179,9 @@ class NearbyUsersViewController: UIViewController {
             locationManager.startMonitoring(for: region)
 
             // 4. 創建大頭釘(annotation)
-            let meAnnotation = MeAnnotation(coordinate: currentCoordinate!)
-            meAnnotation.title = title
-            mapView.addAnnotation(meAnnotation)
+//            let meAnnotation = MeAnnotation(coordinate: currentCoordinate!)
+//            meAnnotation.title = title
+//            mapView.addAnnotation(meAnnotation)
 
             // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
             let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
@@ -207,6 +210,12 @@ class NearbyUsersViewController: UIViewController {
             monitoredRegions.removeValue(forKey: regionIdentifier)
         }
     }
+    
+    func createChatRoom(){
+        
+        
+        
+    }
 
 }
 
@@ -226,7 +235,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         mapView.userTrackingMode = .follow
         
         // 4. 加入測試數據
-        setupData()
+//        setupData()
         setupMyRangeMonitor()
         
     }
@@ -282,13 +291,25 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
             return
         }
         
+        guard let selectedAnnotation = view.annotation as? OtherUsersAnnotation else {
+            print("錯誤：selectedAnnotation is nil")
+            return
+        }
+        print("點擊的用戶 UUID", selectedAnnotation.userUID)
+        // 拿到點擊的用戶 UUID 後
+        // present chatRoom VC
+        // 將 用戶 UUID 傳值給 chatRoom VC
+        // chatRoom VC 會先撈 用戶 UUID，顯示該用戶名稱、塗鴉紀錄等
+        // 若傳送了第一則訊息，則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
+        // chatRoom VC 再藉由這個 用戶 UUID fetch 對話資料
+        
         // 实例化目标视图控制器
         let chatVC = ChatRoomViewController()
         let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatVC)
         
         // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
         // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
-//        chatVC.annotation = annotation
+        chatVC.currentUserUID = selectedAnnotation.userUID
         
         // 执行视图控制器的跳转
         navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
@@ -328,7 +349,18 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
 //        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
 //        mapView.setRegion(region, animated: false)
         
-        fetchUserLocation()
     }
     
+}
+
+extension UIView {
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
+        }
+    }
 }

@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 class UserTheOtherTableViewCell: UITableViewCell {
     
     let profileImageView: UIImageView = {

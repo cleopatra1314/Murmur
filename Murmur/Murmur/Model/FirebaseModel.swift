@@ -29,10 +29,10 @@ struct Users: Codable, Identifiable {
     
     let userName: String
     let userPortrait: String
-    let location: [String: Double]
+    var location: [String: Double]
 }
 
-//----------------------------------------
+// ----------------------------------------
 // 将 CLLocationCoordinate2D 类型转换为 Codable
 struct CodableCoordinate: Codable {
     let latitude: Double
