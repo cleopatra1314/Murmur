@@ -7,10 +7,16 @@
 
 import UIKit
 import SnapKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class ChatRoomViewController: UIViewController {
     
-    var currentUserUID = String()
+    var otherUserUID = String()
+    var otherUserName = String()
+    var otherUserImageURL = String()
+    
+    let database = Firestore.firestore()
     
     private var messageTypeArray = ["meReply", "otherReply", "meReply", "otherReply"]
     private var messageDataArray = ["小寶想跟媽咪說什麼", "吃核果", "等下拿給你，還想說什麼嗎", "吃核果"]
@@ -99,7 +105,7 @@ class ChatRoomViewController: UIViewController {
         // 创建标签视图
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Beta"
+        label.text = otherUserName
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.sizeToFit()
 
@@ -165,8 +171,15 @@ class ChatRoomViewController: UIViewController {
     }
     
     @objc func sendButtonTapped() {
+    
+        // 傳送訊息則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
+        // ?? create 三筆資料到：自己 chatRooms 的 document、對方 chatRooms 的 document、chatRooms 的 document (includes comments)
+        // 刪除或編輯訊息，只要去 chatRooms 的 document 的 comments collection 去更改就好
+        // 監聽到聊天室有資料變動，則 load 那一筆變動的資料
+        
         guard let text = typingTextField.text,
               !(text.isEmpty) else { return }
+        createChatRoom()
         print(text)
         messageDataArray.append(text)
         messageTypeArray.append("meReply")
@@ -174,6 +187,54 @@ class ChatRoomViewController: UIViewController {
 //        dataResult.append(Model.product(Product(id: 0, title: text, description: "", price: 0, texture: "", wash: "", place: "", note: "", story: "", colors: [], sizes: [], variants: [], mainImage: "", images: [], type: "")))
         chatRoomTableView.reloadData()
         chatRoomTableView.scrollToRow(at: IndexPath(row: messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
+    }
+    
+    func createChatRoom() {
+        
+        // chatRooms 的 document (includes comments)
+        let documentReference = database.collection("chatRooms").document()
+        let documentReferenceOfMessages = documentReference.collection("messages").document()
+        
+        documentReference.setData([
+            
+            "createTime": Timestamp(date: Date()),
+
+        ])
+        documentReferenceOfMessages.setData([
+            
+            "createTime": Timestamp(date: Date()),
+            "messageContent": typingTextField.text,
+            "senderUUID": currentUserUID
+
+        ])
+        let chatRoomID = documentReference.documentID
+        let messageID = documentReferenceOfMessages.documentID
+        
+        // ??
+        // 自己 chatRooms 的 document
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([String: Any]())
+//        database.collection("userTest").document(userUID).collection("chatRooms").document(chatRoomID).setData([
+//
+//            "userName": userData?.userName,
+//            "userPortrait": userData?.userPortrait,
+//            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
+//
+//        ])
+        
+        // 對方 chatRooms 的 document
+        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).setData([String: Any]())
+//        database.collection("userTest").document(currentUserUID).collection("chatRooms").document().setData([
+//
+//            "userName": userData?.userName,
+//            "userPortrait": userData?.userPortrait,
+//            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
+//
+//        ])
+        
+    }
+    
+    func addChatMessages() {
+        
     }
     
     private func setTableView() {

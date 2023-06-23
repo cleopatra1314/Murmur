@@ -16,6 +16,7 @@ var currentCoordinate: CLLocationCoordinate2D? {
         print("目前位置", currentCoordinate)
     }
 }
+var currentUserUID = String()
 
 class HomePageViewController: UIViewController {
     
@@ -30,8 +31,6 @@ class HomePageViewController: UIViewController {
         testButton.addTarget(self, action: #selector(modifyCurrentLocation), for: .touchUpInside)
         return testButton
     }()
-    
-    var currentUserUID = String()
     
     let database = Firestore.firestore()
     var timer = Timer()
@@ -159,7 +158,7 @@ class HomePageViewController: UIViewController {
                 return
             }
             print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
-            self.currentUserUID = user.uid
+            currentUserUID = user.uid
             DispatchQueue.main.async {
                 self.createUsers(userUID: user.uid)
             }
@@ -183,7 +182,7 @@ class HomePageViewController: UIViewController {
                     return
                 }
                 guard let userID = result?.user.uid else { return }
-                self.currentUserUID = userID
+                currentUserUID = userID
                 print("\(result?.user.uid) 登入成功")
  
 //            }

@@ -86,7 +86,7 @@ class NearbyUsersViewController: UIViewController {
             DispatchQueue.main.async {
                 for user in self.userData! {
                     print("應該要是地圖上各個用戶的 UUID", user.id)
-                    self.showOtherUsersOnMap(user.id!, user.userName, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
+                    self.showOtherUsersOnMap(user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
                 }
             }
             
@@ -94,12 +94,11 @@ class NearbyUsersViewController: UIViewController {
         
     }
     
-    func showOtherUsersOnMap(_ userUID: String, _ name: String, _ coordinate: CLLocationCoordinate2D) {
+    func showOtherUsersOnMap(_ userUID: String, _ name: String, _ imageURL: String, _ coordinate: CLLocationCoordinate2D) {
         
         let userUID = userUID
-        let title = name
         let coordinate = coordinate
-        let annotation = OtherUsersAnnotation(userUID: userUID, coordinate: coordinate)
+        let annotation = OtherUsersAnnotation(userUID: userUID, userName: name, userImage: imageURL, coordinate: coordinate)
         mapView.addAnnotation(annotation)
         
     }
@@ -287,12 +286,12 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
             return
         }
         
-        if view is MeAnnotationView {
+        if view.annotation is MeAnnotation {
             return
         }
         
         guard let selectedAnnotation = view.annotation as? OtherUsersAnnotation else {
-            print("錯誤：selectedAnnotation is nil")
+            print("選到自己：selectedAnnotation is nil")
             return
         }
         print("點擊的用戶 UUID", selectedAnnotation.userUID)
@@ -309,7 +308,9 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         
         // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
         // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
-        chatVC.currentUserUID = selectedAnnotation.userUID
+        chatVC.otherUserUID = selectedAnnotation.userUID
+        chatVC.otherUserName = selectedAnnotation.userName
+        chatVC.otherUserImageURL = selectedAnnotation.userImage
         
         // 执行视图控制器的跳转
         navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
