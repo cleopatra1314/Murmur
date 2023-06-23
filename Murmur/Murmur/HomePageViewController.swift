@@ -16,7 +16,7 @@ var currentCoordinate: CLLocationCoordinate2D? {
         print("目前位置", currentCoordinate)
     }
 }
-var currentUserUID = String()
+var currentUserUID = String() // 可以用 Auth.auth().currentUser?.uid 取代
 
 class HomePageViewController: UIViewController {
     
@@ -50,12 +50,12 @@ class HomePageViewController: UIViewController {
     
     private let userEmailTextField: UITextField = {
        let userEmailTextField = UITextField()
-        userEmailTextField.text  = "user2@gmail.com"
+        userEmailTextField.text  = "user3@gmail.com"
         return userEmailTextField
     }()
     private let userPasswardTextField: UITextField = {
         let userPasswardTextField = UITextField()
-        userPasswardTextField.text  = "222222"
+        userPasswardTextField.text  = "333333"
         return userPasswardTextField
     }()
     

@@ -9,18 +9,23 @@ import UIKit
 import SnapKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 class ChatRoomViewController: UIViewController {
     
+    var isFirstMessage = true
     var otherUserUID = String()
     var otherUserName = String()
     var otherUserImageURL = String()
+    var chatRoomID: String?
     
     let database = Firestore.firestore()
     
-    private var messageTypeArray = ["meReply", "otherReply", "meReply", "otherReply"]
-    private var messageDataArray = ["小寶想跟媽咪說什麼", "吃核果", "等下拿給你，還想說什麼嗎", "吃核果"]
-//    var dataResult: [Model] = []
+//    private var messageTypeArray = ["meReply", "otherReply", "meReply", "otherReply"]
+//    private var messageDataArray = ["小寶想跟媽咪說什麼", "吃核果", "等下拿給你，還想說什麼嗎", "吃核果"]
+    private var messageTypeArray = [String]()
+    private var messageDataArray = [String]()
+    var messageDataResult: [Messages] = []
     private var meReplyText = String()
     
     private let chatRoomTableView: UITableView = {
@@ -65,6 +70,7 @@ class ChatRoomViewController: UIViewController {
         setNav()
         setTypingArea()
         setTableView()
+  
     }
 
     private func setNav() {
@@ -179,62 +185,102 @@ class ChatRoomViewController: UIViewController {
         
         guard let text = typingTextField.text,
               !(text.isEmpty) else { return }
-        createChatRoom()
-        print(text)
+        
+        if isFirstMessage {
+            createChatRoom()
+            getRealTimeChatMessages()
+            isFirstMessage.toggle()
+        } else {
+            addChatMessages()
+        }
+    
         messageDataArray.append(text)
         messageTypeArray.append("meReply")
         typingTextField.text = ""
-//        dataResult.append(Model.product(Product(id: 0, title: text, description: "", price: 0, texture: "", wash: "", place: "", note: "", story: "", colors: [], sizes: [], variants: [], mainImage: "", images: [], type: "")))
+
         chatRoomTableView.reloadData()
         chatRoomTableView.scrollToRow(at: IndexPath(row: messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
     }
     
-    func createChatRoom() {
+    private func createChatRoom() {
         
         // chatRooms 的 document (includes comments)
         let documentReference = database.collection("chatRooms").document()
         let documentReferenceOfMessages = documentReference.collection("messages").document()
         
         documentReference.setData([
-            
-            "createTime": Timestamp(date: Date()),
-
+            "createTime": Timestamp(date: Date())
         ])
+        
         documentReferenceOfMessages.setData([
-            
             "createTime": Timestamp(date: Date()),
             "messageContent": typingTextField.text,
             "senderUUID": currentUserUID
-
         ])
-        let chatRoomID = documentReference.documentID
-        let messageID = documentReferenceOfMessages.documentID
         
-        // ??
+        chatRoomID = documentReference.documentID
+        let messageID = documentReferenceOfMessages.documentID
+        guard let chatRoomID else {
+            print("目前還沒有房間ID")
+            return
+        }
+        
         // 自己 chatRooms 的 document
         database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([String: Any]())
-//        database.collection("userTest").document(userUID).collection("chatRooms").document(chatRoomID).setData([
-//
-//            "userName": userData?.userName,
-//            "userPortrait": userData?.userPortrait,
-//            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
-//
-//        ])
         
         // 對方 chatRooms 的 document
         database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).setData([String: Any]())
-//        database.collection("userTest").document(currentUserUID).collection("chatRooms").document().setData([
-//
-//            "userName": userData?.userName,
-//            "userPortrait": userData?.userPortrait,
-//            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
-//
-//        ])
         
     }
     
-    func addChatMessages() {
-        
+    private func addChatMessages() {
+        guard let chatRoomID else {
+            print("目前還沒有房間ID")
+            return
+        }
+        print("聊天室 ID", chatRoomID)
+        database.collection("chatRooms").document(chatRoomID).collection("messages").document().setData([
+            "createTime": Timestamp(date: Date()),
+            "messageContent": typingTextField.text,
+            "senderUUID": currentUserUID
+        ])
+    }
+    
+    private func getRealTimeChatMessages() {
+        print(chatRoomID)
+        guard let chatRoomID else {
+            print("目前還沒有房間ID")
+            return
+        }
+        database.collection("chatRooms").document(chatRoomID).collection("messages").order(by: "createTime", descending: false).addSnapshotListener { documentSnapshot, error in
+            if let documentSnapshot = documentSnapshot {
+                for document in documentSnapshot.documents {
+                    print(document.data())
+                }
+            } else {
+                return
+            }
+            let messages = documentSnapshot?.documents.compactMap { querySnapshot in
+                try? querySnapshot.data(as: Messages.self)
+            }
+            
+            self.messageDataResult = messages!
+            print("?? 解析完後的資料", self.messageDataResult)
+            
+            DispatchQueue.main.async {
+                
+                self.messageTypeArray = [String]()
+                self.messageDataArray = [String]()
+                
+                for message in self.messageDataResult {
+                    print("聊天室的每一則訊息", message.messageContent)
+                    self.messageTypeArray.append(message.senderUUID)
+                    self.messageDataArray.append(message.messageContent)
+                }
+                self.chatRoomTableView.reloadData()
+            }
+            
+        }
     }
     
     private func setTableView() {
@@ -245,7 +291,6 @@ class ChatRoomViewController: UIViewController {
         self.view.addSubview(chatRoomTableView)
         
         chatRoomTableView.snp.makeConstraints { make in
-//            make.top.equalTo((self.navigationController?.navigationBar.snp.bottom)!)
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.equalTo(typingAreaView.snp.top)
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
@@ -267,15 +312,15 @@ extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
         let messageType = messageTypeArray[indexPath.row]
         
         switch messageType {
-        case "meReply":
+        case currentUserUID:
             // TODO: 寫法??
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
-                cell.dialogTextView.text = messageDataArray[indexPath.row]
+                cell.dialogTextView.text = messageDataResult[indexPath.row].messageContent
                 cell.layoutCell()
                 return cell
             } else { return UITableViewCell.init() }
             
-        case "otherReply":
+        case otherUserUID:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.profileImageView.image = UIImage(named: "User1Portrait.png")

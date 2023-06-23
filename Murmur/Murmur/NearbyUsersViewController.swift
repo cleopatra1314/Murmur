@@ -85,7 +85,7 @@ class NearbyUsersViewController: UIViewController {
             
             DispatchQueue.main.async {
                 for user in self.userData! {
-                    print("應該要是地圖上各個用戶的 UUID", user.id)
+//                    print("應該要是地圖上各個用戶的 UUID", user.id)
                     self.showOtherUsersOnMap(user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
                 }
             }

@@ -32,6 +32,14 @@ struct Users: Codable, Identifiable {
     var location: [String: Double]
 }
 
+struct Messages: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    let createTime: Timestamp
+    let messageContent: String
+    var senderUUID: String
+}
+
 // ----------------------------------------
 // 将 CLLocationCoordinate2D 类型转换为 Codable
 struct CodableCoordinate: Codable {
