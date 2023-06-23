@@ -303,14 +303,14 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         // chatRoom VC 再藉由這個 用戶 UUID fetch 對話資料
         
         // 实例化目标视图控制器
-        let chatVC = ChatRoomViewController()
-        let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatVC)
+        let chatRoomVC = ChatRoomViewController()
+        let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatRoomVC)
         
         // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
         // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
-        chatVC.otherUserUID = selectedAnnotation.userUID
-        chatVC.otherUserName = selectedAnnotation.userName
-        chatVC.otherUserImageURL = selectedAnnotation.userImage
+        chatRoomVC.otherUserUID = selectedAnnotation.userUID
+        chatRoomVC.otherUserName = selectedAnnotation.userName
+        chatRoomVC.otherUserImageURL = selectedAnnotation.userImage
         
         // 执行视图控制器的跳转
         navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen

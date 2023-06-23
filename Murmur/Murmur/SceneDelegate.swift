@@ -30,13 +30,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 创建视图控制器
         let firstViewController = HomePageViewController()
-        let secondViewController = ChatRoomViewController()
+        let secondViewController = ChatViewController()
         let thirdViewController = PostViewController()
         let fourthViewController = ProfileViewController()
         
         // 将视图控制器添加到 TabBarController
         let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
-        tabBarController.viewControllers = [firstViewController, secondViewController, thirdNavigationController, fourthViewController]
+        let secondNavigationController = UINavigationController(rootViewController: secondViewController)
+        tabBarController.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
         
 //        tabBarController.viewControllers?[2] = thirdNavigationController
 

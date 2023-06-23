@@ -74,7 +74,7 @@ class PostViewController: UIViewController {
         navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
         navBarAppearance.titleTextAttributes = [
            .foregroundColor: UIColor.black,
-           .font: UIFont.systemFont(ofSize: 18, weight: .regular)
+           .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
