@@ -148,6 +148,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		C8BAE6E02A46463400ED6941 /* Home Page */ = {
+			isa = PBXGroup;
+			children = (
+				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
+				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
+				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
+			);
+			path = "Home Page";
+			sourceTree = "<group>";
+		};
 		C8C72C172A39DA350025E693 = {
 			isa = PBXGroup;
 			children = (
@@ -161,14 +171,12 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8BAE6E02A46463400ED6941 /* Home Page */,
 				C8ABD83F2A43E9C900B76ADC /* Chat Page */,
 				C8AF2DB92A4155AB00B703E8 /* Model */,
 				C8AF2DB82A41559200B703E8 /* Post Page */,
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
-				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
-				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
-				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,

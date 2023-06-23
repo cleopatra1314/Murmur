@@ -16,7 +16,7 @@ var currentCoordinate: CLLocationCoordinate2D? {
         print("目前位置", currentCoordinate)
     }
 }
-var currentUserUID = String() // 可以用 Auth.auth().currentUser?.uid 取代
+var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().currentUser?.uid 取代
 let database = Firestore.firestore()
 
 class HomePageViewController: UIViewController {
