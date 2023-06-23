@@ -40,6 +40,13 @@ struct Messages: Codable, Identifiable {
     var senderUUID: String
 }
 
+struct ChatRooms: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    let createTime: Timestamp
+    let theOtherUserUID: String
+}
+
 // ----------------------------------------
 // 将 CLLocationCoordinate2D 类型转换为 Codable
 struct CodableCoordinate: Codable {

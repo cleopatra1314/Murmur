@@ -17,6 +17,7 @@ var currentCoordinate: CLLocationCoordinate2D? {
     }
 }
 var currentUserUID = String() // 可以用 Auth.auth().currentUser?.uid 取代
+let database = Firestore.firestore()
 
 class HomePageViewController: UIViewController {
     
@@ -32,25 +33,25 @@ class HomePageViewController: UIViewController {
         return testButton
     }()
     
-    let database = Firestore.firestore()
     var timer = Timer()
     
-    var userData1: [String: Any] = [
-        "userName": "nickName",
-        "userPortrait": "imageURL",
-        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679]
-//        "postedMurmur": [String: Any].self,
-//        "savedMurmur": [String: Any].self
-    ]
+//    var userData1: [String: Any] = [
+//        "userName": "nickName",
+//        "userPortrait": "imageURL",
+//        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679]
+////        "postedMurmur": [String: Any].self,
+////        "savedMurmur": [String: Any].self
+//    ]
     var userData: Users?
     // 從首頁登入時就給
-    let user1 = Users(userName: "Angela", userPortrait: "AngelaImageURL", location: ["latitude": 25.061607251329995, "longitude": 121.43349484382925])
+    
+//    let user1 = Users(userName: "Angela", userPortrait: "AngelaImageURL", location: ["latitude": 12.123, "longitude": 121.123])
     
     private let locationManager = CLLocationManager()
     
     private let userEmailTextField: UITextField = {
        let userEmailTextField = UITextField()
-        userEmailTextField.text  = "user3@gmail.com"
+        userEmailTextField.text  = "libby@gmail.com"
         return userEmailTextField
     }()
     private let userPasswardTextField: UITextField = {
@@ -116,7 +117,6 @@ class HomePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        userData = user1
         self.view.backgroundColor = .red
         
         locationManager.delegate = self
@@ -151,7 +151,7 @@ class HomePageViewController: UIViewController {
     // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     func userSignUp() {
         
-        Auth.auth().createUser(withEmail: "user11@gmail.com", password: "111111") { result, error in
+        Auth.auth().createUser(withEmail: "libby@gmail.com", password: "333333") { result, error in
             guard let user = result?.user,
                   error == nil else {
                 print(error?.localizedDescription ?? "no error?.localizedDescription")
@@ -338,6 +338,7 @@ extension HomePageViewController: CLLocationManagerDelegate {
             showAlert(title: "Oops!", message: "Please check your location setting to get better experience with Murmur Wall.", viewController: self)
         case .authorizedWhenInUse:
             userSignIn()
+//            userSignUp()
             locationManager.startUpdatingLocation()
         default:
             break
@@ -350,6 +351,13 @@ extension HomePageViewController: CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
         
+        guard let currentCoordinate else {
+            print("currentCoordinate 是空的！")
+            return
+        }
+//        let userAngela = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": currentCoordinate.latitude, "longitude": currentCoordinate.longitude])
+//
+//        userData = userAngela
         setMapView()
         setContainerView()
         self.view.addSubview(testButton)

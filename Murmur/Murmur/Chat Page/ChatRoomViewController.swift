@@ -65,6 +65,7 @@ class ChatRoomViewController: UIViewController {
         
         chatRoomTableView.delegate = self
         chatRoomTableView.dataSource = self
+        typingTextField.delegate = self
         
         self.view.backgroundColor = .orange
         setNav()
@@ -226,10 +227,16 @@ class ChatRoomViewController: UIViewController {
         }
         
         // 自己 chatRooms 的 document
-        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([String: Any]())
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([
+            "createTime": Timestamp(date: Date()),
+            "theOtherUserUID": otherUserUID
+        ])
         
         // 對方 chatRooms 的 document
-        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).setData([String: Any]())
+        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).setData([
+            "createTime": Timestamp(date: Date()),
+            "theOtherUserUID": currentUserUID
+        ])
         
     }
     
@@ -332,6 +339,15 @@ extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = UserMeChatTableViewCell.init(style: .default, reuseIdentifier: "\(UserMeChatTableViewCell.self)")
             return cell
         }
+    }
+    
+}
+
+extension ChatRoomViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+       self.view.endEditing(true)
+       return true
     }
     
 }

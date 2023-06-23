@@ -36,6 +36,7 @@ class ChatRoomTableViewCell: UITableViewCell {
     }()
     let otherUserFirstMessageLabel: UILabel = {
         let otherUserFirstMessageLabel = UILabel()
+        otherUserFirstMessageLabel.textColor = .lightGray
         return otherUserFirstMessageLabel
     }()
     let messageSendStateImageView: UIImageView = {

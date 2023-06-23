@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SearchBarTableViewCell: UITableViewCell {
-    
-    let searchBarTextField: UITextField = {
-        let searchBarTextField = UITextField()
+class SearchBarTableHeaderView: UITableViewHeaderFooterView {
+
+    let searchBarTextField: MessageTypeTextField = {
+        let searchBarTextField = MessageTypeTextField()
         searchBarTextField.placeholder = "搜尋名字 / 訊息"
         searchBarTextField.layer.cornerRadius = 10
         searchBarTextField.layer.borderColor = UIColor.darkGray.cgColor
@@ -20,12 +20,16 @@ class SearchBarTableViewCell: UITableViewCell {
         return searchBarTextField
     }()
     
-    func layoutCell(){
+    func layoutView() {
+        
+        self.addSubview(searchBarTextField)
+        
         searchBarTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.contentView).offset(8)
-            make.bottom.equalTo(self.contentView).offset(-8)
-            make.leading.equalTo(self.contentView).offset(16)
-            make.trailing.equalTo(self.contentView).offset(-16)
+            make.top.equalTo(self).offset(8)
+            make.bottom.equalTo(self).offset(-8)
+            make.height.equalTo(44)
+            make.leading.equalTo(self).offset(16)
+            make.trailing.equalTo(self).offset(-16)
         }
     }
     
