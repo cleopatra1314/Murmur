@@ -59,6 +59,7 @@ class SignInUpViewController: UIViewController {
         signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         signUpButton.backgroundColor = .black
         signUpButton.setTitle("Sign Up", for: .normal)
+//        signUpButton.addTarget(self, action: #selector(), for: .touchUpInside)
         return signUpButton
     }()
     
@@ -100,7 +101,7 @@ class SignInUpViewController: UIViewController {
 //        DispatchQueue.main.async {
             guard let userEmail = self.emailTextField.text else { return }
             guard let userPassward = self.passwordTextField.text else { return }
-            
+
             Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
                 guard error == nil else {
                     print(error?.localizedDescription ?? "no error?.localizedDescription")
@@ -111,7 +112,7 @@ class SignInUpViewController: UIViewController {
                 guard let userID = result?.user.uid else { return }
                 currentUserUID = userID
                 print("\(result?.user.uid) 登入成功")
- 
+
 //            }
         }
         
@@ -121,7 +122,7 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     @objc func signUpButtonTouchUpInside() {
         
-        Auth.auth().createUser(withEmail: emailTextField.text, password: passwordTextField.text) { result, error in
+        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { result, error in
             guard let user = result?.user,
                   error == nil else {
                 print(error?.localizedDescription ?? "no error?.localizedDescription")
@@ -129,11 +130,11 @@ class SignInUpViewController: UIViewController {
             }
             print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
             currentUserUID = user.uid
-            
-            let userProfile = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": currentCoordinate.latitude, "longitude": currentCoordinate.longitude])
-            
-            userProfileData = userProfile
-            
+
+            let userProfile = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+
+            self.userProfileData = userProfile
+
             DispatchQueue.main.async {
                 self.createUsers(userUID: user.uid)
             }
@@ -149,9 +150,9 @@ class SignInUpViewController: UIViewController {
         // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUID).setData([
             
-            "userName": userData?.userName,
-            "userPortrait": userData?.userPortrait,
-            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
+            "userName": userProfileData?.userName,
+            "userPortrait": userProfileData?.userPortrait,
+            "location": ["latitude": userProfileData?.location["latitude"], "longitude": userProfileData?.location["longitude"]]
 
         ])
         
@@ -221,3 +222,4 @@ class SignInUpViewController: UIViewController {
     }
     
 }
+
