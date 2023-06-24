@@ -8,8 +8,12 @@
 import Foundation
 import UIKit
 import SnapKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class SignInUpViewController: UIViewController {
+    
+    var userProfileData: Users?
     
 //    let attributes: [NSAttributedString.Key: Any] = [
 //        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
@@ -62,10 +66,10 @@ class SignInUpViewController: UIViewController {
         super.viewDidLoad()
         
         layoutView()
-        //串登入、註冊頁，試看看這頁要放哪
+        
     }
     
-    func layoutView(){
+    func layoutView() {
         [emailTextField, passwordTextField, signInButton, signUpButton].forEach { subview in
             self.view.addSubview(subview)
         }
@@ -89,11 +93,67 @@ class SignInUpViewController: UIViewController {
         
     }
     
+    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInButtonTouchUpInside() {
+        
+        // text 屬於 UI，所以要在 main thread 執行
+//        DispatchQueue.main.async {
+            guard let userEmail = self.emailTextField.text else { return }
+            guard let userPassward = self.passwordTextField.text else { return }
+            
+            Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
+                guard error == nil else {
+                    print(error?.localizedDescription ?? "no error?.localizedDescription")
+                    print(userEmail, userPassward)
+                    print("登入失敗")
+                    return
+                }
+                guard let userID = result?.user.uid else { return }
+                currentUserUID = userID
+                print("\(result?.user.uid) 登入成功")
+ 
+//            }
+        }
+        
         createTabBarController()
     }
     
+    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     @objc func signUpButtonTouchUpInside() {
+        
+        Auth.auth().createUser(withEmail: emailTextField.text, password: passwordTextField.text) { result, error in
+            guard let user = result?.user,
+                  error == nil else {
+                print(error?.localizedDescription ?? "no error?.localizedDescription")
+                return
+            }
+            print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
+            currentUserUID = user.uid
+            
+            let userProfile = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": currentCoordinate.latitude, "longitude": currentCoordinate.longitude])
+            
+            userProfileData = userProfile
+            
+            DispatchQueue.main.async {
+                self.createUsers(userUID: user.uid)
+            }
+        }
+        
+        createTabBarController()
+        
+    }
+    
+    // 新增使用者資料到 firebase
+    func createUsers(userUID: String) {
+
+        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+        database.collection("userTest").document(userUID).setData([
+            
+            "userName": userData?.userName,
+            "userPortrait": userData?.userPortrait,
+            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
+
+        ])
         
     }
     

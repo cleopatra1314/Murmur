@@ -337,7 +337,7 @@ extension HomePageViewController: CLLocationManagerDelegate {
             // TODO: 要改成跳 alert
             showAlert(title: "Oops!", message: "Please check your location setting to get better experience with Murmur Wall.", viewController: self)
         case .authorizedWhenInUse:
-            userSignIn()
+//            userSignIn()
 //            userSignUp()
             locationManager.startUpdatingLocation()
         default:
