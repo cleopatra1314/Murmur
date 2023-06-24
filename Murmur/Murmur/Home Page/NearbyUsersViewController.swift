@@ -85,8 +85,7 @@ class NearbyUsersViewController: UIViewController {
             
             DispatchQueue.main.async {
                 for user in self.userData! {
-                    print("應該要是地圖上各個用戶的 UUID", user.id, currentUserUID)
-                    print("用戶馬", currentUserUID)
+                    
                     if user.id! == currentUserUID {
                         break
                     }
