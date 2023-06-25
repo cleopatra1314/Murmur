@@ -54,11 +54,11 @@ class ChatRoomTableViewCell: UITableViewCell {
         }
         
         otherUserImageView.snp.makeConstraints { make in
-            make.top.equalTo(self.contentView).offset(6)
+            make.top.equalTo(self.contentView).offset(12)
             make.width.equalTo(48)
             make.height.equalTo(otherUserImageView.snp.width)
             make.leading.equalTo(self.contentView).offset(16)
-            make.bottom.equalTo(self.contentView).offset(-6)
+            make.bottom.equalTo(self.contentView).offset(-12)
         }
         
         stack.snp.makeConstraints { make in

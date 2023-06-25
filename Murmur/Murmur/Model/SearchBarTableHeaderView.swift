@@ -27,7 +27,6 @@ class SearchBarTableHeaderView: UITableViewHeaderFooterView {
         searchBarTextField.snp.makeConstraints { make in
             make.top.equalTo(self).offset(8)
             make.bottom.equalTo(self).offset(-8)
-            make.height.equalTo(44)
             make.leading.equalTo(self).offset(16)
             make.trailing.equalTo(self).offset(-16)
         }

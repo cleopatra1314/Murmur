@@ -120,7 +120,7 @@ class HomePageViewController: UIViewController {
     func startTimer() {
         stopTimer()
         print("時間器啟動")
-        timer = Timer.scheduledTimer(timeInterval: 300, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式

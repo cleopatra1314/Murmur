@@ -137,7 +137,7 @@ class SignInUpViewController: UIViewController {
             print("\(result?.user.uid ?? "")，\(result?.user.email ?? "") 註冊成功")
             currentUserUID = user.uid
 
-            let userProfile = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+            let userProfile = Users(userName: "Beta", userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
 
             self.userProfileData = userProfile
 
@@ -146,7 +146,7 @@ class SignInUpViewController: UIViewController {
             }
         }
         
-//        createTabBarController()
+        createTabBarController()
         
     }
     
@@ -186,8 +186,8 @@ class SignInUpViewController: UIViewController {
         let fourthViewController = ProfileViewController()
         
         // 将视图控制器添加到 TabBarController
-        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
         let secondNavigationController = UINavigationController(rootViewController: secondViewController)
+        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
         tabBarController.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
         
         // 設定 tabBarItem

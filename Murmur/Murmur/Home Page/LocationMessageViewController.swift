@@ -19,9 +19,6 @@ class LocationMessageViewController: UIViewController {
     
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
-//    private var monitoredRegions: Dictionary<String, Date> = [:]
-//    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.500702, longitude: -0.124562), latitudinalMeters: 1000, longitudinalMeters: 1000)
-//    private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 25.038722870138926, longitude: 121.53239166252195), latitudinalMeters: 300, longitudinalMeters: 300)
     
     private let mapView: MKMapView = {
         let mapView = MKMapView()
@@ -32,8 +29,6 @@ class LocationMessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        relocateMyself()
-        fetchMurmur()
 //         创建一个定时器，每隔5秒执行一次函数
 //        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
 //
@@ -42,36 +37,21 @@ class LocationMessageViewController: UIViewController {
         
 //         将定时器添加到当前运行循环中
 //        RunLoop.current.add(timer, forMode: .common)
-   
-//        currentCoordinate = locationManager.location?.coordinate
         
+        relocateMyself()
+        fetchMurmur()
         layoutView()
-//        addAnnotations()
         filterLocationMessage()
         setLocation()
 
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        relocateMyself()
-//
-//    }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        fetchMurmur()
-//    }
 
     private func layoutView() {
 
         mapView.frame = view.bounds
 //        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(mapView)
-        
-        // 設定初始地圖區域
-//        mapView.setRegion(region, animated: true)
+
     }
     
     // 為什麼沒寫 stopTimer() 就會無效
@@ -91,72 +71,6 @@ class LocationMessageViewController: UIViewController {
         mapView.setRegion(region, animated: false)
     }
     
-//    private func addAnnotations() {
-//
-//        for item in murmurData! {
-//
-//            // TODO: 需要先把之前的全部清除 嗎？
-//            if let annotations = mapView.annotations as? [MKAnnotation] {
-//                mapView.removeAnnotations(annotations)
-//            }
-//
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = item.location.coordinate
-//            annotation.title = item.murmurMessage
-//            mapView.addAnnotation(annotation)
-//
-//        }
-//    }
-    
-//    private func setupData() {
-//
-//        // 1. 檢查系統是否能夠監視 region
-//        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-//
-//            // 2.準備 region 會用到的相關屬性
-//            let title = "未知玩家"
-//            //            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
-//            guard let coordinate = currentCoordinate else { return }
-//            let regionRadius = 300.0 // 範圍半徑
-//
-//            // 3. 設置 region 的相關屬性
-//            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
-//                                                                         longitude: coordinate.longitude), radius: regionRadius, identifier: title)
-//            locationManager.startMonitoring(for: region)
-//
-//            // 4. 創建大頭釘(annotation)
-//            let restaurantAnnotation = MKPointAnnotation()
-//            restaurantAnnotation.coordinate = coordinate
-//            restaurantAnnotation.title = "\(title)"
-//            mapView.addAnnotation(restaurantAnnotation)
-//
-//            // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-////            let circle = MKCircle(center: coordinate, radius: regionRadius)
-////            mapView.addOverlay(circle)
-//        } else {
-//            print("System can't track regions")
-//        }
-//    }
-    
-    // MARK: - Comples business logic
-//    func updateRegionsWithLocation(_ location: CLLocation) {
-//
-//        let regionMaxVisiting = 10.0
-//        var regionsToDelete: [String] = []
-//
-//        for regionIdentifier in monitoredRegions.keys {
-//            if Date().timeIntervalSince(monitoredRegions[regionIdentifier]!) > regionMaxVisiting {
-//                print("Thanks for visiting our restaurant")
-//
-//                regionsToDelete.append(regionIdentifier)
-//            }
-//        }
-//
-//        for regionIdentifier in regionsToDelete {
-//            monitoredRegions.removeValue(forKey: regionIdentifier)
-//        }
-//    }
-    
     // 使用者在這個頁面時，每隔幾秒 fetch 一次資料
     @objc func fetchMurmur() {
         
@@ -167,10 +81,7 @@ class LocationMessageViewController: UIViewController {
                 print(error)
                 return
             }
-            
-            //            let murmurs = snapshot.documents.compactMap { snapshot in
-            //                try? snapshot.data(as: Murmur.self)
-            //            }
+
             let murmurs = snapshot.documents.compactMap { snapshot in
                 do {
                     return try snapshot.data(as: Murmurs.self)
@@ -184,7 +95,6 @@ class LocationMessageViewController: UIViewController {
         }
         
         DispatchQueue.main.async {
-//                self.addAnnotations()
             self.filterLocationMessage()
         }
     }
@@ -197,12 +107,7 @@ class LocationMessageViewController: UIViewController {
         mapView.removeAnnotations(mapView.annotations)
         
         for item in murmurData {
-            
-//            let latSquare = pow(item.location.coordinate.latitude - currentCoordinate.latitude, 2)
-//            let longSquare = pow(item.location.coordinate.longitude - currentCoordinate.longitude, 2)
-//            let distanceBetweenMeAndMessage = sqrt(latSquare + longSquare)
-//            print(distanceBetweenMeAndMessage)
-            
+
             let coordinateOfMessage = CLLocationCoordinate2D(latitude: item.location["latitude"]!, longitude: item.location["longitude"]!)
             guard let coordinateOfMe = currentCoordinate else { return }
             let distanceBetweenMeAndMessage = calculateDistance(from: coordinateOfMessage, to: coordinateOfMe)
@@ -269,14 +174,14 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
             
 //            if annotationView == nil {
-                print("mapView annotationView == nil 做的頭標", annotation.title, annotation.coordinate)
+                print("mapView annotationView == nil 做的標註視圖", annotation.title, annotation.coordinate)
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         
                 // 是否要讓點擊 annotation 時顯示 title
                 annotationView?.canShowCallout = true
                 
 //            } else {
-//                print("mapView annotationView != nil 做的頭標", annotation.title, annotation.coordinate)
+//                print("mapView annotationView != nil 做的標註視圖", annotation.title, annotation.coordinate)
 //                annotationView?.annotation = annotation
 //             }
             return annotationView
@@ -308,25 +213,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         }
         
     }
-    
-    // MARK: - CLLocationManagerDelegate
-    // 1. 當用戶進入一個 region
-//    private func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-//        print("enter \(region.identifier)")
-//        monitoredRegions[region.identifier] = Date()
-//    }
 
-    // 2. 當用戶退出一個 region
-//    private func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
-//        print("exit \(region.identifier)")
-//        monitoredRegions.removeValue(forKey: region.identifier)
-//    }
-    
-    // TODO: internal
-//    internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        updateRegionsWithLocation(locations[0])
-//    }
-    
     // CLLocationManagerDelegate 方法，當位置更新時呼叫
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        updateRegionsWithLocation(locations[0])
