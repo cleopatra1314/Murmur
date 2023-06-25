@@ -56,6 +56,7 @@ class NearbyUsersViewController: UIViewController {
         
         layoutView()
         setLocation()
+        print("共有哪些小怪獸",mapView.annotations, mapView.annotations.count)
     }
     
     private func layoutView() {

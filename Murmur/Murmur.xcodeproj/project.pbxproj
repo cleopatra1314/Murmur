@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */; };
 		C831F7C62A4592AA004A9A6F /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C52A4592AA004A9A6F /* ChatViewController.swift */; };
 		C831F7C82A459CAC004A9A6F /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */; };
 		C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_Extension.swift; sourceTree = "<group>"; };
 		C831F7C52A4592AA004A9A6F /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
 		C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */,
 				C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */,
 				C8BAE6E02A46463400ED6941 /* Home Page */,
 				C8ABD83F2A43E9C900B76ADC /* Chat Page */,
@@ -329,6 +332,7 @@
 				C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */,
 				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
 				C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */,
+				C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */,
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */,
 				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
