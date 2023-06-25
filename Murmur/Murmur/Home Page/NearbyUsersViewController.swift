@@ -13,6 +13,8 @@ import FirebaseFirestore
 
 class NearbyUsersViewController: UIViewController {
     
+    let regionRadius = 200.0 // 範圍半徑
+    
     var userData: [Users]?
     let database = Firestore.firestore()
     
@@ -32,31 +34,12 @@ class NearbyUsersViewController: UIViewController {
         super.viewDidLoad()
         relocateMyself()
         fetchUserLocation()
-        //        // 1. 還沒有詢問過用戶以獲得權限
-        //        if CLLocationManager.authorizationStatus() == .notDetermined {
-        //            locationManager.requestAlwaysAuthorization()
-        //        }
-        //        // 2. 用戶不同意
-        //        else if CLLocationManager.authorizationStatus() == .denied {
-        //            present(alertController, animated: true)
-        //        }
-        //        // 3. 用戶已經同意
-        //        else if CLLocationManager.authorizationStatus() == .authorizedAlways {
-        //            locationManager.startUpdatingLocation()
-        //        }
-                
-//                if CLLocationManager.authorizationStatus() == .notDetermined {
-//                        // 取得定位服務授權
-//                        self.locationManager.requestWhenInUseAuthorization()
-//                        // 開始定位自身位置
-//                        self.locationManager.startUpdatingLocation()
-//                    }
-//                currentCoordinate = locationManager.location!.coordinate
-                self.locationManager.startUpdatingLocation()
+
+        self.locationManager.startUpdatingLocation()
         
         layoutView()
         setLocation()
-        print("共有哪些小怪獸",mapView.annotations, mapView.annotations.count)
+        print("共有哪些小怪獸",mapView.annotations, mapView.annotations.count, "隻")
     }
     
     private func layoutView() {
@@ -82,16 +65,14 @@ class NearbyUsersViewController: UIViewController {
             }
             
             self.userData = users
-//            print("解析完後的資料", self.userData)
+            print("解析完後的資料", self.userData)
             
             DispatchQueue.main.async {
+                
                 for user in self.userData! {
-                    
-                    if user.id! == currentUserUID {
-                        break
-                    }
                     self.showOtherUsersOnMap(user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
                 }
+                
             }
             
         }
@@ -99,6 +80,10 @@ class NearbyUsersViewController: UIViewController {
     }
     
     func showOtherUsersOnMap(_ userUID: String, _ name: String, _ imageURL: String, _ coordinate: CLLocationCoordinate2D) {
+        
+        if userUID == currentUserUID {
+            return
+        }
         
         let userUID = userUID
         let coordinate = coordinate
@@ -109,7 +94,7 @@ class NearbyUsersViewController: UIViewController {
     
     func relocateMyself() {
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 500, longitudinalMeters: 500)
+        let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 800, longitudinalMeters: 800)
         mapView.setRegion(region, animated: false)
     }
     
@@ -174,7 +159,6 @@ class NearbyUsersViewController: UIViewController {
             // 2.準備 region 會用到的相關屬性
             let title = "It's me"
 //            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
-            let regionRadius = 200.0 // 範圍半徑
 
             // 3. 設置 region 的相關屬性
             let region = CLCircularRegion(center: currentCoordinate!, radius: regionRadius, identifier: title)
@@ -185,10 +169,6 @@ class NearbyUsersViewController: UIViewController {
 //            let meAnnotation = MeAnnotation(coordinate: currentCoordinate!)
 //            meAnnotation.title = title
 //            mapView.addAnnotation(meAnnotation)
-
-            // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-            let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
-            mapView.addOverlay(circle)
             
         } else {
             print("System can't track regions")
@@ -212,12 +192,6 @@ class NearbyUsersViewController: UIViewController {
         for regionIdentifier in regionsToDelete {
             monitoredRegions.removeValue(forKey: regionIdentifier)
         }
-    }
-    
-    func createChatRoom(){
-        
-        
-        
     }
 
 }
@@ -350,22 +324,11 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
         
-        // 設定初始地圖區域為使用者當前位置
-//        let region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
-//        mapView.setRegion(region, animated: false)
+        // 5. 繪製一個以自己為中心的圓圈範圍
+        let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
+        mapView.removeOverlays(mapView.overlays)
+        mapView.addOverlay(circle)
         
     }
     
-}
-
-extension UIView {
-    func findViewController() -> UIViewController? {
-        if let nextResponder = self.next as? UIViewController {
-            return nextResponder
-        } else if let nextResponder = self.next as? UIView {
-            return nextResponder.findViewController()
-        } else {
-            return nil
-        }
-    }
 }

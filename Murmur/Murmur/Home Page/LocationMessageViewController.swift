@@ -53,27 +53,9 @@ class LocationMessageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         relocateMyself()
-//        // 1. 還沒有詢問過用戶以獲得權限
-//        if CLLocationManager.authorizationStatus() == .notDetermined {
-//            locationManager.requestAlwaysAuthorization()
-//        }
-//        // 2. 用戶不同意
-//        else if CLLocationManager.authorizationStatus() == .denied {
-//            present(alertController, animated: true)
-//        }
-//        // 3. 用戶已經同意
-//        else if CLLocationManager.authorizationStatus() == .authorizedAlways {
-//            locationManager.startUpdatingLocation()
-//        }
-        
-        if CLLocationManager.authorizationStatus() == .notDetermined {
-                // 取得定位服務授權
-                locationManager.requestWhenInUseAuthorization()
-                // 開始定位自身位置
-                locationManager.startUpdatingLocation()
-            }
-        
+
     }
     
 //    override func viewWillAppear(_ animated: Bool) {
@@ -210,9 +192,7 @@ class LocationMessageViewController: UIViewController {
         guard let murmurData else { return }
         
         // TODO: 先把之前的 annotation 全部清除
-        if let annotations = mapView.annotations as? [MKAnnotation] {
-            mapView.removeAnnotations(annotations)
-        }
+        mapView.removeAnnotations(mapView.annotations)
         
         for item in murmurData {
             
@@ -286,7 +266,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             
             if annotationView == nil {
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                print("範圍內的頭標標題", annotation.title)
+        
                 // 是否要讓點擊 annotation 時顯示 title
                 annotationView?.canShowCallout = true
             }
