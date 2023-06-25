@@ -13,7 +13,7 @@ import FirebaseFirestore
 
 class SignInUpViewController: UIViewController {
     
-    var userProfileData: Users?
+    private var userProfileData: Users?
     
 //    let attributes: [NSAttributedString.Key: Any] = [
 //        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
@@ -23,7 +23,7 @@ class SignInUpViewController: UIViewController {
 //        .kern: 1.5,
 //        .paragraphStyle: NSMutableParagraphStyle()
 //    ]
-    let emailTextField: MessageTypeTextField = {
+    private let emailTextField: MessageTypeTextField = {
         let emailTextField = MessageTypeTextField()
         emailTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         emailTextField.textColor = .white
@@ -37,7 +37,7 @@ class SignInUpViewController: UIViewController {
         emailTextField.layer.borderWidth = 1
         return emailTextField
     }()
-    let passwordTextField: MessageTypeTextField = {
+    private let passwordTextField: MessageTypeTextField = {
         let passwordTextField = MessageTypeTextField()
         passwordTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         passwordTextField.textColor = .white
@@ -46,12 +46,12 @@ class SignInUpViewController: UIViewController {
         passwordTextField.layer.borderWidth = 1
         return passwordTextField
     }()
-    let errorLabel: UILabel = {
+    private let errorLabel: UILabel = {
         let errorLabel = UILabel()
         errorLabel.textColor = .red
         return errorLabel
     }()
-    let signInButton: UIButton = {
+    private lazy var signInButton: UIButton = {
         let signInButton = UIButton()
         signInButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         signInButton.backgroundColor = .black
@@ -59,12 +59,12 @@ class SignInUpViewController: UIViewController {
         signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
         return signInButton
     }()
-    let signUpButton: UIButton = {
+    private lazy var signUpButton: UIButton = {
         let signUpButton = UIButton()
         signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         signUpButton.backgroundColor = .black
         signUpButton.setTitle("Sign Up", for: .normal)
-//        signUpButton.addTarget(self, action: #selector(), for: .touchUpInside)
+        signUpButton.addTarget(self, action: #selector(signUpButtonTouchUpInside), for: .touchUpInside)
         return signUpButton
     }()
     
@@ -111,13 +111,11 @@ class SignInUpViewController: UIViewController {
         
         Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
             guard error == nil else {
-                print(error?.localizedDescription ?? "no error?.localizedDescription")
-                print(userEmail, userPassward)
-                print("登入失敗")
+                print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
                 self.errorLabel.text = "帳號或密碼有誤，請重新輸入"
                 return
+                
             }
-            
             guard let userID = result?.user.uid else { return }
             currentUserUID = userID
             print("\(result?.user.uid ?? "") 登入成功")
@@ -136,7 +134,7 @@ class SignInUpViewController: UIViewController {
                 print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
                 return
             }
-            print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
+            print("\(result?.user.uid ?? "")，\(result?.user.email ?? "") 註冊成功")
             currentUserUID = user.uid
 
             let userProfile = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": 0.0, "longitude": 0.0])
@@ -148,19 +146,28 @@ class SignInUpViewController: UIViewController {
             }
         }
         
-        createTabBarController()
+//        createTabBarController()
         
     }
     
     // 新增使用者資料到 firebase
-    func createUsers(userUID: String) {
-
+    private func createUsers(userUID: String) {
+        guard let userProfileData else {
+            print("userProfileData is nil.")
+            return
+        }
+        
         // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUID).setData([
+            // TODO: 這邊寫法為什麼不行
+//            guard let self.userProfileData else {
+//                print("userProfileData is nil.")
+//                return
+//            }
             
-            "userName": userProfileData?.userName,
-            "userPortrait": userProfileData?.userPortrait,
-            "location": ["latitude": userProfileData?.location["latitude"], "longitude": userProfileData?.location["longitude"]]
+            "userName": userProfileData.userName,
+            "userPortrait": userProfileData.userPortrait,
+            "location": ["latitude": userProfileData.location["latitude"], "longitude": userProfileData.location["longitude"]]
 
         ])
         
@@ -186,7 +193,7 @@ class SignInUpViewController: UIViewController {
         // 設定 tabBarItem
         if let tabBarItems = tabBarController.tabBar.items {
             
-            let homeTabBarItem: UITabBarItem = {
+            let _: UITabBarItem = {
                 // 根据索引找到目标 TabBarItem
                 let homeTabBarItem = tabBarItems[0]
                 // 修改 TabBarItem 的属性
@@ -230,4 +237,3 @@ class SignInUpViewController: UIViewController {
     }
     
 }
-

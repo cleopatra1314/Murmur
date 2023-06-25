@@ -21,7 +21,7 @@ let database = Firestore.firestore()
 
 class HomePageViewController: UIViewController {
     
-    let testButton: UIButton = {
+    lazy var testButton: UIButton = {
        let testButton = UIButton()
         testButton.frame = CGRect(x: 100, y: 100, width: 200, height: 60)
         testButton.backgroundColor = .white
@@ -34,19 +34,9 @@ class HomePageViewController: UIViewController {
     }()
     
     var timer = Timer()
-    
-//    var userData1: [String: Any] = [
-//        "userName": "nickName",
-//        "userPortrait": "imageURL",
-//        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679]
-////        "postedMurmur": [String: Any].self,
-////        "savedMurmur": [String: Any].self
-//    ]
+
     var userData: Users?
-    // 從首頁登入時就給
-    
-//    let user1 = Users(userName: "Angela", userPortrait: "AngelaImageURL", location: ["latitude": 12.123, "longitude": 121.123])
-    
+
     private let locationManager = CLLocationManager()
     
     private let userEmailTextField: UITextField = {
@@ -89,30 +79,20 @@ class HomePageViewController: UIViewController {
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
         return filterButton
     }()
-    let switchModeButton: UIButton = {
+    lazy var switchModeButton: UIButton = {
         let switchModeButton = UIButton()
         switchModeButton.backgroundColor = .blue
         switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
         switchModeButton.addTarget(self, action: #selector(switchModeButtonTouchUpInside), for: .touchUpInside)
         return switchModeButton
     }()
-    private let backToMyLocationButton: UIButton = {
+    private lazy var backToMyLocationButton: UIButton = {
         let backToMyLocationButton = UIButton()
         backToMyLocationButton.backgroundColor = .red
         backToMyLocationButton.setImage(UIImage(named: "Icons_Locate"), for: .normal)
         backToMyLocationButton.addTarget(self, action: #selector(locateButtonTouchUpInside), for: .touchUpInside)
         return backToMyLocationButton
     }()
-//    let alertController: UIAlertController = {
-//        let alertController = UIAlertController(title: "建議", message: "請開啟你的定位服務以繼續使用 app", preferredStyle: .alert)
-//        // swiftlint:disable line_length
-//        //    let alertController = UIAlertController(title: "建議", message: "Location services were previously denied. Please enable location services for this app in Settings.", preferredStyle: .alert)
-//        // swiftlint:enable line_length
-//        alertController.addAction(UIAlertAction(title: "確定", style: .default))
-//        alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
-//        // TODO: 加上 handler closure 引導使用者開定位功能
-//        return alertController
-//    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,19 +173,10 @@ class HomePageViewController: UIViewController {
     // 新增使用者資料到 firebase
     func createUsers(userUID: String) {
 
-//        userData["userName"] = "Libby"
-//        userData["userPortrait"] = "LibbyimageURL"
-//        userData["location"] = ["latitude": currentCoordinate?.latitude, "longitude": currentCoordinate?.longitude]
-        //        userData["postedMurmur"] = [String: Any].self
-        //        userData["savedMurmur"] = [String: Any].self
-//        print("準備上推的 userName", userData["user"], userData["location"], "使用者", currentUserUID)
-//        database.collection("userTest").document(userUUID).setData(userData)
-        
-//        let documentReference = database.collection("userTest").document(userUUID)
-
         // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUID).setData([
             
+            // TODO: userData 無值這邊不會報錯，但會 build 不起來
             "userName": userData?.userName,
             "userPortrait": userData?.userPortrait,
             "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
@@ -317,14 +288,7 @@ class HomePageViewController: UIViewController {
             make.height.equalTo(backToMyLocationButton.snp.width)
         }
     }
-    
-//    func showAlert(title: String, message: String, viewController: UIViewController) {
-//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "確定", style: .default, handler: nil)
-//        alertController.addAction(okAction)
-//        viewController.present(alertController, animated: true, completion: nil)
-//    }
-    
+
 }
 
 extension HomePageViewController: CLLocationManagerDelegate {
@@ -355,9 +319,7 @@ extension HomePageViewController: CLLocationManagerDelegate {
             print("currentCoordinate 是空的！")
             return
         }
-//        let userAngela = Users(userName: "Libby", userPortrait: "LibbyImageURL", location: ["latitude": currentCoordinate.latitude, "longitude": currentCoordinate.longitude])
-//
-//        userData = userAngela
+
         setMapView()
         setContainerView()
         self.view.addSubview(testButton)
