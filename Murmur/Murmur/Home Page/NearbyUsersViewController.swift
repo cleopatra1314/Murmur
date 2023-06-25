@@ -32,9 +32,11 @@ class NearbyUsersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         relocateMyself()
         fetchUserLocation()
 
+        // 啟動 locationManager，才會執行 CLLocationManagerDelegate 的 func
         self.locationManager.startUpdatingLocation()
         
         layoutView()
@@ -90,6 +92,13 @@ class NearbyUsersViewController: UIViewController {
         let annotation = OtherUsersAnnotation(userUID: userUID, userName: name, userImage: imageURL, coordinate: coordinate)
         mapView.addAnnotation(annotation)
         
+    }
+    
+    // 5. 繪製一個以自己為中心的圓圈範圍
+    private func drawCircleRegion() {
+        let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
+        mapView.removeOverlays(mapView.overlays)
+        mapView.addOverlay(circle)
     }
     
     func relocateMyself() {
@@ -320,14 +329,11 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
     // TODO: internal
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        // ?? 自己位置一有變動就更新到 currentCoordinate
-        guard let location = locations.last else { return }
-        currentCoordinate = location.coordinate
+        // ?? 自己位置一有變動就更新到 currentCoordinate，目前交由 HomePageViewController 執行，測試後可刪掉
+//        guard let location = locations.last else { return }
+//        currentCoordinate = location.coordinate
         
-        // 5. 繪製一個以自己為中心的圓圈範圍
-        let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
-        mapView.removeOverlays(mapView.overlays)
-        mapView.addOverlay(circle)
+        drawCircleRegion()
         
     }
     
