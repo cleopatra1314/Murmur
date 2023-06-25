@@ -24,7 +24,6 @@ class CustomAnnotationView: MKAnnotationView {
         label.textAlignment = .center
         label.textColor = UIColor.black
         label.font = UIFont.boldSystemFont(ofSize: 12)
-        print("另一邊的頭標", annotation?.title)
         label.text = annotation?.title ?? ""
         
         // 計算標籤的最小尺寸並調整膠囊寬度

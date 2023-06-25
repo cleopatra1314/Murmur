@@ -41,7 +41,6 @@ class NearbyUsersViewController: UIViewController {
         
         layoutView()
         setLocation()
-        print("共有哪些小怪獸",mapView.annotations, mapView.annotations.count, "隻")
     }
     
     private func layoutView() {
@@ -57,7 +56,7 @@ class NearbyUsersViewController: UIViewController {
         database.collectionGroup("userTest").getDocuments { querySnapshot, error in
             if let querySnapshot = querySnapshot {
                 for document in querySnapshot.documents {
-                    print(document.data())
+//                    print("JSON 資料", document.data())
                 }
             } else {
                 return
@@ -69,11 +68,12 @@ class NearbyUsersViewController: UIViewController {
             self.userData = users
             print("解析完後的資料", self.userData)
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 
                 for user in self.userData! {
                     self.showOtherUsersOnMap(user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
                 }
+                print("共有哪些小怪獸", self.mapView.annotations, self.mapView.annotations.count, "隻")
                 
             }
             

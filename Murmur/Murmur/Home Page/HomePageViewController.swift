@@ -13,7 +13,7 @@ import FirebaseFirestore
 
 var currentCoordinate: CLLocationCoordinate2D? {
     didSet {
-        print("目前位置", currentCoordinate)
+        print("變動！目前位置", currentCoordinate)
     }
 }
 var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().currentUser?.uid 取代

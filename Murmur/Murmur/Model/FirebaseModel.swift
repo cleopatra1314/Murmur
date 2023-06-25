@@ -11,7 +11,7 @@ import FirebaseFirestore
 import CoreLocation
 import FirebaseFirestoreSwift
 
-struct Murmur: Codable, Identifiable {
+struct Murmurs: Codable, Identifiable {
 //    var id: ObjectIdentifier
     @DocumentID var id: String?
     
