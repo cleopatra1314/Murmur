@@ -33,6 +33,7 @@
 		C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */; };
 		C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */; };
 		C8C55F9C2A48A9CA00FAE03E /* ChatBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C55F9B2A48A9CA00FAE03E /* ChatBaseViewController.swift */; };
+		C8C55F9E2A48C6D800FAE03E /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C55F9D2A48C6D800FAE03E /* Test.swift */; };
 		C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C232A39DA350025E693 /* AppDelegate.swift */; };
 		C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C252A39DA350025E693 /* SceneDelegate.swift */; };
 		C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* HomePageViewController.swift */; };
@@ -73,6 +74,7 @@
 		C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C8C55F9B2A48A9CA00FAE03E /* ChatBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBaseViewController.swift; sourceTree = "<group>"; };
+		C8C55F9D2A48C6D800FAE03E /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		C8C72C232A39DA350025E693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8C72C252A39DA350025E693 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C8C72C272A39DA350025E693 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */,
 				C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */,
 				C831F7C52A4592AA004A9A6F /* ChatViewController.swift */,
+				C8C55F9D2A48C6D800FAE03E /* Test.swift */,
 			);
 			path = "Chat Page";
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */,
 				C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */,
+				C8C55F9E2A48C6D800FAE03E /* Test.swift in Sources */,
 				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,

@@ -64,14 +64,18 @@ class ChatBaseViewController: UIViewController {
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
-        self.tabBarController?.tabBar.isHidden = true
-        
         self.view.backgroundColor = .orange
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
         setNav()
         setTypingArea()
         setTableView()
   
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.tabBar.isHidden = true
     }
 
     private func setNav() {
@@ -82,17 +86,17 @@ class ChatBaseViewController: UIViewController {
 //        closeButtonItem.tintColor = .black
 //        self.navigationItem.leftBarButtonItem = closeButtonItem
         
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .red
-        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        navBarAppearance.titleTextAttributes = [
-           .foregroundColor: UIColor.black,
-           .font: UIFont(name: "Roboto", size: 24)
-//           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
-           
-        ]
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+//        let navBarAppearance = UINavigationBarAppearance()
+//        navBarAppearance.configureWithDefaultBackground()
+////        navBarAppearance.backgroundColor = .red
+//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+//        navBarAppearance.titleTextAttributes = [
+//           .foregroundColor: UIColor.black,
+//           .font: UIFont(name: "Roboto", size: 24)
+////           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
+//
+//        ]
+//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
 //        self.navigationItem.title = "塗鴉留言"
         

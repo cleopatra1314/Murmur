@@ -40,6 +40,12 @@ class ChatViewController: UIViewController {
         setTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     private func setNav() {
         
         let navBarAppearance = UINavigationBarAppearance()
@@ -136,6 +142,7 @@ class ChatViewController: UIViewController {
                 }
             }
             
+            self.chatRoomLatestMessageArray = [String]()
             // 取得每個聊天室的最新一則訊息
             for chatRoom in chatRoomsArray {
                 print("聊天室ID為", chatRoom)
@@ -149,7 +156,6 @@ class ChatViewController: UIViewController {
                     print("第一則訊息為", (messages?.first)!.messageContent)
                  
                     // TODO: ?? 當 chatRoomLatestMessageArray 為 [String]? 時，append 無效，要先 = [String]() 才行（移到上面 for in loop 外）
-                    self.chatRoomLatestMessageArray = [String]()
                     self.chatRoomLatestMessageArray?.append((messages?.first)!.messageContent)
                     print("第一則訊息陣列為", self.chatRoomLatestMessageArray)
 
@@ -177,6 +183,9 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageArray?[indexPath.row]
         cell.layoutCell()
         
+        // 使 cell 在选中单元格时没有灰色背景
+        cell.selectionStyle = .none
+        
         return cell
     }
     
@@ -198,6 +207,11 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         chatRoomVC.otherUserName = chatRoomOtherUserNameArray![indexPath.row]
         chatRoomVC.otherUserImageURL = chatRoomOtherUserPortraitArray![indexPath.row]
         
+        // 找到父视图控制器
+        if let tabBarController = self.tabBarController {
+            // 设置tabbar的隐藏状态为false
+            tabBarController.tabBar.isHidden = false
+        }
         self.navigationController?.pushViewController(chatRoomVC, animated: true)
     }
     
