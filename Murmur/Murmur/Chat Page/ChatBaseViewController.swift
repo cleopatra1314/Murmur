@@ -190,7 +190,6 @@ class ChatBaseViewController: UIViewController {
         addChatMessages()
 
         typingTextField.text = ""
-        chatRoomTableView.scrollToRow(at: IndexPath(row: messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
     }
     
     private func addChatMessages() {
@@ -229,7 +228,7 @@ class ChatBaseViewController: UIViewController {
 //            self.messageDataResult = messages!
 //            print("?? 解析完後的資料", self.messageDataResult)
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 
                 self.messageTypeArray = [String]()
                 self.messageDataArray = [String]()
@@ -240,6 +239,7 @@ class ChatBaseViewController: UIViewController {
                     self.messageDataArray.append(message.messageContent)
                 }
                 self.chatRoomTableView.reloadData()
+                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
             }
             
         }
@@ -308,4 +308,3 @@ extension ChatBaseViewController: UITextFieldDelegate {
     }
     
 }
-

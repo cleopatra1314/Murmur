@@ -15,6 +15,9 @@ class ChatViewController: UIViewController {
     var chatRoomOtherUserUIDArray: [String]?
     var chatRoomOtherUserPortraitArray: [String]?
     var chatRoomLatestMessageArray: [String]?
+    
+    var chatRoomLatestMessageDictionary: [String: String]?
+    
     var messagesDataResult: [Messages]?
     
     var chatRoomOtherUsersDataResult: [Users]?
@@ -115,18 +118,25 @@ class ChatViewController: UIViewController {
                 print("聊天室數量為", chatRooms!.count)
                 self.chatRoomsDataResult = chatRooms
 
-                self.chatRoomsArray.append(chatRoom.id!)
+//                self.chatRoomsArray.append(chatRoom.id!)
                 self.chatRoomOtherUserUIDArray?.append(chatRoom.theOtherUserUID)
+                
+                var username: String?
 
+                // 取得每個聊天室的使用者名稱及頭貼
                 database.collection("userTest").document(chatRoom.theOtherUserUID).getDocument { documentSnapshot, error in
                     if let document = documentSnapshot, document.exists {
 
                         let data = document.data()
 
-                        if let userName = data?["userName"] as? String {
-
-                            self.chatRoomOtherUserNameArray?.append(userName)
-                        }
+//                        if let userName = data?["userName"] as? String {
+//
+//                            self.chatRoomOtherUserNameArray?.append(userName)
+//                        }
+                        
+                        username = data?["userName"] as? String
+                        self.chatRoomOtherUserNameArray?.append(username!)
+                        
                         if let userPortrait = data?["userPortrait"] as? String {
 
                             self.chatRoomOtherUserPortraitArray?.append(userPortrait)
@@ -140,33 +150,57 @@ class ChatViewController: UIViewController {
                         print("文档不存在")
                     }
                 }
+                
+                // 取得每個聊天室的第一則訊息
+//                database.collection("chatRooms").document(chatRoom.id!).collection("messages").order(by: "createTime", descending: true).getDocuments { querySnapshot, error in
+//                    
+//                    let messages = querySnapshot?.documents.compactMap { queryDocumentSnapshot in
+//                        try? queryDocumentSnapshot.data(as: Messages.self)
+//                    }
+//                    
+//                    self.messagesDataResult = messages
+//                    print("第一則訊息為", (messages?.first)!.messageContent)
+//                 
+//                    self.chatRoomLatestMessageDictionary![username!] = (messages?.first)!.messageContent
+//                    // TODO: ?? 當 chatRoomLatestMessageArray 為 [String]? 時，append 無效，要先 = [String]() 才行（移到上面 for in loop 外）
+//                    self.chatRoomLatestMessageArray?.append((messages?.first)!.messageContent)
+//                    print("第一則訊息陣列為", self.chatRoomLatestMessageArray)
+//
+//                    DispatchQueue.main.async {
+//                        self.chatRoomTableView.reloadData()
+//                    }
+//                    
+//                }
+                
             }
             
-            self.chatRoomLatestMessageArray = [String]()
-            // 取得每個聊天室的最新一則訊息
-            for chatRoom in chatRoomsArray {
-                print("聊天室ID為", chatRoom)
-                database.collection("chatRooms").document(chatRoom).collection("messages").order(by: "createTime", descending: true).getDocuments { querySnapshot, error in
-                    
-                    let messages = querySnapshot?.documents.compactMap { queryDocumentSnapshot in
-                        try? queryDocumentSnapshot.data(as: Messages.self)
-                    }
-                    
-                    self.messagesDataResult = messages
-                    print("第一則訊息為", (messages?.first)!.messageContent)
-                 
-                    // TODO: ?? 當 chatRoomLatestMessageArray 為 [String]? 時，append 無效，要先 = [String]() 才行（移到上面 for in loop 外）
-                    self.chatRoomLatestMessageArray?.append((messages?.first)!.messageContent)
-                    print("第一則訊息陣列為", self.chatRoomLatestMessageArray)
-
-                    DispatchQueue.main.async {
-                        self.chatRoomTableView.reloadData()
-                    }
-                    
-                }
-            }
+//            self.chatRoomLatestMessageArray = [String]()
+//            // 取得每個聊天室的最新一則訊息
+//            for chatRoom in chatRoomsArray {
+//                print("聊天室ID為", chatRoom)
+//                database.collection("chatRooms").document(chatRoom).collection("messages").order(by: "createTime", descending: true).getDocuments { querySnapshot, error in
+//
+//                    let messages = querySnapshot?.documents.compactMap { queryDocumentSnapshot in
+//                        try? queryDocumentSnapshot.data(as: Messages.self)
+//                    }
+//
+//                    self.messagesDataResult = messages
+//                    print("第一則訊息為", (messages?.first)!.messageContent)
+//
+////                    self.chatRoomLatestMessageDictionary[] = (messages?.first)!.messageContent
+//                    // TODO: ?? 當 chatRoomLatestMessageArray 為 [String]? 時，append 無效，要先 = [String]() 才行（移到上面 for in loop 外）
+//                    self.chatRoomLatestMessageArray?.append((messages?.first)!.messageContent)
+//                    print("第一則訊息陣列為", self.chatRoomLatestMessageArray)
+//
+//                    DispatchQueue.main.async {
+//                        self.chatRoomTableView.reloadData()
+//                    }
+//
+//                }
+//            }
  
         }
+        
     }
 }
 
@@ -180,7 +214,8 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ChatRoomTableViewCell.self)", for: indexPath) as? ChatRoomTableViewCell else { return UITableViewCell.init() }
         cell.otherUserImageView.image = UIImage(named: "User2Portrait.png")
         cell.otherUserNameLabel.text = chatRoomOtherUserNameArray?[indexPath.row]
-        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageArray?[indexPath.row]
+//        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageArray?[indexPath.row]
+        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageDictionary![(chatRoomOtherUserNameArray![indexPath.row])]
         cell.layoutCell()
         
         // 使 cell 在选中单元格时没有灰色背景

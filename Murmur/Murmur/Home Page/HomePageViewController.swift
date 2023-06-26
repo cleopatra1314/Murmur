@@ -21,18 +21,6 @@ let database = Firestore.firestore()
 
 class HomePageViewController: UIViewController {
     
-    lazy var testButton: UIButton = {
-       let testButton = UIButton()
-        testButton.frame = CGRect(x: 100, y: 100, width: 200, height: 60)
-        testButton.backgroundColor = .white
-        testButton.layer.borderColor = UIColor.red.cgColor
-        testButton.layer.borderWidth = 3
-        testButton.setTitle("Test", for: .normal)
-        testButton.setTitleColor(.red, for: .normal)
-        testButton.addTarget(self, action: #selector(modifyCurrentLocation), for: .touchUpInside)
-        return testButton
-    }()
-    
     var timer = Timer()
 
     var userData: Users?
@@ -322,7 +310,7 @@ extension HomePageViewController: CLLocationManagerDelegate {
 
         setMapView()
         setContainerView()
-        self.view.addSubview(testButton)
+
     }
     
 }
