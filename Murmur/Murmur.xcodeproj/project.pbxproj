@@ -27,6 +27,8 @@
 		C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */; };
 		C8AF2DBD2A415DE300B703E8 /* OtherUsersAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */; };
 		C8B007562A49EBE000049FA0 /* HeaderOfCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */; };
+		C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */; };
+		C8B0075A2A4AC52500049FA0 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileCollectionViewCell.swift */; };
 		C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */; };
 		C8BAE6E22A464BE600ED6941 /* SignInUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */; };
 		C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3A0942A48342A000E967D /* UIView_Extension.swift */; };
@@ -67,6 +69,8 @@
 		C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotation.swift; sourceTree = "<group>"; };
 		C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderOfCollectionView.swift; sourceTree = "<group>"; };
+		C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
+		C8B007592A4AC52500049FA0 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
 		C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarTableHeaderView.swift; path = Murmur/Model/SearchBarTableHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInUpViewController.swift; sourceTree = "<group>"; };
 		C8C3A0942A48342A000E967D /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 		C8C72C172A39DA350025E693 = {
 			isa = PBXGroup;
 			children = (
+				C8B007592A4AC52500049FA0 /* ProfileCollectionViewCell.swift */,
 				C8C72C222A39DA350025E693 /* Murmur */,
 				C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */,
 				C363AD4F805F687B9333EE1A /* Pods */,
@@ -193,6 +198,7 @@
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
 				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
+				C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
 				C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */,
@@ -349,6 +355,7 @@
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8B007562A49EBE000049FA0 /* HeaderOfCollectionView.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
+				C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */,
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,
 				C8ABD8412A43EA1400B76ADC /* UserMeChatTableViewCell.swift in Sources */,
 				C831F7C62A4592AA004A9A6F /* ChatViewController.swift in Sources */,
@@ -361,6 +368,7 @@
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */,
 				C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */,
+				C8B0075A2A4AC52500049FA0 /* ProfileCollectionViewCell.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,

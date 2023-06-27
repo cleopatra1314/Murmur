@@ -11,6 +11,28 @@ import MapKit
 import CoreLocation
 import FirebaseFirestore
 import FirebaseCore
+//import SwiftUI
+//
+// 預覽 swiftUI 畫面
+//struct PreviewViewController: UIViewControllerRepresentable {
+//    typealias UIViewControllerType = UIViewController
+//
+//    func makeUIViewController(context: Context) -> UIViewController {
+//        // 在此處初始化並返回您要預覽的 UIKit ViewController
+//        let viewController = HomePageViewController() // viewController 為您要預覽的實際 ViewController
+//        return viewController
+//    }
+//
+//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+//        // 這個方法留空，因為您不需要在此處更新預覽的 UIKit ViewController
+//    }
+//}
+//
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PreviewViewController().previewDevice("iPhone 14") // 根據您的需求選擇預覽的裝置
+//    }
+//}
 
 class LocationMessageViewController: UIViewController {
     
@@ -28,15 +50,6 @@ class LocationMessageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//         创建一个定时器，每隔5秒执行一次函数
-//        timer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { timer in
-//
-//            self.fetchMurmur()
-//        }
-        
-//         将定时器添加到当前运行循环中
-//        RunLoop.current.add(timer, forMode: .common)
         
         relocateMyself()
         fetchMurmur()
@@ -67,7 +80,7 @@ class LocationMessageViewController: UIViewController {
     
     func relocateMyself() {
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 300, longitudinalMeters: 300)
+        let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
         mapView.setRegion(region, animated: false)
     }
     
@@ -127,7 +140,7 @@ class LocationMessageViewController: UIViewController {
         }
         
         // 讓範圍跟著用戶移動更新
-        let circle = MKCircle(center: currentCoordinate!, radius: 200)
+        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: 200)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
         
@@ -234,4 +247,10 @@ extension LocationMessageViewController {
         return location1.distance(from: location2)
     }
 
+}
+
+extension UIDevice {
+    static var hasDynamicIsland: Bool {
+        ["iPhone 14 Pro", "iPhone 14 Pro Max"].contains(current.name)
+    }
 }
