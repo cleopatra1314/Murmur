@@ -26,6 +26,7 @@
 		C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */; };
 		C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */; };
 		C8AF2DBD2A415DE300B703E8 /* OtherUsersAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */; };
+		C8B007562A49EBE000049FA0 /* HeaderOfCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */; };
 		C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */; };
 		C8BAE6E22A464BE600ED6941 /* SignInUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */; };
 		C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3A0942A48342A000E967D /* UIView_Extension.swift */; };
@@ -65,6 +66,7 @@
 		C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotation.swift; sourceTree = "<group>"; };
+		C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderOfCollectionView.swift; sourceTree = "<group>"; };
 		C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarTableHeaderView.swift; path = Murmur/Model/SearchBarTableHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInUpViewController.swift; sourceTree = "<group>"; };
 		C8C3A0942A48342A000E967D /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */,
 				C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */,
 				C8C3A0942A48342A000E967D /* UIView_Extension.swift */,
 				C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */,
@@ -344,6 +347,7 @@
 				C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */,
 				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
+				C8B007562A49EBE000049FA0 /* HeaderOfCollectionView.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,
 				C8ABD8412A43EA1400B76ADC /* UserMeChatTableViewCell.swift in Sources */,
@@ -439,7 +443,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -493,7 +497,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -520,7 +524,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -551,7 +555,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

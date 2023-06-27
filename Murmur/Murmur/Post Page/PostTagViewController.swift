@@ -30,8 +30,8 @@ class PostTagViewController: UIViewController {
 //        return allTagStack
 //    }()
     var murmurData: [String: Any] = [
-        "userEmail": "hand1@gmail.com",
-        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679],
+        "userUID": currentUserUID,
+        "location": ["latitude": currentCoordinate?.latitude, "longitude": currentCoordinate?.longitude],
         "murmurMessage": "給我一份卡啦雞腿堡",
         "murmurImage": "png",
         "selectedTags": ["食物", "耍廢"],
@@ -108,11 +108,16 @@ class PostTagViewController: UIViewController {
     
     func createMurmur() {
         print("上傳的位置資料", murmurData["location"]!)
-//        let documentReference = db.collection("murmurs").addDocument(data: murmurData)
-        // TODO: 為了方便測試，先用塗鴉留言當作 document name
-        database.collection("murmurs").document((murmurData["murmurMessage"] as? String)!).setData(murmurData)
+
+        // 在總 murmurs 新增資料
+        let documentReference = database.collection("murmurs").document()
+        documentReference.setData(murmurData)
+        
+        // 在目前用戶的 postedMurmur 新增資料
+        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(documentReference.documentID).setData(murmurData)
+        
 //        do {
-//            try db.collection("murmurs").document("陪你很久很久").setData(murmurData)
+//            try db.collection("murmurs").document("很久很久").setData(murmurData)
 //        } catch {
 //            print(error)
 //        }

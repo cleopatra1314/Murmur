@@ -59,15 +59,7 @@ class PostViewController: UIViewController {
     }
     
     private func setNav() {
-//        let navigationController = UINavigationController(rootViewController: self)
-//        navigationController.modalPresentationStyle = .fullScreen
-//        navigationController.navigationBar.barStyle = .default
-//        navigationController.navigationBar.backgroundColor = .blue
-        
-//        self.navigationController?.navigationBar.isTranslucent = false
-//        self.navigationController?.navigationBar.backgroundColor = .white
-//        UINavigationBar.appearance().isTranslucent = false
-//        UINavigationBar.appearance().barTintColor = .red
+
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithDefaultBackground()
 //        navBarAppearance.backgroundColor = .red
