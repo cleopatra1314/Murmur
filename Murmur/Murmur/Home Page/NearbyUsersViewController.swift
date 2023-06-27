@@ -45,9 +45,12 @@ class NearbyUsersViewController: UIViewController {
     
     private func layoutView() {
         self.view.addSubview(mapView)
-        mapView.snp.makeConstraints { make in
-            make.edges.equalTo(self.view)
-        }
+        mapView.frame = view.bounds
+        
+        // TODO: 以下寫法在小雞型會跑版
+//        mapView.snp.makeConstraints { make in
+//            make.edges.equalTo(self.view.snp.margins)
+//        }
     }
     
     // 設定每 20 秒 fetch 一次

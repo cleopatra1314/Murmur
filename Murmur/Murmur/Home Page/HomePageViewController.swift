@@ -19,6 +19,7 @@ var currentCoordinate: CLLocationCoordinate2D? {
 }
 var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().currentUser?.uid 取代
 let database = Firestore.firestore()
+let fullScreenSize = UIScreen.main.bounds
 
 class HomePageViewController: UIViewController {
     

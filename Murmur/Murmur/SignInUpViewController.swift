@@ -28,12 +28,12 @@ class SignInUpViewController: UIViewController {
         emailTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         emailTextField.textColor = .white
         emailTextField.placeholder = "請輸入 email"
-        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入", attributes: [
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
             NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
             NSAttributedString.Key.kern: 1.5,
-            NSAttributedString.Key.foregroundColor: UIColor.green
+//            NSAttributedString.Key.foregroundColor: UIColor.green
         ])
-        emailTextField.layer.borderColor = UIColor.darkGray.cgColor
+        emailTextField.layer.borderColor = UIColor.lightGray.cgColor
         emailTextField.layer.borderWidth = 1
         return emailTextField
     }()
@@ -42,7 +42,7 @@ class SignInUpViewController: UIViewController {
         passwordTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         passwordTextField.textColor = .white
         passwordTextField.placeholder = "請輸入密碼"
-        passwordTextField.layer.borderColor = UIColor.darkGray.cgColor
+        passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
         passwordTextField.layer.borderWidth = 1
         return passwordTextField
     }()
@@ -54,7 +54,7 @@ class SignInUpViewController: UIViewController {
     private lazy var signInButton: UIButton = {
         let signInButton = UIButton()
         signInButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-        signInButton.backgroundColor = .black
+//        signInButton.backgroundColor = .black
         signInButton.setTitle("Sign In", for: .normal)
         signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
         return signInButton
@@ -62,7 +62,7 @@ class SignInUpViewController: UIViewController {
     private lazy var signUpButton: UIButton = {
         let signUpButton = UIButton()
         signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-        signUpButton.backgroundColor = .black
+//        signUpButton.backgroundColor = .black
         signUpButton.setTitle("Sign Up", for: .normal)
         signUpButton.addTarget(self, action: #selector(signUpButtonTouchUpInside), for: .touchUpInside)
         return signUpButton
@@ -71,6 +71,7 @@ class SignInUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor(red: 29/255, green: 35/255, blue: 35/255, alpha: 1)
         layoutView()
         
     }
@@ -106,10 +107,10 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInButtonTouchUpInside() {
         
-//        guard let userEmail = self.emailTextField.text else { return }
-//        guard let userPassward = self.passwordTextField.text else { return }
-        let userEmail = "angela@gmail.com"
-        let userPassward = "111111"
+        guard let userEmail = self.emailTextField.text else { return }
+        guard let userPassward = self.passwordTextField.text else { return }
+//        let userEmail = "angela@gmail.com"
+//        let userPassward = "111111"
         
         Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
             guard error == nil else {

@@ -26,9 +26,10 @@
 		C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */; };
 		C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */; };
 		C8AF2DBD2A415DE300B703E8 /* OtherUsersAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */; };
-		C8B007562A49EBE000049FA0 /* HeaderOfCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */; };
+		C8B007562A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift */; };
 		C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */; };
-		C8B0075A2A4AC52500049FA0 /* ProfileCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileCollectionViewCell.swift */; };
+		C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */; };
+		C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */; };
 		C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */; };
 		C8BAE6E22A464BE600ED6941 /* SignInUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */; };
 		C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3A0942A48342A000E967D /* UIView_Extension.swift */; };
@@ -43,6 +44,10 @@
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
+		C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */; };
+		C8F041EC2A4B41180044BE9C /* PostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */; };
+		C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */; };
+		C8F041F12A4B72E20044BE9C /* CALayer_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */; };
 		C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */; };
 		DC450CD07D10418D1E75917C /* Pods_Murmur.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */; };
 /* End PBXBuildFile section */
@@ -68,9 +73,10 @@
 		C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotation.swift; sourceTree = "<group>"; };
-		C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderOfCollectionView.swift; sourceTree = "<group>"; };
+		C8B007552A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderOfProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
-		C8B007592A4AC52500049FA0 /* ProfileCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCollectionViewCell.swift; sourceTree = "<group>"; };
+		C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
+		C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarTableHeaderView.swift; path = Murmur/Model/SearchBarTableHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInUpViewController.swift; sourceTree = "<group>"; };
 		C8C3A0942A48342A000E967D /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
@@ -87,6 +93,10 @@
 		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
+		C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootPrintViewController.swift; sourceTree = "<group>"; };
+		C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCollectionViewCell.swift; sourceTree = "<group>"; };
+		C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTableViewCell.swift; sourceTree = "<group>"; };
+		C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CALayer_Extension.swift; sourceTree = SOURCE_ROOT; };
 		C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotation.swift; sourceTree = "<group>"; };
 		D51D7A4E17E030FDC9A09813 /* Pods-Murmur.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.release.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.release.xcconfig"; sourceTree = "<group>"; };
 		E9C8B595076B3945BA1BAAC2 /* Pods-Murmur.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.debug.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.debug.xcconfig"; sourceTree = "<group>"; };
@@ -176,7 +186,6 @@
 		C8C72C172A39DA350025E693 = {
 			isa = PBXGroup;
 			children = (
-				C8B007592A4AC52500049FA0 /* ProfileCollectionViewCell.swift */,
 				C8C72C222A39DA350025E693 /* Murmur */,
 				C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */,
 				C363AD4F805F687B9333EE1A /* Pods */,
@@ -187,7 +196,8 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
-				C8B007552A49EBE000049FA0 /* HeaderOfCollectionView.swift */,
+				C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */,
+				C8F041EF2A4B5EAE0044BE9C /* Profile Page */,
 				C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */,
 				C8C3A0942A48342A000E967D /* UIView_Extension.swift */,
 				C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */,
@@ -197,7 +207,6 @@
 				C8AF2DB82A41559200B703E8 /* Post Page */,
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
-				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
 				C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
@@ -206,6 +215,20 @@
 				C8C72C312A39DA360025E693 /* Info.plist */,
 			);
 			path = Murmur;
+			sourceTree = "<group>";
+		};
+		C8F041EF2A4B5EAE0044BE9C /* Profile Page */ = {
+			isa = PBXGroup;
+			children = (
+				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
+				C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */,
+				C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */,
+				C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */,
+				C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */,
+				C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */,
+				C8B007552A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift */,
+			);
+			path = "Profile Page";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8AF2DBD2A415DE300B703E8 /* OtherUsersAnnotation.swift in Sources */,
+				C8F041F12A4B72E20044BE9C /* CALayer_Extension.swift in Sources */,
 				C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */,
 				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
 				C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */,
@@ -351,9 +375,11 @@
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */,
 				C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */,
+				C8F041EC2A4B41180044BE9C /* PostsCollectionViewCell.swift in Sources */,
+				C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */,
 				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
-				C8B007562A49EBE000049FA0 /* HeaderOfCollectionView.swift in Sources */,
+				C8B007562A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
 				C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */,
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,
@@ -364,11 +390,12 @@
 				C831F7C82A459CAC004A9A6F /* ChatRoomTableViewCell.swift in Sources */,
 				C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */,
 				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
+				C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */,
 				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */,
 				C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */,
-				C8B0075A2A4AC52500049FA0 /* ProfileCollectionViewCell.swift in Sources */,
+				C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
@@ -376,6 +403,7 @@
 				C8C55F9C2A48A9CA00FAE03E /* ChatBaseViewController.swift in Sources */,
 				C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */,
 				C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */,
+				C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,7 +479,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -505,7 +533,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -532,7 +560,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -563,7 +591,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

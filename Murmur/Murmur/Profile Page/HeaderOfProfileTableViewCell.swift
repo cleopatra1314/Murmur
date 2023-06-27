@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HeaderOfCollectionView: UICollectionViewCell {
+class HeaderOfProfileTableViewCell: UITableViewCell {
     
     var selectedButton = UIButton()
     
@@ -22,10 +22,10 @@ class HeaderOfCollectionView: UICollectionViewCell {
     private let postsLabel: UILabel = {
         let postsLabel = UILabel()
         postsLabel.text = "Posts"
-        postsLabel.textColor = .white
+        postsLabel.textColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1)
         return postsLabel
     }()
-    private let postsButton: UIButton = {
+    lazy var postsButton: UIButton = {
         let postsButton = UIButton()
 //        postsButton.frame = CGRect(x: 0, y: 0, width: 72, height: 48)
 //        postsButton.setTitle("Posts", for: .normal)
@@ -36,10 +36,10 @@ class HeaderOfCollectionView: UICollectionViewCell {
     private let footPrintLabel: UILabel = {
         let footPrintLabel = UILabel()
         footPrintLabel.text = "FootPrint"
-        footPrintLabel.textColor = .white
+        footPrintLabel.textColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1)
         return footPrintLabel
     }()
-    private let footPrintButton: UIButton = {
+    lazy var footPrintButton: UIButton = {
         let footPrintButton = UIButton()
 //        footPrintButton.frame = CGRect(x: 0, y: 0, width: 72, height: 48)
 //        footPrintButton.setTitle("FootPrint", for: .normal)
@@ -47,13 +47,24 @@ class HeaderOfCollectionView: UICollectionViewCell {
         footPrintButton.addTarget(self, action: #selector(segmentButtonTouchUpInside), for: .touchUpInside)
         return footPrintButton
     }()
-    private let segmentBottomLineBackground = UIView()
-    private let segmentBottomLine = UIView()
+    private let segmentBottomLineBackground: UIView = {
+        let segmentBottomLineBackground = UIView()
+        segmentBottomLineBackground.backgroundColor = .clear
+        return segmentBottomLineBackground
+    }()
+    private let segmentBottomLine: UIView = {
+        let segmentBottomLine = UIView()
+        segmentBottomLine.backgroundColor = UIColor(red: 62/255, green: 87/255, blue: 83/255, alpha: 1)
+        segmentBottomLine.layer.cornerRadius = 1.5
+        return segmentBottomLine
+    }()
     
-    
-    //MARK: Segment button
-    func layoutSegmentControl(){
+    // MARK: Segment button
+    func layoutSegmentControl() {
+        
+        self.layer.backgroundColor = UIColor.clear.cgColor
 
+        self.contentView.addSubview(stackView)
         postsButton.addSubview(postsLabel)
         footPrintButton.addSubview(footPrintLabel)
         stackView.addArrangedSubview(postsButton)
@@ -74,36 +85,30 @@ class HeaderOfCollectionView: UICollectionViewCell {
         }
         
         stackView.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
+            make.centerX.equalTo(self.contentView)
+            make.top.equalTo(self.contentView).offset(0)
+            make.bottom.equalTo(self.contentView).offset(-8)
         }
-        
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: self.topAnchor),
-            stackView.heightAnchor.constraint(equalToConstant: 44)
-        ])
     
     }
     
-    //MARK: Button action
-    @objc func segmentButtonTouchUpInside(_ sender: UIButton){
+    // MARK: Button action
+    @objc func segmentButtonTouchUpInside(_ sender: UIButton) {
         
         selectedButton = sender
 
         let segmentButtonArray = [postsButton, footPrintButton]
 
-        for item in segmentButtonArray{
+        for item in segmentButtonArray {
             
-            if item == sender{
+            if item == sender {
                 sender.isSelected = true
-            }else{
+            } else {
                 item.isSelected = false
             }
         }
         
-        //TODO: 設定 bottom line 跟著 button 跑
-        layoutSegmentBottomLine(ofSelectedButton: sender)
+        moveSegmentBottomLine(ofSelectedButton: sender)
         
 //        if sender == postsButton{
 //
@@ -116,13 +121,15 @@ class HeaderOfCollectionView: UICollectionViewCell {
         
     }
     
-    func layoutSegmentBottomLine(ofSelectedButton: UIButton){
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        segmentBottomLine.frame = CGRect(x: postsButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
+    }
+    
+    func layoutSegmentBottomLine() {
         
         self.addSubview(segmentBottomLineBackground)
         segmentBottomLineBackground.addSubview(segmentBottomLine)
-        
-        segmentBottomLineBackground.backgroundColor = UIColor(red: 211/255, green: 211/255, blue: 211/255, alpha: 1)
-        segmentBottomLine.backgroundColor = .black
         
         segmentBottomLineBackground.translatesAutoresizingMaskIntoConstraints = false
         segmentBottomLine.translatesAutoresizingMaskIntoConstraints = false
@@ -131,28 +138,19 @@ class HeaderOfCollectionView: UICollectionViewCell {
             segmentBottomLineBackground.leadingAnchor.constraint(equalTo: postsLabel.leadingAnchor),
             segmentBottomLineBackground.trailingAnchor.constraint(equalTo: footPrintLabel.trailingAnchor),
             segmentBottomLineBackground.topAnchor.constraint(equalTo: stackView.bottomAnchor),
-            segmentBottomLineBackground.heightAnchor.constraint(equalToConstant: 2),
-            
-            //??
-            segmentBottomLine.widthAnchor.constraint(equalTo: postsLabel.widthAnchor, multiplier: 1),
-            segmentBottomLine.topAnchor.constraint(equalTo: segmentBottomLineBackground.topAnchor),
-            segmentBottomLine.bottomAnchor.constraint(equalTo: segmentBottomLineBackground.bottomAnchor),
-            //segmentBottomLine.heightAnchor.constraint(equalToConstant: 3),
-            //?? segmentBottomLine.centerXAnchor.constraint(equalTo: selectedButton.centerXAnchor)
-            
+            segmentBottomLineBackground.heightAnchor.constraint(equalToConstant: 3)
         ])
-        segmentBottomLine.center.x = ofSelectedButton.center.x
-        print(segmentBottomLine.center.x)
         
     }
     
-    //MARK: 移動 segment 底線的動畫
-    func moveSegmentBottomLine(ofSelectedButton: UIButton){
+    // MARK: 移動 segment 底線的動畫
+    func moveSegmentBottomLine(ofSelectedButton: UIButton) {
         
         let widthOfSegmentBottomLine = Double()
         var selectedLabel = UILabel()
+        guard let labelOfSegmentButton = ofSelectedButton.subviews[0] as? UILabel else { return }
         
-        switch ofSelectedButton.title(for: .normal) {
+        switch labelOfSegmentButton.text {
         case "Posts":
             selectedLabel = postsLabel
         case "FootPrint":
@@ -161,13 +159,10 @@ class HeaderOfCollectionView: UICollectionViewCell {
             return
         }
         
-        UIView.animate(withDuration: 0.4) { [self] in
-            self.segmentBottomLine.frame = CGRect(x: ofSelectedButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: selectedLabel.frame.width, height: 1)
+        UIView.animate(withDuration: 0.3) { [self] in
+            self.segmentBottomLine.frame = CGRect(x: ofSelectedButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: selectedLabel.frame.width, height: 3)
         }
-        //         segmentBottomLine.center.x = ofSelectedButton.center.x
-        print(segmentBottomLine.center.x)
         
     }
-    
     
 }
