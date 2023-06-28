@@ -30,11 +30,12 @@ class PostTagViewController: UIViewController {
 //        return allTagStack
 //    }()
     var murmurData: [String: Any] = [
-        "userEmail": "hand1@gmail.com",
-        "location": ["latitude": 25.040094628617304, "longitude": 121.53261288219679],
-        "murmurMessage": "給我一份卡啦雞腿堡",
+        "userUID": currentUserUID,
+//        "location": ["latitude": nil, "longitude": nil],
+        "location": [String: Double](),
+        "murmurMessage": [String](),
         "murmurImage": "png",
-        "selectedTags": ["食物", "耍廢"],
+        "selectedTags": [String](),
         "createTime": Timestamp(date: Date())
         ]
     
@@ -57,9 +58,9 @@ class PostTagViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.title = "塗鴉標籤"
         
-        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
-        closeButtonItem.tintColor = .black
-        navigationItem.leftBarButtonItem = closeButtonItem
+        let backButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonItemTouchUpInside))
+        backButtonItem.tintColor = .black
+        navigationItem.leftBarButtonItem = backButtonItem
         
         let postButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonItemTouchUpInside))
         postButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
@@ -67,7 +68,7 @@ class PostTagViewController: UIViewController {
         navigationItem.rightBarButtonItem = postButtonItem
     }
     
-    @objc func closeButtonItemTouchUpInside() {
+    @objc func backButtonItemTouchUpInside() {
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -91,23 +92,33 @@ class PostTagViewController: UIViewController {
         
         // 将 location 强制转换为 [String: Double] 类型
         if var location = murmurData["location"] as? [String: Double] {
-            location["latitude"] = currentCoordinate.latitude
-            location["longitude"] = currentCoordinate.longitude
+            location["latitude"] = currentCoordinate?.latitude
+            location["longitude"] = currentCoordinate?.longitude
             murmurData["location"] = location
         }
+        print("上傳的位置資料", murmurData["location"]!, currentCoordinate)
 
         createMurmur()
         
+        let postVC = self.navigationController?.popViewController as? PostViewController
+        print("上一頁輸入的文字為", postVC?.murmurTextField.text)
+        postVC?.murmurTextField.text = ""
         self.tabBarController?.selectedIndex = 0
+        self.navigationController?.popToRootViewController(animated: true)
+        
     }
     
     func createMurmur() {
-        print("上傳的位置資料", murmurData["location"]!)
-//        let documentReference = db.collection("murmurs").addDocument(data: murmurData)
-        // TODO: 為了方便測試，先用塗鴉留言當作 document name
-        database.collection("murmurs").document((murmurData["murmurMessage"] as? String)!).setData(murmurData)
+        
+        // 在總 murmurTest 新增資料
+        let documentReference = database.collection("murmurTest").document()
+        documentReference.setData(murmurData)
+        
+        // 在目前用戶的 postedMurmur 新增資料
+        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(documentReference.documentID).setData(murmurData)
+        
 //        do {
-//            try db.collection("murmurs").document("陪你很久很久").setData(murmurData)
+//            try db.collection("murmurTest").document("很久很久").setData(murmurData)
 //        } catch {
 //            print(error)
 //        }

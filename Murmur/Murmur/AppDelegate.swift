@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseCore
+import IQKeyboardManagerSwift
 
 // swiftlint:disable line_length
 @main
@@ -16,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
             
         FirebaseApp.configure()
-        
+        IQKeyboardManager.shared.enable = true
+     
         return true
     }
 
@@ -34,6 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func applicationDidEnterBackground(_ application: UIApplication) {
+  
+    }
+    
+    func applicationWillEnterForeground(_ application: UIApplication) {
+   
+    }
+    
 }
 
 // swiftlint:enable line_length
