@@ -15,7 +15,8 @@ struct Murmurs: Codable, Identifiable {
 //    var id: ObjectIdentifier
     @DocumentID var id: String?
     
-    let userEmail: String
+    let userUID: String
+    let userEmail: String?
     let location: [String: Double]
     let murmurMessage: String
     let murmurImage: String

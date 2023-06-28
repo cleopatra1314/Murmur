@@ -116,7 +116,6 @@ class ChatViewController: UIViewController {
 
                 let serialQueue = DispatchQueue(label: "SerialQueue")
                 
-                
                     // 取得每個聊天室的使用者名稱及頭貼
                     database.collection("userTest").document(chatRoom.theOtherUserUID).getDocument { documentSnapshot, error in
                         if let document = documentSnapshot, document.exists {

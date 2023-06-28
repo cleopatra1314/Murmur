@@ -52,7 +52,7 @@ class LocationMessageViewController: UIViewController {
         super.viewDidLoad()
         
         relocateMyself()
-        fetchMurmur()
+//        fetchMurmur()
         layoutView()
         filterLocationMessage()
         setLocation()
@@ -64,17 +64,22 @@ class LocationMessageViewController: UIViewController {
         mapView.frame = view.bounds
 //        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(mapView)
+        
+        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: "\(CustomAnnotationView.self)")
+        mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: "\(CustomAnnotationView.self)")
 
     }
     
     // 為什麼沒寫 stopTimer() 就會無效
     func startTimer() {
         stopTimer()
+        print("func fetchMurmur 時間器啟動")
         timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
     func stopTimer() {
+        print("func fetchMurmur 時間器暫停")
         timer.invalidate()
     }
     
@@ -87,7 +92,7 @@ class LocationMessageViewController: UIViewController {
     // 使用者在這個頁面時，每隔幾秒 fetch 一次資料
     @objc func fetchMurmur() {
         
-        dataBase.collection("murmurs").getDocuments { snapshot, error in
+        dataBase.collection("murmurTest").getDocuments { snapshot, error in
             
             guard let snapshot else {
                 // ??
@@ -95,21 +100,22 @@ class LocationMessageViewController: UIViewController {
                 return
             }
 
-            let murmurs = snapshot.documents.compactMap { snapshot in
+            let murmurTest = snapshot.documents.compactMap { snapshot in
                 do {
                     return try snapshot.data(as: Murmurs.self)
                 } catch {
-                    print("******", error)
+                    print("fetchMurmur", error)
                     return nil
                 }
             }
-            self.murmurData = murmurs
+            self.murmurData = murmurTest
 //            print(self.murmurData ?? [Murmurs]())
+            DispatchQueue.main.async {
+                self.filterLocationMessage()
+            }
+            
         }
         
-        DispatchQueue.main.async {
-            self.filterLocationMessage()
-        }
     }
     
     @objc func filterLocationMessage() {
@@ -129,7 +135,6 @@ class LocationMessageViewController: UIViewController {
                 let annotation = InsideMessageAnnotation(coordinate: coordinateOfMessage)
                 annotation.title = item.murmurMessage
                 mapView.addAnnotation(annotation)
-                print("範圍內的塗鴉", item.murmurMessage, "座標為", coordinateOfMessage)
                 
             } else {
                 let annotation = OutsideMessageAnnotation(coordinate: coordinateOfMessage)
@@ -183,24 +188,27 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
 //        guard annotation is MKPointAnnotation else { return nil }
         
         if annotation is InsideMessageAnnotation {
-            let identifier = "\(InsideMessageAnnotation.self)"
-            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            let identifier = "\(CustomAnnotationView.self)"
             
-//            if annotationView == nil {
+            guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
+            if annotationView == nil {
                 print("mapView annotationView == nil 做的標註視圖", annotation.title, annotation.coordinate)
+                
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         
                 // 是否要讓點擊 annotation 時顯示 title
-                annotationView?.canShowCallout = true
+                annotationView.canShowCallout = true
                 
-//            } else {
-//                print("mapView annotationView != nil 做的標註視圖", annotation.title, annotation.coordinate)
-//                annotationView?.annotation = annotation
-//             }
+            } else {
+                print("mapView annotationView != nil 做的標註視圖", annotation.title, annotation.coordinate)
+                annotationView.annotation = annotation
+                annotationView.label.text = annotation.title!
+                
+             }
             return annotationView
             
         } else if annotation is OutsideMessageAnnotation {
-            let identifier = "\(OutsideMessageAnnotation.self)"
+            let identifier = "\(DialogAnnotationView.self)"
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
             
             if annotationView == nil {

@@ -17,6 +17,7 @@ class NearbyUsersViewController: UIViewController {
     
     var userData: [Users]?
     let database = Firestore.firestore()
+    var timer = Timer()
     
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
@@ -34,13 +35,12 @@ class NearbyUsersViewController: UIViewController {
         super.viewDidLoad()
         
         relocateMyself()
-        fetchUserLocation()
 
         // 啟動 locationManager，才會執行 CLLocationManagerDelegate 的 func
         self.locationManager.startUpdatingLocation()
         
         layoutView()
-        setLocation()
+        setLocationManager()
     }
     
     private func layoutView() {
@@ -53,25 +53,39 @@ class NearbyUsersViewController: UIViewController {
 //        }
     }
     
-    // 設定每 20 秒 fetch 一次
-    func fetchUserLocation() {
+    // 設定每 30 秒 fetch 一次有上線用戶們的位置，記得每次要先清掉全部再加
+    @objc func fetchUserLocation() {
         
         database.collectionGroup("userTest").getDocuments { querySnapshot, error in
-            if let querySnapshot = querySnapshot {
-                for document in querySnapshot.documents {
+            
+//            if let querySnapshot = querySnapshot {
+//                for document in querySnapshot.documents {
+////                    print("JSON 資料", document.data())
+//                }
+//            } else {
+//                return
+//            }
+            
+            guard let querySnapshot else { return }
+            for document in querySnapshot.documents {
 //                    print("JSON 資料", document.data())
-                }
-            } else {
-                return
             }
-            let users = querySnapshot?.documents.compactMap { querySnapshot in
-                try? querySnapshot.data(as: Users.self)
+            
+            let users = querySnapshot.documents.compactMap { querySnapshot in
+                do {
+                    return try querySnapshot.data(as: Users.self)
+                } catch {
+                    print("fetchUserLocation", error)
+                    return nil
+                }
             }
             
             self.userData = users
             print("解析完後的資料", self.userData)
             
             DispatchQueue.main.async { [self] in
+                
+                mapView.removeAnnotations(mapView.annotations)
                 
                 for user in self.userData! {
                     self.showOtherUsersOnMap(user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
@@ -84,6 +98,18 @@ class NearbyUsersViewController: UIViewController {
         
     }
     
+    func startTimer() {
+        stopTimer()
+        print("func fetchUserLocation 時間器啟動")
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(fetchUserLocation), userInfo: nil, repeats: true)
+    }
+    
+    // TODO: 清除 timer 的其他方式
+    func stopTimer() {
+        print("func fetchUserLocation 時間器暫停")
+        timer.invalidate()
+    }
+    
     func showOtherUsersOnMap(_ userUID: String, _ name: String, _ imageURL: String, _ coordinate: CLLocationCoordinate2D) {
         
         if userUID == currentUserUID {
@@ -93,8 +119,9 @@ class NearbyUsersViewController: UIViewController {
         let userUID = userUID
         let coordinate = coordinate
         let annotation = OtherUsersAnnotation(userUID: userUID, userName: name, userImage: imageURL, coordinate: coordinate)
+        print("showOtherUsersOnMap 的小怪獸名稱", name)
         mapView.addAnnotation(annotation)
-        
+        print("showOtherUsersOnMap 的小怪獸數量", mapView.annotations.count)
     }
     
     // 5. 繪製一個以自己為中心的圓圈範圍
@@ -210,7 +237,7 @@ class NearbyUsersViewController: UIViewController {
 
 extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegate {
     
-    private func setLocation() {
+    private func setLocationManager() {
         
         // 2. 配置 locationManager
         locationManager.delegate = self

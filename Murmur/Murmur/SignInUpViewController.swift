@@ -51,6 +51,15 @@ class SignInUpViewController: UIViewController {
         errorLabel.textColor = .red
         return errorLabel
     }()
+    private let userNameTextField: MessageTypeTextField = {
+        let userNameTextField = MessageTypeTextField()
+        userNameTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
+        userNameTextField.textColor = .white
+        userNameTextField.placeholder = "取一個暱稱"
+        userNameTextField.layer.borderColor = UIColor.darkGray.cgColor
+        userNameTextField.layer.borderWidth = 1
+        return userNameTextField
+    }()
     private lazy var signInButton: UIButton = {
         let signInButton = UIButton()
         signInButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
@@ -77,7 +86,7 @@ class SignInUpViewController: UIViewController {
     }
     
     func layoutView() {
-        [emailTextField, passwordTextField, errorLabel, signInButton, signUpButton].forEach { subview in
+        [emailTextField, passwordTextField, errorLabel, userNameTextField, signInButton, signUpButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
@@ -93,8 +102,12 @@ class SignInUpViewController: UIViewController {
             make.top.equalTo(passwordTextField.snp.bottom).offset(32)
             make.centerX.equalTo(self.view)
         }
-        signInButton.snp.makeConstraints { make in
+        userNameTextField.snp.makeConstraints { make in
             make.top.equalTo(errorLabel.snp.bottom).offset(32)
+            make.centerX.equalTo(self.view)
+        }
+        signInButton.snp.makeConstraints { make in
+            make.top.equalTo(userNameTextField.snp.bottom).offset(32)
             make.centerX.equalTo(self.view)
         }
         signUpButton.snp.makeConstraints { make in
@@ -107,10 +120,10 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInButtonTouchUpInside() {
         
-        guard let userEmail = self.emailTextField.text else { return }
-        guard let userPassward = self.passwordTextField.text else { return }
-//        let userEmail = "angela@gmail.com"
-//        let userPassward = "111111"
+//        guard let userEmail = self.emailTextField.text else { return }
+//        guard let userPassward = self.passwordTextField.text else { return }
+        let userEmail = "beta@gmail.com"
+        let userPassward = "222222"
         
         Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
             guard error == nil else {
@@ -131,7 +144,7 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     @objc func signUpButtonTouchUpInside() {
         
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { result, error in
+        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { [self] result, error in
             guard let user = result?.user,
                   error == nil else {
                 print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
@@ -140,7 +153,7 @@ class SignInUpViewController: UIViewController {
             print("\(result?.user.uid ?? "")，\(result?.user.email ?? "") 註冊成功")
             currentUserUID = user.uid
 
-            let userProfile = Users(userName: "Beta", userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+            let userProfile = Users(userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
 
             self.userProfileData = userProfile
 

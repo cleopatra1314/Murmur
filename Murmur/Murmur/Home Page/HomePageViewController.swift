@@ -92,6 +92,10 @@ class HomePageViewController: UIViewController {
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
         
+        // 先讓兩個 vc 跑好資料
+        childLocationMessageViewController.fetchMurmur()
+        childNearbyUsersViewController.fetchUserLocation()
+        
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
         childLocationMessageViewController.stopTimer()
     
@@ -99,18 +103,19 @@ class HomePageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("func modifyCurrentLocation 時間器啟動")
         startTimer()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        print("func modifyCurrentLocation 時間器暫停")
         stopTimer()
     }
     
     func startTimer() {
         stopTimer()
-        print("時間器啟動")
-        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 300, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
@@ -175,7 +180,7 @@ class HomePageViewController: UIViewController {
         
     }
     
-    // 設定每 300 秒 update 一次 currentLocation
+    // 設定每 300 秒 update 一次（自己） currentLocation
     @objc func modifyCurrentLocation() {
 
         let documentReference = database.collection("userTest").document(currentUserUID)
@@ -207,10 +212,12 @@ class HomePageViewController: UIViewController {
             switchMode.toggle()
             switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
             childLocationMessageViewController.startTimer()
+            childNearbyUsersViewController.stopTimer()
         } else {
             switchMode.toggle()
             switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
             childLocationMessageViewController.stopTimer()
+            childNearbyUsersViewController.startTimer()
         }
         
         nearbyUsersContainerView.isHidden.toggle()

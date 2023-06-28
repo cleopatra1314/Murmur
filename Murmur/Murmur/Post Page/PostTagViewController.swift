@@ -31,10 +31,11 @@ class PostTagViewController: UIViewController {
 //    }()
     var murmurData: [String: Any] = [
         "userUID": currentUserUID,
-        "location": ["latitude": currentCoordinate?.latitude, "longitude": currentCoordinate?.longitude],
-        "murmurMessage": "給我一份卡啦雞腿堡",
+//        "location": ["latitude": nil, "longitude": nil],
+        "location": [String: Double](),
+        "murmurMessage": [String](),
         "murmurImage": "png",
-        "selectedTags": ["食物", "耍廢"],
+        "selectedTags": [String](),
         "createTime": Timestamp(date: Date())
         ]
     
@@ -95,11 +96,12 @@ class PostTagViewController: UIViewController {
             location["longitude"] = currentCoordinate?.longitude
             murmurData["location"] = location
         }
+        print("上傳的位置資料", murmurData["location"]!, currentCoordinate)
 
         createMurmur()
         
         let postVC = self.navigationController?.popViewController as? PostViewController
-        print(postVC?.murmurTextField.text)
+        print("上一頁輸入的文字為", postVC?.murmurTextField.text)
         postVC?.murmurTextField.text = ""
         self.tabBarController?.selectedIndex = 0
         self.navigationController?.popToRootViewController(animated: true)
@@ -107,17 +109,16 @@ class PostTagViewController: UIViewController {
     }
     
     func createMurmur() {
-        print("上傳的位置資料", murmurData["location"]!)
-
-        // 在總 murmurs 新增資料
-        let documentReference = database.collection("murmurs").document()
+        
+        // 在總 murmurTest 新增資料
+        let documentReference = database.collection("murmurTest").document()
         documentReference.setData(murmurData)
         
         // 在目前用戶的 postedMurmur 新增資料
         database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(documentReference.documentID).setData(murmurData)
         
 //        do {
-//            try db.collection("murmurs").document("很久很久").setData(murmurData)
+//            try db.collection("murmurTest").document("很久很久").setData(murmurData)
 //        } catch {
 //            print(error)
 //        }

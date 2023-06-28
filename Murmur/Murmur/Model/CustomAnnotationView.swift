@@ -9,10 +9,11 @@ import Foundation
 import MapKit
 
 class CustomAnnotationView: MKAnnotationView {
-    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
-        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        
-        // 設置膠囊形狀外觀
+    
+    var label = UILabel()
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
         backgroundColor = UIColor.white
         frame = CGRect(x: 0, y: 0, width: 200, height: 30)
         layer.cornerRadius = 15
@@ -20,7 +21,6 @@ class CustomAnnotationView: MKAnnotationView {
         layer.borderWidth = 1
         
         // 設置標籤文字
-        let label = UILabel()
         label.textAlignment = .center
         label.textColor = UIColor.black
         label.font = UIFont.boldSystemFont(ofSize: 12)
@@ -33,6 +33,17 @@ class CustomAnnotationView: MKAnnotationView {
         // 設置標籤的位置
         label.frame = bounds.inset(by: UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10))
         addSubview(label)
+    }
+    
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        // 設置膠囊形狀外觀
+        
+    }
+    
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        layoutIfNeeded()
     }
     
     required init?(coder aDecoder: NSCoder) {
