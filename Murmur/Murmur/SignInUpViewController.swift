@@ -120,10 +120,10 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInButtonTouchUpInside() {
         
-//        guard let userEmail = self.emailTextField.text else { return }
-//        guard let userPassward = self.passwordTextField.text else { return }
-        let userEmail = "beta@gmail.com"
-        let userPassward = "222222"
+        guard let userEmail = self.emailTextField.text else { return }
+        guard let userPassward = self.passwordTextField.text else { return }
+//        let userEmail = "beta@gmail.com"
+//        let userPassward = "222222"
         
         Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
             guard error == nil else {
