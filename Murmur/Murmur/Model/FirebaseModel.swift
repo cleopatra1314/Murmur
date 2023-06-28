@@ -11,11 +11,12 @@ import FirebaseFirestore
 import CoreLocation
 import FirebaseFirestoreSwift
 
-struct Murmur: Codable, Identifiable {
+struct Murmurs: Codable, Identifiable {
 //    var id: ObjectIdentifier
     @DocumentID var id: String?
     
-    let userEmail: String
+    let userUID: String
+    let userEmail: String?
     let location: [String: Double]
     let murmurMessage: String
     let murmurImage: String
@@ -24,6 +25,30 @@ struct Murmur: Codable, Identifiable {
 //    @ServerTimestamp var createTime: Timestamp
 }
 
+struct Users: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    let userName: String
+    let userPortrait: String
+    var location: [String: Double]
+}
+
+struct Messages: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    let createTime: Timestamp
+    let messageContent: String
+    var senderUUID: String
+}
+
+struct ChatRooms: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    let createTime: Timestamp
+    let theOtherUserUID: String
+}
+
+// ----------------------------------------
 // 将 CLLocationCoordinate2D 类型转换为 Codable
 struct CodableCoordinate: Codable {
     let latitude: Double

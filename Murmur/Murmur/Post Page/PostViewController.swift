@@ -9,7 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    private let murmurTextField: UITextField = {
+    let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
         murmurTextField.placeholder = "想說什麼大聲說出來"
         murmurTextField.contentVerticalAlignment = .top
@@ -59,22 +59,14 @@ class PostViewController: UIViewController {
     }
     
     private func setNav() {
-//        let navigationController = UINavigationController(rootViewController: self)
-//        navigationController.modalPresentationStyle = .fullScreen
-//        navigationController.navigationBar.barStyle = .default
-//        navigationController.navigationBar.backgroundColor = .blue
-        
-//        self.navigationController?.navigationBar.isTranslucent = false
-//        self.navigationController?.navigationBar.backgroundColor = .white
-//        UINavigationBar.appearance().isTranslucent = false
-//        UINavigationBar.appearance().barTintColor = .red
+
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithDefaultBackground()
 //        navBarAppearance.backgroundColor = .red
         navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
         navBarAppearance.titleTextAttributes = [
            .foregroundColor: UIColor.black,
-           .font: UIFont.systemFont(ofSize: 18, weight: .regular)
+           .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
@@ -91,7 +83,8 @@ class PostViewController: UIViewController {
     }
     
     @objc func closeButtonItemTouchUpInside() {
-        self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.popViewController(animated: true)
+        self.tabBarController?.selectedIndex = 0
     }
     
     @objc func nextButtonItemTouchUpInside() {
