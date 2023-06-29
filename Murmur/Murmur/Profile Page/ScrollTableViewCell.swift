@@ -13,7 +13,7 @@ class ScrollTableViewCell: UITableViewCell {
     
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = UIColor(red: 28/255, green: 38/255, blue: 45/255, alpha: 1)
+        scrollView.backgroundColor = .PrimaryDefault
         return scrollView
     }()
     let postsVC = PostsViewController()

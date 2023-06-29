@@ -29,7 +29,7 @@ class PostsViewController: UIViewController {
         let postsCollectionViewFlowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let postsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: postsCollectionViewFlowLayout)
         
-        postsCollectionView.backgroundColor = UIColor(red: 28/255, green: 38/255, blue: 45/255, alpha: 1)
+        postsCollectionView.backgroundColor = .PrimaryDefault
         
 //        postsCollectionView.frame = self.view.bounds
         postsCollectionView.collectionViewLayout =  postsCollectionViewFlowLayout
@@ -73,14 +73,14 @@ extension PostsViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(PostsCollectionViewCell.self)", for: indexPath) as? PostsCollectionViewCell else { return UICollectionViewCell() }
         cell.postsImageView.image = UIImage(named: "test2.jpg")
 //        cell.postsLabel.text = "這邊有很大的陽台"
-        cell.backgroundColor = UIColor(red: 32/255, green: 44/255, blue: 52/255, alpha: 1)
+//        cell.backgroundColor = UIColor(red: 32/255, green: 44/255, blue: 52/255, alpha: 1)
         cell.layer.cornerRadius = 14
 //        cell.clipsToBounds = true
         cell.layer.addShadow()
 //        cell.layer.borderColor = UIColor(red: 132/255, green: 218/255, blue: 231/255, alpha: 1).cgColor
 //        cell.layer.borderWidth = 0.8
         
-        cell.layoutView()
+//        cell.layoutView()
         return cell
     }
     
