@@ -27,7 +27,7 @@
 		C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */; };
 		C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */; };
 		C8AF2DBD2A415DE300B703E8 /* OtherUsersAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */; };
-		C8B007562A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift */; };
+		C8B007562A49EBE000049FA0 /* SegmentButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* SegmentButtonTableViewCell.swift */; };
 		C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */; };
 		C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */; };
 		C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */; };
@@ -75,7 +75,7 @@
 		C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBA2A415BBF00B703E8 /* OtherUsersAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotationView.swift; sourceTree = "<group>"; };
 		C8AF2DBC2A415DE300B703E8 /* OtherUsersAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUsersAnnotation.swift; sourceTree = "<group>"; };
-		C8B007552A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderOfProfileTableViewCell.swift; sourceTree = "<group>"; };
+		C8B007552A49EBE000049FA0 /* SegmentButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentButtonTableViewCell.swift; sourceTree = "<group>"; };
 		C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 				C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */,
 				C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */,
 				C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */,
-				C8B007552A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift */,
+				C8B007552A49EBE000049FA0 /* SegmentButtonTableViewCell.swift */,
 			);
 			path = "Profile Page";
 			sourceTree = "<group>";
@@ -390,7 +390,7 @@
 				C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */,
 				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
-				C8B007562A49EBE000049FA0 /* HeaderOfProfileTableViewCell.swift in Sources */,
+				C8B007562A49EBE000049FA0 /* SegmentButtonTableViewCell.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
 				C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */,
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,

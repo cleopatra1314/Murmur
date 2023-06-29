@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class HeaderOfProfileTableViewCell: UITableViewCell {
+class SegmentButtonTableViewCell: UITableViewCell {
     
     var selectedButton = UIButton()
     
@@ -22,7 +22,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     private let postsLabel: UILabel = {
         let postsLabel = UILabel()
         postsLabel.text = "Posts"
-        postsLabel.textColor = .GrayScale0
+        postsLabel.textColor = .GrayScale20
         return postsLabel
     }()
     lazy var postsButton: UIButton = {
@@ -36,7 +36,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     private let footPrintLabel: UILabel = {
         let footPrintLabel = UILabel()
         footPrintLabel.text = "FootPrint"
-        footPrintLabel.textColor = .GrayScale0
+        footPrintLabel.textColor = .GrayScale20
         return footPrintLabel
     }()
     lazy var footPrintButton: UIButton = {
@@ -54,7 +54,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     }()
     private let segmentBottomLine: UIView = {
         let segmentBottomLine = UIView()
-        segmentBottomLine.backgroundColor = .SecondaryDefault
+        segmentBottomLine.backgroundColor = .SecondaryLight
         segmentBottomLine.layer.cornerRadius = 1.5
         return segmentBottomLine
     }()

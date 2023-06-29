@@ -47,7 +47,7 @@ class ProfileViewController: UIViewController {
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.view.bounds
-        gradientLayer.colors = [UIColor.SecondaryMiddle?.withAlphaComponent(0.5).cgColor, UIColor.PrimaryMiddle?.withAlphaComponent(1).cgColor]
+        gradientLayer.colors = [UIColor.SecondaryMiddle?.withAlphaComponent(0.4).cgColor, UIColor.PrimaryMiddle?.withAlphaComponent(1).cgColor]
         backgroundView.layer.addSublayer(gradientLayer)
         
     }
@@ -118,7 +118,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
-            let cell = HeaderOfProfileTableViewCell(style: .default, reuseIdentifier: "\(HeaderOfProfileTableViewCell.self)")
+            let cell = SegmentButtonTableViewCell(style: .default, reuseIdentifier: "\(SegmentButtonTableViewCell.self)")
             return cell
             
         }

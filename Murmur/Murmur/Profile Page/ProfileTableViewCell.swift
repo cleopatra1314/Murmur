@@ -30,9 +30,10 @@ class ProfileTableViewCell: UITableViewCell {
         userNameLabel.attributedText = NSAttributedString(string: "beta", attributes: [
             NSAttributedString.Key.font: UIFont(name: "PingFangTC-Medium", size: 18.0),
             NSAttributedString.Key.kern: 2.0,
+            NSAttributedString.Key.foregroundColor: UIColor.GrayScale20
 //            NSAttributedString.Key.backgroundColor: UIColor.red
         ])
-        userNameLabel.textColor = .white
+//        userNameLabel.textColor = .white
         return userNameLabel
     }()
     private let murmurLabel: UILabel = {
@@ -43,17 +44,18 @@ class ProfileTableViewCell: UITableViewCell {
         murmurLabel.attributedText = NSAttributedString(string: "逮吧直直撞 直直撞 直直撞直直撞", attributes: [
             NSAttributedString.Key.font: UIFont(name: "PingFangTC-Regular", size: 13.0),
             NSAttributedString.Key.kern: 3.0,
+            NSAttributedString.Key.foregroundColor: UIColor.GrayScale20
 //            NSAttributedString.Key.backgroundColor: UIColor.red
         ])
         murmurLabel.textAlignment = .center
         murmurLabel.numberOfLines = 0
-        murmurLabel.textColor = .white
+//        murmurLabel.textColor = .white
         return murmurLabel
     }()
     private let settingImageView: UIImageView = {
         let settingImageView = UIImageView()
         settingImageView.image = UIImage(systemName: "gearshape")
-        settingImageView.tintColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1)
+        settingImageView.tintColor = .SecondaryLight
         return settingImageView
     }()
     
@@ -80,7 +82,7 @@ class ProfileTableViewCell: UITableViewCell {
         }
         
         settingImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(28)
             make.top.equalTo(self.contentView).offset(4)
             make.trailing.equalTo(self.contentView).offset(-16)
         }
