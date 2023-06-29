@@ -22,7 +22,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     private let postsLabel: UILabel = {
         let postsLabel = UILabel()
         postsLabel.text = "Posts"
-        postsLabel.textColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1)
+        postsLabel.textColor = .GrayScale0
         return postsLabel
     }()
     lazy var postsButton: UIButton = {
@@ -36,7 +36,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     private let footPrintLabel: UILabel = {
         let footPrintLabel = UILabel()
         footPrintLabel.text = "FootPrint"
-        footPrintLabel.textColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1)
+        footPrintLabel.textColor = .GrayScale0
         return footPrintLabel
     }()
     lazy var footPrintButton: UIButton = {
@@ -54,10 +54,55 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     }()
     private let segmentBottomLine: UIView = {
         let segmentBottomLine = UIView()
-        segmentBottomLine.backgroundColor = UIColor(red: 62/255, green: 87/255, blue: 83/255, alpha: 1)
+        segmentBottomLine.backgroundColor = .SecondaryDefault
         segmentBottomLine.layer.cornerRadius = 1.5
         return segmentBottomLine
     }()
+    // 設置要修改 cell 圓角的哪個角落
+    let roundedCorners: UIRectCorner = [.topLeft, .topRight]
+    let cornerRadius: CGFloat = 40
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        layoutSegmentControl()
+        layoutSegmentBottomLine()
+        layoutIfNeeded()
+//        layoutCell()
+//        self.contentView.backgroundColor = .PrimaryDefault
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // ?? layoutIfNeeded、layoutSubviews 的比較
+    override func layoutIfNeeded() {
+        super.layoutIfNeeded()
+        
+        segmentBottomLine.frame = CGRect(x: postsButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
+        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layoutCell()
+    }
+    
+    func layoutCell() {
+        
+        self.contentView.backgroundColor = .PrimaryDefault
+        
+//         創建 UIBezierPath
+        let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: roundedCorners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+
+        // 創建 CAShapeLayer 並將其設置為 view 的 mask
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = maskPath.cgPath
+        self.layer.mask = maskLayer
+        
+    }
     
     // MARK: Segment button
     func layoutSegmentControl() {
@@ -119,11 +164,6 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
 //            productmanager.getProductObject(selectedCategory: .accessories)
 //        }
         
-    }
-    
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
-        segmentBottomLine.frame = CGRect(x: postsButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
     }
     
     func layoutSegmentBottomLine() {

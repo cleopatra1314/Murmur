@@ -25,6 +25,7 @@ class ProfileViewController: UIViewController {
     }()
     private let profileTableView: UITableView = {
         let profileTableView = UITableView()
+        profileTableView.separatorStyle = .none
         return profileTableView
     }()
 
@@ -46,7 +47,7 @@ class ProfileViewController: UIViewController {
         
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = self.view.bounds
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor(red: 26/255, green: 35/255, blue: 35/255, alpha: 1).cgColor]
+        gradientLayer.colors = [UIColor.SecondaryMiddle?.withAlphaComponent(0.5).cgColor, UIColor.PrimaryMiddle?.withAlphaComponent(1).cgColor]
         backgroundView.layer.addSublayer(gradientLayer)
         
     }
@@ -99,8 +100,6 @@ class ProfileViewController: UIViewController {
         
     }
     
-    
-    
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -119,17 +118,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
-            let cell = HeaderOfProfileTableViewCell()
-            cell.layoutSegmentControl()
-            selectedSegmentButton = cell.postsButton
-            cell.layoutSegmentBottomLine()
-            cell.layoutIfNeeded()
-            cell.backgroundColor = UIColor(red: 28/255, green: 38/255, blue: 45/255, alpha: 1)
+            let cell = HeaderOfProfileTableViewCell(style: .default, reuseIdentifier: "\(HeaderOfProfileTableViewCell.self)")
             return cell
-//            guard let cell1 = tableView.dequeueReusableCell(withIdentifier: "\(HeaderOfProfileTableViewCell.self)") as? HeaderOfProfileTableViewCell else {
-//                print("tableView func viewForHeaderInSection 空值")
-//                return UIView()
-//            }
+            
         }
         return nil
     }

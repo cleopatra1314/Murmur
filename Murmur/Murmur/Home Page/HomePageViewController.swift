@@ -43,14 +43,12 @@ class HomePageViewController: UIViewController {
     let nearbyUsersContainerView: UIView = {
         let nearbyUsersContainerView = UIView()
         nearbyUsersContainerView.translatesAutoresizingMaskIntoConstraints = false
-        nearbyUsersContainerView.backgroundColor = .blue
         nearbyUsersContainerView.isHidden = false
         return nearbyUsersContainerView
     }()
     let locationMessageContainerView: UIView = {
         let locationMessageContainerView = UIView()
         locationMessageContainerView.translatesAutoresizingMaskIntoConstraints = false
-        locationMessageContainerView.backgroundColor = .black
         locationMessageContainerView.isHidden = true
         return locationMessageContainerView
     }()
@@ -87,7 +85,7 @@ class HomePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .PrimaryDark
         
         locationManager.delegate = self
         locationManager.startUpdatingLocation()

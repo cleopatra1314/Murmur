@@ -49,7 +49,7 @@ class NearbyUsersViewController: UIViewController {
         
         // TODO: 以下寫法在小雞型會跑版
 //        mapView.snp.makeConstraints { make in
-//            make.edges.equalTo(self.view.snp.margins)
+//            make.edges.equalTo(self.view.safeAreaLayoutGuide)
 //        }
     }
     

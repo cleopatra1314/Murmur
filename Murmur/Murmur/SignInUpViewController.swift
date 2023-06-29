@@ -76,6 +76,14 @@ class SignInUpViewController: UIViewController {
         signUpButton.addTarget(self, action: #selector(signUpButtonTouchUpInside), for: .touchUpInside)
         return signUpButton
     }()
+    private lazy var visitorButton: UIButton = {
+        let visitorButton = UIButton()
+        visitorButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
+//        signUpButton.backgroundColor = .black
+        visitorButton.setTitle("只是看看", for: .normal)
+        visitorButton.addTarget(self, action: #selector(visitorButtonTouchUpInside), for: .touchUpInside)
+        return visitorButton
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +94,7 @@ class SignInUpViewController: UIViewController {
     }
     
     func layoutView() {
-        [emailTextField, passwordTextField, errorLabel, userNameTextField, signInButton, signUpButton].forEach { subview in
+        [emailTextField, passwordTextField, errorLabel, userNameTextField, signInButton, signUpButton, visitorButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
@@ -112,6 +120,10 @@ class SignInUpViewController: UIViewController {
         }
         signUpButton.snp.makeConstraints { make in
             make.top.equalTo(signInButton.snp.bottom).offset(32)
+            make.centerX.equalTo(self.view)
+        }
+        visitorButton.snp.makeConstraints { make in
+            make.top.equalTo(signUpButton.snp.bottom).offset(48)
             make.centerX.equalTo(self.view)
         }
         
@@ -156,11 +168,19 @@ class SignInUpViewController: UIViewController {
             let userProfile = Users(userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
 
             self.userProfileData = userProfile
-
+            self.createUsers(userUID: user.uid)
+            
+            // ??
             DispatchQueue.main.async {
-                self.createUsers(userUID: user.uid)
+                self.createTabBarController()
             }
+            
         }
+        
+    }
+    
+    // MARK: 訪客模式
+    @objc func visitorButtonTouchUpInside() {
         
         createTabBarController()
         
@@ -193,7 +213,10 @@ class SignInUpViewController: UIViewController {
         
         // 创建 TabBarController
         let tabBarController = UITabBarController()
-        tabBarController.tabBar.backgroundColor = .lightGray
+//        tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.backgroundColor = .PrimaryDark
+        tabBarController.tabBar.tintColor = .SecondaryShine
+        tabBarController.tabBar.unselectedItemTintColor = .SecondaryMiddle
         
         // 创建视图控制器
         let firstViewController = HomePageViewController()
