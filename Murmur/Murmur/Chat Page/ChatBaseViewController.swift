@@ -33,7 +33,7 @@ class ChatBaseViewController: UIViewController {
     }()
     private let typingAreaView: UIView = {
         let typingAreaView = UIView()
-        typingAreaView.backgroundColor = .white
+        typingAreaView.backgroundColor = .PrimaryDefault
         typingAreaView.layer.shadowOpacity = 0.5
         typingAreaView.layer.shadowOffset = CGSizeMake(0, -4)
         typingAreaView.layer.shadowRadius = 10
@@ -42,7 +42,8 @@ class ChatBaseViewController: UIViewController {
     }()
     private let typingTextField: MessageTypeTextField = {
         let typingTextField = MessageTypeTextField()
-        typingTextField.backgroundColor = UIColor(cgColor: CGColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1))
+        typingTextField.backgroundColor = .GrayScale20
+        typingTextField.textColor = .GrayScale90
         typingTextField.layer.cornerRadius = 20
         
         return typingTextField
@@ -80,15 +81,16 @@ class ChatBaseViewController: UIViewController {
 
     private func setNav() {
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.backgroundColor = UIColor(cgColor: CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+//        self.navigationController?.navigationBar.barTintColor = .PrimaryDark
+        self.navigationController?.navigationBar.tintColor = .GrayScale20
         
 //        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
 //        closeButtonItem.tintColor = .black
 //        self.navigationItem.leftBarButtonItem = closeButtonItem
         
-//        let navBarAppearance = UINavigationBarAppearance()
-//        navBarAppearance.configureWithDefaultBackground()
-////        navBarAppearance.backgroundColor = .red
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithDefaultBackground()
+        navBarAppearance.backgroundColor = .PrimaryDark
 //        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
 //        navBarAppearance.titleTextAttributes = [
 //           .foregroundColor: UIColor.black,
@@ -96,7 +98,7 @@ class ChatBaseViewController: UIViewController {
 ////           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
 //
 //        ]
-//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
 //        self.navigationItem.title = "塗鴉留言"
         
@@ -110,13 +112,14 @@ class ChatBaseViewController: UIViewController {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 10
-        imageView.layer.borderColor = UIColor.green.cgColor
+        imageView.layer.borderColor = UIColor.PrimaryMiddle?.cgColor
         imageView.layer.borderWidth = 2
 
         // 创建标签视图
         let label = UILabel()
         label.textAlignment = .left
         label.text = otherUserName
+        label.textColor = .GrayScale20
         label.font = UIFont.boldSystemFont(ofSize: 20)
         label.sizeToFit()
 
@@ -246,6 +249,8 @@ class ChatBaseViewController: UIViewController {
     }
     
     private func setTableView() {
+        
+        chatRoomTableView.backgroundColor = .PrimaryDefault
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")

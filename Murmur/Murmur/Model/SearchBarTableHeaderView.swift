@@ -22,6 +22,8 @@ class SearchBarTableHeaderView: UITableViewHeaderFooterView {
     
     func layoutView() {
         
+        self.backgroundColor = .PrimaryLight
+        
         self.addSubview(searchBarTextField)
         
         searchBarTextField.snp.makeConstraints { make in

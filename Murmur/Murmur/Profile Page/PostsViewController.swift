@@ -76,7 +76,7 @@ extension PostsViewController: UICollectionViewDataSource {
 //        cell.backgroundColor = UIColor(red: 32/255, green: 44/255, blue: 52/255, alpha: 1)
         cell.layer.cornerRadius = 14
 //        cell.clipsToBounds = true
-        cell.layer.addShadow()
+        cell.layer.addShineShadow()
 //        cell.layer.borderColor = UIColor(red: 132/255, green: 218/255, blue: 231/255, alpha: 1).cgColor
 //        cell.layer.borderWidth = 0.8
         

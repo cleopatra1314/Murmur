@@ -121,62 +121,62 @@ class HomePageViewController: UIViewController {
         timer.invalidate()
     }
     
-    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
-    func userSignUp() {
-        
-        Auth.auth().createUser(withEmail: "libby@gmail.com", password: "333333") { result, error in
-            guard let user = result?.user,
-                  error == nil else {
-                print(error?.localizedDescription ?? "no error?.localizedDescription")
-                return
-            }
-            print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
-            currentUserUID = user.uid
-            DispatchQueue.main.async {
-                self.createUsers(userUID: user.uid)
-            }
-        }
-        
-    }
-    
-    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
-    func userSignIn() {
-        
-        // text 屬於 UI，所以要在 main thread 執行
-//        DispatchQueue.main.async {
-            guard let userEmail = self.userEmailTextField.text else { return }
-            guard let userPassward = self.userPasswardTextField.text else { return }
-            
-            Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
-                guard error == nil else {
-                    print(error?.localizedDescription ?? "no error?.localizedDescription")
-                    print(userEmail, userPassward)
-                    print("登入 failed")
-                    return
-                }
-                guard let userID = result?.user.uid else { return }
-                currentUserUID = userID
-                print("\(result?.user.uid) 登入成功")
- 
+//    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
+//    func userSignUp() {
+//
+//        Auth.auth().createUser(withEmail: "libby@gmail.com", password: "333333") { result, error in
+//            guard let user = result?.user,
+//                  error == nil else {
+//                print(error?.localizedDescription ?? "no error?.localizedDescription")
+//                return
 //            }
-        }
-    
-    }
-    
-    // 新增使用者資料到 firebase
-    func createUsers(userUID: String) {
-
-        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
-        database.collection("userTest").document(userUID).setData([
-            
-            // TODO: userData 無值這邊不會報錯，但會 build 不起來
-            "userName": userData?.userName,
-            "userPortrait": userData?.userPortrait,
-            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
-
-        ])
-        
-    }
+//            print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
+//            currentUserUID = user.uid
+//            DispatchQueue.main.async {
+//                self.createUsers(userUID: user.uid)
+//            }
+//        }
+//
+//    }
+//
+//    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
+//    func userSignIn() {
+//
+//        // text 屬於 UI，所以要在 main thread 執行
+////        DispatchQueue.main.async {
+//            guard let userEmail = self.userEmailTextField.text else { return }
+//            guard let userPassward = self.userPasswardTextField.text else { return }
+//
+//            Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
+//                guard error == nil else {
+//                    print(error?.localizedDescription ?? "no error?.localizedDescription")
+//                    print(userEmail, userPassward)
+//                    print("登入 failed")
+//                    return
+//                }
+//                guard let userID = result?.user.uid else { return }
+//                currentUserUID = userID
+//                print("\(result?.user.uid) 登入成功")
+//
+////            }
+//        }
+//
+//    }
+//
+//    // 新增使用者資料到 firebase
+//    func createUsers(userUID: String) {
+//
+//        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+//        database.collection("userTest").document(userUID).setData([
+//
+//            // TODO: userData 無值這邊不會報錯，但會 build 不起來
+//            "userName": userData?.userName,
+//            "userPortrait": userData?.userPortrait,
+//            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
+//
+//        ])
+//
+//    }
     
     // 設定每 300 秒 update 一次（自己） currentLocation
     @objc func modifyCurrentLocation() {

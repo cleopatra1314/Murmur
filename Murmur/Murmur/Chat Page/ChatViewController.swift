@@ -57,12 +57,13 @@ class ChatViewController: UIViewController {
         //        navBarAppearance.backgroundColor = .red
         navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
         navBarAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.black,
+            .foregroundColor: UIColor.GrayScale20,
             .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
         self.navigationItem.title = "破冰室茶集"
+        self.navigationItem.
         
         //        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
         //        closeButtonItem.tintColor = .black
