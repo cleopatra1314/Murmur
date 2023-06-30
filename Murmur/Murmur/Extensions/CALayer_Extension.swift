@@ -16,8 +16,16 @@ extension CALayer {
     
     func addShineShadow() {
             self.shadowOffset = CGSize(width: 0, height: 0)
-            self.shadowOpacity = 0.7
-            self.shadowRadius = 6
+        self.shadowOpacity = 0.6
+            self.shadowRadius = 4
+            self.shadowColor = UIColor.ShadowLight?.cgColor
+            self.masksToBounds = false
+        }
+    
+    func addBarShadow() {
+            self.shadowOffset = CGSize(width: 0, height: -1)
+            self.shadowOpacity = 1
+            self.shadowRadius = 8
             self.shadowColor = UIColor.ShadowLight?.cgColor
             self.masksToBounds = false
         }

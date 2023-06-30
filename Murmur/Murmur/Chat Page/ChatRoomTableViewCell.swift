@@ -48,6 +48,9 @@ class ChatRoomTableViewCell: UITableViewCell {
     }()
     
     func layoutCell() {
+        
+        self.backgroundColor = .PrimaryLight
+        
         [otherUserNameLabel, otherUserFirstMessageLabel].forEach { subview in
             stack.addArrangedSubview(subview)
         }
@@ -66,6 +69,7 @@ class ChatRoomTableViewCell: UITableViewCell {
         stack.snp.makeConstraints { make in
             make.centerY.equalTo(self.contentView)
             make.leading.equalTo(otherUserImageView.snp.trailing).offset(8)
+            make.trailing.lessThanOrEqualTo(messageSendStateImageView.snp.leading).offset(-40)
         }
         
         messageSendStateImageView.snp.makeConstraints { make in

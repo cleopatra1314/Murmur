@@ -48,10 +48,10 @@ class UserMeChatTableViewCell: UITableViewCell {
         
         dialogTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            dialogTextView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
+            dialogTextView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 14),
             dialogTextView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-            dialogTextView.leadingAnchor.constraint(greaterThanOrEqualTo: self.contentView.leadingAnchor, constant: 16),
-            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
+            dialogTextView.leadingAnchor.constraint(greaterThanOrEqualTo: self.contentView.leadingAnchor, constant: 64),
+            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
         ])
     }
     

@@ -100,6 +100,8 @@ class ProfileViewController: UIViewController {
         
     }
     
+    
+    
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -132,6 +134,18 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.backgroundColor = .clear
             cell.layoutView()
             cell.selectionStyle = .none
+            
+            cell.settingClosure = { cell in
+                let settingViewController = SettingViewController()
+                if let sheetPresentationController = settingViewController.sheetPresentationController {
+                    sheetPresentationController.detents = [.medium()]
+                    sheetPresentationController.preferredCornerRadius = 80
+                    // 顯示下拉的灰色長條
+                    sheetPresentationController.prefersGrabberVisible = true
+                }
+                self.present(settingViewController, animated: true, completion: nil)
+            }
+            
             return cell
             
         } else if indexPath == IndexPath(row: 0, section: 1) {

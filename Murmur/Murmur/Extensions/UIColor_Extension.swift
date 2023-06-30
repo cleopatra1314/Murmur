@@ -21,6 +21,7 @@ private enum MURColor: String {
     case PrimaryDefault
     case PrimaryLight
     case PrimaryMiddle
+    case PrimaryMidDark
     case PrimaryDark
     
     case SecondaryDefault
@@ -47,6 +48,7 @@ extension UIColor {
     static let PrimaryDefault = murColor(.PrimaryDefault)
     static let PrimaryLight = murColor(.PrimaryLight)
     static let PrimaryMiddle = murColor(.PrimaryMiddle)
+    static let PrimaryMidDark = murColor(.PrimaryMidDark)
     static let PrimaryDark = murColor(.PrimaryDark)
     
     static let SecondaryDefault = murColor(.SecondaryDefault)

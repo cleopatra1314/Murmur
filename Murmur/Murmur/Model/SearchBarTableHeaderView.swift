@@ -15,7 +15,7 @@ class SearchBarTableHeaderView: UITableViewHeaderFooterView {
         let searchBarTextField = MessageTypeTextField()
         searchBarTextField.placeholder = "搜尋名字 / 訊息"
         searchBarTextField.layer.cornerRadius = 10
-        searchBarTextField.layer.borderColor = UIColor.darkGray.cgColor
+        searchBarTextField.layer.borderColor = UIColor.GrayScale60?.cgColor
         searchBarTextField.layer.borderWidth = 1
         return searchBarTextField
     }()

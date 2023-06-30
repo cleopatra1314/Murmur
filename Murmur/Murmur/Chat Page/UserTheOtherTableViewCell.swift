@@ -12,6 +12,8 @@ class UserTheOtherTableViewCell: UITableViewCell {
     
     let profileImageView: UIImageView = {
         let profileImageView = UIImageView()
+        profileImageView.layer.cornerRadius = 8
+        profileImageView.clipsToBounds = true
         return profileImageView
     }()
     let dialogTextView: UITextView = {
@@ -20,7 +22,7 @@ class UserTheOtherTableViewCell: UITableViewCell {
         dialogTextView.backgroundColor = .PrimaryLight
         dialogTextView.font = UIFont(name: "PingFangTC-Regular", size: 16)
         dialogTextView.textColor = .GrayScale80
-        dialogTextView.layer.cornerRadius = 18
+        dialogTextView.layer.cornerRadius = 16
         dialogTextView.isScrollEnabled = false
         
         return dialogTextView
@@ -44,13 +46,13 @@ class UserTheOtherTableViewCell: UITableViewCell {
         dialogTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
-            profileImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12),
+            profileImageView.topAnchor.constraint(equalTo: dialogTextView.topAnchor, constant: 4),
             profileImageView.heightAnchor.constraint(equalToConstant: 30),
             profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor, multiplier: 1),
-            dialogTextView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 8),
-            dialogTextView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8),
-            dialogTextView.trailingAnchor.constraint(lessThanOrEqualTo: self.contentView.trailingAnchor, constant: -16),
-            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
+            dialogTextView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 14),
+            dialogTextView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 10),
+            dialogTextView.trailingAnchor.constraint(lessThanOrEqualTo: self.contentView.trailingAnchor, constant: -40),
+            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
         ])
     }
     

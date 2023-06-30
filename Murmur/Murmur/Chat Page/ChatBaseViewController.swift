@@ -44,7 +44,9 @@ class ChatBaseViewController: UIViewController {
         let typingTextField = MessageTypeTextField()
         typingTextField.backgroundColor = .GrayScale20
         typingTextField.textColor = .GrayScale90
-        typingTextField.layer.cornerRadius = 20
+        typingTextField.layer.cornerRadius = 15
+        typingTextField.layer.borderColor = UIColor.SecondaryDefault?.cgColor
+        typingTextField.layer.borderWidth = 2
         
         return typingTextField
     }()
@@ -54,6 +56,7 @@ class ChatBaseViewController: UIViewController {
         sendButton.setBackgroundImage(UIImage(named: "Icons_Send.png"), for: .highlighted)
         sendButton.tintColor = UIColor(cgColor: CGColor(red: 85/255, green: 107/255, blue: 47/255, alpha: 1))
         sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
+        sendButton.layer.addShineShadow()
         
         return sendButton
     }()
@@ -65,7 +68,6 @@ class ChatBaseViewController: UIViewController {
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
-        self.view.backgroundColor = .orange
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
         setNav()
         setTypingArea()

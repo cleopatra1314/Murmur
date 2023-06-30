@@ -83,6 +83,7 @@ class SegmentButtonTableViewCell: UITableViewCell {
         
         segmentBottomLine.frame = CGRect(x: postsButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
         
+//        self.layer.addMessagesShadow()
     }
     
     override func layoutSubviews() {
@@ -101,6 +102,8 @@ class SegmentButtonTableViewCell: UITableViewCell {
         let maskLayer = CAShapeLayer()
         maskLayer.path = maskPath.cgPath
         self.layer.mask = maskLayer
+        
+//        self.layer.addShineShadow()
         
     }
     

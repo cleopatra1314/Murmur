@@ -209,15 +209,38 @@ class SignInUpViewController: UIViewController {
         
     }
     
-    private func createTabBarController() {
+    func createTabBarController() {
         
         // 创建 TabBarController
         let tabBarController = UITabBarController()
-//        tabBarController.tabBar.isTranslucent = false
-        tabBarController.tabBar.backgroundColor = .PrimaryDark
-        tabBarController.tabBar.tintColor = .SecondaryShine
-        tabBarController.tabBar.unselectedItemTintColor = .SecondaryMiddle
         
+        // 以下還是會受系統自動調整背景色而影響
+//        tabBarController.tabBar.isTranslucent = false
+//        tabBarController.tabBar.backgroundColor = .PrimaryDark
+//        tabBarController.tabBar.tintColor = .SecondaryShine
+//        tabBarController.tabBar.unselectedItemTintColor = .SecondaryMiddle
+        
+        let barAppearance = UITabBarAppearance()
+//        barAppearance.configureWithDefaultBackground()
+        barAppearance.configureWithOpaqueBackground()
+        barAppearance.backgroundEffect = UIBlurEffect(style: .systemMaterialDark)
+        barAppearance.backgroundColor = .PrimaryMidDark
+        
+        barAppearance.stackedLayoutAppearance.normal.iconColor = .SecondaryMiddle
+        barAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.SecondaryMiddle,
+            .font: UIFont.systemFont(ofSize: 10)
+        ]
+        barAppearance.stackedLayoutAppearance.selected.iconColor = .SecondaryShine
+        barAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.SecondaryShine,
+            .font: UIFont.systemFont(ofSize: 10)
+        ]
+        
+        // 缺一不可
+        tabBarController.tabBar.layer.addBarShadow()
+        tabBarController.tabBar.standardAppearance = barAppearance
+        tabBarController.tabBar.scrollEdgeAppearance = barAppearance
         // 创建视图控制器
         let firstViewController = HomePageViewController()
         let secondViewController = ChatViewController()

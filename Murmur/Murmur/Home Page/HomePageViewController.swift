@@ -59,27 +59,44 @@ class HomePageViewController: UIViewController {
     private let btnStack: UIStackView = {
         let btnStack = UIStackView()
         btnStack.axis = .vertical
+        btnStack.layer.cornerRadius = 10
+        btnStack.clipsToBounds = true
         return btnStack
     }()
     private let filterButton: UIButton = {
         let filterButton = UIButton()
-        filterButton.backgroundColor = .black
+        filterButton.backgroundColor = .PrimaryDefault
+        filterButton.tintColor = .SecondaryLight
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
         return filterButton
     }()
     lazy var switchModeButton: UIButton = {
         let switchModeButton = UIButton()
-        switchModeButton.backgroundColor = .blue
+        switchModeButton.backgroundColor = .PrimaryDefault
+        switchModeButton.tintColor = .SecondaryLight
         switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
         switchModeButton.addTarget(self, action: #selector(switchModeButtonTouchUpInside), for: .touchUpInside)
         return switchModeButton
     }()
     private lazy var backToMyLocationButton: UIButton = {
         let backToMyLocationButton = UIButton()
-        backToMyLocationButton.backgroundColor = .red
+        backToMyLocationButton.backgroundColor = .PrimaryDefault
+        backToMyLocationButton.tintColor = .systemRed
         backToMyLocationButton.setImage(UIImage(named: "Icons_Locate"), for: .normal)
         backToMyLocationButton.addTarget(self, action: #selector(locateButtonTouchUpInside), for: .touchUpInside)
         return backToMyLocationButton
+    }()
+    private let separaterbar1: UIView = {
+        let separaterbar = UIView()
+        separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
+        separaterbar.backgroundColor = .SecondaryDefault
+        return separaterbar
+    }()
+    private let separaterbar2: UIView = {
+        let separaterbar = UIView()
+        separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
+        separaterbar.backgroundColor = .SecondaryDefault
+        return separaterbar
     }()
 
     override func viewDidLoad() {
@@ -250,7 +267,7 @@ class HomePageViewController: UIViewController {
         [nearbyUsersContainerView, locationMessageContainerView, btnStack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [filterButton, switchModeButton, backToMyLocationButton].forEach { subview in
+        [filterButton, separaterbar1, switchModeButton, separaterbar2, backToMyLocationButton].forEach { subview in
             btnStack.addArrangedSubview(subview)
         }
         
@@ -267,16 +284,24 @@ class HomePageViewController: UIViewController {
             make.bottom.equalTo(self.view).offset(-80)
         }
         btnStack.snp.makeConstraints { make in
-            make.top.equalTo(self.view).offset(100)
+            make.top.equalTo(self.view).offset(80)
             make.trailing.equalTo(self.view).offset(-24)
         }
         filterButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(filterButton.snp.width)
         }
+        separaterbar1.snp.makeConstraints { make in
+            make.width.equalTo(filterButton.snp.width)
+            make.height.equalTo(1)
+        }
         switchModeButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(switchModeButton.snp.width)
+        }
+        separaterbar2.snp.makeConstraints { make in
+            make.width.equalTo(filterButton.snp.width)
+            make.height.equalTo(1)
         }
         backToMyLocationButton.snp.makeConstraints { make in
             make.width.equalTo(48)

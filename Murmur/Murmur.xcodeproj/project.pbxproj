@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */; };
+		C82687442A4EC0F500237D68 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82687432A4EC0F500237D68 /* SettingViewController.swift */; };
 		C831F7C62A4592AA004A9A6F /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C52A4592AA004A9A6F /* ChatViewController.swift */; };
 		C831F7C82A459CAC004A9A6F /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */; };
 		C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */; };
@@ -56,6 +57,7 @@
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_Extension.swift; sourceTree = "<group>"; };
+		C82687432A4EC0F500237D68 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		C831F7C52A4592AA004A9A6F /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
 		C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseModel.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C82687432A4EC0F500237D68 /* SettingViewController.swift */,
 				C8ADDEC92A4D7A0B00C9069D /* Extensions */,
 				C8F041EF2A4B5EAE0044BE9C /* Profile Page */,
 				C8BAE6E12A464BE600ED6941 /* SignInUpViewController.swift */,
@@ -412,6 +415,7 @@
 				C8ADDECB2A4D7A3E00C9069D /* UIColor_Extension.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
 				C8BAE6E22A464BE600ED6941 /* SignInUpViewController.swift in Sources */,
+				C82687442A4EC0F500237D68 /* SettingViewController.swift in Sources */,
 				C8C55F9C2A48A9CA00FAE03E /* ChatBaseViewController.swift in Sources */,
 				C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */,
 				C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */,

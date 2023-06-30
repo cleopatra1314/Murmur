@@ -10,11 +10,8 @@ import UIKit
 
 class ProfileTableViewCell: UITableViewCell {
     
-//    private let upperView: UIView = {
-//        let upperView = UIView()
-//        upperView.backgroundColor = .clear
-//        return upperView
-//    }()
+    var settingClosure: ((ProfileTableViewCell) -> Void)?
+    
     private let profileImageView: UIImageView = {
         let profileImageView = UIImageView()
         profileImageView.image = UIImage(named: "User1Portrait.jpg")
@@ -52,16 +49,17 @@ class ProfileTableViewCell: UITableViewCell {
 //        murmurLabel.textColor = .white
         return murmurLabel
     }()
-    private let settingImageView: UIImageView = {
-        let settingImageView = UIImageView()
-        settingImageView.image = UIImage(systemName: "gearshape")
-        settingImageView.tintColor = .SecondaryLight
-        return settingImageView
+    private lazy var settingButton: UIButton = {
+        let settingButton = UIButton()
+        settingButton.setImage(UIImage(systemName: "gearshape"), for: .normal)
+        settingButton.tintColor = .SecondaryLight
+        settingButton.addTarget(self, action: #selector(settingButtonTouchUpInside), for: .touchUpInside)
+        return settingButton
     }()
     
     func layoutView() {
         
-        [profileImageView, userNameLabel, murmurLabel, settingImageView].forEach { subview in
+        [profileImageView, userNameLabel, murmurLabel, settingButton].forEach { subview in
             self.contentView.addSubview(subview)
         }
 
@@ -81,12 +79,18 @@ class ProfileTableViewCell: UITableViewCell {
             make.centerX.equalTo(self.contentView.snp.centerX)
         }
         
-        settingImageView.snp.makeConstraints { make in
+        settingButton.snp.makeConstraints { make in
             make.width.height.equalTo(28)
             make.top.equalTo(self.contentView).offset(4)
             make.trailing.equalTo(self.contentView).offset(-16)
         }
  
+    }
+    
+    @objc func settingButtonTouchUpInside(){
+        
+        self.settingClosure!(self)
+        
     }
     
 }

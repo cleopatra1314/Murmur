@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 // swiftlint:disable line_length
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -26,72 +27,82 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         // 设置 signInUpViewController 为根视图控制器 -> signInUpViewController 為 app 第一個頁面
         let signInUpViewController = SignInUpViewController()
-        window?.rootViewController = signInUpViewController
-        window?.makeKeyAndVisible()
         
-        /*
-        // 创建 TabBarController
-        let tabBarController = UITabBarController()
-        tabBarController.tabBar.backgroundColor = .lightGray
-        
-        // 创建视图控制器
-        let firstViewController = HomePageViewController()
-        let secondViewController = ChatViewController()
-        let thirdViewController = PostViewController()
-        let fourthViewController = ProfileViewController()
-        
-        // 将视图控制器添加到 TabBarController
-        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
-        let secondNavigationController = UINavigationController(rootViewController: secondViewController)
-        tabBarController.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
-        
-//        tabBarController.viewControllers?[2] = thirdNavigationController
-
-        // 设置 TabBarController 为根视图控制器
-        window?.rootViewController = tabBarController
-        window?.makeKeyAndVisible()
-        
-        // 設定 tabBarItem
-        if let tabBarItems = tabBarController.tabBar.items {
+        // 如果尚未登入，先到登入 / 註冊頁
+        if Auth.auth().currentUser == nil {
+            window?.rootViewController = signInUpViewController
             
-            let homeTabBarItem: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let homeTabBarItem = tabBarItems[0]
-                // 修改 TabBarItem 的属性
-                homeTabBarItem.title = "首頁"
-                homeTabBarItem.image = UIImage(named: "Icons_Home.png")
-                return homeTabBarItem
-            }()
+        } else {
+            // 如果已經登入，直接到首頁
+            signInUpViewController.createTabBarController()
+            // 设置 TabBarController 为根视图控制器
+            window?.rootViewController = signInUpViewController.tabBarController
             
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let chatRoomTabBarItem = tabBarItems[1]
-                // 修改 TabBarItem 的属性
-                chatRoomTabBarItem.title = "聊天"
-                chatRoomTabBarItem.image = UIImage(named: "Icons_ChatRoom.png")
-                return chatRoomTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let postTabBarItem = tabBarItems[2]
-                // 修改 TabBarItem 的属性
-                postTabBarItem.title = "塗鴉"
-                postTabBarItem.image = UIImage(named: "Icons_Post.png")
-                return postTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let profileTabBarItem = tabBarItems[3]
-                // 修改 TabBarItem 的属性
-                profileTabBarItem.title = "個人"
-                profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
-                return profileTabBarItem
-            }()
-            
-//            let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
         }
+            
+            /*
+            // 创建 TabBarController
+            let tabBarController = UITabBarController()
+            tabBarController.tabBar.backgroundColor = .lightGray
+            
+            // 创建视图控制器
+            let firstViewController = HomePageViewController()
+            let secondViewController = ChatViewController()
+            let thirdViewController = PostViewController()
+            let fourthViewController = ProfileViewController()
+            
+            // 将视图控制器添加到 TabBarController
+            let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+            let secondNavigationController = UINavigationController(rootViewController: secondViewController)
+            tabBarController.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
+            
+            //        tabBarController.viewControllers?[2] = thirdNavigationController
+            
+            // 设置 TabBarController 为根视图控制器
+            window?.rootViewController = tabBarController
+            window?.makeKeyAndVisible()
+            
+            // 設定 tabBarItem
+            if let tabBarItems = tabBarController.tabBar.items {
+                
+                let homeTabBarItem: UITabBarItem = {
+                    // 根据索引找到目标 TabBarItem
+                    let homeTabBarItem = tabBarItems[0]
+                    // 修改 TabBarItem 的属性
+                    homeTabBarItem.title = "首頁"
+                    homeTabBarItem.image = UIImage(named: "Icons_Home.png")
+                    return homeTabBarItem
+                }()
+                
+                let _: UITabBarItem = {
+                    // 根据索引找到目标 TabBarItem
+                    let chatRoomTabBarItem = tabBarItems[1]
+                    // 修改 TabBarItem 的属性
+                    chatRoomTabBarItem.title = "聊天"
+                    chatRoomTabBarItem.image = UIImage(named: "Icons_ChatRoom.png")
+                    return chatRoomTabBarItem
+                }()
+                
+                let _: UITabBarItem = {
+                    // 根据索引找到目标 TabBarItem
+                    let postTabBarItem = tabBarItems[2]
+                    // 修改 TabBarItem 的属性
+                    postTabBarItem.title = "塗鴉"
+                    postTabBarItem.image = UIImage(named: "Icons_Post.png")
+                    return postTabBarItem
+                }()
+                
+                let _: UITabBarItem = {
+                    // 根据索引找到目标 TabBarItem
+                    let profileTabBarItem = tabBarItems[3]
+                    // 修改 TabBarItem 的属性
+                    profileTabBarItem.title = "個人"
+                    profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
+                    return profileTabBarItem
+                }()
+                
+                //            let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+            }
         */
         
     }

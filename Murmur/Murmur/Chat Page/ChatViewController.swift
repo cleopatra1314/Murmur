@@ -34,7 +34,7 @@ class ChatViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .SecondaryLight
         
         chatRoomTableView.delegate = self
         chatRoomTableView.dataSource = self
@@ -54,16 +54,17 @@ class ChatViewController: UIViewController {
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithDefaultBackground()
-        //        navBarAppearance.backgroundColor = .red
+        navBarAppearance.backgroundColor = .PrimaryDark
         navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
         navBarAppearance.titleTextAttributes = [
             .foregroundColor: UIColor.GrayScale20,
             .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
+        self.navigationController?.navigationBar.tintColor = .GrayScale20
+        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
         self.navigationItem.title = "破冰室茶集"
-        self.navigationItem.
         
         //        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
         //        closeButtonItem.tintColor = .black
@@ -220,6 +221,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(SearchBarTableHeaderView.self)") as? SearchBarTableHeaderView else {
                 return nil
         }
+        
         headerView.layoutView()
         return headerView
     }
