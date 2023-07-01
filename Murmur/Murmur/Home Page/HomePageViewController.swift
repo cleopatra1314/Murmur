@@ -105,17 +105,6 @@ class HomePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        // 創建UIVisualEffectView
-                let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
-                
-                // 設置frame為整個UITabBar的範圍
-        visualEffectView.frame = (self.tabBarController?.tabBar.bounds)!
-                
-                // 將UIVisualEffectView添加到UITabBar的背景視圖
-        self.tabBarController?.tabBar.addSubview(visualEffectView)
-        
-        
         self.view.backgroundColor = .PrimaryDark
         
         locationManager.delegate = self
