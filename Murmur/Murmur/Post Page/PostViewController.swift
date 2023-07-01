@@ -13,6 +13,8 @@ class PostViewController: UIViewController {
         let murmurTextField = UITextField()
         murmurTextField.placeholder = "想說什麼大聲說出來"
         murmurTextField.contentVerticalAlignment = .top
+        murmurTextField.textColor = .GrayScale20
+        murmurTextField.layer.addTypingShadow()
         return murmurTextField
     }()
     private let murmurImageView: UIImageView = {
@@ -47,7 +49,6 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .white
         setNav()
         layout()
     }
@@ -60,25 +61,25 @@ class PostViewController: UIViewController {
     
     private func setNav() {
 
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .red
-        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        navBarAppearance.titleTextAttributes = [
-           .foregroundColor: UIColor.black,
-           .font: UIFont.systemFont(ofSize: 18, weight: .medium)
-        ]
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
+//        let navBarAppearance = UINavigationBarAppearance()
+//        navBarAppearance.configureWithDefaultBackground()
+////        navBarAppearance.backgroundColor = .red
+//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+//        navBarAppearance.titleTextAttributes = [
+//           .foregroundColor: UIColor.black,
+//           .font: UIFont.systemFont(ofSize: 18, weight: .medium)
+//        ]
+//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+//
         self.navigationItem.title = "塗鴉留言"
         
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
-        closeButtonItem.tintColor = .black
+        closeButtonItem.tintColor = .SecondaryDefault
         navigationItem.leftBarButtonItem = closeButtonItem
         
         let nextButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonItemTouchUpInside))
         nextButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
-        nextButtonItem.tintColor = .purple
+        nextButtonItem.tintColor = .SecondaryShine
         navigationItem.rightBarButtonItem = nextButtonItem
     }
     
@@ -94,6 +95,9 @@ class PostViewController: UIViewController {
     }
     
     private func layout() {
+        
+        self.view.backgroundColor = .PrimaryLight
+        
         [murmurTextField, murmurImageView, stack].forEach { subview in
             self.view.addSubview(subview)
         }

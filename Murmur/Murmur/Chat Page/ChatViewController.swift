@@ -29,6 +29,7 @@ class ChatViewController: UIViewController {
         let chatRoomTableView = UITableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = true
+        chatRoomTableView.backgroundColor = .PrimaryLight
         return chatRoomTableView
     }()
     
@@ -52,17 +53,17 @@ class ChatViewController: UIViewController {
     
     private func setNav() {
         
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithDefaultBackground()
-        navBarAppearance.backgroundColor = .PrimaryDark
-        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        navBarAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.GrayScale20,
-            .font: UIFont.systemFont(ofSize: 18, weight: .medium)
-        ]
-        self.navigationController?.navigationBar.tintColor = .GrayScale20
-        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+//        let navBarAppearance = UINavigationBarAppearance()
+//        navBarAppearance.configureWithDefaultBackground()
+//        navBarAppearance.backgroundColor = .PrimaryDefault
+//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+//        navBarAppearance.titleTextAttributes = [
+//            .foregroundColor: UIColor.GrayScale20,
+//            .font: UIFont.systemFont(ofSize: 18, weight: .medium)
+//        ]
+//        self.navigationController?.navigationBar.tintColor = .GrayScale20
+//        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
+//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
         self.navigationItem.title = "破冰室茶集"
         
@@ -84,7 +85,8 @@ class ChatViewController: UIViewController {
         self.view.addSubview(chatRoomTableView)
         
         chatRoomTableView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view)
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide)
         }

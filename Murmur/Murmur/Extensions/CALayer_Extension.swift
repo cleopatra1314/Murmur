@@ -26,7 +26,15 @@ extension CALayer {
             self.shadowOffset = CGSize(width: 0, height: -1)
             self.shadowOpacity = 1
             self.shadowRadius = 8
-            self.shadowColor = UIColor.ShadowLight?.cgColor
+            self.shadowColor = UIColor.ShadowLight2?.cgColor
+            self.masksToBounds = false
+        }
+    
+    func addTypingShadow() {
+            self.shadowOffset = CGSize(width: 3, height: 3)
+        self.shadowOpacity = 1
+            self.shadowRadius = 5
+            self.shadowColor = UIColor.ShadowLight2?.cgColor
             self.masksToBounds = false
         }
     

@@ -31,6 +31,7 @@ private enum MURColor: String {
     case SecondaryShine
     
     case ShadowLight
+    case ShadowLight2
     case ShadowOfMessage
     // swiftlint:enable identifier_name
 }
@@ -58,6 +59,7 @@ extension UIColor {
     static let SecondaryShine = murColor(.SecondaryShine)
     
     static let ShadowLight = murColor(.ShadowLight)
+    static let ShadowLight2 = murColor(.ShadowLight2)
     static let ShadowOfMessage = murColor(.ShadowOfMessage)
     
     private static func murColor(_ color: MURColor) -> UIColor? {

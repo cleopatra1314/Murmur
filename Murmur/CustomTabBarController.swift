@@ -50,7 +50,7 @@ class CustomTabBarController: UITabBarController {
         
         
         
-//        barAppearance.backgroundColor = .PrimaryMidDark
+        barAppearance.backgroundColor = .PrimaryMidDark
 //
         barAppearance.stackedLayoutAppearance.normal.iconColor = .SecondaryMiddle
         barAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [
@@ -75,8 +75,8 @@ class CustomTabBarController: UITabBarController {
         let fourthViewController = ProfileViewController()
         
         // 将视图控制器添加到 TabBarController
-        let secondNavigationController = UINavigationController(rootViewController: secondViewController)
-        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
+        let secondNavigationController = CustomNavigationController(rootViewController: secondViewController)
+        let thirdNavigationController = CustomNavigationController(rootViewController: thirdViewController)
         self.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
         
         // 設定 tabBarItem
