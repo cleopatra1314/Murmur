@@ -46,6 +46,7 @@
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
+		C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */; };
 		C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */; };
 		C8F041EC2A4B41180044BE9C /* PostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */; };
 		C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */; };
@@ -97,6 +98,7 @@
 		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
+		C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = SOURCE_ROOT; };
 		C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootPrintViewController.swift; sourceTree = "<group>"; };
 		C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCollectionViewCell.swift; sourceTree = "<group>"; };
 		C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTableViewCell.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */,
 				C82687432A4EC0F500237D68 /* SettingViewController.swift */,
 				C8ADDEC92A4D7A0B00C9069D /* Extensions */,
 				C8F041EF2A4B5EAE0044BE9C /* Profile Page */,
@@ -412,6 +415,7 @@
 				C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
+				C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */,
 				C8ADDECB2A4D7A3E00C9069D /* UIColor_Extension.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
 				C8BAE6E22A464BE600ED6941 /* SignInUpViewController.swift in Sources */,

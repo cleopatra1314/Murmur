@@ -93,7 +93,7 @@ class ChatBaseViewController: UIViewController {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithDefaultBackground()
         navBarAppearance.backgroundColor = .PrimaryDark
-//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+        navBarAppearance.backgroundEffect = UIBlurEffect(style: .light)
 //        navBarAppearance.titleTextAttributes = [
 //           .foregroundColor: UIColor.black,
 //           .font: UIFont(name: "Roboto", size: 24)
@@ -102,7 +102,6 @@ class ChatBaseViewController: UIViewController {
 //        ]
         self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
-//        self.navigationItem.title = "塗鴉留言"
         
         // 创建自定义视图
         let customView = UIView()

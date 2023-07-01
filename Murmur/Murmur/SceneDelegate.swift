@@ -34,9 +34,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
         } else {
             // 如果已經登入，直接到首頁
-            signInUpViewController.createTabBarController()
+            let customTabBarController = CustomTabBarController()
+
             // 设置 TabBarController 为根视图控制器
-            window?.rootViewController = signInUpViewController.tabBarController
+            window?.rootViewController = customTabBarController
             
         }
             

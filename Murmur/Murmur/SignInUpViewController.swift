@@ -211,89 +211,9 @@ class SignInUpViewController: UIViewController {
     
     func createTabBarController() {
         
-        // 创建 TabBarController
-        let tabBarController = UITabBarController()
-        
-        // 以下還是會受系統自動調整背景色而影響
-//        tabBarController.tabBar.isTranslucent = false
-//        tabBarController.tabBar.backgroundColor = .PrimaryDark
-//        tabBarController.tabBar.tintColor = .SecondaryShine
-//        tabBarController.tabBar.unselectedItemTintColor = .SecondaryMiddle
-        
-        let barAppearance = UITabBarAppearance()
-//        barAppearance.configureWithDefaultBackground()
-        barAppearance.configureWithOpaqueBackground()
-        barAppearance.backgroundEffect = UIBlurEffect(style: .systemMaterialDark)
-        barAppearance.backgroundColor = .PrimaryMidDark
-        
-        barAppearance.stackedLayoutAppearance.normal.iconColor = .SecondaryMiddle
-        barAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor.SecondaryMiddle,
-            .font: UIFont.systemFont(ofSize: 10)
-        ]
-        barAppearance.stackedLayoutAppearance.selected.iconColor = .SecondaryShine
-        barAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [
-            .foregroundColor: UIColor.SecondaryShine,
-            .font: UIFont.systemFont(ofSize: 10)
-        ]
-        
-        // 缺一不可
-        tabBarController.tabBar.layer.addBarShadow()
-        tabBarController.tabBar.standardAppearance = barAppearance
-        tabBarController.tabBar.scrollEdgeAppearance = barAppearance
-        // 创建视图控制器
-        let firstViewController = HomePageViewController()
-        let secondViewController = ChatViewController()
-        let thirdViewController = PostViewController()
-        let fourthViewController = ProfileViewController()
-        
-        // 将视图控制器添加到 TabBarController
-        let secondNavigationController = UINavigationController(rootViewController: secondViewController)
-        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
-        tabBarController.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
-        
-        // 設定 tabBarItem
-        if let tabBarItems = tabBarController.tabBar.items {
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let homeTabBarItem = tabBarItems[0]
-                // 修改 TabBarItem 的属性
-                homeTabBarItem.title = "首頁"
-                homeTabBarItem.image = UIImage(named: "Icons_Home.png")
-                return homeTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let chatRoomTabBarItem = tabBarItems[1]
-                // 修改 TabBarItem 的属性
-                chatRoomTabBarItem.title = "聊天"
-                chatRoomTabBarItem.image = UIImage(named: "Icons_ChatRoom.png")
-                return chatRoomTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let postTabBarItem = tabBarItems[2]
-                // 修改 TabBarItem 的属性
-                postTabBarItem.title = "塗鴉"
-                postTabBarItem.image = UIImage(named: "Icons_Post.png")
-                return postTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let profileTabBarItem = tabBarItems[3]
-                // 修改 TabBarItem 的属性
-                profileTabBarItem.title = "個人"
-                profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
-                return profileTabBarItem
-            }()
-        }
-        tabBarController.modalPresentationStyle = .fullScreen
-        tabBarController.modalTransitionStyle = .crossDissolve
-        present(tabBarController, animated: true)
+        let customTabBarController = CustomTabBarController()
+
+        present(customTabBarController, animated: true)
         
     }
     
