@@ -10,6 +10,9 @@ import UIKit
 
 class SegmentButtonTableViewCell: UITableViewCell {
     
+    var footPrintClosure: ((SegmentButtonTableViewCell) -> Void)?
+    var postsClosure: ((SegmentButtonTableViewCell) -> Void)?
+    
     var selectedButton = UIButton()
     
     private let stackView: UIStackView = {
@@ -103,8 +106,6 @@ class SegmentButtonTableViewCell: UITableViewCell {
         maskLayer.path = maskPath.cgPath
         self.layer.mask = maskLayer
         
-//        self.layer.addShineShadow()
-        
     }
     
     // MARK: Segment button
@@ -156,6 +157,7 @@ class SegmentButtonTableViewCell: UITableViewCell {
             }
         }
         
+
         moveSegmentBottomLine(ofSelectedButton: sender)
         
 //        if sender == postsButton{
@@ -196,13 +198,18 @@ class SegmentButtonTableViewCell: UITableViewCell {
         switch labelOfSegmentButton.text {
         case "Posts":
             selectedLabel = postsLabel
+            self.postsClosure!(self)
+            
         case "FootPrint":
             selectedLabel = footPrintLabel
+            self.footPrintClosure!(self)
+            
         default:
             return
         }
         
         UIView.animate(withDuration: 0.3) { [self] in
+            print("點選的按鈕位置", ofSelectedButton.frame.minX)
             self.segmentBottomLine.frame = CGRect(x: ofSelectedButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: selectedLabel.frame.width, height: 3)
         }
         

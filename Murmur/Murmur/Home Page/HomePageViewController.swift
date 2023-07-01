@@ -22,6 +22,33 @@ var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().cur
 let database = Firestore.firestore()
 let fullScreenSize = UIScreen.main.bounds
 
+
+// 設定每 120 秒 update 一次（自己） currentLocation
+func modifyCurrentLocation() {
+
+    let documentReference = database.collection("userTest").document(currentUserUID)
+    
+    documentReference.getDocument { document, error in
+        guard let document,
+              document.exists,
+              var user = try? document.data(as: Users.self)
+        else {
+            return
+        }
+        
+        user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
+
+        do {
+            try documentReference.setData(from: user)
+            print("更新目前位置為：", user.location)
+        } catch {
+            print(error)
+        }
+        
+    }
+}
+
+
 class HomePageViewController: UIViewController {
     
     var databaseRef: DatabaseReference!
@@ -115,8 +142,39 @@ class HomePageViewController: UIViewController {
         childNearbyUsersViewController.fetchUserLocation()
         
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
-        childLocationMessageViewController.stopTimer()
-    
+//        childLocationMessageViewController.stopTimer()
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { (notification) in
+            print("app did enter background")
+            
+            // 停止 modifyCurrentLocation
+            self.stopTimer()
+            
+            // Modify user onlineState
+            self.updateOnlineState(false)
+            
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { (notification) in
+            print("app back to foreground")
+            
+            // 啟動 modifyCurrentLocation
+            self.startTimer()
+            
+            // Modify user onlineState
+            self.updateOnlineState(true)
+            
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: nil) { (notification) in
+            print("app terminate")
+            
+            // Modify user onlineState
+            self.updateOnlineState(false)
+            
+        }
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -133,7 +191,7 @@ class HomePageViewController: UIViewController {
     
     func startTimer() {
         stopTimer()
-        timer = Timer.scheduledTimer(timeInterval: 300, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(modifyCurrentLocation1), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
@@ -141,8 +199,8 @@ class HomePageViewController: UIViewController {
         timer.invalidate()
     }
     
-    // 設定每 300 秒 update 一次（自己） currentLocation
-    @objc func modifyCurrentLocation() {
+    // 設定每 120 秒 update 一次（自己） currentLocation
+    @objc func modifyCurrentLocation1() {
 
         let documentReference = database.collection("userTest").document(currentUserUID)
         
@@ -155,10 +213,32 @@ class HomePageViewController: UIViewController {
             }
             
             user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
-    
+
             do {
                 try documentReference.setData(from: user)
                 print("更新目前位置為：", user.location)
+            } catch {
+                print(error)
+            }
+            
+        }
+    }
+    
+    func updateOnlineState(_ state: Bool) {
+        // Modify user onlineState
+        database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
+            
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  var user = try? documentSnapshot.data(as: Users.self)
+            else {
+                return
+            }
+            
+            user.onlineState = state
+            
+            do {
+                try database.collection("userTest").document(currentUserUID).setData(from: user)
             } catch {
                 print(error)
             }
@@ -255,23 +335,23 @@ class HomePageViewController: UIViewController {
         }
     }
     
-  
-
 }
 
 extension HomePageViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        
         switch status {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
+            
         case .denied, .restricted:
             // TODO: 要改成跳 alert
             self.showAlert(title: "Oops!", message: "Please check your location setting to get better experience with Murmur Wall.", viewController: self)
+            
         case .authorizedWhenInUse:
-//            userSignIn()
-//            userSignUp()
             locationManager.startUpdatingLocation()
+            
         default:
             break
         }

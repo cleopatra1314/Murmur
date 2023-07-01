@@ -132,19 +132,30 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInButtonTouchUpInside() {
         
-//        guard let userEmail = self.emailTextField.text else { return }
-//        guard let userPassward = self.passwordTextField.text else { return }
-        let userEmail = "beta@gmail.com"
-        let userPassward = "222222"
+        let userEmail = self.emailTextField.text
+        let userPassward = self.passwordTextField.text
         
-        Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
+        guard userEmail != "" else {
+            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+            return
+        }
+        guard userPassward != "" else {
+            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: userEmail!, password: userPassward!) { result, error in
+            // ??
             guard error == nil else {
                 print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                self.errorLabel.text = "帳號或密碼有誤，請重新輸入"
+                self.errorLabel.text = "打錯帳號密碼齁，再給你一次機會"
                 return
                 
             }
-            guard let userID = result?.user.uid else { return }
+            guard let userID = result?.user.uid else {
+                
+                return
+            }
             currentUserUID = userID
             print("\(result?.user.uid ?? "") 登入成功")
             self.createTabBarController()
@@ -165,7 +176,7 @@ class SignInUpViewController: UIViewController {
             
             currentUserUID = user.uid
 
-            let userProfile = Users(userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+            let userProfile = Users(onlineState: true, userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
 
             self.userProfileData = userProfile
             self.createUsers(userUID: user.uid)
@@ -201,6 +212,7 @@ class SignInUpViewController: UIViewController {
 //                return
 //            }
             
+            "onlineState": userProfileData.onlineState,
             "userName": userProfileData.userName,
             "userPortrait": userProfileData.userPortrait,
             "location": ["latitude": userProfileData.location["latitude"], "longitude": userProfileData.location["longitude"]]

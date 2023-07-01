@@ -32,6 +32,7 @@ class SettingViewController: UIViewController {
         
         do {
             try Auth.auth().signOut()
+            showAlert(title: "登出成功", message: "請再次登入才能享有各式功能哦！", viewController: self)
             print("登出成功")
         } catch let error as NSError {
             print(error.localizedDescription)

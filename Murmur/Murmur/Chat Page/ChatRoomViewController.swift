@@ -67,7 +67,6 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
-        self.view.backgroundColor = .orange
         setNav()
         setTypingArea()
         setTableView()

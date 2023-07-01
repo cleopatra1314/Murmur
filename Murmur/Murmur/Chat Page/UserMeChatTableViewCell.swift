@@ -42,7 +42,7 @@ class UserMeChatTableViewCell: UITableViewCell {
     
     func layoutCell() {
         
-        self.backgroundColor = .PrimaryDefault
+        self.backgroundColor = .PrimaryLight
         
         self.contentView.addSubview(dialogTextView)
         

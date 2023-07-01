@@ -48,8 +48,8 @@ extension CALayer {
     
     func addMessagesShadow() {
             self.shadowOffset = CGSize(width: 0, height: 0)
-            self.shadowOpacity = 0.7
-            self.shadowRadius = 3
+            self.shadowOpacity = 0.6
+            self.shadowRadius = 6
             self.shadowColor = UIColor.ShadowOfMessage?.cgColor
             self.masksToBounds = false
         }

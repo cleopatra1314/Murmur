@@ -10,7 +10,18 @@ import SnapKit
 
 class ProfileViewController: UIViewController {
     
+    var scrollToFootPrintPage = false {
+        didSet {
+            profileTableView.reloadData()
+        }
+    }
+    
     var selectedSegmentButton: UIButton?
+    var userData: Users? {
+        didSet {
+            profileTableView.reloadData()
+        }
+    }
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
@@ -42,7 +53,7 @@ class ProfileViewController: UIViewController {
         
         fetchUserData()
     }
-    
+
     private func layoutGradient() {
         
         let gradientLayer = CAGradientLayer()
@@ -54,8 +65,21 @@ class ProfileViewController: UIViewController {
     
     private func fetchUserData() {
         database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
+            guard let documentSnapshot else {
+                print("documentSnapshot is nil.")
+                return
+            }
             
-            print("fetch 回來的自己資料", documentSnapshot?.data())
+            do {
+                let user = try documentSnapshot.data(as: Users.self)
+                self.userData = user
+            } catch {
+                print("Error: ", error)
+            }
+            
+//            DispatchQueue.main.async {
+                
+//            }
             
         }
     }
@@ -100,8 +124,6 @@ class ProfileViewController: UIViewController {
         
     }
     
-    
-    
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -121,6 +143,12 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let cell = SegmentButtonTableViewCell(style: .default, reuseIdentifier: "\(SegmentButtonTableViewCell.self)")
+            cell.footPrintClosure = { cell in
+                self.scrollToFootPrintPage = true
+            }
+            cell.postsClosure = { cell in
+                self.scrollToFootPrintPage = false
+            }
             return cell
             
         }
@@ -132,6 +160,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath == IndexPath(row: 0, section: 0) {
             let cell = ProfileTableViewCell()
             cell.backgroundColor = .clear
+            cell.userNameLabel.text = userData?.userName
+            cell.murmurLabel.text = userData?.murmur ?? "🖋️"
             cell.layoutView()
             cell.selectionStyle = .none
             
@@ -151,6 +181,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         } else if indexPath == IndexPath(row: 0, section: 1) {
             let cell = ScrollTableViewCell()
             cell.layoutView(viewController: self)
+            // 控制 scrollView 捲動到哪
+            if scrollToFootPrintPage {
+                cell.scrollView.setContentOffset(CGPoint(x: fullScreenSize.width, y: 0), animated: true)
+            } else {
+                cell.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+            }
+            
 //            cell.selectionStyle = .none
             return cell
             

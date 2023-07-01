@@ -19,9 +19,9 @@ class UserTheOtherTableViewCell: UITableViewCell {
     let dialogTextView: UITextView = {
         let dialogTextView = UITextView()
         dialogTextView.textContainerInset = .init(top: 8, left: 12, bottom: 8, right: 12)
-        dialogTextView.backgroundColor = .PrimaryLight
+        dialogTextView.backgroundColor = .PrimaryMiddle
         dialogTextView.font = UIFont(name: "PingFangTC-Regular", size: 16)
-        dialogTextView.textColor = .GrayScale80
+        dialogTextView.textColor = .GrayScale90
         dialogTextView.layer.cornerRadius = 16
         dialogTextView.isScrollEnabled = false
         
@@ -37,7 +37,7 @@ class UserTheOtherTableViewCell: UITableViewCell {
     
     func layoutCell() {
         
-        self.backgroundColor = .PrimaryDefault
+        self.backgroundColor = .PrimaryLight
         
         self.contentView.addSubview(profileImageView)
         self.contentView.addSubview(dialogTextView)

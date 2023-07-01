@@ -10,8 +10,6 @@ import UIKit
 
 class CustomNavigationController: UINavigationController {
     
-    
-    
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         
@@ -24,13 +22,10 @@ class CustomNavigationController: UINavigationController {
             .foregroundColor: UIColor.GrayScale20,
             .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
-        self.navigationBar.tintColor = .GrayScale20
+        self.navigationBar.tintColor = .GrayScale60
         self.navigationBar.layer.addWhiteShadow()
         self.navigationBar.standardAppearance = navBarAppearance
         self.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-        navigationItem.rightBarButtonItem?.tintColor = .SecondaryShine
-        navigationItem.leftBarButtonItem?.tintColor = .SecondaryDefault
         
     }
     
