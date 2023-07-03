@@ -8,8 +8,12 @@
 import UIKit
 import FirebaseStorage
 import FirebaseDatabase
+import AVFoundation
 
 class PostViewController: UIViewController {
+    
+    var captureSession: AVCaptureSession?
+    var previewLayer: AVCaptureVideoPreviewLayer?
     
     let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
@@ -19,12 +23,12 @@ class PostViewController: UIViewController {
         murmurTextField.layer.addTypingShadow()
         return murmurTextField
     }()
-    private let murmurImageView: UIImageView = {
-        let murmurImageView = UIImageView()
-        murmurImageView.image = UIImage(named: "test1.jpg")
-        murmurImageView.contentMode = .scaleAspectFill
-        murmurImageView.clipsToBounds = true
-        return murmurImageView
+    private let murmurView: UIView = {
+        let murmurView = UIView()
+//        murmurImageView.image = UIImage(named: "test1.jpg")
+        murmurView.contentMode = .scaleAspectFill
+        murmurView.clipsToBounds = true
+        return murmurView
     }()
     private let stack: UIStackView = {
         let stack = UIStackView()
@@ -54,12 +58,42 @@ class PostViewController: UIViewController {
         
         setNav()
         layout()
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
-        murmurImageView.layer.borderColor = UIColor.lightGray.cgColor
-        murmurImageView.layer.borderWidth = 3
+        
+        murmurView.layer.cornerRadius = murmurView.frame.width / 2
+        murmurView.layer.borderColor = UIColor.lightGray.cgColor
+        murmurView.layer.borderWidth = 3
+        
+        captureSession = AVCaptureSession()
+        setupCaptureSession()
+    }
+    
+    func setupCaptureSession() {
+        guard let captureSession = captureSession else { return }
+        
+        // 設定輸入裝置為相機
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
+        
+        do {
+            let input = try AVCaptureDeviceInput(device: captureDevice)
+            captureSession.addInput(input)
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
+        
+        // 設定預覽層
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        previewLayer?.frame = murmurView.layer.bounds
+        murmurView.layer.addSublayer(previewLayer!)
+        
+        // 啟動 AVCaptureSession
+        captureSession.startRunning()
     }
     
     @objc func cameraButtonTouchUpInside() {
@@ -150,7 +184,7 @@ class PostViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLight
         
-        [murmurTextField, murmurImageView, stack].forEach { subview in
+        [murmurTextField, murmurView, stack].forEach { subview in
             self.view.addSubview(subview)
         }
         [albumButton, cameraButton].forEach { subview in
@@ -163,14 +197,14 @@ class PostViewController: UIViewController {
             make.trailing.equalTo(self.view).offset(-16)
             make.height.equalTo(180)
         }
-        murmurImageView.snp.makeConstraints { make in
+        murmurView.snp.makeConstraints { make in
             make.top.equalTo(murmurTextField.snp.bottom).offset(8)
-            make.leading.equalTo(self.view).offset(32)
-            make.trailing.equalTo(self.view).offset(-32)
-            make.height.equalTo(murmurImageView.snp.width)
+            make.leading.equalTo(self.view).offset(24)
+            make.trailing.equalTo(self.view).offset(-24)
+            make.height.equalTo(murmurView.snp.width)
         }
         stack.snp.makeConstraints { make in
-            make.top.equalTo(murmurImageView.snp.bottom).offset(24)
+            make.top.equalTo(murmurView.snp.bottom).offset(24)
             make.centerX.equalTo(self.view.snp.centerX)
         }
     }
