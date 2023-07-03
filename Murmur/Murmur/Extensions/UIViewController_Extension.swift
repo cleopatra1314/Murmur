@@ -17,4 +17,14 @@ extension UIViewController {
         viewController.present(alertController, animated: true, completion: nil)
     }
     
+//    func showAlertAndNav(title: String, message: String, viewController: UIViewController) {
+//        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//        let okAction = UIAlertAction(title: "確定", style: .default) { _ in
+//            guard ((viewController as? HomePageViewController) != nil) else { return }
+//            viewController.locationManager.requestWhenInUseAuthorization()
+//        }
+//        alertController.addAction(okAction)
+//        viewController.present(alertController, animated: true, completion: nil)
+//    }
+    
 }

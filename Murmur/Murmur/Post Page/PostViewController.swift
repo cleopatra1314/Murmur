@@ -12,8 +12,10 @@ import AVFoundation
 
 class PostViewController: UIViewController {
     
+    // 相機照相功能
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
+    var captureOutput: AVCapturePhotoOutput?
     
     let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
@@ -26,9 +28,15 @@ class PostViewController: UIViewController {
     private let murmurView: UIView = {
         let murmurView = UIView()
 //        murmurImageView.image = UIImage(named: "test1.jpg")
-        murmurView.contentMode = .scaleAspectFill
+//        murmurView.contentMode = .scaleAspectFill
         murmurView.clipsToBounds = true
         return murmurView
+    }()
+    private lazy var murmurImageView: UIImageView = {
+        let murmurImageView = UIImageView()
+        murmurImageView.contentMode = .scaleAspectFill
+        murmurImageView.clipsToBounds = true
+        return murmurImageView
     }()
     private let stack: UIStackView = {
         let stack = UIStackView()
@@ -42,11 +50,11 @@ class PostViewController: UIViewController {
         albumButton.setImage(UIImage(named: "Icons_Album.png"), for: .normal)
         return albumButton
     }()
-    private lazy var cameraButton: UIButton = {
-        let cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
-        cameraButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
-        cameraButton.addTarget(self, action: #selector(cameraButtonTouchUpInside), for: .touchUpInside)
-        return cameraButton
+    private lazy var captureButton: UIButton = {
+        let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        captureButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
+        captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
+        return captureButton
     }()
     
     let postTagVC = PostTagViewController()
@@ -56,14 +64,17 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        murmurImageView.isHidden = true
         setNav()
         layout()
-        
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
+        murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
+        murmurImageView.layer.borderColor = UIColor.lightGray.cgColor
+        murmurImageView.layer.borderWidth = 3
         murmurView.layer.cornerRadius = murmurView.frame.width / 2
         murmurView.layer.borderColor = UIColor.lightGray.cgColor
         murmurView.layer.borderWidth = 3
@@ -71,6 +82,13 @@ class PostViewController: UIViewController {
         captureSession = AVCaptureSession()
         setupCaptureSession()
     }
+    
+    @objc func captureButtonTouchUpInside() {
+            guard let captureOutput = captureOutput else { return }
+            
+            let settings = AVCapturePhotoSettings()
+            captureOutput.capturePhoto(with: settings, delegate: self)
+        }
     
     func setupCaptureSession() {
         guard let captureSession = captureSession else { return }
@@ -85,6 +103,10 @@ class PostViewController: UIViewController {
             print(error.localizedDescription)
             return
         }
+        
+        // 設定輸出
+        captureOutput = AVCapturePhotoOutput()
+        captureSession.addOutput(captureOutput!)
         
         // 設定預覽層
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -184,10 +206,10 @@ class PostViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLight
         
-        [murmurTextField, murmurView, stack].forEach { subview in
+        [murmurTextField, murmurImageView, murmurView, stack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [albumButton, cameraButton].forEach { subview in
+        [albumButton, captureButton].forEach { subview in
             stack.addArrangedSubview(subview)
         }
         
@@ -198,6 +220,12 @@ class PostViewController: UIViewController {
             make.height.equalTo(180)
         }
         murmurView.snp.makeConstraints { make in
+            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
+            make.leading.equalTo(self.view).offset(24)
+            make.trailing.equalTo(self.view).offset(-24)
+            make.height.equalTo(murmurView.snp.width)
+        }
+        murmurImageView.snp.makeConstraints { make in
             make.top.equalTo(murmurTextField.snp.bottom).offset(8)
             make.leading.equalTo(self.view).offset(24)
             make.trailing.equalTo(self.view).offset(-24)
@@ -234,4 +262,19 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         dismiss(animated: true, completion: nil)
     }
+}
+
+extension PostViewController: AVCapturePhotoCaptureDelegate {
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let imageData = photo.fileDataRepresentation() {
+            let image = UIImage(data: imageData)
+            // 在此處理拍攝後的照片
+            murmurImageView.isHidden = false
+            murmurView.isHidden = true
+            murmurImageView.image = image
+            captureButton.isEnabled = false
+        }
+    }
+    
 }
