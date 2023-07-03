@@ -16,6 +16,7 @@ class PostViewController: UIViewController {
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var captureOutput: AVCapturePhotoOutput?
+    var seclectedImageUrl: String?
     
     let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
@@ -25,14 +26,12 @@ class PostViewController: UIViewController {
         murmurTextField.layer.addTypingShadow()
         return murmurTextField
     }()
-    private let murmurView: UIView = {
+    let murmurView: UIView = {
         let murmurView = UIView()
-//        murmurImageView.image = UIImage(named: "test1.jpg")
-//        murmurView.contentMode = .scaleAspectFill
         murmurView.clipsToBounds = true
         return murmurView
     }()
-    private lazy var murmurImageView: UIImageView = {
+    lazy var murmurImageView: UIImageView = {
         let murmurImageView = UIImageView()
         murmurImageView.contentMode = .scaleAspectFill
         murmurImageView.clipsToBounds = true
@@ -89,6 +88,23 @@ class PostViewController: UIViewController {
         
         captureSession = AVCaptureSession()
         setupCaptureSession()
+    }
+    
+    // MARK: 上傳到 firestorage
+    func uploadPhoto(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+            
+            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
+            if let data = image.jpegData(compressionQuality: 0.9) {
+                
+                fileReference.putData(data, metadata: nil) { result in
+                    switch result {
+                    case .success:
+                         fileReference.downloadURL(completion: completion)
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            }
     }
     
     @objc func albumButtonTouchUpInside() {
@@ -222,6 +238,7 @@ class PostViewController: UIViewController {
     @objc func nextButtonItemTouchUpInside() {
 //        self.sendMurmurMessageClosure?(murmurTextField.text!)
         postTagVC.murmurData["murmurMessage"] = murmurTextField.text
+        postTagVC.murmurData["murmurImage"] = self.seclectedImageUrl ?? ""
         self.navigationController?.pushViewController(postTagVC, animated: true)
     }
     
@@ -290,12 +307,12 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 //        }
         
         if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-                    // 在此處理選取的照片
+            // 在此處理選取的照片
             murmurImageView.isHidden = false
             murmurView.isHidden = true
             murmurImageView.image = selectedImage
             captureButton.isEnabled = false
-                }
+        }
         
         dismiss(animated: true, completion: nil)
     }
@@ -311,6 +328,23 @@ extension PostViewController: AVCapturePhotoCaptureDelegate {
             murmurView.isHidden = true
             murmurImageView.image = image
             captureButton.isEnabled = false
+            
+            let uiImage = UIImage(named: "peter")
+            uploadPhoto(image: image!) { [self] result in
+                switch result {
+                case .success(let url):
+                    
+                    do {
+                        self.seclectedImageUrl = url.absoluteString
+                        print("成功上傳照片，拿到 url:", self.seclectedImageUrl)
+                    } catch {
+                        print(error)
+                    }
+                   
+                case .failure(let error):
+                   print(error)
+                }
+            }
         }
     }
     

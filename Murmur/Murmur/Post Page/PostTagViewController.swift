@@ -34,7 +34,7 @@ class PostTagViewController: UIViewController {
 //        "location": ["latitude": nil, "longitude": nil],
         "location": [String: Double](),
         "murmurMessage": [String](),
-        "murmurImage": "png",
+        "murmurImage": String(),
         "selectedTags": [String](),
         "createTime": Timestamp(date: Date())
         ]
@@ -97,15 +97,17 @@ class PostTagViewController: UIViewController {
             location["longitude"] = currentCoordinate?.longitude
             murmurData["location"] = location
         }
-        print("上傳的位置資料", murmurData["location"]!, currentCoordinate)
 
         createMurmur()
         
-        let postVC = self.navigationController?.popViewController as? PostViewController
+        let postVC = self.navigationController?.popToRootViewController as? PostViewController
         print("上一頁輸入的文字為", postVC?.murmurTextField.text)
         postVC?.murmurTextField.text = ""
+        postVC?.murmurView.isHidden = false
+        postVC?.murmurImageView.isHidden = true
         self.tabBarController?.selectedIndex = 0
         self.navigationController?.popToRootViewController(animated: true)
+//        let postVC2 = self.navigationController?.popToRootViewController as? PostViewController
         
     }
     
