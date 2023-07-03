@@ -23,8 +23,8 @@ extension CALayer {
         }
     
     func addBarShadow() {
-            self.shadowOffset = CGSize(width: 0, height: -1)
-            self.shadowOpacity = 1
+            self.shadowOffset = CGSize(width: 0, height: -2)
+        self.shadowOpacity = 0.8
             self.shadowRadius = 8
             self.shadowColor = UIColor.ShadowLight2?.cgColor
             self.masksToBounds = false

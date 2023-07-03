@@ -145,7 +145,6 @@ class HomePageViewController: UIViewController {
 //        childLocationMessageViewController.stopTimer()
         
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { (notification) in
-            print("app did enter background")
             
             // 停止 modifyCurrentLocation
             self.stopTimer()
@@ -153,10 +152,11 @@ class HomePageViewController: UIViewController {
             // Modify user onlineState
             self.updateOnlineState(false)
             
+            print("app did enter background")
+            
         }
         
         NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { (notification) in
-            print("app back to foreground")
             
             // 啟動 modifyCurrentLocation
             self.startTimer()
@@ -164,13 +164,16 @@ class HomePageViewController: UIViewController {
             // Modify user onlineState
             self.updateOnlineState(true)
             
+            print("app back to foreground")
+            
         }
         
         NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: nil) { (notification) in
-            print("app terminate")
             
             // Modify user onlineState
             self.updateOnlineState(false)
+            
+            print("app terminate")
             
         }
         

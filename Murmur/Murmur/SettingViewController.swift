@@ -11,7 +11,7 @@ import FirebaseAuth
 
 class SettingViewController: UIViewController {
     
-    let signOutButton: UIButton = {
+    lazy var signOutButton: UIButton = {
         let signOutButton = UIButton()
         signOutButton.frame = CGRect(x: 150, y: 200, width: 120, height: 40)
         signOutButton.backgroundColor = .SecondaryDefault

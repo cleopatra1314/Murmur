@@ -14,15 +14,16 @@ class CustomAnnotationView: MKAnnotationView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = UIColor.white
+        backgroundColor = UIColor.PrimaryLightest?.withAlphaComponent(0.9)
         frame = CGRect(x: 0, y: 0, width: 200, height: 30)
         layer.cornerRadius = 15
-        layer.borderColor = UIColor.lightGray.cgColor
+        layer.borderColor = UIColor.PrimaryLight?.cgColor
         layer.borderWidth = 1
+        layer.addShineShadow()
         
         // 設置標籤文字
         label.textAlignment = .center
-        label.textColor = UIColor.black
+        label.textColor = UIColor.PrimaryMid
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = annotation?.title ?? ""
         

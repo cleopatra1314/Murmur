@@ -314,18 +314,20 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         }
         
         guard let selectedAnnotation = view.annotation as? OtherUsersAnnotation else {
-            print("選到自己：selectedAnnotation is nil")
+            print("轉型失敗")
             return
         }
         
         // 拿到那個聊天室的ID
         let userChatRoom = database.collection("userTest").document(currentUserUID).collection("chatRooms").whereField("theOtherUserUID", isEqualTo: selectedAnnotation.userUID).getDocuments { querySnapshot, error in
             
-            guard let querySnapshot else {
+            print("點擊的檔案", querySnapshot!.documents.count)
+            
+            if querySnapshot!.documents.count == 0 {
                 
                 // 实例化目标视图控制器
                 let chatRoomVC = ChatRoomViewController()
-                let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatRoomVC)
+                let navigationControllerOfNearbyUsersVC = CustomNavigationController(rootViewController: chatRoomVC)
                 
                 // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
                 // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
@@ -340,9 +342,14 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                 
                 print("querySnapshot is nil.", error)
                 return
+                
+            } else {
+                
+                self.showAlert(title: "Ooops", message: "你跟 \(selectedAnnotation.userName) 有聊過天囉 請去聊天室找", viewController: self)
+                return
+                
             }
-            self.showAlert(title: "Ooops", message: "已經有聊天室囉 請去聊天室找", viewController: self)
-            return
+            
         }
         
         

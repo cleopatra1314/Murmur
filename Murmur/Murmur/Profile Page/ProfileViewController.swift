@@ -118,8 +118,8 @@ class ProfileViewController: UIViewController {
 //        }
         
         profileTableView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(self.view)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.leading.trailing.equalTo(self.view)
+            make.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
         
     }
@@ -149,6 +149,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.postsClosure = { cell in
                 self.scrollToFootPrintPage = false
             }
+            cell.clipsToBounds = false
             return cell
             
         }

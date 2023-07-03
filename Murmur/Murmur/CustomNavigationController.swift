@@ -23,7 +23,7 @@ class CustomNavigationController: UINavigationController {
             .font: UIFont.systemFont(ofSize: 18, weight: .medium)
         ]
         self.navigationBar.tintColor = .GrayScale60
-        self.navigationBar.layer.addWhiteShadow()
+        self.navigationBar.layer.addBarShadow()
         self.navigationBar.standardAppearance = navBarAppearance
         self.navigationBar.scrollEdgeAppearance = navBarAppearance
         

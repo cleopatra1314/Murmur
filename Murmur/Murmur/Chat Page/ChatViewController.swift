@@ -100,7 +100,6 @@ class ChatViewController: UIViewController {
             let chatRooms = documentSnapshot?.documents.compactMap { querySnapshot in
                 try? querySnapshot.data(as: ChatRooms.self)
             }
-            print("解析資料為", chatRooms)
 
             self.chatRoomsArray = [String]()
             self.chatRoomOtherUserNameArray = [String]()
@@ -110,13 +109,10 @@ class ChatViewController: UIViewController {
             
             // 找每個聊天室的對方名稱及大頭照
             for chatRoom in chatRooms! {
-                print("聊天室數量為", chatRooms!.count)
                 self.chatRoomsDataResult = chatRooms
 
                 self.chatRoomsArray.append(chatRoom.id!)
                 self.chatRoomOtherUserUIDArray?.append(chatRoom.theOtherUserUID)
-                
-//                var username: String?
 
                 let serialQueue = DispatchQueue(label: "SerialQueue")
                 
@@ -155,8 +151,7 @@ class ChatViewController: UIViewController {
                                 
                                 self.messageSenderDictionary[chatRoom.theOtherUserUID] = (messages?.first)!.senderUUID
                                 self.chatRoomLatestMessageDictionary[chatRoom.theOtherUserUID] = (messages?.first)!.messageContent
-                                print("第一則訊息 dictionary 為", self.chatRoomLatestMessageDictionary)
-                                print("第一則訊息發送者 dictionary 為", self.chatRoomLatestMessageDictionary)
+                             
                                 // TODO: ?? 當 chatRoomLatestMessageArray 為 [String]? 時，append 無效，要先 = [String]() 才行（移到上面 for in loop 外）
             //                                self.chatRoomLatestMessageArray?.append((messages?.first)!.messageContent)
             //                                print("第一則訊息陣列為", self.chatRoomLatestMessageArray)
@@ -223,7 +218,6 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "\(SearchBarTableHeaderView.self)") as? SearchBarTableHeaderView else {
                 return nil
         }
-        
         headerView.layoutView()
         return headerView
     }
