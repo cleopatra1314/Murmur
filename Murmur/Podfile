@@ -13,6 +13,7 @@ target 'Murmur' do
   pod 'FirebaseFirestoreSwift', '9.0'
   pod 'FirebaseDatabase', '9.0'
   pod 'IQKeyboardManagerSwift'
+  pod 'Kingfisher', '~> 7.0'
 
   # Pods for Murmur
 
