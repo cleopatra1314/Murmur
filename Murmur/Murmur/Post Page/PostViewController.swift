@@ -62,6 +62,12 @@ class PostViewController: UIViewController {
         trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
         return trashButton
     }()
+    private lazy var frontCameraButton: UIButton = {
+        let frontCameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        frontCameraButton.setImage(UIImage(named: "Icons_FrontCamera.png"), for: .normal)
+        frontCameraButton.addTarget(self, action: #selector(frontCameraButtonTouchUpInside), for: .touchUpInside)
+        return frontCameraButton
+    }()
     
     let postTagVC = PostTagViewController()
     
@@ -90,8 +96,42 @@ class PostViewController: UIViewController {
         setupCaptureSession()
     }
     
-    
-    
+    @objc func frontCameraButtonTouchUpInside() {
+        // 獲取所有可用的攝像頭設備
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+        let availableDevices = discoverySession.devices
+        
+        // 選擇前置鏡頭設備
+        if let frontCamera = availableDevices.first(where: { $0.position == .front }) {
+            do {
+                // 建立 AVCaptureDeviceInput
+                let input = try AVCaptureDeviceInput(device: frontCamera)
+                
+                guard let captureSession = captureSession else { return }
+                
+                // 移除現有的 AVCaptureDeviceInput
+                if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
+                    captureSession.removeInput(currentInput)
+                }
+
+                // 將 AVCaptureDeviceInput 設定為輸入裝置
+                do {
+                    let newInput = try AVCaptureDeviceInput(device: frontCamera)
+                    captureSession.addInput(newInput)
+                } catch {
+                    print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+                }
+
+                // 重新開始擷取
+                captureSession.startRunning()
+            } catch {
+                print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+            }
+        } else {
+            print("找不到前置鏡頭")
+        }
+    }
+
     @objc func albumButtonTouchUpInside() {
         
         let imagePicker = UIImagePickerController()
@@ -231,7 +271,7 @@ class PostViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLight
         
-        [murmurTextField, murmurImageView, murmurView, trashButton, stack].forEach { subview in
+        [murmurTextField, murmurImageView, murmurView, trashButton, frontCameraButton, stack].forEach { subview in
             self.view.addSubview(subview)
         }
         [albumButton, captureButton].forEach { subview in
@@ -259,6 +299,11 @@ class PostViewController: UIViewController {
         trashButton.snp.makeConstraints { make in
             make.width.height.equalTo(28)
             make.top.equalTo(murmurView).offset(6)
+            make.trailing.equalTo(murmurView).offset(-6)
+        }
+        frontCameraButton.snp.makeConstraints { make in
+            make.width.height.equalTo(28)
+            make.bottom.equalTo(murmurView).offset(-6)
             make.trailing.equalTo(murmurView).offset(-6)
         }
         stack.snp.makeConstraints { make in

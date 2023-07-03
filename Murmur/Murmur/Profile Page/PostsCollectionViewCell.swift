@@ -14,7 +14,7 @@ class PostsCollectionViewCell: UICollectionViewCell {
     let postsImageView: UIImageView = {
         let postsImageView = UIImageView()
         postsImageView.contentMode = .scaleAspectFill
-        postsImageView.layer.cornerRadius = 8
+        postsImageView.layer.cornerRadius = 24
         postsImageView.clipsToBounds = true
         return postsImageView
     }()

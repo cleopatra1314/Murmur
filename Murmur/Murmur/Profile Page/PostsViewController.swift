@@ -111,7 +111,7 @@ extension PostsViewController: UICollectionViewDataSource {
         }
         
         cell.postsLabel.text = murmurData![indexPath.row].murmurMessage
-        cell.layer.cornerRadius = 14
+        cell.layer.cornerRadius = 32
 //        cell.clipsToBounds = true
         cell.layer.addShineShadow()
 
