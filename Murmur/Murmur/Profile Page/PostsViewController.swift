@@ -103,7 +103,13 @@ extension PostsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // TODO: return UICollectionViewCell() 的寫法
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(PostsCollectionViewCell.self)", for: indexPath) as? PostsCollectionViewCell else { return UICollectionViewCell() }
-        cell.postsImageView.image = UIImage(named: "test2.jpg")
+        
+        if murmurData![indexPath.row].murmurImage == "" {
+            cell.postsImageView.image = UIImage(named: "Placeholder.jpg")
+        } else {
+            cell.postsImageView.kf.setImage(with: URL(string: murmurData![indexPath.row].murmurImage))
+        }
+        
         cell.postsLabel.text = murmurData![indexPath.row].murmurMessage
         cell.layer.cornerRadius = 14
 //        cell.clipsToBounds = true

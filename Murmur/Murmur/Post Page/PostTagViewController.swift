@@ -8,8 +8,11 @@
 import Foundation
 import UIKit
 import FirebaseFirestore
+import FirebaseStorage
 
 class PostTagViewController: UIViewController {
+    
+    var uploadImage: UIImage?
     
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -47,6 +50,23 @@ class PostTagViewController: UIViewController {
         self.view.backgroundColor = .PrimaryLight
         setNav()
  
+    }
+    
+    // MARK: 上傳到 firestorage
+    func uploadPhoto(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+            
+            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
+            if let data = image.jpegData(compressionQuality: 0.9) {
+                
+                fileReference.putData(data, metadata: nil) { result in
+                    switch result {
+                    case .success:
+                         fileReference.downloadURL(completion: completion)
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            }
     }
     
     private func setNav() {
@@ -98,7 +118,19 @@ class PostTagViewController: UIViewController {
             murmurData["location"] = location
         }
 
-        createMurmur()
+        uploadPhoto(image: uploadImage!) { [self] result in
+            switch result {
+            case .success(let url):
+                
+                let seclectedImageUrlString = url.absoluteString
+                murmurData["murmurImage"] = seclectedImageUrlString
+                print("成功上傳照片，拿到 urlString:", murmurData["murmurImage"])
+                createMurmur()
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
         
         let postVC = self.navigationController?.popToRootViewController as? PostViewController
         print("上一頁輸入的文字為", postVC?.murmurTextField.text)

@@ -90,22 +90,7 @@ class PostViewController: UIViewController {
         setupCaptureSession()
     }
     
-    // MARK: 上傳到 firestorage
-    func uploadPhoto(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
-            
-            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
-            if let data = image.jpegData(compressionQuality: 0.9) {
-                
-                fileReference.putData(data, metadata: nil) { result in
-                    switch result {
-                    case .success:
-                         fileReference.downloadURL(completion: completion)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
-            }
-    }
+    
     
     @objc func albumButtonTouchUpInside() {
         
@@ -312,6 +297,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             murmurView.isHidden = true
             murmurImageView.image = selectedImage
             captureButton.isEnabled = false
+            postTagVC.uploadImage = selectedImage
         }
         
         dismiss(animated: true, completion: nil)
@@ -329,22 +315,9 @@ extension PostViewController: AVCapturePhotoCaptureDelegate {
             murmurImageView.image = image
             captureButton.isEnabled = false
             
-            let uiImage = UIImage(named: "peter")
-            uploadPhoto(image: image!) { [self] result in
-                switch result {
-                case .success(let url):
-                    
-                    do {
-                        self.seclectedImageUrl = url.absoluteString
-                        print("成功上傳照片，拿到 url:", self.seclectedImageUrl)
-                    } catch {
-                        print(error)
-                    }
-                   
-                case .failure(let error):
-                   print(error)
-                }
-            }
+            // 將照片傳給下一頁 postTagVC
+            postTagVC.uploadImage = image
+            
         }
     }
     
