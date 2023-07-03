@@ -27,7 +27,8 @@ class NearbyUsersViewController: UIViewController {
         let mapView = MKMapView()
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.backgroundColor = .white
-
+        // 更改地圖淺色 / 深色模式
+//        mapView.overrideUserInterfaceStyle = .dark
         return mapView
     }()
 

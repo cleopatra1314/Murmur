@@ -33,7 +33,7 @@ class PostsViewController: UIViewController {
     
     func fetchMurmurData() {
         
-        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").addSnapshotListener { querySnapshot, error in
+        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").order(by: "createTime", descending: true).addSnapshotListener { querySnapshot, error in
             
             guard let querySnapshot else {
                 print("fetchMurmurData", error)

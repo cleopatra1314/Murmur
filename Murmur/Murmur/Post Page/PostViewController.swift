@@ -44,10 +44,11 @@ class PostViewController: UIViewController {
         stack.spacing = 40
         return stack
     }()
-    private let albumButton: UIButton = {
+    private lazy var albumButton: UIButton = {
         let albumButton = UIButton()
         albumButton.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
         albumButton.setImage(UIImage(named: "Icons_Album.png"), for: .normal)
+        albumButton.addTarget(self, action: #selector(albumButtonTouchUpInside), for: .touchUpInside)
         return albumButton
     }()
     private lazy var captureButton: UIButton = {
@@ -55,6 +56,12 @@ class PostViewController: UIViewController {
         captureButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
         captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
         return captureButton
+    }()
+    private lazy var trashButton: UIButton = {
+        let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        trashButton.setImage(UIImage(named: "Icons_Trash.png"), for: .normal)
+        trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
+        return trashButton
     }()
     
     let postTagVC = PostTagViewController()
@@ -64,6 +71,7 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarController?.tabBar.isHidden
         murmurImageView.isHidden = true
         setNav()
         layout()
@@ -81,6 +89,21 @@ class PostViewController: UIViewController {
         
         captureSession = AVCaptureSession()
         setupCaptureSession()
+    }
+    
+    @objc func albumButtonTouchUpInside() {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+        
+    }
+    
+    @objc func trashButtonTouchUpInside() {
+        murmurImageView.isHidden = true
+        murmurView.isHidden = false
+        captureButton.isEnabled = true
     }
     
     @objc func captureButtonTouchUpInside() {
@@ -206,7 +229,7 @@ class PostViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLight
         
-        [murmurTextField, murmurImageView, murmurView, stack].forEach { subview in
+        [murmurTextField, murmurImageView, murmurView, trashButton, stack].forEach { subview in
             self.view.addSubview(subview)
         }
         [albumButton, captureButton].forEach { subview in
@@ -231,6 +254,11 @@ class PostViewController: UIViewController {
             make.trailing.equalTo(self.view).offset(-24)
             make.height.equalTo(murmurView.snp.width)
         }
+        trashButton.snp.makeConstraints { make in
+            make.width.height.equalTo(28)
+            make.top.equalTo(murmurView).offset(6)
+            make.trailing.equalTo(murmurView).offset(-6)
+        }
         stack.snp.makeConstraints { make in
             make.top.equalTo(murmurView.snp.bottom).offset(24)
             make.centerX.equalTo(self.view.snp.centerX)
@@ -241,7 +269,8 @@ class PostViewController: UIViewController {
 
 extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // [String : Any]
         
         var selectedImageFromPicker: UIImage?
         
@@ -255,10 +284,18 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         let uniqueString = NSUUID().uuidString
         
         // 當判斷有 selectedImage 時，我們會在 if 判斷式裡將圖片上傳
-        if let selectedImage = selectedImageFromPicker {
-            
-            print("\(uniqueString), \(selectedImage)")
-        }
+//        if let selectedImage = selectedImageFromPicker {
+//
+//            print("\(uniqueString), \(selectedImage)")
+//        }
+        
+        if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                    // 在此處理選取的照片
+            murmurImageView.isHidden = false
+            murmurView.isHidden = true
+            murmurImageView.image = selectedImage
+            captureButton.isEnabled = false
+                }
         
         dismiss(animated: true, completion: nil)
     }
