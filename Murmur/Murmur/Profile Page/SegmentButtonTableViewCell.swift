@@ -8,7 +8,10 @@
 import Foundation
 import UIKit
 
-class HeaderOfProfileTableViewCell: UITableViewCell {
+class SegmentButtonTableViewCell: UITableViewCell {
+    
+    var footPrintClosure: ((SegmentButtonTableViewCell) -> Void)?
+    var postsClosure: ((SegmentButtonTableViewCell) -> Void)?
     
     var selectedButton = UIButton()
     
@@ -22,7 +25,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     private let postsLabel: UILabel = {
         let postsLabel = UILabel()
         postsLabel.text = "Posts"
-        postsLabel.textColor = .GrayScale0
+        postsLabel.textColor = .GrayScale20
         return postsLabel
     }()
     lazy var postsButton: UIButton = {
@@ -36,7 +39,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     private let footPrintLabel: UILabel = {
         let footPrintLabel = UILabel()
         footPrintLabel.text = "FootPrint"
-        footPrintLabel.textColor = .GrayScale0
+        footPrintLabel.textColor = .GrayScale20
         return footPrintLabel
     }()
     lazy var footPrintButton: UIButton = {
@@ -54,7 +57,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
     }()
     private let segmentBottomLine: UIView = {
         let segmentBottomLine = UIView()
-        segmentBottomLine.backgroundColor = .SecondaryDefault
+        segmentBottomLine.backgroundColor = .SecondaryLight
         segmentBottomLine.layer.cornerRadius = 1.5
         return segmentBottomLine
     }()
@@ -83,6 +86,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
         
         segmentBottomLine.frame = CGRect(x: postsButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
         
+//        self.layer.addMessagesShadow()
     }
     
     override func layoutSubviews() {
@@ -153,6 +157,7 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
             }
         }
         
+
         moveSegmentBottomLine(ofSelectedButton: sender)
         
 //        if sender == postsButton{
@@ -193,13 +198,18 @@ class HeaderOfProfileTableViewCell: UITableViewCell {
         switch labelOfSegmentButton.text {
         case "Posts":
             selectedLabel = postsLabel
+            self.postsClosure!(self)
+            
         case "FootPrint":
             selectedLabel = footPrintLabel
+            self.footPrintClosure!(self)
+            
         default:
             return
         }
         
         UIView.animate(withDuration: 0.3) { [self] in
+            print("點選的按鈕位置", ofSelectedButton.frame.minX)
             self.segmentBottomLine.frame = CGRect(x: ofSelectedButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: selectedLabel.frame.width, height: 3)
         }
         

@@ -132,19 +132,30 @@ class SignInUpViewController: UIViewController {
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInButtonTouchUpInside() {
         
-        guard let userEmail = self.emailTextField.text else { return }
-        guard let userPassward = self.passwordTextField.text else { return }
-//        let userEmail = "beta@gmail.com"
-//        let userPassward = "222222"
+        let userEmail = self.emailTextField.text
+        let userPassward = self.passwordTextField.text
         
-        Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
+        guard userEmail != "" else {
+            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+            return
+        }
+        guard userPassward != "" else {
+            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+            return
+        }
+        
+        Auth.auth().signIn(withEmail: userEmail!, password: userPassward!) { result, error in
+            // ??
             guard error == nil else {
                 print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                self.errorLabel.text = "帳號或密碼有誤，請重新輸入"
+                self.errorLabel.text = "打錯帳號密碼齁，再給你一次機會"
                 return
                 
             }
-            guard let userID = result?.user.uid else { return }
+            guard let userID = result?.user.uid else {
+                
+                return
+            }
             currentUserUID = userID
             print("\(result?.user.uid ?? "") 登入成功")
             self.createTabBarController()
@@ -162,10 +173,10 @@ class SignInUpViewController: UIViewController {
                 print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
                 return
             }
-            print("\(result?.user.uid ?? "")，\(result?.user.email ?? "") 註冊成功")
+            
             currentUserUID = user.uid
 
-            let userProfile = Users(userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+            let userProfile = Users(onlineState: true, userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
 
             self.userProfileData = userProfile
             self.createUsers(userUID: user.uid)
@@ -201,6 +212,7 @@ class SignInUpViewController: UIViewController {
 //                return
 //            }
             
+            "onlineState": userProfileData.onlineState,
             "userName": userProfileData.userName,
             "userPortrait": userProfileData.userPortrait,
             "location": ["latitude": userProfileData.location["latitude"], "longitude": userProfileData.location["longitude"]]
@@ -209,68 +221,11 @@ class SignInUpViewController: UIViewController {
         
     }
     
-    private func createTabBarController() {
+    func createTabBarController() {
         
-        // 创建 TabBarController
-        let tabBarController = UITabBarController()
-//        tabBarController.tabBar.isTranslucent = false
-        tabBarController.tabBar.backgroundColor = .PrimaryDark
-        tabBarController.tabBar.tintColor = .SecondaryShine
-        tabBarController.tabBar.unselectedItemTintColor = .SecondaryMiddle
-        
-        // 创建视图控制器
-        let firstViewController = HomePageViewController()
-        let secondViewController = ChatViewController()
-        let thirdViewController = PostViewController()
-        let fourthViewController = ProfileViewController()
-        
-        // 将视图控制器添加到 TabBarController
-        let secondNavigationController = UINavigationController(rootViewController: secondViewController)
-        let thirdNavigationController = UINavigationController(rootViewController: thirdViewController)
-        tabBarController.viewControllers = [firstViewController, secondNavigationController, thirdNavigationController, fourthViewController]
-        
-        // 設定 tabBarItem
-        if let tabBarItems = tabBarController.tabBar.items {
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let homeTabBarItem = tabBarItems[0]
-                // 修改 TabBarItem 的属性
-                homeTabBarItem.title = "首頁"
-                homeTabBarItem.image = UIImage(named: "Icons_Home.png")
-                return homeTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let chatRoomTabBarItem = tabBarItems[1]
-                // 修改 TabBarItem 的属性
-                chatRoomTabBarItem.title = "聊天"
-                chatRoomTabBarItem.image = UIImage(named: "Icons_ChatRoom.png")
-                return chatRoomTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let postTabBarItem = tabBarItems[2]
-                // 修改 TabBarItem 的属性
-                postTabBarItem.title = "塗鴉"
-                postTabBarItem.image = UIImage(named: "Icons_Post.png")
-                return postTabBarItem
-            }()
-            
-            let _: UITabBarItem = {
-                // 根据索引找到目标 TabBarItem
-                let profileTabBarItem = tabBarItems[3]
-                // 修改 TabBarItem 的属性
-                profileTabBarItem.title = "個人"
-                profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
-                return profileTabBarItem
-            }()
-        }
-        tabBarController.modalPresentationStyle = .fullScreen
-        tabBarController.modalTransitionStyle = .crossDissolve
-        present(tabBarController, animated: true)
+        let customTabBarController = CustomTabBarController()
+
+        present(customTabBarController, animated: true)
         
     }
     

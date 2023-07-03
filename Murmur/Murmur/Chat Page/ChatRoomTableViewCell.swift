@@ -33,12 +33,13 @@ class ChatRoomTableViewCell: UITableViewCell {
     }()
     let otherUserNameLabel: UILabel = {
         let otherUserNameLabel = UILabel()
+        otherUserNameLabel.textColor = .PrimaryDark
 //        otherUserNameLabel.attributedText
         return otherUserNameLabel
     }()
     let otherUserFirstMessageLabel: UILabel = {
         let otherUserFirstMessageLabel = UILabel()
-        otherUserFirstMessageLabel.textColor = .lightGray
+        otherUserFirstMessageLabel.textColor = .GrayScale20
         return otherUserFirstMessageLabel
     }()
     let messageSendStateImageView: UIImageView = {
@@ -48,6 +49,9 @@ class ChatRoomTableViewCell: UITableViewCell {
     }()
     
     func layoutCell() {
+        
+        self.backgroundColor = .PrimaryLight
+        
         [otherUserNameLabel, otherUserFirstMessageLabel].forEach { subview in
             stack.addArrangedSubview(subview)
         }
@@ -65,7 +69,8 @@ class ChatRoomTableViewCell: UITableViewCell {
         
         stack.snp.makeConstraints { make in
             make.centerY.equalTo(self.contentView)
-            make.leading.equalTo(otherUserImageView.snp.trailing).offset(8)
+            make.leading.equalTo(otherUserImageView.snp.trailing).offset(16)
+            make.trailing.lessThanOrEqualTo(messageSendStateImageView.snp.leading).offset(-40)
         }
         
         messageSendStateImageView.snp.makeConstraints { make in

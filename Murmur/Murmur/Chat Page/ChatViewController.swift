@@ -29,12 +29,13 @@ class ChatViewController: UIViewController {
         let chatRoomTableView = UITableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = true
+        chatRoomTableView.backgroundColor = .PrimaryLight
         return chatRoomTableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .SecondaryLight
         
         chatRoomTableView.delegate = self
         chatRoomTableView.dataSource = self
@@ -52,15 +53,17 @@ class ChatViewController: UIViewController {
     
     private func setNav() {
         
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithDefaultBackground()
-        //        navBarAppearance.backgroundColor = .red
-        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        navBarAppearance.titleTextAttributes = [
-            .foregroundColor: UIColor.black,
-            .font: UIFont.systemFont(ofSize: 18, weight: .medium)
-        ]
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+//        let navBarAppearance = UINavigationBarAppearance()
+//        navBarAppearance.configureWithDefaultBackground()
+//        navBarAppearance.backgroundColor = .PrimaryDefault
+//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+//        navBarAppearance.titleTextAttributes = [
+//            .foregroundColor: UIColor.GrayScale20,
+//            .font: UIFont.systemFont(ofSize: 18, weight: .medium)
+//        ]
+//        self.navigationController?.navigationBar.tintColor = .GrayScale20
+//        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
+//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
         self.navigationItem.title = "破冰室茶集"
         
@@ -82,7 +85,8 @@ class ChatViewController: UIViewController {
         self.view.addSubview(chatRoomTableView)
         
         chatRoomTableView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view)
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -96,7 +100,6 @@ class ChatViewController: UIViewController {
             let chatRooms = documentSnapshot?.documents.compactMap { querySnapshot in
                 try? querySnapshot.data(as: ChatRooms.self)
             }
-            print("解析資料為", chatRooms)
 
             self.chatRoomsArray = [String]()
             self.chatRoomOtherUserNameArray = [String]()
@@ -106,13 +109,10 @@ class ChatViewController: UIViewController {
             
             // 找每個聊天室的對方名稱及大頭照
             for chatRoom in chatRooms! {
-                print("聊天室數量為", chatRooms!.count)
                 self.chatRoomsDataResult = chatRooms
 
                 self.chatRoomsArray.append(chatRoom.id!)
                 self.chatRoomOtherUserUIDArray?.append(chatRoom.theOtherUserUID)
-                
-//                var username: String?
 
                 let serialQueue = DispatchQueue(label: "SerialQueue")
                 
@@ -151,8 +151,7 @@ class ChatViewController: UIViewController {
                                 
                                 self.messageSenderDictionary[chatRoom.theOtherUserUID] = (messages?.first)!.senderUUID
                                 self.chatRoomLatestMessageDictionary[chatRoom.theOtherUserUID] = (messages?.first)!.messageContent
-                                print("第一則訊息 dictionary 為", self.chatRoomLatestMessageDictionary)
-                                print("第一則訊息發送者 dictionary 為", self.chatRoomLatestMessageDictionary)
+                             
                                 // TODO: ?? 當 chatRoomLatestMessageArray 為 [String]? 時，append 無效，要先 = [String]() 才行（移到上面 for in loop 外）
             //                                self.chatRoomLatestMessageArray?.append((messages?.first)!.messageContent)
             //                                print("第一則訊息陣列為", self.chatRoomLatestMessageArray)

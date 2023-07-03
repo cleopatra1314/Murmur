@@ -44,7 +44,7 @@ class PostTagViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .PrimaryLight
         setNav()
  
     }
@@ -54,17 +54,18 @@ class PostTagViewController: UIViewController {
 //        navigationController.modalPresentationStyle = .fullScreen
 //        navigationController.navigationBar.barStyle = .default
 //        navigationController.navigationBar.backgroundColor = .blue
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.backgroundColor = .white
+        
+//        self.navigationController?.navigationBar.isTranslucent = false
+//        self.navigationController?.navigationBar.backgroundColor = .white
         self.navigationItem.title = "塗鴉標籤"
         
         let backButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonItemTouchUpInside))
-        backButtonItem.tintColor = .black
+        backButtonItem.tintColor = .SecondaryShine
         navigationItem.leftBarButtonItem = backButtonItem
         
         let postButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonItemTouchUpInside))
         postButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
-        postButtonItem.tintColor = .purple
+        postButtonItem.tintColor = .white
         navigationItem.rightBarButtonItem = postButtonItem
     }
     

@@ -10,6 +10,13 @@ import UIKit
 
 class PostsViewController: UIViewController {
     
+    var murmurData: [Murmurs]? {
+        didSet {
+            // TODO: collectionView reloadData
+            layoutCollectionView()
+        }
+    }
+    
 //    private let postsCollectionView: UICollectionView = {
 //        let postsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: post)
 //        postsCollectionView.backgroundColor = .green
@@ -19,8 +26,32 @@ class PostsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchMurmurData()
         layoutCollectionView()
         
+    }
+    
+    func fetchMurmurData() {
+        
+        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").addSnapshotListener { querySnapshot, error in
+            
+            guard let querySnapshot else {
+                print("fetchMurmurData", error)
+                return
+            }
+            
+            let murmurs = querySnapshot.documents.compactMap { querySnapshot in
+                do {
+                    return try querySnapshot.data(as: Murmurs.self)
+                    
+                } catch {
+                    print("fetchMurmurData", error)
+                    return nil
+                }
+            }
+            self.murmurData = murmurs
+            
+        }
     }
     
     func layoutCollectionView() {
@@ -29,7 +60,7 @@ class PostsViewController: UIViewController {
         let postsCollectionViewFlowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let postsCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: postsCollectionViewFlowLayout)
         
-        postsCollectionView.backgroundColor = UIColor(red: 28/255, green: 38/255, blue: 45/255, alpha: 1)
+        postsCollectionView.backgroundColor = .PrimaryDefault
         
 //        postsCollectionView.frame = self.view.bounds
         postsCollectionView.collectionViewLayout =  postsCollectionViewFlowLayout
@@ -65,22 +96,18 @@ extension PostsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        14
+        murmurData?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // TODO: return UICollectionViewCell() 的寫法
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(PostsCollectionViewCell.self)", for: indexPath) as? PostsCollectionViewCell else { return UICollectionViewCell() }
         cell.postsImageView.image = UIImage(named: "test2.jpg")
-//        cell.postsLabel.text = "這邊有很大的陽台"
-        cell.backgroundColor = UIColor(red: 32/255, green: 44/255, blue: 52/255, alpha: 1)
+        cell.postsLabel.text = murmurData![indexPath.row].murmurMessage
         cell.layer.cornerRadius = 14
 //        cell.clipsToBounds = true
-        cell.layer.addShadow()
-//        cell.layer.borderColor = UIColor(red: 132/255, green: 218/255, blue: 231/255, alpha: 1).cgColor
-//        cell.layer.borderWidth = 0.8
-        
-        cell.layoutView()
+        cell.layer.addShineShadow()
+
         return cell
     }
     

@@ -28,6 +28,8 @@ struct Murmurs: Codable, Identifiable {
 struct Users: Codable, Identifiable {
     @DocumentID var id: String?
     
+    var murmur: String?
+    var onlineState: Bool
     let userName: String
     let userPortrait: String
     var location: [String: Double]

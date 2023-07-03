@@ -41,6 +41,8 @@ class NearbyUsersViewController: UIViewController {
         
         layoutView()
         setLocationManager()
+        
+        startTimer()
     }
     
     private func layoutView() {
@@ -56,6 +58,7 @@ class NearbyUsersViewController: UIViewController {
     // 設定每 30 秒 fetch 一次有上線用戶們的位置，記得每次要先清掉全部再加
     @objc func fetchUserLocation() {
         
+//        database.collectionGroup("userTest").whereField("onlineState", isEqualTo: true).getDocuments { querySnapshot, error in
         database.collectionGroup("userTest").getDocuments { querySnapshot, error in
             
 //            if let querySnapshot = querySnapshot {
@@ -66,9 +69,9 @@ class NearbyUsersViewController: UIViewController {
 //                return
 //            }
             
-            guard let querySnapshot else { return }
-            for document in querySnapshot.documents {
-//                    print("JSON 資料", document.data())
+            guard let querySnapshot else {
+                print("querySnapshot is nil")
+                return
             }
             
             let users = querySnapshot.documents.compactMap { querySnapshot in
@@ -81,14 +84,17 @@ class NearbyUsersViewController: UIViewController {
             }
             
             self.userData = users
-            print("解析完後的資料", self.userData)
             
             DispatchQueue.main.async { [self] in
                 
                 mapView.removeAnnotations(mapView.annotations)
                 
                 for user in self.userData! {
-                    self.showOtherUsersOnMap(user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
+                    
+                    if user.onlineState == true {
+                        self.showOtherUsersOnMap(user.onlineState, user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
+                    }
+                    
                 }
                 print("共有哪些小怪獸", self.mapView.annotations, self.mapView.annotations.count, "隻")
                 
@@ -110,7 +116,7 @@ class NearbyUsersViewController: UIViewController {
         timer.invalidate()
     }
     
-    func showOtherUsersOnMap(_ userUID: String, _ name: String, _ imageURL: String, _ coordinate: CLLocationCoordinate2D) {
+    func showOtherUsersOnMap(_ onlineState: Bool, _ userUID: String, _ name: String, _ imageURL: String, _ coordinate: CLLocationCoordinate2D) {
         
         if userUID == currentUserUID {
             return
@@ -119,7 +125,7 @@ class NearbyUsersViewController: UIViewController {
         let userUID = userUID
         let coordinate = coordinate
         let annotation = OtherUsersAnnotation(userUID: userUID, userName: name, userImage: imageURL, coordinate: coordinate)
-        print("showOtherUsersOnMap 的小怪獸名稱", name)
+        print("showOtherUsersOnMap 的小怪獸名稱", name, coordinate, currentCoordinate)
         mapView.addAnnotation(annotation)
         print("showOtherUsersOnMap 的小怪獸數量", mapView.annotations.count)
     }
@@ -303,38 +309,75 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
             return
         }
         
-        if view.annotation is MeAnnotation {
+        if annotation is MeAnnotation {
             return
         }
         
         guard let selectedAnnotation = view.annotation as? OtherUsersAnnotation else {
-            print("選到自己：selectedAnnotation is nil")
+            print("轉型失敗")
             return
         }
+        
+        // 拿到那個聊天室的ID
+        let userChatRoom = database.collection("userTest").document(currentUserUID).collection("chatRooms").whereField("theOtherUserUID", isEqualTo: selectedAnnotation.userUID).getDocuments { querySnapshot, error in
+            
+            print("點擊的檔案", querySnapshot!.documents.count)
+            
+            if querySnapshot!.documents.count == 0 {
+                
+                // 实例化目标视图控制器
+                let chatRoomVC = ChatRoomViewController()
+                let navigationControllerOfNearbyUsersVC = CustomNavigationController(rootViewController: chatRoomVC)
+                
+                // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
+                // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
+                chatRoomVC.otherUserUID = selectedAnnotation.userUID
+                chatRoomVC.otherUserName = selectedAnnotation.userName
+                chatRoomVC.otherUserImageURL = selectedAnnotation.userImage
+                
+                // 执行视图控制器的跳转
+                navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
+                navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
+                self.present(navigationControllerOfNearbyUsersVC, animated: true)
+                
+                print("querySnapshot is nil.", error)
+                return
+                
+            } else {
+                
+                self.showAlert(title: "Ooops", message: "你跟 \(selectedAnnotation.userName) 有聊過天囉 請去聊天室找", viewController: self)
+                return
+                
+            }
+            
+        }
+        
+        
+        
         print("點擊的用戶 UUID", selectedAnnotation.userUID)
         // 拿到點擊的用戶 UUID 後
+        // 判斷是否已有聊天室
         // present chatRoom VC
         // 將 用戶 UUID 傳值給 chatRoom VC
         // chatRoom VC 會先撈 用戶 UUID，顯示該用戶名稱、塗鴉紀錄等
         // 若傳送了第一則訊息，則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
         // chatRoom VC 再藉由這個 用戶 UUID fetch 對話資料
         
-        // 实例化目标视图控制器
-        let chatRoomVC = ChatRoomViewController()
-        let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatRoomVC)
+//        // 实例化目标视图控制器
+//        let chatRoomVC = ChatRoomViewController()
+//        let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatRoomVC)
+//
+//        // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
+//        // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
+//        chatRoomVC.otherUserUID = selectedAnnotation.userUID
+//        chatRoomVC.otherUserName = selectedAnnotation.userName
+//        chatRoomVC.otherUserImageURL = selectedAnnotation.userImage
+//
+//        // 执行视图控制器的跳转
+//        navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
+//        navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
+//        present(navigationControllerOfNearbyUsersVC, animated: true)
         
-        // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
-        // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
-        chatRoomVC.otherUserUID = selectedAnnotation.userUID
-        chatRoomVC.otherUserName = selectedAnnotation.userName
-        chatRoomVC.otherUserImageURL = selectedAnnotation.userImage
-        
-        // 执行视图控制器的跳转
-        navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
-        navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
-        present(navigationControllerOfNearbyUsersVC, animated: true)
-        
-//        navigationController?.pushViewController(chatVC, animated: true)
     }
     
     // MARK: - CLLocationManagerDelegate

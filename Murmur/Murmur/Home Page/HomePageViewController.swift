@@ -10,6 +10,7 @@ import MapKit
 import CoreLocation
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseDatabase
 
 let defaultCurrentCoordinate = CLLocationCoordinate2D(latitude: 25.0385, longitude: 121.531)
 var currentCoordinate: CLLocationCoordinate2D? {
@@ -21,7 +22,36 @@ var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().cur
 let database = Firestore.firestore()
 let fullScreenSize = UIScreen.main.bounds
 
+
+// 設定每 120 秒 update 一次（自己） currentLocation
+func modifyCurrentLocation() {
+
+    let documentReference = database.collection("userTest").document(currentUserUID)
+    
+    documentReference.getDocument { document, error in
+        guard let document,
+              document.exists,
+              var user = try? document.data(as: Users.self)
+        else {
+            return
+        }
+        
+        user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
+
+        do {
+            try documentReference.setData(from: user)
+            print("更新目前位置為：", user.location)
+        } catch {
+            print(error)
+        }
+        
+    }
+}
+
+
 class HomePageViewController: UIViewController {
+    
+    var databaseRef: DatabaseReference!
     
     var timer = Timer()
 
@@ -59,27 +89,44 @@ class HomePageViewController: UIViewController {
     private let btnStack: UIStackView = {
         let btnStack = UIStackView()
         btnStack.axis = .vertical
+        btnStack.layer.cornerRadius = 10
+        btnStack.clipsToBounds = true
         return btnStack
     }()
     private let filterButton: UIButton = {
         let filterButton = UIButton()
-        filterButton.backgroundColor = .black
+        filterButton.backgroundColor = .PrimaryDefault
+        filterButton.tintColor = .SecondaryLight
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
         return filterButton
     }()
     lazy var switchModeButton: UIButton = {
         let switchModeButton = UIButton()
-        switchModeButton.backgroundColor = .blue
+        switchModeButton.backgroundColor = .PrimaryDefault
+        switchModeButton.tintColor = .SecondaryLight
         switchModeButton.setImage(UIImage(named: "Icons_Message"), for: .normal)
         switchModeButton.addTarget(self, action: #selector(switchModeButtonTouchUpInside), for: .touchUpInside)
         return switchModeButton
     }()
     private lazy var backToMyLocationButton: UIButton = {
         let backToMyLocationButton = UIButton()
-        backToMyLocationButton.backgroundColor = .red
+        backToMyLocationButton.backgroundColor = .PrimaryDefault
+        backToMyLocationButton.tintColor = .systemRed
         backToMyLocationButton.setImage(UIImage(named: "Icons_Locate"), for: .normal)
         backToMyLocationButton.addTarget(self, action: #selector(locateButtonTouchUpInside), for: .touchUpInside)
         return backToMyLocationButton
+    }()
+    private let separaterbar1: UIView = {
+        let separaterbar = UIView()
+        separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
+        separaterbar.backgroundColor = .SecondaryDefault
+        return separaterbar
+    }()
+    private let separaterbar2: UIView = {
+        let separaterbar = UIView()
+        separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
+        separaterbar.backgroundColor = .SecondaryDefault
+        return separaterbar
     }()
 
     override func viewDidLoad() {
@@ -95,8 +142,42 @@ class HomePageViewController: UIViewController {
         childNearbyUsersViewController.fetchUserLocation()
         
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
-        childLocationMessageViewController.stopTimer()
-    
+//        childLocationMessageViewController.stopTimer()
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { (notification) in
+            
+            // 停止 modifyCurrentLocation
+            self.stopTimer()
+            
+            // Modify user onlineState
+            self.updateOnlineState(false)
+            
+            print("app did enter background")
+            
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil) { (notification) in
+            
+            // 啟動 modifyCurrentLocation
+            self.startTimer()
+            
+            // Modify user onlineState
+            self.updateOnlineState(true)
+            
+            print("app back to foreground")
+            
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: nil) { (notification) in
+            
+            // Modify user onlineState
+            self.updateOnlineState(false)
+            
+            print("app terminate")
+            
+        }
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,7 +194,7 @@ class HomePageViewController: UIViewController {
     
     func startTimer() {
         stopTimer()
-        timer = Timer.scheduledTimer(timeInterval: 300, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(modifyCurrentLocation1), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
@@ -121,65 +202,8 @@ class HomePageViewController: UIViewController {
         timer.invalidate()
     }
     
-    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
-    func userSignUp() {
-        
-        Auth.auth().createUser(withEmail: "libby@gmail.com", password: "333333") { result, error in
-            guard let user = result?.user,
-                  error == nil else {
-                print(error?.localizedDescription ?? "no error?.localizedDescription")
-                return
-            }
-            print("\(result?.user.uid)，\(result?.user.email) 註冊成功")
-            currentUserUID = user.uid
-            DispatchQueue.main.async {
-                self.createUsers(userUID: user.uid)
-            }
-        }
-        
-    }
-    
-    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
-    func userSignIn() {
-        
-        // text 屬於 UI，所以要在 main thread 執行
-//        DispatchQueue.main.async {
-            guard let userEmail = self.userEmailTextField.text else { return }
-            guard let userPassward = self.userPasswardTextField.text else { return }
-            
-            Auth.auth().signIn(withEmail: userEmail, password: userPassward) { result, error in
-                guard error == nil else {
-                    print(error?.localizedDescription ?? "no error?.localizedDescription")
-                    print(userEmail, userPassward)
-                    print("登入 failed")
-                    return
-                }
-                guard let userID = result?.user.uid else { return }
-                currentUserUID = userID
-                print("\(result?.user.uid) 登入成功")
- 
-//            }
-        }
-    
-    }
-    
-    // 新增使用者資料到 firebase
-    func createUsers(userUID: String) {
-
-        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
-        database.collection("userTest").document(userUID).setData([
-            
-            // TODO: userData 無值這邊不會報錯，但會 build 不起來
-            "userName": userData?.userName,
-            "userPortrait": userData?.userPortrait,
-            "location": ["latitude": userData?.location["latitude"], "longitude": userData?.location["longitude"]]
-
-        ])
-        
-    }
-    
-    // 設定每 300 秒 update 一次（自己） currentLocation
-    @objc func modifyCurrentLocation() {
+    // 設定每 120 秒 update 一次（自己） currentLocation
+    @objc func modifyCurrentLocation1() {
 
         let documentReference = database.collection("userTest").document(currentUserUID)
         
@@ -192,10 +216,32 @@ class HomePageViewController: UIViewController {
             }
             
             user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
-    
+
             do {
                 try documentReference.setData(from: user)
                 print("更新目前位置為：", user.location)
+            } catch {
+                print(error)
+            }
+            
+        }
+    }
+    
+    func updateOnlineState(_ state: Bool) {
+        // Modify user onlineState
+        database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
+            
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  var user = try? documentSnapshot.data(as: Users.self)
+            else {
+                return
+            }
+            
+            user.onlineState = state
+            
+            do {
+                try database.collection("userTest").document(currentUserUID).setData(from: user)
             } catch {
                 print(error)
             }
@@ -250,7 +296,7 @@ class HomePageViewController: UIViewController {
         [nearbyUsersContainerView, locationMessageContainerView, btnStack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [filterButton, switchModeButton, backToMyLocationButton].forEach { subview in
+        [filterButton, separaterbar1, switchModeButton, separaterbar2, backToMyLocationButton].forEach { subview in
             btnStack.addArrangedSubview(subview)
         }
         
@@ -267,38 +313,48 @@ class HomePageViewController: UIViewController {
             make.bottom.equalTo(self.view).offset(-80)
         }
         btnStack.snp.makeConstraints { make in
-            make.top.equalTo(self.view).offset(100)
+            make.top.equalTo(self.view).offset(80)
             make.trailing.equalTo(self.view).offset(-24)
         }
         filterButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(filterButton.snp.width)
         }
+        separaterbar1.snp.makeConstraints { make in
+            make.width.equalTo(filterButton.snp.width)
+            make.height.equalTo(1)
+        }
         switchModeButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(switchModeButton.snp.width)
+        }
+        separaterbar2.snp.makeConstraints { make in
+            make.width.equalTo(filterButton.snp.width)
+            make.height.equalTo(1)
         }
         backToMyLocationButton.snp.makeConstraints { make in
             make.width.equalTo(48)
             make.height.equalTo(backToMyLocationButton.snp.width)
         }
     }
-
+    
 }
 
 extension HomePageViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        
         switch status {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
+            
         case .denied, .restricted:
             // TODO: 要改成跳 alert
             self.showAlert(title: "Oops!", message: "Please check your location setting to get better experience with Murmur Wall.", viewController: self)
+            
         case .authorizedWhenInUse:
-//            userSignIn()
-//            userSignUp()
             locationManager.startUpdatingLocation()
+            
         default:
             break
         }

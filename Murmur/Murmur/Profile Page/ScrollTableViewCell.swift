@@ -13,27 +13,28 @@ class ScrollTableViewCell: UITableViewCell {
     
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = UIColor(red: 28/255, green: 38/255, blue: 45/255, alpha: 1)
+        scrollView.backgroundColor = .PrimaryDefault
+        scrollView.contentSize = CGSize(width: fullScreenSize.width * 2, height: 0)
         return scrollView
     }()
     let postsVC = PostsViewController()
     let footPrintVC = FootPrintViewController()
-    
+
     func layoutView(viewController: UIViewController) {
         
         self.contentView.addSubview(scrollView)
-//        scrollView.frame = self.contentView.bounds
+
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(self.contentView)
         }
-        
+
         viewController.addChild(postsVC)
         scrollView.addSubview(postsVC.view)
-        postsVC.didMove(toParent: viewController)
+//        postsVC.didMove(toParent: viewController)
 
         viewController.addChild(footPrintVC)
         scrollView.addSubview(footPrintVC.view)
-        footPrintVC.didMove(toParent: viewController)
+//        footPrintVC.didMove(toParent: viewController)
         
         postsVC.view.translatesAutoresizingMaskIntoConstraints = false
         footPrintVC.view.translatesAutoresizingMaskIntoConstraints = false
