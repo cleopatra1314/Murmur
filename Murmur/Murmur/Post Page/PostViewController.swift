@@ -84,6 +84,7 @@ class PostViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
         murmurImageView.layer.borderColor = UIColor.lightGray.cgColor

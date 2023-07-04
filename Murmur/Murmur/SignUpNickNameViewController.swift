@@ -11,6 +11,9 @@ import FirebaseAuth
 
 class SignUpNickNameViewController: UIViewController {
     
+    var userEmail: String?
+    var userPassword: String?
+    var userProfileData: Users?
     
     private let logoImageView: UIImageView = {
         let logoImageView = UIImageView()
@@ -103,7 +106,21 @@ class SignUpNickNameViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         self.navigationController?.navigationBar.isHidden = false
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        profilePicImageView.layer.cornerRadius = profilePicImageView.frame.width / 2
+        profilePicImageView.layer.borderColor = UIColor.lightGray.cgColor
+        profilePicImageView.layer.borderWidth = 3
+        profilePicView.layer.cornerRadius = profilePicView.frame.width / 2
+        profilePicView.layer.borderColor = UIColor.lightGray.cgColor
+        profilePicView.layer.borderWidth = 3
     }
     
     func createTabBarController() {
@@ -114,11 +131,61 @@ class SignUpNickNameViewController: UIViewController {
         
     }
     
-    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
+    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     @objc func signUpWithEmailButtonTouchUpInside() {
+        guard let userEmail else {
+            print("userEmail is nil.")
+            return
+        }
+        guard let userPassword else {
+            print("userPassword is nil.")
+            return
+        }
         
+        Auth.auth().createUser(withEmail: userEmail, password: userPassword) { [self] result, error in
+            guard let user = result?.user,
+                  error == nil else {
+                print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
+                return
+            }
+            
+            currentUserUID = user.uid
+
+            let userProfile = Users(onlineState: true, userName: nickNameLabel.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+
+            self.userProfileData = userProfile
+            self.createUsers(userUID: user.uid)
+            
+            // ??
+            DispatchQueue.main.async {
+                self.createTabBarController()
+            }
+            
+        }
         
-        createTabBarController()
+    }
+    
+    // 新增使用者資料到 firebase
+    private func createUsers(userUID: String) {
+        guard let userProfileData else {
+            print("userProfileData is nil.")
+            return
+        }
+        
+        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+        database.collection("userTest").document(userUID).setData([
+            // TODO: 這邊寫法為什麼不行
+//            guard let self.userProfileData else {
+//                print("userProfileData is nil.")
+//                return
+//            }
+            
+            "onlineState": userProfileData.onlineState,
+            "userName": userProfileData.userName,
+            "userPortrait": userProfileData.userPortrait,
+            "location": ["latitude": userProfileData.location["latitude"], "longitude": userProfileData.location["longitude"]]
+
+        ])
         
     }
     
@@ -167,12 +234,12 @@ class SignUpNickNameViewController: UIViewController {
         profilePicView.snp.makeConstraints { make in
             make.top.equalTo(self.view.snp.centerY).offset(-30)
             make.centerX.equalTo(self.view)
-            make.height.equalTo(184)
+            make.height.width.equalTo(184)
         }
         profilePicImageView.snp.makeConstraints { make in
             make.top.equalTo(self.view.snp.centerY).offset(-30)
             make.centerX.equalTo(self.view)
-            make.height.equalTo(184)
+            make.height.width.equalTo(184)
         }
         signUpWithEmailButton.snp.makeConstraints { make in
             make.height.equalTo(39)
@@ -182,4 +249,6 @@ class SignUpNickNameViewController: UIViewController {
         }
         
     }
+
+    
 }

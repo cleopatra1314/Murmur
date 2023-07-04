@@ -106,12 +106,7 @@ class PostTagViewController: UIViewController {
         homeVC?.nearbyUsersContainerView.isHidden = true
         homeVC?.locationMessageContainerView.isHidden = false
         homeVC?.switchMode = true
-        
-//        let postVC = self.navigationController?.viewControllers[0] as? PostViewController
-//        postVC!.sendMurmurMessageClosure = { [self] murmurMessage in
-//            self.murmurData["murmurMessage"] = murmurMessage
-//        }
-        
+
         // 将 location 强制转换为 [String: Double] 类型
         if var location = murmurData["location"] as? [String: Double] {
             location["latitude"] = currentCoordinate?.latitude

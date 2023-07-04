@@ -110,17 +110,10 @@ class SignUpEmailViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
     }
     
-    func createTabBarController() {
-        
-        let customTabBarController = CustomTabBarController()
-
-        present(customTabBarController, animated: true)
-        
-    }
-    
     @objc func nextButtonTouchUpInside() {
         
-        
+        signUpNickNameVC.userEmail = emailTextField.text
+        signUpNickNameVC.userPassword = passwordTextField.text
         self.navigationController?.pushViewController(signUpNickNameVC, animated: true)
         
     }
