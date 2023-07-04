@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import FirebaseStorage
 
 extension UIViewController {
     
@@ -26,5 +27,23 @@ extension UIViewController {
 //        alertController.addAction(okAction)
 //        viewController.present(alertController, animated: true, completion: nil)
 //    }
+    
+    // MARK: 上傳到 firestorage 並拿到 captured image URL
+    func uploadPhoto(image: UIImage?, completion: @escaping (Result<URL, Error>) -> Void) {
+            
+            guard let image else { return }
+            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
+            if let data = image.jpegData(compressionQuality: 0.9) {
+                
+                fileReference.putData(data, metadata: nil) { result in
+                    switch result {
+                    case .success:
+                         fileReference.downloadURL(completion: completion)
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
+            }
+    }
     
 }
