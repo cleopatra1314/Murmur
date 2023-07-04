@@ -10,8 +10,12 @@ import UIKit
 import SnapKit
 import FirebaseAuth
 import FirebaseFirestore
+import Lottie
 
 class InitialViewController: UIViewController {
+    
+    // MARK: Lottie
+    let pacmanAnimationView = LottieAnimationView(name: "Pacman")
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
@@ -151,14 +155,19 @@ class InitialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         layoutBackground()
         layoutView()
+        lottiePacman()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    func lottiePacman() {
+        pacmanAnimationView.play()
+        pacmanAnimationView.loopMode = .loop
     }
     
     @objc func signUpWithEmailButtonTouchUpInside() {
@@ -191,7 +200,7 @@ class InitialViewController: UIViewController {
     }
     
     func layoutView() {
-        [logoImageView, titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack].forEach { subview in
+        [logoImageView, titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack, pacmanAnimationView].forEach { subview in
             mainView.addSubview(subview)
         }
         
@@ -234,7 +243,11 @@ class InitialViewController: UIViewController {
         signInButton.snp.makeConstraints { make in
             make.top.trailing.bottom.equalTo(stack)
         }
-        
+        pacmanAnimationView.snp.makeConstraints { make in
+            make.height.width.equalTo(180)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
+            make.centerX.equalTo(self.view)
+        }
     }
     
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
