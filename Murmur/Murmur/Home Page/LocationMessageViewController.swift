@@ -84,6 +84,7 @@ class LocationMessageViewController: UIViewController {
     }
     
     func relocateMyself() {
+        
         // 設定初始地圖區域為使用者當前位置
         let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
         mapView.setRegion(region, animated: false)
@@ -128,7 +129,9 @@ class LocationMessageViewController: UIViewController {
         for item in murmurData {
 
             let coordinateOfMessage = CLLocationCoordinate2D(latitude: item.location["latitude"]!, longitude: item.location["longitude"]!)
+            
             guard let coordinateOfMe = currentCoordinate else { return }
+            
             let distanceBetweenMeAndMessage = calculateDistance(from: coordinateOfMessage, to: coordinateOfMe)
             
             if distanceBetweenMeAndMessage <= 200 {
