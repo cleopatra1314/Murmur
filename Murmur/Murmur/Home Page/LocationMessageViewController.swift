@@ -191,16 +191,14 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             let identifier = "\(CustomAnnotationView.self)"
             
             guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
+            
             if annotationView == nil {
-                print("mapView annotationView == nil 做的標註視圖", annotation.title, annotation.coordinate)
-                
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         
                 // 是否要讓點擊 annotation 時顯示 title
                 annotationView.canShowCallout = true
                 
             } else {
-                print("mapView annotationView != nil 做的標註視圖", annotation.title, annotation.coordinate)
                 annotationView.annotation = annotation
                 annotationView.label.text = annotation.title!
                 
@@ -214,11 +212,13 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             if annotationView == nil {
                 annotationView = DialogAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView?.canShowCallout = false
+                
             } else {
                 annotationView?.annotation = annotation
+                
             }
-            
             return annotationView
+            
         } else {
             let identifier = "MeAnnotation"
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)

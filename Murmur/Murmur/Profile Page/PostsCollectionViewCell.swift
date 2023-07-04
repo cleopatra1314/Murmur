@@ -14,7 +14,7 @@ class PostsCollectionViewCell: UICollectionViewCell {
     let postsImageView: UIImageView = {
         let postsImageView = UIImageView()
         postsImageView.contentMode = .scaleAspectFill
-        postsImageView.layer.cornerRadius = 8
+        postsImageView.layer.cornerRadius = 24
         postsImageView.clipsToBounds = true
         return postsImageView
     }()
@@ -24,14 +24,25 @@ class PostsCollectionViewCell: UICollectionViewCell {
         postsLabel.attributedText = NSAttributedString(string: "中文測試postsMurmurmurmurmurmur中文測試中文測試中文測試中文測試", attributes: [
             NSAttributedString.Key.font: UIFont(name: "PingFangTC-Regular", size: 12.0),
             NSAttributedString.Key.kern: 2.0,
-            NSAttributedString.Key.foregroundColor: UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 0.8)
+            NSAttributedString.Key.foregroundColor: UIColor.GrayScale90
 //            NSAttributedString.Key.backgroundColor: UIColor.red
         ])
         postsLabel.numberOfLines = 0
         return postsLabel
     }()
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layoutView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func layoutView() {
+        
+        self.backgroundColor = .SecondaryLight
         
         self.contentView.addSubview(postsImageView)
         self.contentView.addSubview(postsLabel)

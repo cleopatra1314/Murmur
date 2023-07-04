@@ -17,4 +17,3 @@ class MeAnnotation: NSObject, MKAnnotation {
         self.coordinate = coordinate
     }
 }
-

@@ -22,7 +22,7 @@ class DialogAnnotationView: MKAnnotationView {
     
     private func configure() {
         // 设置自定义图片
-        let image = UIImage(named: "Icons_Message_default.png")
+        let image = UIImage(named: "Icons_Dialogue_green.png")
         self.image = image
     }
 }

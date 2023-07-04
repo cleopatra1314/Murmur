@@ -34,7 +34,7 @@ class ChatRoomViewController: UIViewController {
     }()
     private let typingAreaView: UIView = {
         let typingAreaView = UIView()
-        typingAreaView.backgroundColor = .white
+        typingAreaView.backgroundColor = .PrimaryDefault
         typingAreaView.layer.shadowOpacity = 0.5
         typingAreaView.layer.shadowOffset = CGSizeMake(0, -4)
         typingAreaView.layer.shadowRadius = 10
@@ -43,7 +43,8 @@ class ChatRoomViewController: UIViewController {
     }()
     private let typingTextField: MessageTypeTextField = {
         let typingTextField = MessageTypeTextField()
-        typingTextField.backgroundColor = UIColor(cgColor: CGColor(red: 232/255, green: 232/255, blue: 232/255, alpha: 1))
+        typingTextField.textColor = .GrayScale80
+        typingTextField.backgroundColor = .GrayScale20
         typingTextField.layer.cornerRadius = 20
         
         return typingTextField
@@ -52,7 +53,8 @@ class ChatRoomViewController: UIViewController {
         let sendButton = UIButton()
         sendButton.setBackgroundImage(UIImage(named: "Icons_Unsend.png"), for: .normal)
         sendButton.setBackgroundImage(UIImage(named: "Icons_Send.png"), for: .highlighted)
-        sendButton.tintColor = UIColor(cgColor: CGColor(red: 85/255, green: 107/255, blue: 47/255, alpha: 1))
+        sendButton.setTitleColor(.SecondaryDark, for: .normal)
+        sendButton.setTitleColor(.SecondaryDefault, for: .highlighted)
         sendButton.addTarget(self, action: #selector(sendButtonTapped), for: .touchUpInside)
         
         return sendButton
@@ -65,27 +67,26 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
-        self.view.backgroundColor = .orange
         setNav()
         setTypingArea()
         setTableView()
-  
+        
     }
 
     private func setNav() {
         self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.navigationBar.backgroundColor = UIColor(cgColor: CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+//        self.navigationController?.navigationBar.barTintColor = .PrimaryDark
         
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
-        closeButtonItem.tintColor = .black
+        closeButtonItem.tintColor = .GrayScale20
         self.navigationItem.leftBarButtonItem = closeButtonItem
         
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .red
+        navBarAppearance.backgroundColor = .PrimaryDark
         navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
         navBarAppearance.titleTextAttributes = [
-           .foregroundColor: UIColor.black,
+           .foregroundColor: UIColor.GrayScale20,
            .font: UIFont(name: "Roboto", size: 24)
 //           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
            
@@ -104,7 +105,7 @@ class ChatRoomViewController: UIViewController {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 10
-        imageView.layer.borderColor = UIColor.green.cgColor
+        imageView.layer.borderColor = UIColor.PrimaryMiddle?.cgColor
         imageView.layer.borderWidth = 2
 
         // 创建标签视图
@@ -220,7 +221,7 @@ class ChatRoomViewController: UIViewController {
         chatRoomID = documentReference.documentID
         let messageID = documentReferenceOfMessages.documentID
         guard let chatRoomID else {
-            print("目前還沒有房間ID")
+            print("Error: ChatRoomID is nil.")
             return
         }
         
@@ -240,10 +241,10 @@ class ChatRoomViewController: UIViewController {
     
     private func addChatMessages() {
         guard let chatRoomID else {
-            print("目前還沒有房間ID")
+            print("Error: ChatRoomID is nil.")
             return
         }
-        print("聊天室 ID", chatRoomID)
+       
         database.collection("chatRooms").document(chatRoomID).collection("messages").document().setData([
             "createTime": Timestamp(date: Date()),
             "messageContent": typingTextField.text,
@@ -255,7 +256,7 @@ class ChatRoomViewController: UIViewController {
         print(chatRoomID)
         
         guard let chatRoomID else {
-            print("目前還沒有房間ID")
+            print("Error: ChatRoomID is nil.")
             return
         }
         
@@ -267,12 +268,12 @@ class ChatRoomViewController: UIViewController {
             } else {
                 return
             }
+            
             let messages = documentSnapshot?.documents.compactMap { querySnapshot in
                 try? querySnapshot.data(as: Messages.self)
             }
             
             self.messageDataResult = messages!
-            print("?? 解析完後的資料", self.messageDataResult)
             
             DispatchQueue.main.async {
                 
@@ -280,7 +281,6 @@ class ChatRoomViewController: UIViewController {
                 self.messageDataArray = [String]()
                 
                 for message in self.messageDataResult {
-                    print("聊天室的每一則訊息", message.messageContent)
                     self.messageTypeArray.append(message.senderUUID)
                     self.messageDataArray.append(message.messageContent)
                 }
@@ -291,6 +291,8 @@ class ChatRoomViewController: UIViewController {
     }
     
     private func setTableView() {
+        
+//        chatRoomTableView.backgroundColor = .PrimaryDefault
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
@@ -323,17 +325,25 @@ extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
             // TODO: 寫法??
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
                 cell.dialogTextView.text = messageDataResult[indexPath.row].messageContent
-                cell.layoutCell()
+                
                 return cell
-            } else { return UITableViewCell.init() }
+            } else {
+                print("Error: tableView fails to dequeueReusableCell to type UserMeChatTableViewCell.")
+                return UITableViewCell.init()
+            }
             
         case otherUserUID:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.profileImageView.image = UIImage(named: "User1Portrait.png")
                 cell.layoutCell()
+                cell.layoutIfNeeded()
+                
                 return cell
-            } else { return UITableViewCell.init() }
+            } else {
+                print("Error: tableView fails to dequeueReusableCell to type UserTheOtherTableViewCell.")
+                return UITableViewCell.init()
+            }
             
         default:
             let cell = UserMeChatTableViewCell.init(style: .default, reuseIdentifier: "\(UserMeChatTableViewCell.self)")
