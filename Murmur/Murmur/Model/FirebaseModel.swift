@@ -31,7 +31,7 @@ struct Users: Codable, Identifiable {
     var murmur: String?
     var onlineState: Bool
     let userName: String
-    let userPortrait: String
+    var userPortrait: String
     var location: [String: Double]
 }
 
