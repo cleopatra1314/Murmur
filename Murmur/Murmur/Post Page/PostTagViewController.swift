@@ -53,8 +53,9 @@ class PostTagViewController: UIViewController {
     }
     
     // MARK: 上傳到 firestorage
-    func uploadPhoto(image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+    func uploadPhoto(image: UIImage?, completion: @escaping (Result<URL, Error>) -> Void) {
             
+            guard let image else { return }
             let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
             if let data = image.jpegData(compressionQuality: 0.9) {
                 
@@ -118,7 +119,7 @@ class PostTagViewController: UIViewController {
             murmurData["location"] = location
         }
 
-        uploadPhoto(image: uploadImage!) { [self] result in
+        uploadPhoto(image: uploadImage) { [self] result in
             switch result {
             case .success(let url):
                 
@@ -132,14 +133,20 @@ class PostTagViewController: UIViewController {
             }
         }
         
-        let postVC = self.navigationController?.popToRootViewController as? PostViewController
-        print("上一頁輸入的文字為", postVC?.murmurTextField.text)
-        postVC?.murmurTextField.text = ""
-        postVC?.murmurView.isHidden = false
-        postVC?.murmurImageView.isHidden = true
+        guard let postVC = self.navigationController?.viewControllers.first as? PostViewController else {
+            print("Error: self.navigationController?.viewControllers.first can't transform to PostViewController")
+            return
+        }
+        print("上一頁輸入的文字為", postVC.murmurTextField.text)
+        postVC.murmurTextField.text = ""
+        postVC.murmurView.isHidden = false
+        postVC.murmurImageView.isHidden = true
         self.tabBarController?.selectedIndex = 0
         self.navigationController?.popToRootViewController(animated: true)
 //        let postVC2 = self.navigationController?.popToRootViewController as? PostViewController
+        
+        
+        self.navigationController?.popToRootViewController(animated: true)
         
     }
     

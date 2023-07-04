@@ -37,12 +37,13 @@ class InitialViewController: UIViewController {
         titleLabel.textAlignment = .center
         return titleLabel
     }()
-    private let signUpWithEmailButton: UIButton = {
+    private lazy var signUpWithEmailButton: UIButton = {
         let signUpWithEmailButton = UIButton()
         signUpWithEmailButton.setTitle("Sign up with Email", for: .normal)
         signUpWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
+        signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
         return signUpWithEmailButton
     }()
     private let signUpWithAppleButton: UIButton = {
@@ -158,6 +159,13 @@ class InitialViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    @objc func signUpWithEmailButtonTouchUpInside() {
+        
+        let signUpEmailVC = SignUpEmailViewController()
+        self.navigationController?.pushViewController(signUpEmailVC, animated: true)
+        
     }
     
     @objc func signInButtonTouchUpInside() {
