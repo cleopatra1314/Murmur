@@ -23,30 +23,30 @@ let database = Firestore.firestore()
 let fullScreenSize = UIScreen.main.bounds
 
 
-// 設定每 120 秒 update 一次（自己） currentLocation
-func modifyCurrentLocation() {
-
-    let documentReference = database.collection("userTest").document(currentUserUID)
-    
-    documentReference.getDocument { document, error in
-        guard let document,
-              document.exists,
-              var user = try? document.data(as: Users.self)
-        else {
-            return
-        }
-        
-        user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
-
-        do {
-            try documentReference.setData(from: user)
-            print("更新目前位置為：", user.location)
-        } catch {
-            print(error)
-        }
-        
-    }
-}
+//// 設定每 120 秒 update 一次（自己） currentLocation
+//func modifyCurrentLocation() {
+//
+//    let documentReference = database.collection("userTest").document(currentUserUID)
+//
+//    documentReference.getDocument { document, error in
+//        guard let document,
+//              document.exists,
+//              var user = try? document.data(as: Users.self)
+//        else {
+//            return
+//        }
+//
+//        user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
+//
+//        do {
+//            try documentReference.setData(from: user)
+//            print("更新目前位置為：", user.location)
+//        } catch {
+//            print(error)
+//        }
+//
+//    }
+//}
 
 
 class HomePageViewController: UIViewController {
@@ -57,7 +57,7 @@ class HomePageViewController: UIViewController {
 
     var userData: Users?
 
-    private let locationManager = CLLocationManager()
+    let locationManager = CLLocationManager()
     
     private let userEmailTextField: UITextField = {
        let userEmailTextField = UITextField()
@@ -215,6 +215,7 @@ class HomePageViewController: UIViewController {
                 return
             }
             
+
             user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
 
             do {
@@ -350,9 +351,13 @@ extension HomePageViewController: CLLocationManagerDelegate {
             
         case .denied, .restricted:
             // TODO: 要改成跳 alert
-            self.showAlert(title: "Oops!", message: "Please check your location setting to get better experience with Murmur Wall.", viewController: self)
+//            self.showAlertAndNav(title: "Oops!", message: "Please turn on your location setting to get better experience with Murmur Wall.", viewController: self)
+            self.showAlert(title: "Oops!", message: "Please turn on your location setting to get better experience with Murmur Wall.", viewController: self)
             
         case .authorizedWhenInUse:
+            locationManager.startUpdatingLocation()
+            
+        case .authorizedAlways:
             locationManager.startUpdatingLocation()
             
         default:

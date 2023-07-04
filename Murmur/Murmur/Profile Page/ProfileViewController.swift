@@ -10,6 +10,7 @@ import SnapKit
 
 class ProfileViewController: UIViewController {
     
+//    var scrollToFootPrintPage = false
     var scrollToFootPrintPage = false {
         didSet {
             profileTableView.reloadData()
@@ -143,6 +144,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 1 {
             let cell = SegmentButtonTableViewCell(style: .default, reuseIdentifier: "\(SegmentButtonTableViewCell.self)")
+           
             cell.footPrintClosure = { cell in
                 self.scrollToFootPrintPage = true
             }
@@ -182,6 +184,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         } else if indexPath == IndexPath(row: 0, section: 1) {
             let cell = ScrollTableViewCell()
             cell.layoutView(viewController: self)
+            
             // 控制 scrollView 捲動到哪
             if scrollToFootPrintPage {
                 cell.scrollView.setContentOffset(CGPoint(x: fullScreenSize.width, y: 0), animated: true)

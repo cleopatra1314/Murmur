@@ -8,8 +8,15 @@
 import UIKit
 import FirebaseStorage
 import FirebaseDatabase
+import AVFoundation
 
 class PostViewController: UIViewController {
+    
+    // 相機照相功能
+    var captureSession: AVCaptureSession?
+    var previewLayer: AVCaptureVideoPreviewLayer?
+    var captureOutput: AVCapturePhotoOutput?
+    var seclectedImageUrl: String?
     
     let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
@@ -19,9 +26,13 @@ class PostViewController: UIViewController {
         murmurTextField.layer.addTypingShadow()
         return murmurTextField
     }()
-    private let murmurImageView: UIImageView = {
+    let murmurView: UIView = {
+        let murmurView = UIView()
+        murmurView.clipsToBounds = true
+        return murmurView
+    }()
+    lazy var murmurImageView: UIImageView = {
         let murmurImageView = UIImageView()
-        murmurImageView.image = UIImage(named: "test1.jpg")
         murmurImageView.contentMode = .scaleAspectFill
         murmurImageView.clipsToBounds = true
         return murmurImageView
@@ -32,17 +43,30 @@ class PostViewController: UIViewController {
         stack.spacing = 40
         return stack
     }()
-    private let albumButton: UIButton = {
+    private lazy var albumButton: UIButton = {
         let albumButton = UIButton()
         albumButton.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
         albumButton.setImage(UIImage(named: "Icons_Album.png"), for: .normal)
+        albumButton.addTarget(self, action: #selector(albumButtonTouchUpInside), for: .touchUpInside)
         return albumButton
     }()
-    private lazy var cameraButton: UIButton = {
-        let cameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
-        cameraButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
-        cameraButton.addTarget(self, action: #selector(cameraButtonTouchUpInside), for: .touchUpInside)
-        return cameraButton
+    private lazy var captureButton: UIButton = {
+        let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        captureButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
+        captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
+        return captureButton
+    }()
+    private lazy var trashButton: UIButton = {
+        let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        trashButton.setImage(UIImage(named: "Icons_Trash.png"), for: .normal)
+        trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
+        return trashButton
+    }()
+    private lazy var frontCameraButton: UIButton = {
+        let frontCameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        frontCameraButton.setImage(UIImage(named: "Icons_FrontCamera.png"), for: .normal)
+        frontCameraButton.addTarget(self, action: #selector(frontCameraButtonTouchUpInside), for: .touchUpInside)
+        return frontCameraButton
     }()
     
     let postTagVC = PostTagViewController()
@@ -52,14 +76,111 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarController?.tabBar.isHidden
+        murmurImageView.isHidden = true
         setNav()
         layout()
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
         murmurImageView.layer.borderColor = UIColor.lightGray.cgColor
         murmurImageView.layer.borderWidth = 3
+        murmurView.layer.cornerRadius = murmurView.frame.width / 2
+        murmurView.layer.borderColor = UIColor.lightGray.cgColor
+        murmurView.layer.borderWidth = 3
+        
+        captureSession = AVCaptureSession()
+        setupCaptureSession()
+    }
+    
+    @objc func frontCameraButtonTouchUpInside() {
+        // 獲取所有可用的攝像頭設備
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+        let availableDevices = discoverySession.devices
+        
+        // 選擇前置鏡頭設備
+        if let frontCamera = availableDevices.first(where: { $0.position == .front }) {
+            do {
+                // 建立 AVCaptureDeviceInput
+                let input = try AVCaptureDeviceInput(device: frontCamera)
+                
+                guard let captureSession = captureSession else { return }
+                
+                // 移除現有的 AVCaptureDeviceInput
+                if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
+                    captureSession.removeInput(currentInput)
+                }
+
+                // 將 AVCaptureDeviceInput 設定為輸入裝置
+                do {
+                    let newInput = try AVCaptureDeviceInput(device: frontCamera)
+                    captureSession.addInput(newInput)
+                } catch {
+                    print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+                }
+
+                // 重新開始擷取
+                captureSession.startRunning()
+            } catch {
+                print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+            }
+        } else {
+            print("找不到前置鏡頭")
+        }
+    }
+
+    @objc func albumButtonTouchUpInside() {
+        
+        let imagePicker = UIImagePickerController()
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+        
+    }
+    
+    @objc func trashButtonTouchUpInside() {
+        murmurImageView.isHidden = true
+        murmurView.isHidden = false
+        captureButton.isEnabled = true
+    }
+    
+    @objc func captureButtonTouchUpInside() {
+            guard let captureOutput = captureOutput else { return }
+            
+            let settings = AVCapturePhotoSettings()
+            captureOutput.capturePhoto(with: settings, delegate: self)
+        }
+    
+    func setupCaptureSession() {
+        guard let captureSession = captureSession else { return }
+        
+        // 設定輸入裝置為相機
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
+        
+        do {
+            let input = try AVCaptureDeviceInput(device: captureDevice)
+            captureSession.addInput(input)
+        } catch {
+            print(error.localizedDescription)
+            return
+        }
+        
+        // 設定輸出
+        captureOutput = AVCapturePhotoOutput()
+        captureSession.addOutput(captureOutput!)
+        
+        // 設定預覽層
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        previewLayer?.frame = murmurView.layer.bounds
+        murmurView.layer.addSublayer(previewLayer!)
+        
+        // 啟動 AVCaptureSession
+        captureSession.startRunning()
     }
     
     @objc func cameraButtonTouchUpInside() {
@@ -143,6 +264,7 @@ class PostViewController: UIViewController {
     @objc func nextButtonItemTouchUpInside() {
 //        self.sendMurmurMessageClosure?(murmurTextField.text!)
         postTagVC.murmurData["murmurMessage"] = murmurTextField.text
+        postTagVC.murmurData["murmurImage"] = self.seclectedImageUrl ?? ""
         self.navigationController?.pushViewController(postTagVC, animated: true)
     }
     
@@ -150,10 +272,10 @@ class PostViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLight
         
-        [murmurTextField, murmurImageView, stack].forEach { subview in
+        [murmurTextField, murmurImageView, murmurView, trashButton, frontCameraButton, stack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [albumButton, cameraButton].forEach { subview in
+        [albumButton, captureButton].forEach { subview in
             stack.addArrangedSubview(subview)
         }
         
@@ -163,14 +285,30 @@ class PostViewController: UIViewController {
             make.trailing.equalTo(self.view).offset(-16)
             make.height.equalTo(180)
         }
+        murmurView.snp.makeConstraints { make in
+            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
+            make.leading.equalTo(self.view).offset(24)
+            make.trailing.equalTo(self.view).offset(-24)
+            make.height.equalTo(murmurView.snp.width)
+        }
         murmurImageView.snp.makeConstraints { make in
             make.top.equalTo(murmurTextField.snp.bottom).offset(8)
-            make.leading.equalTo(self.view).offset(32)
-            make.trailing.equalTo(self.view).offset(-32)
-            make.height.equalTo(murmurImageView.snp.width)
+            make.leading.equalTo(self.view).offset(24)
+            make.trailing.equalTo(self.view).offset(-24)
+            make.height.equalTo(murmurView.snp.width)
+        }
+        trashButton.snp.makeConstraints { make in
+            make.width.height.equalTo(28)
+            make.top.equalTo(murmurView).offset(6)
+            make.trailing.equalTo(murmurView).offset(-6)
+        }
+        frontCameraButton.snp.makeConstraints { make in
+            make.width.height.equalTo(28)
+            make.bottom.equalTo(murmurView).offset(-6)
+            make.trailing.equalTo(murmurView).offset(-6)
         }
         stack.snp.makeConstraints { make in
-            make.top.equalTo(murmurImageView.snp.bottom).offset(24)
+            make.top.equalTo(murmurView.snp.bottom).offset(24)
             make.centerX.equalTo(self.view.snp.centerX)
         }
     }
@@ -179,7 +317,8 @@ class PostViewController: UIViewController {
 
 extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // [String : Any]
         
         var selectedImageFromPicker: UIImage?
         
@@ -193,11 +332,40 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         let uniqueString = NSUUID().uuidString
         
         // 當判斷有 selectedImage 時，我們會在 if 判斷式裡將圖片上傳
-        if let selectedImage = selectedImageFromPicker {
-            
-            print("\(uniqueString), \(selectedImage)")
+//        if let selectedImage = selectedImageFromPicker {
+//
+//            print("\(uniqueString), \(selectedImage)")
+//        }
+        
+        if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            // 在此處理選取的照片
+            murmurImageView.isHidden = false
+            murmurView.isHidden = true
+            murmurImageView.image = selectedImage
+            captureButton.isEnabled = false
+            postTagVC.uploadImage = selectedImage
         }
         
         dismiss(animated: true, completion: nil)
     }
+}
+
+extension PostViewController: AVCapturePhotoCaptureDelegate {
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if let imageData = photo.fileDataRepresentation() {
+            
+            let image = UIImage(data: imageData)
+            // 在此處理拍攝後的照片
+            murmurImageView.isHidden = false
+            murmurView.isHidden = true
+            murmurImageView.image = image
+            captureButton.isEnabled = false
+            
+            // 將照片傳給下一頁 postTagVC
+            postTagVC.uploadImage = image
+            
+        }
+    }
+    
 }

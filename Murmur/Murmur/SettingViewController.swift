@@ -23,7 +23,7 @@ class SettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = .GrayScale20
+        self.view.backgroundColor = .SecondaryLight
         self.view.addSubview(signOutButton)
         
     }

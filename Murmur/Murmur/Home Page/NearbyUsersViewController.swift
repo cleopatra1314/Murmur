@@ -27,7 +27,8 @@ class NearbyUsersViewController: UIViewController {
         let mapView = MKMapView()
         mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.backgroundColor = .white
-
+        // 更改地圖淺色 / 深色模式
+//        mapView.overrideUserInterfaceStyle = .dark
         return mapView
     }()
 
@@ -286,6 +287,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                 annotationView?.annotation = annotation
              }
             return annotationView
+            
         } else {
             let identifier = "MeAnnotation"
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)

@@ -10,8 +10,6 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
-    
-    
     init() {
         super.init(nibName: nil, bundle: nil)
         
@@ -47,8 +45,6 @@ class CustomTabBarController: UITabBarController {
         
         //        self.tabBar.backgroundImage = UIImage()
         //        self.tabBar.shadowImage = UIImage()
-        
-        
         
         barAppearance.backgroundColor = .PrimaryMidDark
 //

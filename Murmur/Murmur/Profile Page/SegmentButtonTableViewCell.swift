@@ -13,6 +13,7 @@ class SegmentButtonTableViewCell: UITableViewCell {
     var footPrintClosure: ((SegmentButtonTableViewCell) -> Void)?
     var postsClosure: ((SegmentButtonTableViewCell) -> Void)?
     
+    var index = Int()
     var selectedButton = UIButton()
     
     private let stackView: UIStackView = {
@@ -70,6 +71,12 @@ class SegmentButtonTableViewCell: UITableViewCell {
         
         layoutSegmentControl()
         layoutSegmentBottomLine()
+
+//        if index == 0 {
+//            selectedButton = postsButton
+//            index += 1
+//        }
+        
         layoutIfNeeded()
 //        layoutCell()
 //        self.contentView.backgroundColor = .PrimaryDefault
@@ -79,19 +86,20 @@ class SegmentButtonTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // ?? layoutIfNeeded、layoutSubviews 的比較
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
-        
-        segmentBottomLine.frame = CGRect(x: postsButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
-        
+
+        segmentBottomLine.frame = CGRect(x: selectedButton.frame.minX, y: segmentBottomLine.frame.origin.y, width: postsLabel.frame.width, height: 3)
+
 //        self.layer.addMessagesShadow()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutCell()
+
     }
     
     func layoutCell() {
@@ -157,7 +165,6 @@ class SegmentButtonTableViewCell: UITableViewCell {
             }
         }
         
-
         moveSegmentBottomLine(ofSelectedButton: sender)
         
 //        if sender == postsButton{

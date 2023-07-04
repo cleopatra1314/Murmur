@@ -55,9 +55,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = customTabBarController
             
         } else {
+            
             // 如果尚未登入，先到登入 / 註冊頁
-            let signInUpViewController = SignInUpViewController()
-            window?.rootViewController = signInUpViewController
+            let initialVC = InitialViewController()
+            let initialNavigationController = CustomNavigationController(rootViewController: initialVC)
+            
+            window?.rootViewController = initialNavigationController
+            
         }
   
     }

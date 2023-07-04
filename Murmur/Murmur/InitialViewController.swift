@@ -11,8 +11,71 @@ import SnapKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class SignInUpViewController: UIViewController {
+class InitialViewController: UIViewController {
     
+    private let backgroundImageView: UIImageView = {
+        let backgroundImageView = UIImageView()
+        backgroundImageView.image = UIImage(named: "InitialBackground.png")
+        return backgroundImageView
+    }()
+    private let mainView: UIView = {
+        let mainView = UIView()
+        mainView.backgroundColor = .PrimaryLighter
+        mainView.layer.cornerRadius = 90
+        return mainView
+    }()
+    private let logoImageView: UIImageView = {
+        let logoImageView = UIImageView()
+        logoImageView.image = UIImage(named: "BlueParrot.png")
+        logoImageView.contentMode = .scaleAspectFit
+        return logoImageView
+    }()
+    private let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.text = "Let’s murmur the space."
+        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.textAlignment = .center
+        return titleLabel
+    }()
+    private lazy var signUpWithEmailButton: UIButton = {
+        let signUpWithEmailButton = UIButton()
+        signUpWithEmailButton.setTitle("Sign up with Email", for: .normal)
+        signUpWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signUpWithEmailButton.backgroundColor = .SecondaryMiddle
+        signUpWithEmailButton.layer.cornerRadius = 12
+        signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
+        return signUpWithEmailButton
+    }()
+    private let signUpWithAppleButton: UIButton = {
+        let signUpWithAppleButton = UIButton()
+        signUpWithAppleButton.setTitle("Sign up with Apple", for: .normal)
+        signUpWithAppleButton.setTitleColor(.GrayScale0, for: .normal)
+        signUpWithAppleButton.backgroundColor = .SecondaryMiddle
+        signUpWithAppleButton.layer.cornerRadius = 12
+        return signUpWithAppleButton
+    }()
+    private let stack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 4
+        return stack
+    }()
+    private let noteLabel: UILabel = {
+        let noteLabel = UILabel()
+        noteLabel.text = "Already have an account ?"
+        noteLabel.textColor = .SecondaryDark
+        return noteLabel
+    }()
+    private lazy var signInButton: UIButton = {
+        let signInButton = UIButton()
+        signInButton.frame = CGRect(x: 0, y: 0, width: 46, height: 20)
+        signInButton.setTitle("Sign in", for: .normal)
+        signInButton.setTitleColor(.PrimaryMiddle, for: .normal)
+        signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
+        return signInButton
+    }()
+    
+    //--------------------------
     private var userProfileData: Users?
     
 //    let attributes: [NSAttributedString.Key: Any] = [
@@ -60,14 +123,14 @@ class SignInUpViewController: UIViewController {
         userNameTextField.layer.borderWidth = 1
         return userNameTextField
     }()
-    private lazy var signInButton: UIButton = {
-        let signInButton = UIButton()
-        signInButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-//        signInButton.backgroundColor = .black
-        signInButton.setTitle("Sign In", for: .normal)
-        signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
-        return signInButton
-    }()
+//    private lazy var signInButton: UIButton = {
+//        let signInButton = UIButton()
+//        signInButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
+////        signInButton.backgroundColor = .black
+//        signInButton.setTitle("Sign In", for: .normal)
+//        signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
+//        return signInButton
+//    }()
     private lazy var signUpButton: UIButton = {
         let signUpButton = UIButton()
         signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
@@ -88,49 +151,94 @@ class SignInUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.backgroundColor = UIColor(red: 29/255, green: 35/255, blue: 35/255, alpha: 1)
+        
+        layoutBackground()
         layoutView()
         
     }
     
-    func layoutView() {
-        [emailTextField, passwordTextField, errorLabel, userNameTextField, signInButton, signUpButton, visitorButton].forEach { subview in
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    @objc func signUpWithEmailButtonTouchUpInside() {
+        
+        let signUpEmailVC = SignUpEmailViewController()
+        self.navigationController?.pushViewController(signUpEmailVC, animated: true)
+        
+    }
+    
+    @objc func signInButtonTouchUpInside() {
+        
+        let signInVC = SignInViewController()
+        self.navigationController?.pushViewController(signInVC, animated: true)
+        
+    }
+    
+    func layoutBackground() {
+        [backgroundImageView, mainView].forEach { subview in
             self.view.addSubview(subview)
         }
         
-        emailTextField.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(100)
-            make.centerX.equalTo(self.view)
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalTo(self.view)
         }
-        passwordTextField.snp.makeConstraints { make in
-            make.top.equalTo(emailTextField.snp.bottom).offset(32)
-            make.centerX.equalTo(self.view)
+        
+        mainView.snp.makeConstraints { make in
+            make.height.equalTo(self.view).multipliedBy(0.88)
+            make.leading.trailing.bottom.equalTo(self.view)
         }
-        errorLabel.snp.makeConstraints { make in
-            make.top.equalTo(passwordTextField.snp.bottom).offset(32)
-            make.centerX.equalTo(self.view)
+    }
+    
+    func layoutView() {
+        [logoImageView, titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack].forEach { subview in
+            mainView.addSubview(subview)
         }
-        userNameTextField.snp.makeConstraints { make in
-            make.top.equalTo(errorLabel.snp.bottom).offset(32)
-            make.centerX.equalTo(self.view)
+        
+        [noteLabel, signInButton].forEach { subview in
+            stack.addSubview(subview)
+        }
+        
+        signUpWithEmailButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self.view.snp.centerY)
+            make.leading.equalTo(mainView).offset(40)
+            make.trailing.equalTo(mainView).offset(-40)
+            make.height.equalTo(40)
+            make.centerX.equalTo(mainView)
+        }
+        signUpWithAppleButton.snp.makeConstraints { make in
+            make.top.equalTo(signUpWithEmailButton.snp.bottom).offset(12)
+            make.leading.equalTo(mainView).offset(40)
+            make.trailing.equalTo(mainView).offset(-40)
+            make.height.equalTo(40)
+            make.centerX.equalTo(mainView)
+        }
+        stack.snp.makeConstraints { make in
+            make.top.equalTo(signUpWithAppleButton.snp.bottom).offset(28)
+            make.centerX.equalTo(mainView)
+        }
+        logoImageView.snp.makeConstraints { make in
+            make.top.equalTo(mainView).offset(40)
+            make.width.equalTo(80)
+            make.centerX.equalTo(mainView)
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(18)
+            make.centerX.equalTo(mainView)
+        }
+        
+        noteLabel.snp.makeConstraints { make in
+            make.top.leading.bottom.equalTo(stack)
+            make.trailing.equalTo(signInButton.snp.leading).offset(-4)
         }
         signInButton.snp.makeConstraints { make in
-            make.top.equalTo(userNameTextField.snp.bottom).offset(32)
-            make.centerX.equalTo(self.view)
-        }
-        signUpButton.snp.makeConstraints { make in
-            make.top.equalTo(signInButton.snp.bottom).offset(32)
-            make.centerX.equalTo(self.view)
-        }
-        visitorButton.snp.makeConstraints { make in
-            make.top.equalTo(signUpButton.snp.bottom).offset(48)
-            make.centerX.equalTo(self.view)
+            make.top.trailing.bottom.equalTo(stack)
         }
         
     }
     
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
-    @objc func signInButtonTouchUpInside() {
+    @objc func signInButtonTouchUpInside1() {
         
         let userEmail = self.emailTextField.text
         let userPassward = self.passwordTextField.text
