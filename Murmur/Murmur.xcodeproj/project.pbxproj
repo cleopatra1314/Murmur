@@ -49,6 +49,7 @@
 		C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C292A39DA350025E693 /* Main.storyboard */; };
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
+		C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */ = {isa = PBXBuildFile; fileRef = C8CC5A872A54B1AF006E3C8D /* Pacman.json */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
 		C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */; };
 		C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */; };
@@ -105,6 +106,7 @@
 		C8C72C2C2A39DA360025E693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
 		C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = SOURCE_ROOT; };
 		C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootPrintViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */,
+				C8CC5A862A54B19D006E3C8D /* Lottie */,
 				C8A9FD082A4FDEAD00FF6966 /* CustomNavigationController.swift */,
 				C82687432A4EC0F500237D68 /* SettingViewController.swift */,
 				C8ADDEC92A4D7A0B00C9069D /* Extensions */,
@@ -244,6 +247,14 @@
 				C8C72C312A39DA360025E693 /* Info.plist */,
 			);
 			path = Murmur;
+			sourceTree = "<group>";
+		};
+		C8CC5A862A54B19D006E3C8D /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				C8CC5A872A54B1AF006E3C8D /* Pacman.json */,
+			);
+			path = Lottie;
 			sourceTree = "<group>";
 		};
 		C8F041EF2A4B5EAE0044BE9C /* Profile Page */ = {
@@ -323,6 +334,7 @@
 			files = (
 				C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */,
 				C8499F412A4009E00019D83F /* GoogleService-Info.plist in Resources */,
+				C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */,
 				C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */,
 				C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */,
 			);

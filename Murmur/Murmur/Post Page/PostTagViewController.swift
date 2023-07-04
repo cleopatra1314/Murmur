@@ -53,22 +53,22 @@ class PostTagViewController: UIViewController {
     }
     
     // MARK: 上傳到 firestorage
-    func uploadPhoto(image: UIImage?, completion: @escaping (Result<URL, Error>) -> Void) {
-            
-            guard let image else { return }
-            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
-            if let data = image.jpegData(compressionQuality: 0.9) {
-                
-                fileReference.putData(data, metadata: nil) { result in
-                    switch result {
-                    case .success:
-                         fileReference.downloadURL(completion: completion)
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
-            }
-    }
+//    func uploadPhoto(image: UIImage?, completion: @escaping (Result<URL, Error>) -> Void) {
+//
+//            guard let image else { return }
+//            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
+//            if let data = image.jpegData(compressionQuality: 0.9) {
+//
+//                fileReference.putData(data, metadata: nil) { result in
+//                    switch result {
+//                    case .success:
+//                         fileReference.downloadURL(completion: completion)
+//                    case .failure(let error):
+//                        completion(.failure(error))
+//                    }
+//                }
+//            }
+//    }
     
     private func setNav() {
 //        let navigationController = UINavigationController(rootViewController: self)
@@ -118,9 +118,10 @@ class PostTagViewController: UIViewController {
             switch result {
             case .success(let url):
                 
-                let seclectedImageUrlString = url.absoluteString
-                murmurData["murmurImage"] = seclectedImageUrlString
-                print("成功上傳照片，拿到 urlString:", murmurData["murmurImage"])
+                let selectedImageUrlString = url.absoluteString
+                
+                murmurData["murmurImage"] = selectedImageUrlString
+                
                 createMurmur()
                 
             case .failure(let error):
