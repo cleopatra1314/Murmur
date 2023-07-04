@@ -353,6 +353,7 @@ extension PostViewController: AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let imageData = photo.fileDataRepresentation() {
+            
             let image = UIImage(data: imageData)
             // 在此處理拍攝後的照片
             murmurImageView.isHidden = false

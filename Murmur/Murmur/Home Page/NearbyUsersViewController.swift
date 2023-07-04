@@ -287,6 +287,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                 annotationView?.annotation = annotation
              }
             return annotationView
+            
         } else {
             let identifier = "MeAnnotation"
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
