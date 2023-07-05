@@ -232,7 +232,7 @@ class ChatRoomBaseViewController: UIViewController {
             
 //            self.messageDataResult = messages!
 //            print("?? 解析完後的資料", self.messageDataResult)
-            
+    
             DispatchQueue.main.async { [self] in
                 
                 self.messageTypeArray = [String]()
@@ -240,11 +240,13 @@ class ChatRoomBaseViewController: UIViewController {
                 
                 for message in messages! {
                     print("聊天室的每一則訊息", message.messageContent)
-                    self.messageTypeArray.append(message.senderUUID)
-                    self.messageDataArray.append(message.messageContent)
+//                    self.messageTypeArray.append(message.senderUUID)
+//                    self.messageDataArray.append(message.messageContent)
+                    self.messageTypeArray.insert(message.senderUUID, at: 0)
+                    self.messageDataArray.insert(message.messageContent, at: 0)
                 }
                 self.chatRoomTableView.reloadData()
-                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
+//                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
             }
             
         }
@@ -253,6 +255,9 @@ class ChatRoomBaseViewController: UIViewController {
     private func setTableView() {
         
         chatRoomTableView.backgroundColor = .PrimaryLight
+        
+        // MARK: tableView upsideDown
+        chatRoomTableView.transform = CGAffineTransform(rotationAngle: .pi)
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
@@ -288,6 +293,7 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.layoutCell()
+                cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }
             
@@ -296,11 +302,13 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.profileImageView.image = UIImage(named: "User1Portrait.png")
                 cell.layoutCell()
+                cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }
             
         default:
             let cell = UserMeChatTableViewCell.init(style: .default, reuseIdentifier: "\(UserMeChatTableViewCell.self)")
+            cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
             return cell
         }
     }

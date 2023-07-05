@@ -295,6 +295,9 @@ class ChatRoomViewController: UIViewController {
         
 //        chatRoomTableView.backgroundColor = .PrimaryDefault
         
+        // MARK: tableView upsideDown
+        chatRoomTableView.transform = CGAffineTransform(rotationAngle: .pi)
+        
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
         
