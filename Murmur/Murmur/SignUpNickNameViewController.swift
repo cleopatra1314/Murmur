@@ -219,11 +219,12 @@ class SignUpNickNameViewController: UIViewController {
                 
             case .success(let url):
                 
+                // url 轉 string
                 let selectedImageUrlString = url.absoluteString
                 
                 self.userProfileData?.userPortrait = selectedImageUrlString
                 
-                // 創建會員
+                // 創建 auth 會員
                 Auth.auth().createUser(withEmail: userEmail, password: userPassword) { [self] result, error in
                     guard let user = result?.user,
                           error == nil else {
@@ -233,7 +234,7 @@ class SignUpNickNameViewController: UIViewController {
                     
                     currentUserUID = user.uid
 
-                    let userProfile = Users(onlineState: true, userName: nickNameTextField.text!, userPortrait: userProfileData?.userPortrait ?? "", location: ["latitude": 0.0, "longitude": 0.0])
+                    let userProfile = Users(onlineState: true, userName: nickNameTextField.text!, userPortrait: selectedImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
 
                     self.userProfileData = userProfile
                     self.createUsers(userUID: user.uid)

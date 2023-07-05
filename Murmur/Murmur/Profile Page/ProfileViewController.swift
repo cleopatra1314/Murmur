@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class ProfileViewController: UIViewController {
     
@@ -163,6 +164,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath == IndexPath(row: 0, section: 0) {
             let cell = ProfileTableViewCell()
             cell.backgroundColor = .clear
+            
+            if let portrait = userData?.userPortrait {
+                cell.profileImageView.kf.setImage(with: URL(string: userData!.userPortrait))
+            } else {
+                cell.profileImageView.image = UIImage(named: "User1Portrait.jpg")
+            }
+            
             cell.userNameLabel.text = userData?.userName
             cell.murmurLabel.text = userData?.murmur ?? "🖋️"
             cell.layoutView()

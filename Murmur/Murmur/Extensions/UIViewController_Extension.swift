@@ -33,7 +33,8 @@ extension UIViewController {
             
             guard let image else { return }
             let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
-            if let data = image.jpegData(compressionQuality: 0.9) {
+        
+            if let data = image.jpegData(compressionQuality: 0.3) {
                 
                 fileReference.putData(data, metadata: nil) { result in
                     switch result {
