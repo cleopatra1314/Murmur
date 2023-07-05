@@ -25,10 +25,11 @@ class ChatRoomBaseViewController: UIViewController {
     var messageDataResult: [Messages] = []
     private var meReplyText = String()
     
-    private let chatRoomTableView: UITableView = {
-        let chatRoomTableView = UITableView()
+    let chatRoomTableView: SelfSizingTableView = {
+        let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
+        chatRoomTableView.backgroundColor = .SecondaryLight
         return chatRoomTableView
     }()
     private let typingAreaView: UIView = {
@@ -37,7 +38,6 @@ class ChatRoomBaseViewController: UIViewController {
         typingAreaView.layer.shadowOpacity = 0.5
         typingAreaView.layer.shadowOffset = CGSizeMake(0, -4)
         typingAreaView.layer.shadowRadius = 10
-        
         return typingAreaView
     }()
     private let typingTextField: MessageTypeTextField = {
@@ -261,8 +261,6 @@ class ChatRoomBaseViewController: UIViewController {
     
     private func setTableView() {
         
-        chatRoomTableView.backgroundColor = .PrimaryLight
-        
         // MARK: tableView upsideDown
         chatRoomTableView.transform = CGAffineTransform(rotationAngle: .pi)
         
@@ -273,7 +271,7 @@ class ChatRoomBaseViewController: UIViewController {
         
         chatRoomTableView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(typingAreaView.snp.top)
+//            make.bottom.equalTo(typingAreaView.snp.top)
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide)
         }

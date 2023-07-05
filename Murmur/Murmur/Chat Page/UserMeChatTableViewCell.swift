@@ -51,7 +51,9 @@ class UserMeChatTableViewCell: UITableViewCell {
             dialogTextView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 14),
             dialogTextView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
             dialogTextView.leadingAnchor.constraint(greaterThanOrEqualTo: self.contentView.leadingAnchor, constant: 64),
-            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
+            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12),
+//            dialogTextView.heightAnchor.constraint(equalToConstant: 40),
+//            dialogTextView.widthAnchor.constraint(equalToConstant: 60)
         ])
     }
     

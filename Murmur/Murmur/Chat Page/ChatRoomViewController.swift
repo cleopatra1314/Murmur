@@ -26,11 +26,12 @@ class ChatRoomViewController: UIViewController {
     var messageDataResult: [Messages] = []
     private var meReplyText = String()
     
-    private let chatRoomTableView: UITableView = {
-        let chatRoomTableView = UITableView()
+    let chatRoomTableView: SelfSizingTableView = {
+        let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
-        chatRoomTableView.backgroundColor = .PrimaryLight
+        chatRoomTableView.backgroundColor = .SecondaryDark
+        chatRoomTableView.isScrollEnabled = false
         return chatRoomTableView
     }()
     private let typingAreaView: UIView = {
@@ -72,6 +73,12 @@ class ChatRoomViewController: UIViewController {
         setTypingArea()
         setTableView()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setTableView()
     }
 
     private func setNav() {
@@ -304,10 +311,12 @@ class ChatRoomViewController: UIViewController {
         self.view.addSubview(chatRoomTableView)
         
         chatRoomTableView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(typingAreaView.snp.top)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.centerX.equalTo(self.view.safeAreaLayoutGuide)
+//            make.bottom.equalTo(typingAreaView.snp.top)
+//            make.leading.equalTo(self.view.safeAreaLayoutGuide)
+//            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
+//            make.height.equalTo(chatRoomTableView.contentSize.height)
         }
 
     }

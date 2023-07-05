@@ -57,6 +57,7 @@
 		C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */; };
 		C8F041F12A4B72E20044BE9C /* CALayer_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */; };
 		C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */; };
+		C8FF7BD82A55543E00E18616 /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FF7BD72A55543E00E18616 /* SelfSizingTableView.swift */; };
 		DC450CD07D10418D1E75917C /* Pods_Murmur.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */; };
 /* End PBXBuildFile section */
 
@@ -114,6 +115,7 @@
 		C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTableViewCell.swift; sourceTree = "<group>"; };
 		C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CALayer_Extension.swift; path = Murmur/Extensions/CALayer_Extension.swift; sourceTree = SOURCE_ROOT; };
 		C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotation.swift; sourceTree = "<group>"; };
+		C8FF7BD72A55543E00E18616 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		D51D7A4E17E030FDC9A09813 /* Pods-Murmur.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.release.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.release.xcconfig"; sourceTree = "<group>"; };
 		E9C8B595076B3945BA1BAAC2 /* Pods-Murmur.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.debug.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */,
+				C8FF7BD72A55543E00E18616 /* SelfSizingTableView.swift */,
 				C8ABD8442A43FCA100B76ADC /* MessageTypeTextField.swift */,
 				C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */,
 				C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */,
@@ -436,6 +439,7 @@
 				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
 				C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */,
 				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
+				C8FF7BD82A55543E00E18616 /* SelfSizingTableView.swift in Sources */,
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */,
 				C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */,

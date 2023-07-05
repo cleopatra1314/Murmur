@@ -313,6 +313,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                 // 执行视图控制器的跳转
                 navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
                 navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
+                chatRoomVC.chatRoomTableView.reloadData()
                 self.present(navigationControllerOfNearbyUsersVC, animated: true)
                 
                 print("querySnapshot is nil.", error)
@@ -355,6 +356,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                 closeButtonItem.tintColor = .GrayScale0
                 chatRoomVC.navigationItem.leftBarButtonItem = closeButtonItem
                 
+                chatRoomVC.chatRoomTableView.reloadData()
                 self.present(navigationControllerOfNearbyUsersVC, animated: true)
                 
             }
