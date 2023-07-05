@@ -308,12 +308,17 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // [String : Any]
         
+        
+//        presentCancelAlert(message: "確定要更換頭貼嗎？", viewController: self)
+//        showAlert(title: "", message: "確定要更換頭貼嗎？", viewController: self)
+        
         var selectedImageFromPicker: UIImage?
           
         // 可以自動產生一組獨一無二的 ID 號碼，方便等一下上傳圖片的命名
         let uniqueString = NSUUID().uuidString
 
         if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+//            presentCancelAlert(message: "確定要更換頭貼嗎？", viewController: self)
             
             // 在此處理選取的照片
             self.choosedPortraitFromAlbum = selectedImage

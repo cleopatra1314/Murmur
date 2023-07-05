@@ -271,6 +271,7 @@ class ChatRoomBaseViewController: UIViewController {
         
         chatRoomTableView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.lessThanOrEqualTo(typingAreaView.snp.top)
 //            make.bottom.equalTo(typingAreaView.snp.top)
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide)

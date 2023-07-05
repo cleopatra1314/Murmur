@@ -16,7 +16,7 @@ class UserMeChatTableViewCell: UITableViewCell {
         dialogTextView.backgroundColor = .SecondaryDefault
         dialogTextView.font = UIFont(name: "PingFangTC-Regular", size: 14)
         dialogTextView.textColor = .GrayScale80
-        dialogTextView.layer.cornerRadius = 18
+        dialogTextView.layer.cornerRadius = 16
         dialogTextView.isScrollEnabled = false
         
         return dialogTextView
