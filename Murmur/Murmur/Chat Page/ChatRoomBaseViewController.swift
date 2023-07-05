@@ -11,7 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-class ChatBaseViewController: UIViewController {
+class ChatRoomBaseViewController: UIViewController {
     
     var otherUserUID = String()
     var otherUserName = String()
@@ -270,7 +270,7 @@ class ChatBaseViewController: UIViewController {
 
 }
 
-extension ChatBaseViewController: UITableViewDelegate, UITableViewDataSource {
+extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("訊息數量", messageTypeArray.count)
@@ -307,7 +307,7 @@ extension ChatBaseViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
-extension ChatBaseViewController: UITextFieldDelegate {
+extension ChatRoomBaseViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
        self.view.endEditing(true)

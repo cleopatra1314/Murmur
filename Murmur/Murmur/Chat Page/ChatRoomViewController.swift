@@ -30,6 +30,7 @@ class ChatRoomViewController: UIViewController {
         let chatRoomTableView = UITableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
+        chatRoomTableView.backgroundColor = .PrimaryLight
         return chatRoomTableView
     }()
     private let typingAreaView: UIView = {
@@ -81,17 +82,17 @@ class ChatRoomViewController: UIViewController {
         closeButtonItem.tintColor = .GrayScale20
         self.navigationItem.leftBarButtonItem = closeButtonItem
         
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithDefaultBackground()
-        navBarAppearance.backgroundColor = .PrimaryDark
-        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        navBarAppearance.titleTextAttributes = [
-           .foregroundColor: UIColor.GrayScale20,
-           .font: UIFont(name: "Roboto", size: 24)
-//           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
-           
-        ]
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+//        let navBarAppearance = UINavigationBarAppearance()
+//        navBarAppearance.configureWithDefaultBackground()
+//        navBarAppearance.backgroundColor = .PrimaryDark
+//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
+//        navBarAppearance.titleTextAttributes = [
+//           .foregroundColor: UIColor.GrayScale20,
+//           .font: UIFont(name: "Roboto", size: 24)
+////           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
+//
+//        ]
+//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         
 //        self.navigationItem.title = "塗鴉留言"
         

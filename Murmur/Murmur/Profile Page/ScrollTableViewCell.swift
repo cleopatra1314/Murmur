@@ -25,7 +25,7 @@ class ScrollTableViewCell: UITableViewCell {
         self.contentView.addSubview(scrollView)
 
         scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(self.contentView)
+            make.edges.equalTo(self.contentView.safeAreaLayoutGuide)
         }
 
         viewController.addChild(postsVC)
@@ -43,14 +43,14 @@ class ScrollTableViewCell: UITableViewCell {
         postsVC.view.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor).isActive = true
         postsVC.view.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
         postsVC.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
-        postsVC.view.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        postsVC.view.heightAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.heightAnchor).isActive = true
 
         // 第二個視圖控制器的視圖
         footPrintVC.view.leadingAnchor.constraint(equalTo: postsVC.view.trailingAnchor).isActive = true
         footPrintVC.view.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor).isActive = true
         footPrintVC.view.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor).isActive = true
         footPrintVC.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: 1).isActive = true
-        footPrintVC.view.heightAnchor.constraint(equalTo: scrollView.heightAnchor).isActive = true
+        footPrintVC.view.heightAnchor.constraint(equalTo: scrollView.safeAreaLayoutGuide.heightAnchor, constant: -180).isActive = true
         
     }
     

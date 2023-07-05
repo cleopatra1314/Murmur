@@ -224,7 +224,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let chatRoomVC = ChatBaseViewController()
+        let chatRoomVC = ChatRoomBaseViewController()
         
         chatRoomVC.chatRoomID = chatRoomsArray[indexPath.row]
         chatRoomVC.otherUserUID = chatRoomOtherUserUIDArray![indexPath.row]
