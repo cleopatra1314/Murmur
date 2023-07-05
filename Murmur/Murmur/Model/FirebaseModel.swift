@@ -39,7 +39,7 @@ struct Messages: Codable, Identifiable {
     @DocumentID var id: String?
     
     let createTime: Timestamp
-    let messageContent: String
+    var messageContent: String
     var senderUUID: String
 }
 

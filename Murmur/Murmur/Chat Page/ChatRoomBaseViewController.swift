@@ -154,6 +154,12 @@ class ChatRoomBaseViewController: UIViewController {
 
     }
     
+    @objc func closeBtnTouchUpInside() {
+        
+        dismiss(animated: true)
+        
+    }
+    
     private func setTypingArea() {
         
         self.view.addSubview(typingAreaView)
@@ -246,6 +252,7 @@ class ChatRoomBaseViewController: UIViewController {
                     self.messageDataArray.insert(message.messageContent, at: 0)
                 }
                 self.chatRoomTableView.reloadData()
+                // tableView upsidedown 之後就不用 scroll 到最下面
 //                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
             }
             

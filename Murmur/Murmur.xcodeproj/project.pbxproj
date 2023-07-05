@@ -203,9 +203,9 @@
 		C8BAE6E02A46463400ED6941 /* Home Page */ = {
 			isa = PBXGroup;
 			children = (
+				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
 				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
-				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 			);
 			path = "Home Page";
 			sourceTree = "<group>";
