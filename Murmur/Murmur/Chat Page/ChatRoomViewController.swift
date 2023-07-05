@@ -348,7 +348,7 @@ extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
         case otherUserUID:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
-                cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+                cell.profileImageView.kf.setImage(with: URL(string: otherUserImageURL))
                 cell.layoutCell()
                 cell.layoutIfNeeded()
                 

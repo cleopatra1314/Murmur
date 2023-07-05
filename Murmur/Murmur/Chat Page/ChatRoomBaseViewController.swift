@@ -78,37 +78,18 @@ class ChatRoomBaseViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.tabBarController?.tabBar.isHidden = true
-        
+
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
     }
 
     private func setNav() {
-//        self.navigationController?.navigationBar.isTranslucent = true
-//        self.navigationController?.navigationBar.barTintColor = .PrimaryDark
-//        self.navigationController?.navigationBar.tintColor = .GrayScale20
-        
-//        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
-//        closeButtonItem.tintColor = .black
-//        self.navigationItem.leftBarButtonItem = closeButtonItem
-        
-//        let navBarAppearance = UINavigationBarAppearance()
-//        navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .PrimaryDark
-//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .light)
-//        navBarAppearance.titleTextAttributes = [
-//           .foregroundColor: UIColor.black,
-//           .font: UIFont(name: "Roboto", size: 24)
-////           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
-//
-//        ]
-//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-        
+
         // 创建自定义视图
         let customView = UIView()
 
         // 创建图像视图
-        let imageView = UIImageView(image: UIImage(named: "User1Portrait.png"))
+        let imageView = UIImageView()
+        imageView.kf.setImage(with: URL(string: otherUserImageURL))
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30) // 根据需要设置图像视图的尺寸
         imageView.contentMode = .scaleAspectFill
@@ -306,7 +287,7 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
         case otherUserUID:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
-                cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+                cell.profileImageView.kf.setImage(with: URL(string: otherUserImageURL))
                 cell.layoutCell()
                 cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell

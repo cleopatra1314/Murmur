@@ -15,6 +15,7 @@ class ChatViewController: UIViewController {
     var chatRoomOtherUserUIDArray: [String]?
     var chatRoomOtherUserPortraitArray: [String]?
     var chatRoomLatestMessageArray: [String]?
+    let defaultOtherUserImageURLString = "https://firebasestorage.googleapis.com/v0/b/murmur-e5e16.appspot.com/o/23BE2607-13B4-4E70-9415-1308A077C396.jpg?alt=media&token=eca45cc1-8904-4319-a527-e6085569293c"
     
     var messageSenderDictionary = [String: String]()
     var chatRoomLatestMessageDictionary = [String: String]()
@@ -52,29 +53,7 @@ class ChatViewController: UIViewController {
     }
     
     private func setNav() {
-        
-//        let navBarAppearance = UINavigationBarAppearance()
-//        navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .PrimaryDefault
-//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-//        navBarAppearance.titleTextAttributes = [
-//            .foregroundColor: UIColor.GrayScale20,
-//            .font: UIFont.systemFont(ofSize: 18, weight: .medium)
-//        ]
-//        self.navigationController?.navigationBar.tintColor = .GrayScale20
-//        self.navigationController?.navigationBar.standardAppearance = navBarAppearance
-//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
         self.navigationItem.title = "破冰室茶集"
-        
-        //        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
-        //        closeButtonItem.tintColor = .black
-        //        navigationItem.leftBarButtonItem = closeButtonItem
-        
-        //        let nextButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonItemTouchUpInside))
-        //        nextButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
-        //        nextButtonItem.tintColor = .purple
-        //        navigationItem.rightBarButtonItem = nextButtonItem
     }
     
     private func setTableView() {
@@ -190,19 +169,24 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
-        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ChatRoomTableViewCell.self)", for: indexPath) as? ChatRoomTableViewCell else { return UITableViewCell.init() }
         
         let messageSender = messageSenderDictionary[(chatRoomOtherUserUIDArray![indexPath.row])]
         
         if messageSender == currentUserUID {
             cell.messageSendStateImageView.image = UIImage(named: "Icons_SendOut.png")
+    
         } else {
-            cell.messageSendStateImageView.image = UIImage(named: "Icons_Receive.png")
+            cell.messageSendStateImageView.kf.setImage(with: URL(string: chatRoomOtherUserPortraitArray![indexPath.row]))
         }
         
-        cell.otherUserImageView.image = UIImage(named: "User2Portrait.png")
+        let chatRoomOtherUserPortraitUrlString = chatRoomOtherUserPortraitArray?[indexPath.row]
+        if chatRoomOtherUserPortraitUrlString != "" {
+            cell.otherUserImageView.kf.setImage(with: URL(string: chatRoomOtherUserPortraitUrlString!))
+        } else {
+            cell.otherUserImageView.kf.setImage(with: URL(string: defaultOtherUserImageURLString))
+        }
+        
         cell.otherUserNameLabel.text = chatRoomOtherUserNameArray?[indexPath.row]
 //        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageArray?[indexPath.row]
         cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageDictionary[(chatRoomOtherUserUIDArray![indexPath.row])]
@@ -229,7 +213,11 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         chatRoomVC.chatRoomID = chatRoomsArray[indexPath.row]
         chatRoomVC.otherUserUID = chatRoomOtherUserUIDArray![indexPath.row]
         chatRoomVC.otherUserName = chatRoomOtherUserNameArray![indexPath.row]
-        chatRoomVC.otherUserImageURL = chatRoomOtherUserPortraitArray![indexPath.row]
+        if chatRoomOtherUserPortraitArray![indexPath.row] != "" {
+            chatRoomVC.otherUserImageURL = chatRoomOtherUserPortraitArray![indexPath.row]
+        } else {
+            chatRoomVC.otherUserImageURL = self.defaultOtherUserImageURLString
+        }
         
         // 找到父视图控制器
         if let tabBarController = self.tabBarController {
