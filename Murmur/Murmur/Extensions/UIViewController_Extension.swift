@@ -18,6 +18,40 @@ extension UIViewController {
         viewController.present(alertController, animated: true, completion: nil)
     }
     
+    func presentCancelAlert(message: String, viewController: UIViewController) {
+        // 創造一個 UIAlertController 的實例。
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        
+        // 加入確定的動作。
+        let okAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        // 加入取消的動作。
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        alertController.addAction(cancelAction)
+        
+        // 呈現 alertController。
+        viewController.present(alertController, animated: true)
+    }
+    
+    func presentDeletionAlert() {
+        // 創造一個 UIAlertController 的實例。
+        let alertController = UIAlertController(title: nil, message: "確定要刪除這個東西嗎？", preferredStyle: .alert)
+        
+        // 加入刪除的動作。
+        let deleteAction = UIAlertAction(title: "刪除", style: .destructive) { _ in
+//            self.deleteSomething()
+        }
+        alertController.addAction(deleteAction)
+        
+        // 加入取消的動作。
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        alertController.addAction(cancelAction)
+        
+        // 呈現 alertController。
+        present(alertController, animated: true)
+    }
+    
 //    func showAlertAndNav(title: String, message: String, viewController: UIViewController) {
 //        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 //        let okAction = UIAlertAction(title: "確定", style: .default) { _ in
