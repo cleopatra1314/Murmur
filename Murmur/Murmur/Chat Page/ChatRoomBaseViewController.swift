@@ -184,6 +184,7 @@ class ChatRoomBaseViewController: UIViewController {
         typingTextField.text = ""
     }
     
+    // 發送訊息
     private func addChatMessages() {
         guard let chatRoomID else {
             print("目前還沒有房間ID")

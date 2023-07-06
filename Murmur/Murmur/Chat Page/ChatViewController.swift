@@ -10,6 +10,8 @@ import FirebaseFirestore
 
 class ChatViewController: UIViewController {
     
+    
+    
     var chatRoomsArray = [String]()
     var chatRoomOtherUserNameArray: [String]?
     var chatRoomOtherUserUIDArray: [String]?
@@ -153,6 +155,9 @@ class ChatViewController: UIViewController {
                 
                     
                 }
+                print("全部聊天室", chatRooms)
+                print("各聊天室 roomID", chatRoomsArray)
+                print("各聊天室對方 userID", chatRoomOtherUserUIDArray!)
                 
             }
             
@@ -177,7 +182,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             cell.messageSendStateImageView.image = UIImage(named: "Icons_SendOut.png")
     
         } else {
-            cell.messageSendStateImageView.kf.setImage(with: URL(string: chatRoomOtherUserPortraitArray![indexPath.row]))
+            cell.messageSendStateImageView.image = UIImage(named: "Icons_Receive.png")
         }
         
         let chatRoomOtherUserPortraitUrlString = chatRoomOtherUserPortraitArray?[indexPath.row]

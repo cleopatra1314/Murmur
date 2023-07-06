@@ -14,6 +14,7 @@ class ChatRoomTableViewCell: UITableViewCell {
     let otherUserImageView: UIImageView = {
         let otherUserImageView = UIImageView()
         otherUserImageView.layer.cornerRadius = 10
+        otherUserImageView.contentMode = .scaleAspectFill
         otherUserImageView.clipsToBounds = true
         return otherUserImageView
     }()
