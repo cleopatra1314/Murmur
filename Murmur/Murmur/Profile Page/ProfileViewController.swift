@@ -82,11 +82,7 @@ class ProfileViewController: UIViewController {
             } catch {
                 print("Error: ", error)
             }
-            
-//            DispatchQueue.main.async {
-                
-//            }
-            
+
         }
     }
     
@@ -351,6 +347,7 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
                         } catch {
                             print(error)
                         }
+                        
                     }
                     
                 case .failure(let error):

@@ -48,6 +48,9 @@ struct ChatRooms: Codable, Identifiable {
     
     let createTime: Timestamp
     let theOtherUserUID: String
+    var latestMessageCreateTime: Timestamp?
+    var latestMessageContent: String?
+    var latestMessageSenderUUID: String?
 }
 
 struct ChatRoomMessages: Codable, Identifiable {

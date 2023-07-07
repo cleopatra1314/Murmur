@@ -184,7 +184,7 @@ class ChatRoomBaseViewController: UIViewController {
         
         addChatMessages()
 
-        typingTextField.text = ""
+        
     }
     
     // 發送訊息
@@ -193,12 +193,65 @@ class ChatRoomBaseViewController: UIViewController {
             print("目前還沒有房間ID")
             return
         }
-        print("聊天室 ID", chatRoomID)
+        
+        // chatRooms 建立 messages 檔案
         database.collection("chatRooms").document(chatRoomID).collection("messages").document().setData([
             "createTime": Timestamp(date: Date()),
             "messageContent": typingTextField.text,
             "senderUUID": currentUserUID
         ])
+        
+        // 在自己的 chatRooms 建立 messages 檔案
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).getDocument { [self] documentSnapshot, error in
+            
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  var chatRoomResult = try? documentSnapshot.data(as: ChatRooms.self)
+            else {
+                return
+            }
+            
+            chatRoomResult.latestMessageCreateTime = Timestamp(date: Date())
+            chatRoomResult.latestMessageContent = self.typingTextField.text!
+            chatRoomResult.latestMessageSenderUUID = currentUserUID
+            
+            // 修改 firebase 上大頭貼資料
+            self.database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).updateData([
+                
+                "latestMessageCreateTime": Timestamp(date: Date()),
+                "latestMessageContent": self.typingTextField.text!,
+                "latestMessageSenderUUID": currentUserUID
+                
+            ])
+            
+        }
+        
+        // 在對方的 chatRooms 建立 messages 檔案
+        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).getDocument { [self] documentSnapshot, error in
+            
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  var chatRoomResult = try? documentSnapshot.data(as: ChatRooms.self)
+            else {
+                return
+            }
+            
+            chatRoomResult.latestMessageCreateTime = Timestamp(date: Date())
+            chatRoomResult.latestMessageContent = self.typingTextField.text!
+            chatRoomResult.latestMessageSenderUUID = currentUserUID
+            
+            // 修改 firebase 上大頭貼資料
+            self.database.collection("userTest").document(self.otherUserUID).collection("chatRooms").document(chatRoomID).updateData([
+                
+                "latestMessageCreateTime": Timestamp(date: Date()),
+                "latestMessageContent": self.typingTextField.text!,
+                "latestMessageSenderUUID": currentUserUID
+                
+            ])
+            
+        }
+        
+        
     }
     
     private func getRealTimeChatMessages() {
