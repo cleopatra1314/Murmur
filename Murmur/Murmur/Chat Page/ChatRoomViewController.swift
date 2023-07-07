@@ -75,11 +75,11 @@ class ChatRoomViewController: UIViewController {
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setTableView()
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        setTableView()
+//    }
 
     private func setNav() {
         self.navigationController?.navigationBar.isTranslucent = true
@@ -88,20 +88,6 @@ class ChatRoomViewController: UIViewController {
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
         closeButtonItem.tintColor = .GrayScale20
         self.navigationItem.leftBarButtonItem = closeButtonItem
-        
-//        let navBarAppearance = UINavigationBarAppearance()
-//        navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .PrimaryDark
-//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-//        navBarAppearance.titleTextAttributes = [
-//           .foregroundColor: UIColor.GrayScale20,
-//           .font: UIFont(name: "Roboto", size: 24)
-////           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
-//
-//        ]
-//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-//        self.navigationItem.title = "塗鴉留言"
         
         // 创建自定义视图
         let customView = UIView()
@@ -198,6 +184,7 @@ class ChatRoomViewController: UIViewController {
             createChatRoom()
             getRealTimeChatMessages()
             isFirstMessage.toggle()
+            
         } else {
             addChatMessages()
         }

@@ -144,6 +144,8 @@ class HomePageViewController: UIViewController {
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
 //        childLocationMessageViewController.stopTimer()
         
+        modifyCurrentLocation()
+        
         NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil) { (notification) in
             
             // 停止 modifyCurrentLocation
@@ -384,7 +386,7 @@ extension HomePageViewController: CLLocationManagerDelegate {
             return
         }
         
-        modifyCurrentLocation()
+//        modifyCurrentLocation()
         setMapView()
         setContainerView()
     }

@@ -13,6 +13,8 @@ import FirebaseAuth
 
 class ChatRoomBaseViewController: UIViewController {
     
+    var isFirstMessage = false
+    
     var rowOfindexPath: Int?
 //    var latestMessageClosure: ((Messages, Int) -> Void)?
     
@@ -80,9 +82,56 @@ class ChatRoomBaseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if isFirstMessage == true {
+            setNavCloseButton()
+        }
         self.tabBarController?.tabBar.isHidden = true
         setNav()
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
+    }
+    
+    // 跟用戶傳出第一封訊息才要執行
+    private func createChatRoom(textSending: String) {
+        
+        // chatRooms 的 document (includes comments)
+        let documentReference = database.collection("chatRooms").document()
+        let documentReferenceOfMessages = documentReference.collection("messages").document()
+        
+        documentReference.setData([
+            "createTime": Timestamp(date: Date())
+        ])
+        
+        documentReferenceOfMessages.setData([
+            "createTime": Timestamp(date: Date()),
+            "messageContent": typingTextField.text,
+            "senderUUID": currentUserUID
+        ])
+        
+        chatRoomID = documentReference.documentID
+        let messageID = documentReferenceOfMessages.documentID
+        guard let chatRoomID else {
+            print("Error: ChatRoomID is nil.")
+            return
+        }
+        
+        // 自己 chatRooms 的 document
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([
+            "createTime": Timestamp(date: Date()),
+            "theOtherUserUID": otherUserUID,
+            "latestMessageCreateTime": Timestamp(date: Date()),
+            "latestMessageContent": textSending,
+            "latestMessageSenderUUID": currentUserUID
+        ])
+        
+        // 對方 chatRooms 的 document
+        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).setData([
+            "createTime": Timestamp(date: Date()),
+            "theOtherUserUID": currentUserUID,
+            "latestMessageCreateTime": Timestamp(date: Date()),
+            "latestMessageContent": textSending,
+            "latestMessageSenderUUID": currentUserUID
+        ])
+        
     }
 
     private func setNav() {
@@ -138,10 +187,18 @@ class ChatRoomBaseViewController: UIViewController {
 
     }
     
+    private func setNavCloseButton() {
+        
+        self.navigationController?.navigationBar.isTranslucent = true
+        
+        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
+        closeButtonItem.tintColor = .GrayScale20
+        self.navigationItem.leftBarButtonItem = closeButtonItem
+        
+    }
+    
     @objc func closeBtnTouchUpInside() {
-        
         dismiss(animated: true)
-        
     }
     
     private func setTypingArea() {
@@ -173,7 +230,6 @@ class ChatRoomBaseViewController: UIViewController {
     }
     
     @objc func sendButtonTapped() {
-    
         // 傳送訊息則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
         // ?? create 三筆資料到：自己 chatRooms 的 document、對方 chatRooms 的 document、chatRooms 的 document (includes comments)
         // 刪除或編輯訊息，只要去 chatRooms 的 document 的 comments collection 去更改就好
@@ -182,7 +238,13 @@ class ChatRoomBaseViewController: UIViewController {
         guard let text = typingTextField.text,
               !(text.isEmpty) else { return }
   
-        addChatMessages(textSending: typingTextField.text!)
+        if isFirstMessage == true {
+            createChatRoom(textSending: typingTextField.text!)
+            isFirstMessage.toggle()
+            
+        } else {
+            addChatMessages(textSending: typingTextField.text!)
+        }
         
         typingTextField.text = ""
        
@@ -202,7 +264,7 @@ class ChatRoomBaseViewController: UIViewController {
             "senderUUID": currentUserUID
         ])
         
-        // 在自己的 chatRooms 建立 messages 檔案
+        // 在自己的 chatRooms 建立 latestMessages 檔案
         database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).getDocument { [self] documentSnapshot, error in
             
             guard let documentSnapshot,
@@ -216,7 +278,7 @@ class ChatRoomBaseViewController: UIViewController {
             chatRoomResult.latestMessageContent = textSending
             chatRoomResult.latestMessageSenderUUID = currentUserUID
             
-            // 修改 firebase 上大頭貼資料
+            // 修改 最新訊息info 資料
             self.database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).updateData([
                 
                 "latestMessageCreateTime": Timestamp(date: Date()),
@@ -300,12 +362,7 @@ class ChatRoomBaseViewController: UIViewController {
         }
             
     }
-    
-    func fetchChat() {
-        
-        
-    }
-    
+
     private func setTableView() {
         
         // MARK: tableView upsideDown

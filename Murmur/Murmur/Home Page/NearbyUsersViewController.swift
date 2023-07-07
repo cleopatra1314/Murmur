@@ -300,8 +300,9 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
             if querySnapshot!.documents.count == 0 {
                 
                 // 实例化目标视图控制器
-                let chatRoomVC = ChatRoomViewController()
+                let chatRoomVC = ChatRoomBaseViewController()
                 let navigationControllerOfNearbyUsersVC = CustomNavigationController(rootViewController: chatRoomVC)
+                chatRoomVC.isFirstMessage = true
                 
                 // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
                 // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
@@ -329,7 +330,7 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                         return try querySnapshot.data(as: ChatRooms.self)
                         
                     } catch {
-                        print("fetchMurmurData", error)
+                        print("fetchChatRoomData", error)
                         return nil
                     }
                 }
