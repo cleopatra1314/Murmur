@@ -194,7 +194,7 @@ class HomePageViewController: UIViewController {
     
     func startTimer() {
         stopTimer()
-        timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(modifyCurrentLocation1), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(modifyCurrentLocation), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
@@ -203,7 +203,7 @@ class HomePageViewController: UIViewController {
     }
     
     // 設定每 120 秒 update 一次（自己） currentLocation
-    @objc func modifyCurrentLocation1() {
+    @objc func modifyCurrentLocation() {
 
         let documentReference = database.collection("userTest").document(currentUserUID)
         
@@ -214,7 +214,6 @@ class HomePageViewController: UIViewController {
             else {
                 return
             }
-            
 
             user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
 
@@ -229,6 +228,15 @@ class HomePageViewController: UIViewController {
     }
     
     func updateOnlineState(_ state: Bool) {
+        
+        database.collection("userTest").document(currentUserUID).setData([
+            "onlineState": state
+        ], merge: true)
+        
+    }
+    
+    func updateOnlineState1(_ state: Bool) {
+        
         // Modify user onlineState
         database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
             
@@ -375,10 +383,10 @@ extension HomePageViewController: CLLocationManagerDelegate {
             print("currentCoordinate 是空的！")
             return
         }
-
+        
+        modifyCurrentLocation()
         setMapView()
         setContainerView()
-
     }
     
 }

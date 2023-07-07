@@ -14,7 +14,7 @@ import FirebaseAuth
 class ChatRoomBaseViewController: UIViewController {
     
     var rowOfindexPath: Int?
-    var latestMessageClosure: ((Messages, Int) -> Void)?
+//    var latestMessageClosure: ((Messages, Int) -> Void)?
     
     var otherUserUID = String()
     var otherUserName = String()
@@ -181,14 +181,15 @@ class ChatRoomBaseViewController: UIViewController {
         
         guard let text = typingTextField.text,
               !(text.isEmpty) else { return }
+  
+        addChatMessages(textSending: typingTextField.text!)
         
-        addChatMessages()
-
-        
+        typingTextField.text = ""
+       
     }
     
     // 發送訊息
-    private func addChatMessages() {
+    private func addChatMessages(textSending: String) {
         guard let chatRoomID else {
             print("目前還沒有房間ID")
             return
@@ -197,7 +198,7 @@ class ChatRoomBaseViewController: UIViewController {
         // chatRooms 建立 messages 檔案
         database.collection("chatRooms").document(chatRoomID).collection("messages").document().setData([
             "createTime": Timestamp(date: Date()),
-            "messageContent": typingTextField.text,
+            "messageContent": textSending,
             "senderUUID": currentUserUID
         ])
         
@@ -212,14 +213,14 @@ class ChatRoomBaseViewController: UIViewController {
             }
             
             chatRoomResult.latestMessageCreateTime = Timestamp(date: Date())
-            chatRoomResult.latestMessageContent = self.typingTextField.text!
+            chatRoomResult.latestMessageContent = textSending
             chatRoomResult.latestMessageSenderUUID = currentUserUID
             
             // 修改 firebase 上大頭貼資料
             self.database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).updateData([
                 
                 "latestMessageCreateTime": Timestamp(date: Date()),
-                "latestMessageContent": self.typingTextField.text!,
+                "latestMessageContent": textSending,
                 "latestMessageSenderUUID": currentUserUID
                 
             ])
@@ -237,14 +238,14 @@ class ChatRoomBaseViewController: UIViewController {
             }
             
             chatRoomResult.latestMessageCreateTime = Timestamp(date: Date())
-            chatRoomResult.latestMessageContent = self.typingTextField.text!
+            chatRoomResult.latestMessageContent = textSending
             chatRoomResult.latestMessageSenderUUID = currentUserUID
             
             // 修改 firebase 上大頭貼資料
             self.database.collection("userTest").document(self.otherUserUID).collection("chatRooms").document(chatRoomID).updateData([
                 
                 "latestMessageCreateTime": Timestamp(date: Date()),
-                "latestMessageContent": self.typingTextField.text!,
+                "latestMessageContent": textSending,
                 "latestMessageSenderUUID": currentUserUID
                 
             ])
@@ -272,7 +273,7 @@ class ChatRoomBaseViewController: UIViewController {
                 }
                 
                 // 將聊天室的最新訊息相關資料，以及是哪個indexPathRow的聊天室傳給 ChatViewController
-                self.latestMessageClosure?(messages.last!, self.rowOfindexPath!)
+//                self.latestMessageClosure?(messages.last!, self.rowOfindexPath!)
                 
                 DispatchQueue.main.async { [self] in
                     

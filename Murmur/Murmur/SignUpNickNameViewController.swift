@@ -203,9 +203,10 @@ class SignUpNickNameViewController: UIViewController {
         
     }
     
-    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
+    // MARK: Sign up，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     @objc func signUpWithEmailButtonTouchUpInside() {
         guard let userEmail else {
+            
             print("userEmail is nil.")
             return
         }
@@ -213,6 +214,12 @@ class SignUpNickNameViewController: UIViewController {
             print("userPassword is nil.")
             return
         }
+        guard let nickName = nickNameTextField.text else {
+            print("nickName is nil.")
+            return
+        }
+
+        
         
         uploadPhoto(image: capturedPortraitImage) { [self] result in
             switch result {
@@ -234,12 +241,12 @@ class SignUpNickNameViewController: UIViewController {
                     
                     currentUserUID = user.uid
 
-                    let userProfile = Users(onlineState: true, userName: nickNameTextField.text!, userPortrait: selectedImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+                    let userProfile = Users(onlineState: true, userName: nickName, userPortrait: selectedImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
 
                     self.userProfileData = userProfile
                     self.createUsers(userUID: user.uid)
                     
-                    // ??
+                    // TODO: ??
                     DispatchQueue.main.async {
                         self.createTabBarController()
                     }
@@ -264,12 +271,7 @@ class SignUpNickNameViewController: UIViewController {
         
         // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUID).setData([
-            // TODO: 這邊寫法為什麼不行
-//            guard let self.userProfileData else {
-//                print("userProfileData is nil.")
-//                return
-//            }
-            
+
             "onlineState": userProfileData.onlineState,
             "userName": userProfileData.userName,
             "userPortrait": userProfileData.userPortrait,

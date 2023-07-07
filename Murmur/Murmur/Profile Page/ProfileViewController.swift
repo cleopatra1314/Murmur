@@ -82,7 +82,11 @@ class ProfileViewController: UIViewController {
             } catch {
                 print("Error: ", error)
             }
-
+            
+//            DispatchQueue.main.async {
+                
+//            }
+            
         }
     }
     
@@ -216,14 +220,11 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = ProfileTableViewCell()
             cell.backgroundColor = .clear
             
-            guard let portrait = userData?.userPortrait else {
-                print("Error: userData?.userPortrait is nil.")
-                return cell
-            }
-            if portrait != "" {
-                cell.profileImageView.kf.setImage(with: URL(string: portrait))
-            } else {
+            let portrait = userData?.userPortrait
+            if portrait == nil || portrait == ""{
                 cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+            } else {
+                cell.profileImageView.kf.setImage(with: URL(string: portrait!))
             }
             
             cell.userNameLabel.text = userData?.userName
@@ -347,7 +348,6 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
                         } catch {
                             print(error)
                         }
-                        
                     }
                     
                 case .failure(let error):
