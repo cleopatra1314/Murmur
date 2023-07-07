@@ -19,7 +19,7 @@ class InitialViewController: UIViewController {
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
-        backgroundImageView.image = UIImage(named: "InitialBackground.png")
+        backgroundImageView.image = UIImage(named: "BackgroundVaporWaveCrop1.png")
         return backgroundImageView
     }()
     private let mainView: UIView = {

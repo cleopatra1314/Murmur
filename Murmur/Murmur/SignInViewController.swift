@@ -123,6 +123,9 @@ class SignInViewController: UIViewController {
                 return
             }
             currentUserUID = userID
+            database.collection("userTest").document(currentUserUID).setData([
+                "onlineState": true
+            ], merge: true)
             print("\(result?.user.uid ?? "") 登入成功")
             self.createTabBarController()
             

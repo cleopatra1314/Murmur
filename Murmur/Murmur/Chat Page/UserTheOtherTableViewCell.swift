@@ -12,7 +12,8 @@ class UserTheOtherTableViewCell: UITableViewCell {
     
     let profileImageView: UIImageView = {
         let profileImageView = UIImageView()
-        profileImageView.layer.cornerRadius = 8
+        profileImageView.layer.cornerRadius = 10
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         return profileImageView
     }()

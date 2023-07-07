@@ -36,13 +36,15 @@
 		C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */; };
 		C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */; };
 		C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */; };
+		C8B627EA2A56A309002327D5 /* TimeStamp_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */; };
+		C8B627EC2A56C04E002327D5 /* newStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627EB2A56C04E002327D5 /* newStore.swift */; };
 		C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */; };
 		C8BAE6E22A464BE600ED6941 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6E12A464BE600ED6941 /* InitialViewController.swift */; };
 		C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3A0942A48342A000E967D /* UIView_Extension.swift */; };
 		C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */; };
 		C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */; };
 		C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */; };
-		C8C55F9C2A48A9CA00FAE03E /* ChatBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C55F9B2A48A9CA00FAE03E /* ChatBaseViewController.swift */; };
+		C8C55F9C2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C55F9B2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift */; };
 		C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C232A39DA350025E693 /* AppDelegate.swift */; };
 		C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C252A39DA350025E693 /* SceneDelegate.swift */; };
 		C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* HomePageViewController.swift */; };
@@ -57,6 +59,7 @@
 		C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */; };
 		C8F041F12A4B72E20044BE9C /* CALayer_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */; };
 		C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */; };
+		C8FF7BD82A55543E00E18616 /* SelfSizingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FF7BD72A55543E00E18616 /* SelfSizingTableView.swift */; };
 		DC450CD07D10418D1E75917C /* Pods_Murmur.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +94,8 @@
 		C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp_Extension.swift; sourceTree = "<group>"; };
+		C8B627EB2A56C04E002327D5 /* newStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newStore.swift; sourceTree = "<group>"; };
 		C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarTableHeaderView.swift; path = Murmur/Model/SearchBarTableHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6E12A464BE600ED6941 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		C8C3A0942A48342A000E967D /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
@@ -98,7 +103,7 @@
 		C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomViewController.swift; sourceTree = "<group>"; };
 		C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		C8C55F9B2A48A9CA00FAE03E /* ChatBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBaseViewController.swift; sourceTree = "<group>"; };
+		C8C55F9B2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomBaseViewController.swift; sourceTree = "<group>"; };
 		C8C72C232A39DA350025E693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C8C72C252A39DA350025E693 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C8C72C272A39DA350025E693 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
@@ -114,6 +119,7 @@
 		C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTableViewCell.swift; sourceTree = "<group>"; };
 		C8F041F02A4B72E20044BE9C /* CALayer_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CALayer_Extension.swift; path = Murmur/Extensions/CALayer_Extension.swift; sourceTree = SOURCE_ROOT; };
 		C8F5B3142A41B6E200478D2E /* MeAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeAnnotation.swift; sourceTree = "<group>"; };
+		C8FF7BD72A55543E00E18616 /* SelfSizingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfSizingTableView.swift; sourceTree = "<group>"; };
 		D51D7A4E17E030FDC9A09813 /* Pods-Murmur.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.release.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.release.xcconfig"; sourceTree = "<group>"; };
 		E9C8B595076B3945BA1BAAC2 /* Pods-Murmur.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Murmur.debug.xcconfig"; path = "Target Support Files/Pods-Murmur/Pods-Murmur.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,8 +157,10 @@
 			isa = PBXGroup;
 			children = (
 				C831F7C52A4592AA004A9A6F /* ChatViewController.swift */,
+				C8B627EB2A56C04E002327D5 /* newStore.swift */,
+				C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */,
 				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
-				C8C55F9B2A48A9CA00FAE03E /* ChatBaseViewController.swift */,
+				C8C55F9B2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift */,
 				C8ABD8402A43EA1400B76ADC /* UserMeChatTableViewCell.swift */,
 				C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */,
 				C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */,
@@ -184,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				C840F45A2A3F6F7B000604E6 /* FirebaseModel.swift */,
+				C8FF7BD72A55543E00E18616 /* SelfSizingTableView.swift */,
 				C8ABD8442A43FCA100B76ADC /* MessageTypeTextField.swift */,
 				C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */,
 				C8AF2DB62A414EB900B703E8 /* MeAnnotationView.swift */,
@@ -203,9 +212,9 @@
 		C8BAE6E02A46463400ED6941 /* Home Page */ = {
 			isa = PBXGroup;
 			children = (
+				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 				C8C72C272A39DA350025E693 /* HomePageViewController.swift */,
 				C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */,
-				C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */,
 			);
 			path = "Home Page";
 			sourceTree = "<group>";
@@ -423,6 +432,7 @@
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8B007562A49EBE000049FA0 /* SegmentButtonTableViewCell.swift in Sources */,
 				C8AC51242A53C95100EA58B9 /* SignUpEmailViewController.swift in Sources */,
+				C8B627EC2A56C04E002327D5 /* newStore.swift in Sources */,
 				C8C72C262A39DA350025E693 /* SceneDelegate.swift in Sources */,
 				C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */,
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,
@@ -436,6 +446,7 @@
 				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
 				C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */,
 				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
+				C8FF7BD82A55543E00E18616 /* SelfSizingTableView.swift in Sources */,
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */,
 				C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */,
@@ -446,8 +457,9 @@
 				C8ADDECB2A4D7A3E00C9069D /* UIColor_Extension.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
 				C8BAE6E22A464BE600ED6941 /* InitialViewController.swift in Sources */,
+				C8B627EA2A56A309002327D5 /* TimeStamp_Extension.swift in Sources */,
 				C82687442A4EC0F500237D68 /* SettingViewController.swift in Sources */,
-				C8C55F9C2A48A9CA00FAE03E /* ChatBaseViewController.swift in Sources */,
+				C8C55F9C2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift in Sources */,
 				C8AC51262A53C97100EA58B9 /* SignUpNickNameViewController.swift in Sources */,
 				C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */,
 				C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */,

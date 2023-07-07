@@ -97,7 +97,7 @@ class NearbyUsersViewController: UIViewController {
                     }
                     
                 }
-                print("共有哪些小怪獸", self.mapView.annotations, self.mapView.annotations.count, "隻")
+                print("共有",self.mapView.annotations.count, "隻小怪獸")
                 
             }
             
@@ -126,9 +126,9 @@ class NearbyUsersViewController: UIViewController {
         let userUID = userUID
         let coordinate = coordinate
         let annotation = OtherUsersAnnotation(userUID: userUID, userName: name, userImage: imageURL, coordinate: coordinate)
-        print("showOtherUsersOnMap 的小怪獸名稱", name, coordinate, currentCoordinate)
+        
         mapView.addAnnotation(annotation)
-        print("showOtherUsersOnMap 的小怪獸數量", mapView.annotations.count)
+        
     }
     
     // 5. 繪製一個以自己為中心的圓圈範圍
@@ -143,33 +143,6 @@ class NearbyUsersViewController: UIViewController {
         let region = MKCoordinateRegion(center: currentCoordinate!, latitudinalMeters: 800, longitudinalMeters: 800)
         mapView.setRegion(region, animated: false)
     }
-    
-//    private func setupData() {
-//        // 1. 檢查系統是否能夠監視 region
-//        if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-//
-//            // 2.準備 region 會用到的相關屬性
-//            let title = "未知玩家"
-//            let coordinate = CLLocationCoordinate2DMake(25.03889164303853, 121.53317942146191)
-//            let regionRadius = 200.0 // 範圍半徑
-//
-//            // 3. 設置 region 的相關屬性
-//            let region = CLCircularRegion(center: CLLocationCoordinate2D(latitude: coordinate.latitude,
-//                longitude: coordinate.longitude), radius: regionRadius, identifier: title)
-//            locationManager.startMonitoring(for: region)
-//
-//            // 4. 創建大頭釘(annotation)
-//            let restaurantAnnotation = OtherUsersAnnotation(coordinate: coordinate)
-//            restaurantAnnotation.title = title
-//            mapView.addAnnotation(restaurantAnnotation)
-//
-//            // 5. 繪製一個圓圈圖形（用於表示 region 的範圍）
-//            let circle = MKCircle(center: coordinate, radius: regionRadius)
-//            mapView.addOverlay(circle)
-//        } else {
-//            print("System can't track regions")
-//        }
-//    }
     
     private func setupData() {
         // 1. 检查系统是否支持监视区域
@@ -320,16 +293,16 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
             return
         }
         
-        // 拿到那個聊天室的ID
-        let userChatRoom = database.collection("userTest").document(currentUserUID).collection("chatRooms").whereField("theOtherUserUID", isEqualTo: selectedAnnotation.userUID).getDocuments { querySnapshot, error in
-            
-            print("點擊的檔案", querySnapshot!.documents.count)
-            
+        // 如果之前有聊過天，則拿到點擊的那個用戶的聊天室ID；如果沒聊過則創新的聊天室
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").whereField("theOtherUserUID", isEqualTo: selectedAnnotation.userUID).getDocuments { querySnapshot, error in
+
+            // 沒聊過
             if querySnapshot!.documents.count == 0 {
                 
                 // 实例化目标视图控制器
-                let chatRoomVC = ChatRoomViewController()
+                let chatRoomVC = ChatRoomBaseViewController()
                 let navigationControllerOfNearbyUsersVC = CustomNavigationController(rootViewController: chatRoomVC)
+                chatRoomVC.isFirstMessage = true
                 
                 // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
                 // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
@@ -340,45 +313,61 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
                 // 执行视图控制器的跳转
                 navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
                 navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
+                chatRoomVC.chatRoomTableView.reloadData()
                 self.present(navigationControllerOfNearbyUsersVC, animated: true)
                 
                 print("querySnapshot is nil.", error)
                 return
                 
             } else {
+                guard let querySnapshot else {
+                    print("fetchChatRoomData is nil.")
+                    return
+                }
                 
-                self.showAlert(title: "Ooops", message: "你跟 \(selectedAnnotation.userName) 有聊過天囉 請去聊天室找", viewController: self)
-                return
+                let chatRoom = querySnapshot.documents.compactMap { querySnapshot in
+                    do {
+                        return try querySnapshot.data(as: ChatRooms.self)
+                        
+                    } catch {
+                        print("fetchChatRoomData", error)
+                        return nil
+                    }
+                }
+                // 點到的 pacman，之前跟他的聊天室 id
+                let selectedChatRoomID = chatRoom[0].id!
+
+                // 实例化目标视图控制器
+                let chatRoomVC = ChatRoomBaseViewController()
+                let navigationControllerOfNearbyUsersVC = CustomNavigationController(rootViewController: chatRoomVC)
+                
+                // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
+                // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
+                chatRoomVC.otherUserUID = selectedAnnotation.userUID
+                chatRoomVC.otherUserName = selectedAnnotation.userName
+                chatRoomVC.otherUserImageURL = selectedAnnotation.userImage
+                chatRoomVC.chatRoomID = selectedChatRoomID
+                
+                // 执行视图控制器的跳转
+                navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
+                navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
+                
+                let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(self.closeBtnTouchUpInside))
+                closeButtonItem.tintColor = .GrayScale0
+                chatRoomVC.navigationItem.leftBarButtonItem = closeButtonItem
+                
+                chatRoomVC.chatRoomTableView.reloadData()
+                self.present(navigationControllerOfNearbyUsersVC, animated: true)
                 
             }
             
         }
+    
+    }
+    
+    @objc func closeBtnTouchUpInside() {
         
-        
-        
-        print("點擊的用戶 UUID", selectedAnnotation.userUID)
-        // 拿到點擊的用戶 UUID 後
-        // 判斷是否已有聊天室
-        // present chatRoom VC
-        // 將 用戶 UUID 傳值給 chatRoom VC
-        // chatRoom VC 會先撈 用戶 UUID，顯示該用戶名稱、塗鴉紀錄等
-        // 若傳送了第一則訊息，則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
-        // chatRoom VC 再藉由這個 用戶 UUID fetch 對話資料
-        
-//        // 实例化目标视图控制器
-//        let chatRoomVC = ChatRoomViewController()
-//        let navigationControllerOfNearbyUsersVC = UINavigationController(rootViewController: chatRoomVC)
-//
-//        // 在这里可以将标注的信息传递给目标视图控制器，將點擊的那個用戶資料傳到聊天室頁面
-//        // 例如，如果标注包含特定的标识符或数据，您可以将其传递给目标视图控制器进行相关操作
-//        chatRoomVC.otherUserUID = selectedAnnotation.userUID
-//        chatRoomVC.otherUserName = selectedAnnotation.userName
-//        chatRoomVC.otherUserImageURL = selectedAnnotation.userImage
-//
-//        // 执行视图控制器的跳转
-//        navigationControllerOfNearbyUsersVC.modalPresentationStyle = .fullScreen
-//        navigationControllerOfNearbyUsersVC.modalTransitionStyle = .crossDissolve
-//        present(navigationControllerOfNearbyUsersVC, animated: true)
+        dismiss(animated: true)
         
     }
     

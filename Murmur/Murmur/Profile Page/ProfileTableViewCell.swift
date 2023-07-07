@@ -10,9 +10,29 @@ import UIKit
 
 class ProfileTableViewCell: UITableViewCell {
     
+    var changePortraitClosure: ((ProfileTableViewCell) -> Void)?
     var settingClosure: ((ProfileTableViewCell) -> Void)?
     
-    let profileImageView: UIImageView = {
+//    private lazy var changePortraitButton: UIButton = {
+//        let changePortraitButton = UIButton()
+////        changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.0)
+//        changePortraitButton.addTarget(self, action: #selector(changePortraitButtonTouchUpInside), for: .touchUpInside)
+//        return changePortraitButton
+//    }()
+    var click = true
+    var changePortraitButton = UIButton() {
+        didSet {
+            
+            if click {
+                changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.0)
+            } else {
+                changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.7)
+            }
+            
+            click.toggle()
+        }
+    }
+    var profileImageView: UIImageView = {
         let profileImageView = UIImageView()
         profileImageView.image = UIImage(named: "User1Portrait.jpg")
         profileImageView.contentMode = .scaleAspectFill
@@ -21,6 +41,10 @@ class ProfileTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 16
         profileImageView.clipsToBounds = true
         return profileImageView
+    }()
+    var profileView: UIView = {
+        let profileView = UIView()
+        return profileView
     }()
     let userNameLabel: UILabel = {
         let userNameLabel = UILabel()
@@ -59,16 +83,29 @@ class ProfileTableViewCell: UITableViewCell {
     
     func layoutView() {
         
-        [profileImageView, userNameLabel, murmurLabel, settingButton].forEach { subview in
+//        profileImageView.isHidden = false
+//        profileView.isHidden = true
+        changePortraitButton.addTarget(self, action: #selector(changePortraitButtonTouchUpInside), for: .touchUpInside)
+        
+        [profileView, profileImageView, changePortraitButton, userNameLabel, murmurLabel, settingButton].forEach { subview in
             self.contentView.addSubview(subview)
         }
 
+        profileView.snp.makeConstraints { make in
+            make.width.height.equalTo(80)
+            make.bottom.equalTo(userNameLabel.snp.top).offset(-24)
+            make.centerX.equalTo(self.contentView.snp.centerX)
+        }
         profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(80)
             make.bottom.equalTo(userNameLabel.snp.top).offset(-24)
             make.centerX.equalTo(self.contentView.snp.centerX)
         }
-        
+        changePortraitButton.snp.makeConstraints { make in
+            make.width.height.equalTo(80)
+            make.bottom.equalTo(userNameLabel.snp.top).offset(-24)
+            make.centerX.equalTo(self.contentView.snp.centerX)
+        }
         userNameLabel.snp.makeConstraints { make in
             make.center.equalTo(self.contentView)
         }
@@ -87,7 +124,13 @@ class ProfileTableViewCell: UITableViewCell {
  
     }
     
-    @objc func settingButtonTouchUpInside(){
+    @objc func changePortraitButtonTouchUpInside() {
+        
+        self.changePortraitClosure!(self)
+        
+    }
+    
+    @objc func settingButtonTouchUpInside() {
         
         self.settingClosure!(self)
         

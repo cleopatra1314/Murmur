@@ -11,7 +11,12 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
-class ChatBaseViewController: UIViewController {
+class ChatRoomBaseViewController: UIViewController {
+    
+    var isFirstMessage = false
+    
+    var rowOfindexPath: Int?
+//    var latestMessageClosure: ((Messages, Int) -> Void)?
     
     var otherUserUID = String()
     var otherUserName = String()
@@ -25,10 +30,11 @@ class ChatBaseViewController: UIViewController {
     var messageDataResult: [Messages] = []
     private var meReplyText = String()
     
-    private let chatRoomTableView: UITableView = {
-        let chatRoomTableView = UITableView()
+    let chatRoomTableView: SelfSizingTableView = {
+        let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
+        chatRoomTableView.backgroundColor = .SecondaryLight
         return chatRoomTableView
     }()
     private let typingAreaView: UIView = {
@@ -37,7 +43,6 @@ class ChatBaseViewController: UIViewController {
         typingAreaView.layer.shadowOpacity = 0.5
         typingAreaView.layer.shadowOffset = CGSizeMake(0, -4)
         typingAreaView.layer.shadowRadius = 10
-        
         return typingAreaView
     }()
     private let typingTextField: MessageTypeTextField = {
@@ -68,7 +73,7 @@ class ChatBaseViewController: UIViewController {
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
-        setNav()
+//        getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
         setTypingArea()
         setTableView()
   
@@ -77,38 +82,66 @@ class ChatBaseViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        if isFirstMessage == true {
+            setNavCloseButton()
+        }
         self.tabBarController?.tabBar.isHidden = true
-        
+        setNav()
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
+    }
+    
+    // 跟用戶傳出第一封訊息才要執行
+    private func createChatRoom(textSending: String) {
+        
+        // chatRooms 的 document (includes comments)
+        let documentReference = database.collection("chatRooms").document()
+        let documentReferenceOfMessages = documentReference.collection("messages").document()
+        
+        documentReference.setData([
+            "createTime": Timestamp(date: Date())
+        ])
+        
+        documentReferenceOfMessages.setData([
+            "createTime": Timestamp(date: Date()),
+            "messageContent": typingTextField.text,
+            "senderUUID": currentUserUID
+        ])
+        
+        chatRoomID = documentReference.documentID
+        let messageID = documentReferenceOfMessages.documentID
+        guard let chatRoomID else {
+            print("Error: ChatRoomID is nil.")
+            return
+        }
+        
+        // 自己 chatRooms 的 document
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([
+            "createTime": Timestamp(date: Date()),
+            "theOtherUserUID": otherUserUID,
+            "latestMessageCreateTime": Timestamp(date: Date()),
+            "latestMessageContent": textSending,
+            "latestMessageSenderUUID": currentUserUID
+        ])
+        
+        // 對方 chatRooms 的 document
+        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).setData([
+            "createTime": Timestamp(date: Date()),
+            "theOtherUserUID": currentUserUID,
+            "latestMessageCreateTime": Timestamp(date: Date()),
+            "latestMessageContent": textSending,
+            "latestMessageSenderUUID": currentUserUID
+        ])
+        
     }
 
     private func setNav() {
-//        self.navigationController?.navigationBar.isTranslucent = true
-//        self.navigationController?.navigationBar.barTintColor = .PrimaryDark
-//        self.navigationController?.navigationBar.tintColor = .GrayScale20
-        
-//        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
-//        closeButtonItem.tintColor = .black
-//        self.navigationItem.leftBarButtonItem = closeButtonItem
-        
-//        let navBarAppearance = UINavigationBarAppearance()
-//        navBarAppearance.configureWithDefaultBackground()
-//        navBarAppearance.backgroundColor = .PrimaryDark
-//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .light)
-//        navBarAppearance.titleTextAttributes = [
-//           .foregroundColor: UIColor.black,
-//           .font: UIFont(name: "Roboto", size: 24)
-////           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
-//
-//        ]
-//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-        
+
         // 创建自定义视图
         let customView = UIView()
 
         // 创建图像视图
-        let imageView = UIImageView(image: UIImage(named: "User1Portrait.png"))
+        let imageView = UIImageView()
+        imageView.kf.setImage(with: URL(string: otherUserImageURL))
         imageView.contentMode = .scaleAspectFit
         imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30) // 根据需要设置图像视图的尺寸
         imageView.contentMode = .scaleAspectFill
@@ -154,6 +187,20 @@ class ChatBaseViewController: UIViewController {
 
     }
     
+    private func setNavCloseButton() {
+        
+        self.navigationController?.navigationBar.isTranslucent = true
+        
+        let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
+        closeButtonItem.tintColor = .GrayScale20
+        self.navigationItem.leftBarButtonItem = closeButtonItem
+        
+    }
+    
+    @objc func closeBtnTouchUpInside() {
+        dismiss(animated: true)
+    }
+    
     private func setTypingArea() {
         
         self.view.addSubview(typingAreaView)
@@ -183,7 +230,6 @@ class ChatBaseViewController: UIViewController {
     }
     
     @objc func sendButtonTapped() {
-    
         // 傳送訊息則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
         // ?? create 三筆資料到：自己 chatRooms 的 document、對方 chatRooms 的 document、chatRooms 的 document (includes comments)
         // 刪除或編輯訊息，只要去 chatRooms 的 document 的 comments collection 去更改就好
@@ -191,68 +237,136 @@ class ChatBaseViewController: UIViewController {
         
         guard let text = typingTextField.text,
               !(text.isEmpty) else { return }
+  
+        if isFirstMessage == true {
+            createChatRoom(textSending: typingTextField.text!)
+            isFirstMessage.toggle()
+            
+        } else {
+            addChatMessages(textSending: typingTextField.text!)
+        }
         
-        addChatMessages()
-
         typingTextField.text = ""
+       
     }
     
-    private func addChatMessages() {
+    // 發送訊息
+    private func addChatMessages(textSending: String) {
         guard let chatRoomID else {
             print("目前還沒有房間ID")
             return
         }
-        print("聊天室 ID", chatRoomID)
+        
+        // chatRooms 建立 messages 檔案
         database.collection("chatRooms").document(chatRoomID).collection("messages").document().setData([
             "createTime": Timestamp(date: Date()),
-            "messageContent": typingTextField.text,
+            "messageContent": textSending,
             "senderUUID": currentUserUID
         ])
+        
+        // 在自己的 chatRooms 建立 latestMessages 檔案
+        database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).getDocument { [self] documentSnapshot, error in
+            
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  var chatRoomResult = try? documentSnapshot.data(as: ChatRooms.self)
+            else {
+                return
+            }
+            
+            chatRoomResult.latestMessageCreateTime = Timestamp(date: Date())
+            chatRoomResult.latestMessageContent = textSending
+            chatRoomResult.latestMessageSenderUUID = currentUserUID
+            
+            // 修改 最新訊息info 資料
+            self.database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).updateData([
+                
+                "latestMessageCreateTime": Timestamp(date: Date()),
+                "latestMessageContent": textSending,
+                "latestMessageSenderUUID": currentUserUID
+                
+            ])
+            
+        }
+        
+        // 在對方的 chatRooms 建立 messages 檔案
+        database.collection("userTest").document(otherUserUID).collection("chatRooms").document(chatRoomID).getDocument { [self] documentSnapshot, error in
+            
+            guard let documentSnapshot,
+                  documentSnapshot.exists,
+                  var chatRoomResult = try? documentSnapshot.data(as: ChatRooms.self)
+            else {
+                return
+            }
+            
+            chatRoomResult.latestMessageCreateTime = Timestamp(date: Date())
+            chatRoomResult.latestMessageContent = textSending
+            chatRoomResult.latestMessageSenderUUID = currentUserUID
+            
+            // 修改 firebase 上大頭貼資料
+            self.database.collection("userTest").document(self.otherUserUID).collection("chatRooms").document(chatRoomID).updateData([
+                
+                "latestMessageCreateTime": Timestamp(date: Date()),
+                "latestMessageContent": textSending,
+                "latestMessageSenderUUID": currentUserUID
+                
+            ])
+            
+        }
+        
+        
     }
     
     private func getRealTimeChatMessages() {
-        print(chatRoomID)
+        print("房間號", chatRoomID)
         
         guard let chatRoomID else {
             print("目前還沒有房間ID")
             return
         }
         
-        database.collection("chatRooms").document(chatRoomID).collection("messages").order(by: "createTime", descending: false).addSnapshotListener { documentSnapshot, error in
+        database.collection("chatRooms").document(chatRoomID).collection("messages").order(by: "createTime", descending: false).addSnapshotListener { [self] documentSnapshot, error in
+            
             if let documentSnapshot = documentSnapshot {
-                for document in documentSnapshot.documents {
-//                    print(document.data())
+                
+                let messages = documentSnapshot.documents.compactMap { querySnapshot in
+                    
+                        try? querySnapshot.data(as: Messages.self)
                 }
+                
+                // 將聊天室的最新訊息相關資料，以及是哪個indexPathRow的聊天室傳給 ChatViewController
+//                self.latestMessageClosure?(messages.last!, self.rowOfindexPath!)
+                
+                DispatchQueue.main.async { [self] in
+                    
+                    self.messageTypeArray = [String]()
+                    self.messageDataArray = [String]()
+                    
+                    for message in messages {
+                        //                    self.messageTypeArray.append(message.senderUUID)
+                        //                    self.messageDataArray.append(message.messageContent)
+                        self.messageTypeArray.insert(message.senderUUID, at: 0)
+                        self.messageDataArray.insert(message.messageContent, at: 0)
+                    }
+                    self.chatRoomTableView.reloadData()
+                    // tableView upsidedown 之後就不用 scroll 到最下面
+                    //                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
+                }
+                
+                
             } else {
                 return
             }
-            let messages = documentSnapshot?.documents.compactMap { querySnapshot in
-                try? querySnapshot.data(as: Messages.self)
-            }
             
-//            self.messageDataResult = messages!
-//            print("?? 解析完後的資料", self.messageDataResult)
-            
-            DispatchQueue.main.async { [self] in
-                
-                self.messageTypeArray = [String]()
-                self.messageDataArray = [String]()
-                
-                for message in messages! {
-                    print("聊天室的每一則訊息", message.messageContent)
-                    self.messageTypeArray.append(message.senderUUID)
-                    self.messageDataArray.append(message.messageContent)
-                }
-                self.chatRoomTableView.reloadData()
-                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
-            }
             
         }
+            
     }
-    
+
     private func setTableView() {
         
-        chatRoomTableView.backgroundColor = .PrimaryLight
+        // MARK: tableView upsideDown
+        chatRoomTableView.transform = CGAffineTransform(rotationAngle: .pi)
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
@@ -261,7 +375,8 @@ class ChatBaseViewController: UIViewController {
         
         chatRoomTableView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(typingAreaView.snp.top)
+            make.bottom.lessThanOrEqualTo(typingAreaView.snp.top)
+//            make.bottom.equalTo(typingAreaView.snp.top)
             make.leading.equalTo(self.view.safeAreaLayoutGuide)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide)
         }
@@ -270,44 +385,45 @@ class ChatBaseViewController: UIViewController {
 
 }
 
-extension ChatBaseViewController: UITableViewDelegate, UITableViewDataSource {
+extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("訊息數量", messageTypeArray.count)
         return messageTypeArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let messageType = messageTypeArray[indexPath.row]
-        print("訊息寄送者UUID為", messageTypeArray)
-        
+    
         switch messageType {
         case currentUserUID:
             // TODO: 寫法??
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.layoutCell()
+                cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }
             
         case otherUserUID:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
-                cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+                cell.profileImageView.kf.setImage(with: URL(string: otherUserImageURL))
                 cell.layoutCell()
+                cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }
             
         default:
             let cell = UserMeChatTableViewCell.init(style: .default, reuseIdentifier: "\(UserMeChatTableViewCell.self)")
+            cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
             return cell
         }
     }
     
 }
 
-extension ChatBaseViewController: UITextFieldDelegate {
+extension ChatRoomBaseViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
        self.view.endEditing(true)
