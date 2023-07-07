@@ -50,6 +50,20 @@ struct ChatRooms: Codable, Identifiable {
     let theOtherUserUID: String
 }
 
+struct ChatRoomMessages: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    var createTime: Timestamp
+    let theOtherUserUID: String
+    let theOtherUserName: String
+    let theOtherUserPortraitUrlString: String
+    var senderUUID: String
+//    let senderName: String
+    var latestMessage: String
+    let roomID: String
+    let otherUserOnlineState: Bool
+}
+
 // ----------------------------------------
 // 将 CLLocationCoordinate2D 类型转换为 Codable
 struct CodableCoordinate: Codable {

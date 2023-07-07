@@ -97,7 +97,7 @@ class NearbyUsersViewController: UIViewController {
                     }
                     
                 }
-                print("共有哪些小怪獸", self.mapView.annotations, self.mapView.annotations.count, "隻")
+                print("共有",self.mapView.annotations.count, "隻小怪獸")
                 
             }
             
@@ -126,9 +126,9 @@ class NearbyUsersViewController: UIViewController {
         let userUID = userUID
         let coordinate = coordinate
         let annotation = OtherUsersAnnotation(userUID: userUID, userName: name, userImage: imageURL, coordinate: coordinate)
-        print("showOtherUsersOnMap 的小怪獸名稱", name, coordinate, currentCoordinate)
+        
         mapView.addAnnotation(annotation)
-        print("showOtherUsersOnMap 的小怪獸數量", mapView.annotations.count)
+        
     }
     
     // 5. 繪製一個以自己為中心的圓圈範圍
@@ -295,9 +295,8 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
         
         // 如果之前有聊過天，則拿到點擊的那個用戶的聊天室ID；如果沒聊過則創新的聊天室
         database.collection("userTest").document(currentUserUID).collection("chatRooms").whereField("theOtherUserUID", isEqualTo: selectedAnnotation.userUID).getDocuments { querySnapshot, error in
-            
-            print("點擊的檔案", querySnapshot!.documents.count)
-            
+
+            // 沒聊過
             if querySnapshot!.documents.count == 0 {
                 
                 // 实例化目标视图控制器

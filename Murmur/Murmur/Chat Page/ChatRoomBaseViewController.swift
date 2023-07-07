@@ -13,6 +13,9 @@ import FirebaseAuth
 
 class ChatRoomBaseViewController: UIViewController {
     
+    var rowOfindexPath: Int?
+    var latestMessageClosure: ((Messages, Int) -> Void)?
+    
     var otherUserUID = String()
     var otherUserName = String()
     var otherUserImageURL = String()
@@ -68,7 +71,7 @@ class ChatRoomBaseViewController: UIViewController {
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
-        setNav()
+//        getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
         setTypingArea()
         setTableView()
   
@@ -78,7 +81,7 @@ class ChatRoomBaseViewController: UIViewController {
         super.viewWillAppear(animated)
         
         self.tabBarController?.tabBar.isHidden = true
-
+        setNav()
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
     }
 
@@ -199,46 +202,54 @@ class ChatRoomBaseViewController: UIViewController {
     }
     
     private func getRealTimeChatMessages() {
-        print(chatRoomID)
+        print("房間號", chatRoomID)
         
         guard let chatRoomID else {
             print("目前還沒有房間ID")
             return
         }
         
-        database.collection("chatRooms").document(chatRoomID).collection("messages").order(by: "createTime", descending: false).addSnapshotListener { documentSnapshot, error in
+        database.collection("chatRooms").document(chatRoomID).collection("messages").order(by: "createTime", descending: false).addSnapshotListener { [self] documentSnapshot, error in
+            
             if let documentSnapshot = documentSnapshot {
-                for document in documentSnapshot.documents {
-//                    print(document.data())
+                
+                let messages = documentSnapshot.documents.compactMap { querySnapshot in
+                    
+                        try? querySnapshot.data(as: Messages.self)
                 }
+                
+                // 將聊天室的最新訊息相關資料，以及是哪個indexPathRow的聊天室傳給 ChatViewController
+                self.latestMessageClosure?(messages.last!, self.rowOfindexPath!)
+                
+                DispatchQueue.main.async { [self] in
+                    
+                    self.messageTypeArray = [String]()
+                    self.messageDataArray = [String]()
+                    
+                    for message in messages {
+                        //                    self.messageTypeArray.append(message.senderUUID)
+                        //                    self.messageDataArray.append(message.messageContent)
+                        self.messageTypeArray.insert(message.senderUUID, at: 0)
+                        self.messageDataArray.insert(message.messageContent, at: 0)
+                    }
+                    self.chatRoomTableView.reloadData()
+                    // tableView upsidedown 之後就不用 scroll 到最下面
+                    //                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
+                }
+                
+                
             } else {
                 return
             }
-            let messages = documentSnapshot?.documents.compactMap { querySnapshot in
-                try? querySnapshot.data(as: Messages.self)
-            }
             
-//            self.messageDataResult = messages!
-//            print("?? 解析完後的資料", self.messageDataResult)
-    
-            DispatchQueue.main.async { [self] in
-                
-                self.messageTypeArray = [String]()
-                self.messageDataArray = [String]()
-                
-                for message in messages! {
-                    print("聊天室的每一則訊息", message.messageContent)
-//                    self.messageTypeArray.append(message.senderUUID)
-//                    self.messageDataArray.append(message.messageContent)
-                    self.messageTypeArray.insert(message.senderUUID, at: 0)
-                    self.messageDataArray.insert(message.messageContent, at: 0)
-                }
-                self.chatRoomTableView.reloadData()
-                // tableView upsidedown 之後就不用 scroll 到最下面
-//                self.chatRoomTableView.scrollToRow(at: IndexPath(row: self.messageTypeArray.count - 1, section: 0), at: .bottom, animated: true)
-            }
             
         }
+            
+    }
+    
+    func fetchChat() {
+        
+        
     }
     
     private func setTableView() {
@@ -266,15 +277,13 @@ class ChatRoomBaseViewController: UIViewController {
 extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("訊息數量", messageTypeArray.count)
         return messageTypeArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let messageType = messageTypeArray[indexPath.row]
-        print("訊息寄送者UUID為", messageTypeArray)
-        
+    
         switch messageType {
         case currentUserUID:
             // TODO: 寫法??
