@@ -39,7 +39,7 @@ struct Messages: Codable, Identifiable {
     @DocumentID var id: String?
     
     let createTime: Timestamp
-    let messageContent: String
+    var messageContent: String
     var senderUUID: String
 }
 
@@ -48,6 +48,23 @@ struct ChatRooms: Codable, Identifiable {
     
     let createTime: Timestamp
     let theOtherUserUID: String
+    var latestMessageCreateTime: Timestamp?
+    var latestMessageContent: String?
+    var latestMessageSenderUUID: String?
+}
+
+struct ChatRoomMessages: Codable, Identifiable {
+    @DocumentID var id: String?
+    
+    var createTime: Timestamp
+    let theOtherUserUID: String
+    let theOtherUserName: String
+    let theOtherUserPortraitUrlString: String
+    var senderUUID: String
+//    let senderName: String
+    var latestMessage: String
+    let roomID: String
+    let otherUserOnlineState: Bool
 }
 
 // ----------------------------------------

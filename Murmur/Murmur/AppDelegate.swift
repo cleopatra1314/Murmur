@@ -50,28 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         print("用戶已離線")
-        
-        // Modify user onlineState
-        database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
-            
-            guard let documentSnapshot,
-                  documentSnapshot.exists,
-                  var user = try? documentSnapshot.data(as: Users.self)
-            else {
-                return
-            }
-            
-            user.onlineState = false
-            
-            do {
-                try database.collection("userTest").document(currentUserUID).setData(from: user)
-            } catch {
-                print(error)
-            }
-            
-        }
     }
-    
 }
 
 // swiftlint:enable line_length

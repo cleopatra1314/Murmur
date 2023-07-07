@@ -7,8 +7,13 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
+import FirebaseFirestore
+import FirebaseCore
 
 class ProfileViewController: UIViewController {
+    
+    var choosedPortraitFromAlbum: UIImage?
     
 //    var scrollToFootPrintPage = false
     var scrollToFootPrintPage = false {
@@ -125,6 +130,57 @@ class ProfileViewController: UIViewController {
         
     }
     
+    private func changePortraitFromAlbum(cell: UITableViewCell) {
+        
+        // 建立一個 UIImagePickerController 的實體
+        let imagePickerController = UIImagePickerController()
+
+        // 委任代理
+        imagePickerController.delegate = self
+
+        // 建立一個 UIAlertController 的實體
+        // 設定 UIAlertController 的標題與樣式為 動作清單 (actionSheet)
+        let imagePickerAlertController = UIAlertController(title: "上傳圖片", message: "請選擇要上傳的圖片", preferredStyle: .actionSheet)
+
+        // 建立三個 UIAlertAction 的實體
+        // 新增 UIAlertAction 在 UIAlertController actionSheet 的 動作 (action) 與標題
+        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { (void) in
+
+            // 判斷是否可以從照片圖庫取得照片來源
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+
+                // 如果可以，指定 UIImagePickerController 的照片來源為 照片圖庫 (.photoLibrary)，並 present UIImagePickerController
+                imagePickerController.sourceType = .photoLibrary
+                self.present(imagePickerController, animated: true, completion: nil)
+            }
+        }
+//        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { (void) in
+//
+//            // 判斷是否可以從相機取得照片來源
+//            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//
+//                // 如果可以，指定 UIImagePickerController 的照片來源為 照片圖庫 (.camera)，並 present UIImagePickerController
+//                imagePickerController.sourceType = .camera
+//                self.present(imagePickerController, animated: true, completion: nil)
+//            }
+//        }
+
+        // 新增一個取消動作，讓使用者可以跳出 UIAlertController
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (void) in
+
+            imagePickerAlertController.dismiss(animated: true, completion: nil)
+        }
+
+        // 將上面三個 UIAlertAction 動作加入 UIAlertController
+        imagePickerAlertController.addAction(imageFromLibAction)
+//        imagePickerAlertController.addAction(imageFromCameraAction)
+        imagePickerAlertController.addAction(cancelAction)
+
+        // 當使用者按下 uploadBtnAction 時會 present 剛剛建立好的三個 UIAlertAction 動作與
+        present(imagePickerAlertController, animated: true, completion: nil)
+        
+    }
+    
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
@@ -163,6 +219,14 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath == IndexPath(row: 0, section: 0) {
             let cell = ProfileTableViewCell()
             cell.backgroundColor = .clear
+            
+            let portrait = userData?.userPortrait
+            if portrait == nil || portrait == ""{
+                cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+            } else {
+                cell.profileImageView.kf.setImage(with: URL(string: portrait!))
+            }
+            
             cell.userNameLabel.text = userData?.userName
             cell.murmurLabel.text = userData?.murmur ?? "🖋️"
             cell.layoutView()
@@ -178,6 +242,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 self.present(settingViewController, animated: true, completion: nil)
             }
+            
+            cell.changePortraitClosure = { cell in
+                self.changePortraitFromAlbum(cell: cell)
+                
+//                cell.profileImageView.image = self.choosedPortraitFromAlbum?.image
+//                cell.profileImageView.isHidden = false
+//                cell.profileView.isHidden = true
+            }
+            cell.profileImageView.image = self.choosedPortraitFromAlbum ?? UIImage(named: "User1Portrait.png")
             
             return cell
             
@@ -225,4 +298,66 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // [String : Any]
+        
+        
+//        presentCancelAlert(message: "確定要更換頭貼嗎？", viewController: self)
+//        showAlert(title: "", message: "確定要更換頭貼嗎？", viewController: self)
+        
+        var selectedImageFromPicker: UIImage?
+          
+        // 可以自動產生一組獨一無二的 ID 號碼，方便等一下上傳圖片的命名
+        let uniqueString = NSUUID().uuidString
+
+        if let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+//            presentCancelAlert(message: "確定要更換頭貼嗎？", viewController: self)
+            
+            // 在此處理選取的照片
+            self.choosedPortraitFromAlbum = selectedImage
+            profileTableView.reloadData()
+            
+            // Upload to fireStorage
+            uploadPhoto(image: selectedImage) { result in
+                switch result {
+                    
+                case .success(let url):
+                    
+                    // url 轉 string
+                    let selectedImageUrlString = url.absoluteString
+                    
+                    // modify firebase data
+                    database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
+                        
+                        guard let documentSnapshot,
+                              documentSnapshot.exists,
+                              var user = try? documentSnapshot.data(as: Users.self)
+                        else {
+                            return
+                        }
+                        
+                        user.userPortrait = selectedImageUrlString
+                        
+                        // 修改 firebase 上大頭貼資料
+                        do {
+                            try database.collection("userTest").document(currentUserUID).setData(from: user)
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+                    
+                }
+            }
+            
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
 }

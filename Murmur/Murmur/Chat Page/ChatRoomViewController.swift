@@ -26,10 +26,12 @@ class ChatRoomViewController: UIViewController {
     var messageDataResult: [Messages] = []
     private var meReplyText = String()
     
-    private let chatRoomTableView: UITableView = {
-        let chatRoomTableView = UITableView()
+    let chatRoomTableView: SelfSizingTableView = {
+        let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
+        chatRoomTableView.backgroundColor = .SecondaryDark
+        chatRoomTableView.isScrollEnabled = false
         return chatRoomTableView
     }()
     private let typingAreaView: UIView = {
@@ -72,6 +74,12 @@ class ChatRoomViewController: UIViewController {
         setTableView()
         
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        setTableView()
+//    }
 
     private func setNav() {
         self.navigationController?.navigationBar.isTranslucent = true
@@ -80,20 +88,6 @@ class ChatRoomViewController: UIViewController {
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeBtnTouchUpInside))
         closeButtonItem.tintColor = .GrayScale20
         self.navigationItem.leftBarButtonItem = closeButtonItem
-        
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.configureWithDefaultBackground()
-        navBarAppearance.backgroundColor = .PrimaryDark
-        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-        navBarAppearance.titleTextAttributes = [
-           .foregroundColor: UIColor.GrayScale20,
-           .font: UIFont(name: "Roboto", size: 24)
-//           .font: UIFont.systemFont(ofSize: 40, weight: .regular)
-           
-        ]
-        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-        
-//        self.navigationItem.title = "塗鴉留言"
         
         // 创建自定义视图
         let customView = UIView()
@@ -190,6 +184,7 @@ class ChatRoomViewController: UIViewController {
             createChatRoom()
             getRealTimeChatMessages()
             isFirstMessage.toggle()
+            
         } else {
             addChatMessages()
         }
@@ -294,16 +289,21 @@ class ChatRoomViewController: UIViewController {
         
 //        chatRoomTableView.backgroundColor = .PrimaryDefault
         
+        // MARK: tableView upsideDown
+        chatRoomTableView.transform = CGAffineTransform(rotationAngle: .pi)
+        
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
         
         self.view.addSubview(chatRoomTableView)
         
         chatRoomTableView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.equalTo(typingAreaView.snp.top)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide)
+            make.centerX.equalTo(self.view.safeAreaLayoutGuide)
+//            make.bottom.equalTo(typingAreaView.snp.top)
+//            make.leading.equalTo(self.view.safeAreaLayoutGuide)
+//            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
+//            make.height.equalTo(chatRoomTableView.contentSize.height)
         }
 
     }
@@ -335,7 +335,7 @@ extension ChatRoomViewController: UITableViewDelegate, UITableViewDataSource {
         case otherUserUID:
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserTheOtherTableViewCell.self)", for: indexPath) as? UserTheOtherTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
-                cell.profileImageView.image = UIImage(named: "User1Portrait.png")
+                cell.profileImageView.kf.setImage(with: URL(string: otherUserImageURL))
                 cell.layoutCell()
                 cell.layoutIfNeeded()
                 
