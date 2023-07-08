@@ -66,7 +66,7 @@ class ChatViewController: UIViewController {
     
     private func setMessagesCountDownTimer() {
         
-        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(messagesCountDown), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(messagesCountDown), userInfo: nil, repeats: true)
         
     }
     
@@ -266,8 +266,10 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let passedHours = components.hour ?? 0
         let passedMinutes = components.minute ?? 0
         let passedSeconds = components.second ?? 0
-        cell.progressCircleView.passedTimeHr = Double(passedMinutes)
-        cell.progressCircleView.setProgress(frameWidth: 32)
+        
+        // 如果 passedHours < 0，則 delete 這個 row
+        cell.progressCircleView.passedTimeHr = passedHours
+//        cell.progressCircleView.setProgress(frameWidth: 32)
         
         cell.layoutCell()
         

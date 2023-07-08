@@ -49,7 +49,7 @@ class ChatRoomTableViewCell: UITableViewCell {
         return messageSendStateImageView
     }()
     let progressCircleView: ProgressCircleView = {
-        let progressCircleView = ProgressCircleView(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+        let progressCircleView = ProgressCircleView()
         return progressCircleView
     }()
     
@@ -57,7 +57,15 @@ class ChatRoomTableViewCell: UITableViewCell {
         progressCircleView
     }
     
+    func createProgressCircle() {
+        
+        
+        
+    }
+    
     func layoutCell() {
+        
+        progressCircleView.setProgress(frameWidth: 32)
         
         self.backgroundColor = .PrimaryLight
         
