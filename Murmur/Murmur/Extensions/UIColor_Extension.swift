@@ -33,9 +33,11 @@ private enum MURColor: String {
     case SecondaryMidDark
     case SecondaryDark
     case SecondaryShine
+    case SecondarySaturate
     
     case ShadowLight
     case ShadowLight2
+    case ShadowLight3
     case ShadowOfMessage
     
     case ErrorDefault
@@ -67,9 +69,11 @@ extension UIColor {
     static let SecondaryMidDark = murColor(.SecondaryMidDark)
     static let SecondaryDark = murColor(.SecondaryDark)
     static let SecondaryShine = murColor(.SecondaryShine)
+    static let SecondarySaturate = murColor(.SecondarySaturate)
     
     static let ShadowLight = murColor(.ShadowLight)
     static let ShadowLight2 = murColor(.ShadowLight2)
+    static let ShadowLight3 = murColor(.ShadowLight3)
     static let ShadowOfMessage = murColor(.ShadowOfMessage)
     
     static let ErrorDefault = murColor(.ErrorDefault)

@@ -14,6 +14,24 @@ extension CALayer {
             self.cornerRadius = radius
         }
     
+    // 起始頁 button
+    func addSaturatedShadow1() {
+            self.shadowOffset = CGSize(width: 0, height: -5)
+            self.shadowOpacity = 1
+            self.shadowRadius = 3
+            self.shadowColor = UIColor.ShadowLight3?.cgColor
+            self.masksToBounds = false
+        }
+    
+    // 起始頁 button
+    func addSaturatedShadow() {
+            self.shadowOffset = CGSize(width: 0, height: 0)
+            self.shadowOpacity = 1
+            self.shadowRadius = 1
+            self.shadowColor = UIColor.SecondarySaturate?.cgColor
+            self.masksToBounds = false
+        }
+    
     func addShineShadow() {
             self.shadowOffset = CGSize(width: 0, height: 0)
         self.shadowOpacity = 0.6

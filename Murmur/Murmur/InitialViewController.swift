@@ -26,6 +26,7 @@ class InitialViewController: UIViewController {
         let mainView = UIView()
         mainView.backgroundColor = .PrimaryLighter
         mainView.layer.cornerRadius = 90
+        mainView.layer.addSaturatedShadow1()
         return mainView
     }()
     private let logoImageView: UIImageView = {
@@ -48,6 +49,7 @@ class InitialViewController: UIViewController {
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
+        signUpWithEmailButton.layer.addSaturatedShadow()
         return signUpWithEmailButton
     }()
     private let signUpWithAppleButton: UIButton = {
@@ -56,6 +58,7 @@ class InitialViewController: UIViewController {
         signUpWithAppleButton.setTitleColor(.GrayScale0, for: .normal)
         signUpWithAppleButton.backgroundColor = .SecondaryMiddle
         signUpWithAppleButton.layer.cornerRadius = 12
+        signUpWithAppleButton.layer.addSaturatedShadow()
         return signUpWithAppleButton
     }()
     private let stack: UIStackView = {
