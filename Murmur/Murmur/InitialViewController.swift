@@ -49,7 +49,8 @@ class InitialViewController: UIViewController {
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
-        signUpWithEmailButton.layer.addSaturatedShadow()
+        signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchDown), for: .touchDown)
+        signUpWithEmailButton.layer.addWhiteShadow()
         return signUpWithEmailButton
     }()
     private let signUpWithAppleButton: UIButton = {
@@ -58,7 +59,7 @@ class InitialViewController: UIViewController {
         signUpWithAppleButton.setTitleColor(.GrayScale0, for: .normal)
         signUpWithAppleButton.backgroundColor = .SecondaryMiddle
         signUpWithAppleButton.layer.cornerRadius = 12
-        signUpWithAppleButton.layer.addSaturatedShadow()
+        signUpWithAppleButton.layer.addWhiteShadow()
         return signUpWithAppleButton
     }()
     private let stack: UIStackView = {
@@ -84,7 +85,7 @@ class InitialViewController: UIViewController {
     
     //--------------------------
     private var userProfileData: Users?
-    
+
 //    let attributes: [NSAttributedString.Key: Any] = [
 //        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
 //        .foregroundColor: UIColor.red,
@@ -168,13 +169,17 @@ class InitialViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
+    @objc func signUpWithEmailButtonTouchDown() {// 点击改变背景色
+        signUpWithEmailButton.backgroundColor = UIColor.SecondarySaturate
+    }
+    
     func lottiePacman() {
         pacmanAnimationView.play()
         pacmanAnimationView.loopMode = .loop
     }
     
     @objc func signUpWithEmailButtonTouchUpInside() {
-        
+        signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         let signUpEmailVC = SignUpEmailViewController()
         self.navigationController?.pushViewController(signUpEmailVC, animated: true)
         
@@ -219,7 +224,7 @@ class InitialViewController: UIViewController {
             make.centerX.equalTo(mainView)
         }
         signUpWithAppleButton.snp.makeConstraints { make in
-            make.top.equalTo(signUpWithEmailButton.snp.bottom).offset(12)
+            make.top.equalTo(signUpWithEmailButton.snp.bottom).offset(14)
             make.leading.equalTo(mainView).offset(40)
             make.trailing.equalTo(mainView).offset(-40)
             make.height.equalTo(40)

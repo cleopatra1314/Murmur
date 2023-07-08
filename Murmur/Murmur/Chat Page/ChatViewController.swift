@@ -7,16 +7,19 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseFirestoreSwift
+
 
 class ChatViewController: UIViewController {
     
-    
+    var chatRoomCreateTimeArray = [Timestamp]()
+    var timer = Timer()
     
     var chatRooms = [ChatRooms]()
     var latestMessagesData = [Messages]()
     var chatRoomMessagesData = [ChatRoomMessages]()
     var orderedChatRoomMessagesData = [ChatRoomMessages]()
-//    var chatRoomMessagesResult = ChatRoomMessages()
+    var chatRoomsData = [ChatRooms]()
 
     var chatRoomsArray = [String]()
     var chatRoomOtherUserNameArray: [String]?
@@ -52,12 +55,26 @@ class ChatViewController: UIViewController {
         setNav()
         getRealTimeChatData()
         setTableView()
+        setMessagesCountDownTimer()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    private func setMessagesCountDownTimer() {
+        
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(messagesCountDown), userInfo: nil, repeats: true)
+        
+    }
+    
+    @objc func messagesCountDown() {
+        
+        chatRoomTableView.reloadData()
+        print("計算聊天室時間")
+
     }
     
     private func setNav() {
@@ -132,15 +149,13 @@ class ChatViewController: UIViewController {
                             return
                         }
                         
-                        let chatRoomMessagesResult = ChatRoomMessages(createTime: chatRoomResult.latestMessageCreateTime ?? Timestamp(date: Date()), theOtherUserUID: chatRoom.theOtherUserUID, theOtherUserName: otherUser.userName, theOtherUserPortraitUrlString: otherUser.userPortrait, senderUUID: chatRoomResult.latestMessageSenderUUID ?? currentUserUID, latestMessage: chatRoomResult.latestMessageContent ?? "資料是空，一切是空", roomID: chatRoom.id!, otherUserOnlineState: otherUser.onlineState)
+                        let chatRoomMessagesResult = ChatRoomMessages(chatRoomCreateTime:chatRoomResult.createTime, latestMessageCreateTime: chatRoomResult.latestMessageCreateTime ?? Timestamp(date: Date()), theOtherUserUID: chatRoom.theOtherUserUID, theOtherUserName: otherUser.userName, theOtherUserPortraitUrlString: otherUser.userPortrait, senderUUID: chatRoomResult.latestMessageSenderUUID ?? currentUserUID, latestMessage: chatRoomResult.latestMessageContent ?? "資料是空，一切是空", roomID: chatRoom.id!, otherUserOnlineState: otherUser.onlineState)
                         
-                        print("聊天室資料", chatRoomMessagesResult)
                         self.chatRoomMessagesData.append(chatRoomMessagesResult)
                         
-                        orderedChatRoomMessagesData = chatRoomMessagesData.sorted(by: { $0.createTime > $1.createTime })
+                        orderedChatRoomMessagesData = chatRoomMessagesData.sorted(by: { $0.latestMessageCreateTime > $1.latestMessageCreateTime })
                         
                         DispatchQueue.main.async {
-//                            print("🌼🌼排序好的資料", orderedChatRoomMessagesData)
                             self.chatRoomTableView.reloadData()
                         }
                     }
@@ -210,13 +225,13 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("跑 cellForRow")
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ChatRoomTableViewCell.self)", for: indexPath) as? ChatRoomTableViewCell else { return UITableViewCell.init() }
         
         let messageSender = orderedChatRoomMessagesData[indexPath.row].senderUUID
         
         //        let messageSender = messageSenderDictionary[(chatRoomOtherUserUIDArray![indexPath.row])]
-        //
+        
         if messageSender == currentUserUID {
             cell.messageSendStateImageView.image = UIImage(named: "Icons_SendOut.png")
         } else {
@@ -237,10 +252,27 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
 //        cell.otherUserNameLabel.text = chatRoomOtherUserNameArray?[indexPath.row]
 //        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageArray?[indexPath.row]
 //        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageDictionary[(chatRoomOtherUserUIDArray![indexPath.row])]
+        
+        // 計算聊天室創立了多久時間
+        let timestampNow = Timestamp(date: Date())
+        let timestampFromChatRoomCreated = orderedChatRoomMessagesData[indexPath.row].chatRoomCreateTime
+
+        let dateNow = timestampNow.dateValue()
+        let dateFromChatRoomCreated = timestampFromChatRoomCreated.dateValue()
+
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute, .second], from: dateFromChatRoomCreated, to: dateNow)
+
+        let passedHours = components.hour ?? 0
+        let passedMinutes = components.minute ?? 0
+        let passedSeconds = components.second ?? 0
+        cell.progressCircleView.passedTimeHr = Double(passedMinutes)
+        cell.progressCircleView.setProgress(frameWidth: 32)
+        
         cell.layoutCell()
         
         // 使 cell 在选中单元格时没有灰色背景
-        cell.selectionStyle = .none
+        cell.selectionStyle = .default
         
         return cell
     }

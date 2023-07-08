@@ -109,6 +109,7 @@ class SignUpNickNameViewController: UIViewController {
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
+        signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchDown), for: .touchDown)
         return signUpWithEmailButton
     }()
     
@@ -135,6 +136,10 @@ class SignUpNickNameViewController: UIViewController {
         profilePicView.layer.cornerRadius = profilePicView.frame.width / 2
         profilePicView.layer.borderColor = UIColor.lightGray.cgColor
         profilePicView.layer.borderWidth = 3
+    }
+    
+    @objc func signUpWithEmailButtonTouchDown() {// 点击改变背景色
+        signUpWithEmailButton.backgroundColor = UIColor.SecondarySaturate
     }
     
     @objc func captureButtonTouchUpInside() {

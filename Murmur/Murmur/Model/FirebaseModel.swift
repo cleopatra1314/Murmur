@@ -56,7 +56,8 @@ struct ChatRooms: Codable, Identifiable {
 struct ChatRoomMessages: Codable, Identifiable {
     @DocumentID var id: String?
     
-    var createTime: Timestamp
+    let chatRoomCreateTime: Timestamp
+    var latestMessageCreateTime: Timestamp
     let theOtherUserUID: String
     let theOtherUserName: String
     let theOtherUserPortraitUrlString: String

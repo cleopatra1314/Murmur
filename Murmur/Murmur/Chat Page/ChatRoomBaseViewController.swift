@@ -27,8 +27,9 @@ class ChatRoomBaseViewController: UIViewController {
 
     private var messageTypeArray = [String]()
     private var messageDataArray = [String]()
-    var messageDataResult: [Messages] = []
-    private var meReplyText = String()
+    private var messageCreateTimeArray = [Timestamp]()
+//    var messageDataResult: [Messages] = []
+//    private var meReplyText = String()
     
     let chatRoomTableView: SelfSizingTableView = {
         let chatRoomTableView = SelfSizingTableView()
@@ -318,8 +319,7 @@ class ChatRoomBaseViewController: UIViewController {
     }
     
     private func getRealTimeChatMessages() {
-        print("房間號", chatRoomID)
-        
+      
         guard let chatRoomID else {
             print("目前還沒有房間ID")
             return
@@ -341,12 +341,15 @@ class ChatRoomBaseViewController: UIViewController {
                     
                     self.messageTypeArray = [String]()
                     self.messageDataArray = [String]()
+                    self.messageCreateTimeArray = [Timestamp]()
                     
                     for message in messages {
                         //                    self.messageTypeArray.append(message.senderUUID)
                         //                    self.messageDataArray.append(message.messageContent)
                         self.messageTypeArray.insert(message.senderUUID, at: 0)
                         self.messageDataArray.insert(message.messageContent, at: 0)
+                        self.messageCreateTimeArray.insert(message.createTime, at: 0)
+                        
                     }
                     self.chatRoomTableView.reloadData()
                     // tableView upsidedown 之後就不用 scroll 到最下面
@@ -401,6 +404,14 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.layoutCell()
+                
+                let timestamp: Timestamp = messageCreateTimeArray[indexPath.row] // 從 Firestore 中取得的 Timestamp 值
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "HH : mm" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
+                let date = timestamp.dateValue()
+                let formattedTime = dateFormatter.string(from: date)
+                cell.createdTimeLabel.text = formattedTime
+                
                 cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }
@@ -410,6 +421,14 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.profileImageView.kf.setImage(with: URL(string: otherUserImageURL))
                 cell.layoutCell()
+                
+                let timestamp: Timestamp = messageCreateTimeArray[indexPath.row] // 從 Firestore 中取得的 Timestamp 值
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "HH:mm" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
+                let date = timestamp.dateValue()
+                let formattedTime = dateFormatter.string(from: date)
+                cell.createdTimeLabel.text = formattedTime
+                
                 cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }

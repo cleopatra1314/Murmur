@@ -15,7 +15,7 @@ import FirebaseDatabase
 let defaultCurrentCoordinate = CLLocationCoordinate2D(latitude: 25.0385, longitude: 121.531)
 var currentCoordinate: CLLocationCoordinate2D? {
     didSet {
-        print("變動！目前位置", currentCoordinate)
+//        print("變動！目前位置", currentCoordinate)
     }
 }
 var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().currentUser?.uid 取代

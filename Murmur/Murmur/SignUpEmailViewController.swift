@@ -96,6 +96,7 @@ class SignUpEmailViewController: UIViewController {
         nextButton.backgroundColor = .SecondaryMiddle
         nextButton.layer.cornerRadius = 12
         nextButton.addTarget(self, action: #selector(nextButtonTouchUpInside), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonTouchDown), for: .touchDown)
         return nextButton
     }()
     
@@ -108,6 +109,10 @@ class SignUpEmailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc func nextButtonTouchDown() {// 点击改变背景色
+        nextButton.backgroundColor = UIColor.SecondarySaturate
     }
     
     @objc func nextButtonTouchUpInside() {

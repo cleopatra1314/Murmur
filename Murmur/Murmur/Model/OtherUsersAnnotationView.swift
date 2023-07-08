@@ -10,6 +10,9 @@ import CoreLocation
 import MapKit
 
 class OtherUsersAnnotationView: MKAnnotationView {
+    
+    var imageName = "Pacman_blue.png"
+    
     override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         configure()
@@ -20,9 +23,10 @@ class OtherUsersAnnotationView: MKAnnotationView {
         configure()
     }
     
-    private func configure() {
+    func configure() {
         // 设置自定义图片
-        let image = UIImage(named: "Pacman_blue.png")
+        let image = UIImage(named: self.imageName)
+        self.contentMode = .scaleAspectFill
         self.image = image
     }
 }

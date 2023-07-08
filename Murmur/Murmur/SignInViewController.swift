@@ -73,6 +73,7 @@ class SignInViewController: UIViewController {
         signInWithEmailButton.backgroundColor = .SecondaryMiddle
         signInWithEmailButton.layer.cornerRadius = 12
         signInWithEmailButton.addTarget(self, action: #selector(signInWithEmailButtonTouchUpInside), for: .touchUpInside)
+        signInWithEmailButton.addTarget(self, action: #selector(signInWithEmailButtonTouchDown), for: .touchDown)
         return signInWithEmailButton
     }()
     
@@ -85,6 +86,10 @@ class SignInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    @objc func signInWithEmailButtonTouchDown() {// 点击改变背景色
+        signInWithEmailButton.backgroundColor = UIColor.SecondarySaturate
     }
     
     func createTabBarController() {

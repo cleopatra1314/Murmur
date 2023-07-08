@@ -14,6 +14,7 @@ class PostTagViewController: UIViewController {
     
     var uploadImage: UIImage?
     
+    let progressCircle = ProgressCircleView(frame: CGRect(x: 100, y: 200, width: 100, height: 100))
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "About your murmur"
@@ -49,7 +50,14 @@ class PostTagViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLight
         setNav()
+        layoutView()
  
+    }
+    
+    func layoutView() {
+        
+        self.view.addSubview(progressCircle)
+        
     }
     
     // MARK: 上傳到 firestorage
