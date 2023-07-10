@@ -39,6 +39,7 @@
 		C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */; };
 		C8B627EA2A56A309002327D5 /* TimeStamp_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */; };
 		C8B627EC2A56C04E002327D5 /* newStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627EB2A56C04E002327D5 /* newStore.swift */; };
+		C8BA32052A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */; };
 		C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */; };
 		C8BAE6E22A464BE600ED6941 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6E12A464BE600ED6941 /* InitialViewController.swift */; };
 		C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3A0942A48342A000E967D /* UIView_Extension.swift */; };
@@ -98,6 +99,7 @@
 		C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
 		C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp_Extension.swift; sourceTree = "<group>"; };
 		C8B627EB2A56C04E002327D5 /* newStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newStore.swift; sourceTree = "<group>"; };
+		C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomBaseViewController2.swift; path = Murmur/ChatRoomBaseViewController2.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarTableHeaderView.swift; path = Murmur/Model/SearchBarTableHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6E12A464BE600ED6941 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		C8C3A0942A48342A000E967D /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */,
 				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
 				C8C55F9B2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift */,
+				C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */,
 				C8ABD8402A43EA1400B76ADC /* UserMeChatTableViewCell.swift */,
 				C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */,
 				C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */,
@@ -420,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8AF2DBD2A415DE300B703E8 /* OtherUsersAnnotation.swift in Sources */,
+				C8BA32052A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift in Sources */,
 				C8F041F12A4B72E20044BE9C /* CALayer_Extension.swift in Sources */,
 				C8859D922A59464B00C5B62A /* ProgressCircleView.swift in Sources */,
 				C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */,

@@ -124,7 +124,7 @@ class ChatViewController: UIViewController {
             self.chatRoomMessagesData = [ChatRoomMessages]()
             // 找每個聊天室的對方名稱及大頭照
             for chatRoom in chatRooms! {
-                print("🌵", chatRoom)
+    
 //                self.chatRoomsDataResult = chatRooms
 //
 //                self.chatRoomsArray.append(chatRoom.id!)
@@ -138,7 +138,7 @@ class ChatViewController: UIViewController {
                           let otherUser = try? document.data(as: Users.self) else {
                         return
                     }
-                    print("🍁", otherUser)
+                   
                     // 取得每個聊天室的第一則訊息 info
                     database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoom.id!).getDocument { [self] documentSnapshot, error in
                         
@@ -159,54 +159,7 @@ class ChatViewController: UIViewController {
                             self.chatRoomTableView.reloadData()
                         }
                     }
-                    
-                    
-                    
-                    /*
-                    // 取得每個聊天室的第一則訊息
-                    database.collection("chatRooms").document(chatRoom.id!).collection("messages").order(by: "createTime", descending: true).getDocuments { querySnapshot, error in
-                        
-                        let messages = querySnapshot?.documents.compactMap { queryDocumentSnapshot in
-                            try? queryDocumentSnapshot.data(as: Messages.self)
-                        }
-                        
-                        self.chatRoomLatestMessageDictionary[(messages?.first!.createTime)!] = messages?.first?.messageContent
-                        
-                        self.messageSenderDictionary[chatRoom.theOtherUserUID] = (messages?.first)!.senderUUID
-                        //                                self.chatRoomLatestMessageDictionary[chatRoom.theOtherUserUID] = (messages?.first)!.messageContent
-                        
-                        let chatRoomMessagesResult = ChatRoomMessages(createTime: messages![0].createTime, theOtherUserUID: chatRoom.theOtherUserUID, theOtherUserName: otherUser.userName, theOtherUserPortraitUrlString: otherUser.userPortrait, senderUUID: messages![0].senderUUID, latestMessage: messages![0].messageContent, roomID: chatRoom.id!, otherUserOnlineState: otherUser.onlineState)
-                        
-                        self.chatRoomMessagesData.append(chatRoomMessagesResult)
-                        
-                        orderedChatRoomMessagesData = chatRoomMessagesData.sorted(by: { $0.createTime > $1.createTime })
-                        print("跑進來")
-//                        chatRoomVC.latestMessageClosure = { [self] latestMessage, rowOfIndexPath in
-//
-//                            orderedChatRoomMessagesData[rowOfIndexPath].createTime = latestMessage.createTime
-//                            orderedChatRoomMessagesData[rowOfIndexPath].senderUUID = latestMessage.senderUUID
-//                            orderedChatRoomMessagesData[rowOfIndexPath].latestMessage = latestMessage.messageContent
-//                            for index in orderedChatRoomMessagesData {
-//                                print("🌺closure 改好的", index.theOtherUserName, index.latestMessage)
-//                            }
-//                            //                                        print("🌼🌼🌼🌼closure 排序好的資料", orderedChatRoomMessagesData)
-//                            orderedChatRoomMessagesData = orderedChatRoomMessagesData.sorted(by: { $0.createTime > $1.createTime })
-//                            for index in orderedChatRoomMessagesData {
-//                                print("🌼closure 排序好的資料", index.theOtherUserName, index.latestMessage)
-//                            }
-//                            //                                        print("🌼closure 排序好的資料", orderedChatRoomMessagesData)
-//
-//                            self.chatRoomTableView.reloadData()
-//                        }
-                        
-                        DispatchQueue.main.async {
-                            print("🌼🌼排序好的資料", orderedChatRoomMessagesData)
-                            self.chatRoomTableView.reloadData()
-                        }
-                        
-                    }
-                    */
-                    
+         
                 }
                 
             }
@@ -216,7 +169,6 @@ class ChatViewController: UIViewController {
     }
     
 }
-
 
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -248,7 +200,6 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         cell.otherUserNameLabel.text = orderedChatRoomMessagesData[indexPath.row].theOtherUserName
         cell.otherUserFirstMessageLabel.text = orderedChatRoomMessagesData[indexPath.row].latestMessage
 
-        
 //        cell.otherUserNameLabel.text = chatRoomOtherUserNameArray?[indexPath.row]
 //        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageArray?[indexPath.row]
 //        cell.otherUserFirstMessageLabel.text = chatRoomLatestMessageDictionary[(chatRoomOtherUserUIDArray![indexPath.row])]
@@ -290,26 +241,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let chatRoomVC = ChatRoomBaseViewController()
-        
-//        chatRoomVC.latestMessageClosure = { [self] latestMessage, rowOfIndexPath in
-//            
-//            orderedChatRoomMessagesData[rowOfIndexPath].createTime = latestMessage.createTime
-//            orderedChatRoomMessagesData[rowOfIndexPath].senderUUID = latestMessage.senderUUID
-//            orderedChatRoomMessagesData[rowOfIndexPath].latestMessage = latestMessage.messageContent
-//            for index in orderedChatRoomMessagesData {
-//                print("🌺closure 改好的", index.theOtherUserName, index.latestMessage)
-//            }
-//            //                                        print("🌼🌼🌼🌼closure 排序好的資料", orderedChatRoomMessagesData)
-//            orderedChatRoomMessagesData = orderedChatRoomMessagesData.sorted(by: { $0.createTime > $1.createTime })
-//            for index in orderedChatRoomMessagesData {
-//                print("🌼closure 排序好的資料", index.theOtherUserName, index.latestMessage)
-//            }
-//            //                                        print("🌼closure 排序好的資料", orderedChatRoomMessagesData)
-//            
-//            self.chatRoomTableView.reloadData()
-//        }
-        
-        
+
         chatRoomVC.rowOfindexPath = indexPath.row
         chatRoomVC.chatRoomID = orderedChatRoomMessagesData[indexPath.row].roomID
         chatRoomVC.otherUserUID = orderedChatRoomMessagesData[indexPath.row].theOtherUserUID

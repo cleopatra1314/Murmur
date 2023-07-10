@@ -16,8 +16,18 @@ class SettingViewController: UIViewController {
         signOutButton.frame = CGRect(x: 150, y: 200, width: 120, height: 40)
         signOutButton.backgroundColor = .SecondaryDefault
         signOutButton.setTitle("登出", for: .normal)
+        signOutButton.layer.cornerRadius = 10
         signOutButton.addTarget(self, action: #selector(signOut), for: .touchUpInside)
         return signOutButton
+    }()
+    lazy var deleteAccountButton: UIButton = {
+        let deleteAccountButton = UIButton()
+        deleteAccountButton.frame = CGRect(x: 150, y: 260, width: 120, height: 40)
+        deleteAccountButton.backgroundColor = .SecondaryDefault
+        deleteAccountButton.setTitle("刪除帳號", for: .normal)
+        deleteAccountButton.layer.cornerRadius = 10
+        deleteAccountButton.addTarget(self, action: #selector(deleteAccountButtonTouchUpInside), for: .touchUpInside)
+        return deleteAccountButton
     }()
     
     override func viewDidLoad() {
@@ -25,6 +35,70 @@ class SettingViewController: UIViewController {
         
         self.view.backgroundColor = .SecondaryLight
         self.view.addSubview(signOutButton)
+        self.view.addSubview(deleteAccountButton)
+        
+    }
+    
+    @objc func deleteAccountButtonTouchUpInside() {
+        
+        // 創造一個 UIAlertController 的實例。
+        let alertController = UIAlertController(title: "提醒", message: "確定要刪除帳號嗎？", preferredStyle: .alert)
+        
+        // 加入確定的動作。
+        let okAction = UIAlertAction(title: "確定", style: .default) { alertAction in
+            
+            let user = Auth.auth().currentUser
+
+            user?.delete { error in
+                if let error = error {
+                    print("Error: Account delete failed.", error)
+                } else {
+                    // 刪除 chatRooms 底下 documents
+                    database.collection("userTest").document(currentUserUID).collection("chatRooms").getDocuments { querySnapshot, error in
+                        
+                        if let error = error {
+                                    print("Error getting documents: \(error)")
+                                } else {
+                                    for document in querySnapshot!.documents {
+                                        document.reference.delete()
+                                    }
+                                }
+                    }
+                  
+                    // 刪除 postedMurmurs 底下 documents
+                    database.collection("userTest").document(currentUserUID).collection("postedMurmurs").getDocuments { querySnapshot, error in
+                        
+                        if let error = error {
+                                    print("Error getting documents: \(error)")
+                                } else {
+                                    for document in querySnapshot!.documents {
+                                        document.reference.delete()
+                                    }
+                                }
+                    }
+                  
+                    // 刪除 userID collection
+                    database.collection("userTest").document(currentUserUID).delete()
+                
+                    // 等到上面的 firebase 資料都刪除後再來 present
+                    let initialVC = InitialViewController()
+                    initialVC.modalPresentationStyle = .fullScreen
+                    initialVC.modalTransitionStyle = .crossDissolve
+                    self.present(initialVC, animated: true)
+              }
+            }
+            
+        }
+        alertController.addAction(okAction)
+        
+        // 加入取消的動作。
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { alertAction in
+            return
+        }
+        alertController.addAction(cancelAction)
+        
+        // 呈現 alertController。
+        present(alertController, animated: true)
         
     }
     
@@ -50,7 +124,6 @@ class SettingViewController: UIViewController {
         let okAction = UIAlertAction(title: "確定", style: .default) { alertAction in
             
             do {
-                print("執行登出")
                 try Auth.auth().signOut()
             
                 database.collection("userTest").document(currentUserUID).setData([

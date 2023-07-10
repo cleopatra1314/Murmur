@@ -4,7 +4,7 @@
 //
 //  Created by cleopatra on 2023/6/26.
 //
-
+/*
 import UIKit
 import SnapKit
 import FirebaseFirestore
@@ -30,7 +30,13 @@ class ChatRoomBaseViewController: UIViewController {
     private var messageCreateTimeArray = [Timestamp]()
 //    var messageDataResult: [Messages] = []
 //    private var meReplyText = String()
-
+    
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
+        scrollView.backgroundColor = .clear
+        return scrollView
+    }()
     let chatRoomTableView: SelfSizingTableView = {
         let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
@@ -117,23 +123,20 @@ class ChatRoomBaseViewController: UIViewController {
                let keyboardFrameValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
          let keyboardFrame = keyboardFrameValue.cgRectValue
          let keyboardSize = keyboardFrame.size
-         let keyboardHeight = keyboardSize.height
+         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
+         scrollView.contentInset = contentInsets
+         scrollView.scrollIndicatorInsets = contentInsets
+         if typingTextField.isFirstResponder {
+             scrollView.scrollRectToVisible(typingTextField.frame, animated: true)
+         }
         
-        UIView.animate(withDuration: 0.2) { [self] in
-            self.typingAreaView.frame = CGRect(x: 0, y: typingAreaView.frame.origin.y - 500, width: self.view.frame.width, height: 94)
-        }
+        
     }
     
     @objc func keyboardWillBeHidden(_ notification: NSNotification) {
-        guard let info = notification.userInfo,
-              let keyboardFrameValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        let keyboardFrame = keyboardFrameValue.cgRectValue
-        let keyboardSize = keyboardFrame.size
-        let keyboardHeight = keyboardSize.height
-        
-        UIView.animate(withDuration: 0.2) { [self] in
-            self.typingAreaView.frame = CGRect(x: typingAreaView.frame.origin.x, y: typingAreaView.frame.origin.y + keyboardHeight, width: self.view.frame.width, height: 60)
-        }
+        let contentInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
     }
     
     // 跟用戶傳出第一封訊息才要執行
@@ -414,7 +417,8 @@ class ChatRoomBaseViewController: UIViewController {
     private func layoutView() {
         
         self.view.addSubview(chatRoomTableView)
-        self.view.addSubview(typingAreaView)
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(typingAreaView)
         typingAreaView.addSubview(typingTextField)
         typingAreaView.addSubview(sendButton)
         
@@ -423,13 +427,13 @@ class ChatRoomBaseViewController: UIViewController {
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
 //            typingAreaView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -94),
-            typingAreaView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            typingAreaView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
-            typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+//            typingAreaView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+//            typingAreaView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+//            typingAreaView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             typingTextField.leadingAnchor.constraint(equalTo: typingAreaView.leadingAnchor, constant: 16),
             typingTextField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -16),
             typingTextField.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 12),
-            typingTextField.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            typingTextField.bottomAnchor.constraint(equalTo: typingAreaView.bottomAnchor, constant: -8),
             sendButton.trailingAnchor.constraint(equalTo: typingAreaView.trailingAnchor, constant: -16),
             //            sendButton.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 8),
             //            sendButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
@@ -443,7 +447,36 @@ class ChatRoomBaseViewController: UIViewController {
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
-
+        
+        
+//        scrollView.snp.makeConstraints { make in
+//            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+//            make.bottom.equalTo(self.view)
+//        }
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: chatRoomTableView.bottomAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            
+//            scrollView.frameLayoutGuide.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+//            scrollView.frameLayoutGuide.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+//            scrollView.frameLayoutGuide.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+//            scrollView.frameLayoutGuide.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            
+//            scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: chatRoomTableView.topAnchor),
+//            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: chatRoomTableView.leadingAnchor),
+//            scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: chatRoomTableView.trailingAnchor),
+//            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: typingAreaView.bottomAnchor),
+            
+            typingAreaView.heightAnchor.constraint(equalToConstant: 94),
+            typingAreaView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+            typingAreaView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 600),
+            typingAreaView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            typingAreaView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            typingAreaView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor)
+        ])
         chatRoomTableView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
             make.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).offset(-94)
@@ -523,3 +556,4 @@ extension ChatRoomBaseViewController: UITextFieldDelegate {
     }
     
 }
+*/

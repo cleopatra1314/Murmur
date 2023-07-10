@@ -7,7 +7,7 @@
 
 import UIKit
 import FirebaseCore
-import IQKeyboardManagerSwift
+//import IQKeyboardManagerSwift
 
 // swiftlint:disable line_length
 @main
@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
             
         FirebaseApp.configure()
-        IQKeyboardManager.shared.enable = true
+//        IQKeyboardManager.shared.enable = true
      
         return true
     }
