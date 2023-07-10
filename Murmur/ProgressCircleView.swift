@@ -70,7 +70,7 @@ class ProgressCircleView: UIView {
         self.layer.addSublayer(circleLayer)
         self.layer.addSublayer(percentageLayer)
 //        let label = UILabel(frame: self.bounds)
-        label = UILabel(frame: self.bounds)
+        label.frame = self.bounds
         label.textAlignment = .center
         label.text = "\(totalTime - passedTimeHr)hr"
         label.font = UIFont(name: "PingFangTC-Regular", size: 8)

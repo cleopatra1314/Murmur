@@ -53,16 +53,6 @@ class ChatRoomTableViewCell: UITableViewCell {
         return progressCircleView
     }()
     
-    func deleteProgressCircleView() {
-        progressCircleView
-    }
-    
-    func createProgressCircle() {
-        
-        
-        
-    }
-    
     func layoutCell() {
         
         progressCircleView.setProgress(frameWidth: 32)

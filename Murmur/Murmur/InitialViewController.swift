@@ -60,6 +60,7 @@ class InitialViewController: UIViewController {
         signUpWithAppleButton.backgroundColor = .SecondaryMiddle
         signUpWithAppleButton.layer.cornerRadius = 12
         signUpWithAppleButton.layer.addWhiteShadow()
+        signUpWithAppleButton.isHidden = true
         return signUpWithAppleButton
     }()
     private let stack: UIStackView = {
