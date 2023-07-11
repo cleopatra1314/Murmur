@@ -74,6 +74,7 @@ class ProgressCircleView: UIView {
         label.textAlignment = .center
         label.text = "\(totalTime - passedTimeHr)hr"
         label.font = UIFont(name: "PingFangTC-Regular", size: 8)
+//        self.subviews.remove(at: 0)
         self.addSubview(label)
         
     }

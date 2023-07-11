@@ -6,12 +6,6 @@
 	<array>
 		<string>cleopatra.Murmur</string>
 	</array>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Murmur 需要取用你的相簿</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Murmur 需要取用你的相簿才有照片功能</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Murmur 需要取用你的相機幫你拍照</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

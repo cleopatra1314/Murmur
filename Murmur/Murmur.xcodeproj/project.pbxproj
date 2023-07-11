@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */; };
+		C8212C5C2A5DAFC1006D2073 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5B2A5DAFC1006D2073 /* Launch Screen.storyboard */; };
+		C8212C5E2A5DB394006D2073 /* LogoNameFlash.json in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */; };
 		C82687442A4EC0F500237D68 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82687432A4EC0F500237D68 /* SettingViewController.swift */; };
 		C831F7C62A4592AA004A9A6F /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C52A4592AA004A9A6F /* ChatViewController.swift */; };
 		C831F7C82A459CAC004A9A6F /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */; };
@@ -40,6 +42,8 @@
 		C8B627EA2A56A309002327D5 /* TimeStamp_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */; };
 		C8B627EC2A56C04E002327D5 /* newStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627EB2A56C04E002327D5 /* newStore.swift */; };
 		C8BA32052A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */; };
+		C8BA477B2A5D9FEF002D3ADC /* LogoMessageBorn.json in Resources */ = {isa = PBXBuildFile; fileRef = C8BA477A2A5D9FEF002D3ADC /* LogoMessageBorn.json */; };
+		C8BA477F2A5DA7B3002D3ADC /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BA477E2A5DA7B3002D3ADC /* LaunchScreenViewController.swift */; };
 		C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */; };
 		C8BAE6E22A464BE600ED6941 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BAE6E12A464BE600ED6941 /* InitialViewController.swift */; };
 		C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3A0942A48342A000E967D /* UIView_Extension.swift */; };
@@ -52,7 +56,6 @@
 		C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* HomePageViewController.swift */; };
 		C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C292A39DA350025E693 /* Main.storyboard */; };
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
-		C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */; };
 		C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */ = {isa = PBXBuildFile; fileRef = C8CC5A872A54B1AF006E3C8D /* Pacman.json */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
 		C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */; };
@@ -68,6 +71,8 @@
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_Extension.swift; sourceTree = "<group>"; };
+		C8212C5B2A5DAFC1006D2073 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogoNameFlash.json; sourceTree = "<group>"; };
 		C82687432A4EC0F500237D68 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		C831F7C52A4592AA004A9A6F /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
@@ -100,6 +105,8 @@
 		C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp_Extension.swift; sourceTree = "<group>"; };
 		C8B627EB2A56C04E002327D5 /* newStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newStore.swift; sourceTree = "<group>"; };
 		C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomBaseViewController2.swift; path = Murmur/ChatRoomBaseViewController2.swift; sourceTree = SOURCE_ROOT; };
+		C8BA477A2A5D9FEF002D3ADC /* LogoMessageBorn.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogoMessageBorn.json; sourceTree = "<group>"; };
+		C8BA477E2A5DA7B3002D3ADC /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		C8BAE6DE2A45D57300ED6941 /* SearchBarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchBarTableHeaderView.swift; path = Murmur/Model/SearchBarTableHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		C8BAE6E12A464BE600ED6941 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		C8C3A0942A48342A000E967D /* UIView_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView_Extension.swift; sourceTree = "<group>"; };
@@ -113,7 +120,6 @@
 		C8C72C272A39DA350025E693 /* HomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
 		C8C72C2A2A39DA350025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C8C72C2C2A39DA360025E693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C8C72C2F2A39DA360025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
@@ -227,6 +233,7 @@
 		C8C72C172A39DA350025E693 = {
 			isa = PBXGroup;
 			children = (
+				C8BA477E2A5DA7B3002D3ADC /* LaunchScreenViewController.swift */,
 				C8859D912A59464B00C5B62A /* ProgressCircleView.swift */,
 				C8C72C222A39DA350025E693 /* Murmur */,
 				C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */,
@@ -257,9 +264,9 @@
 				C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
-				C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */,
 				C8499F402A4009E00019D83F /* GoogleService-Info.plist */,
 				C8C72C312A39DA360025E693 /* Info.plist */,
+				C8212C5B2A5DAFC1006D2073 /* Launch Screen.storyboard */,
 			);
 			path = Murmur;
 			sourceTree = "<group>";
@@ -267,7 +274,9 @@
 		C8CC5A862A54B19D006E3C8D /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
+				C8BA477A2A5D9FEF002D3ADC /* LogoMessageBorn.json */,
 				C8CC5A872A54B1AF006E3C8D /* Pacman.json */,
+				C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */,
 			);
 			path = Lottie;
 			sourceTree = "<group>";
@@ -347,11 +356,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8C72C302A39DA360025E693 /* LaunchScreen.storyboard in Resources */,
 				C8499F412A4009E00019D83F /* GoogleService-Info.plist in Resources */,
 				C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */,
 				C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */,
+				C8BA477B2A5D9FEF002D3ADC /* LogoMessageBorn.json in Resources */,
+				C8212C5E2A5DB394006D2073 /* LogoNameFlash.json in Resources */,
 				C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */,
+				C8212C5C2A5DAFC1006D2073 /* Launch Screen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +437,7 @@
 				C8BA32052A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift in Sources */,
 				C8F041F12A4B72E20044BE9C /* CALayer_Extension.swift in Sources */,
 				C8859D922A59464B00C5B62A /* ProgressCircleView.swift in Sources */,
+				C8BA477F2A5DA7B3002D3ADC /* LaunchScreenViewController.swift in Sources */,
 				C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */,
 				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
 				C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */,
@@ -484,14 +496,6 @@
 				C8C72C2A2A39DA350025E693 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		C8C72C2E2A39DA360025E693 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C8C72C2F2A39DA360025E693 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -622,9 +626,12 @@
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Murmur/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Murmur 需要取用你的相機幫你拍照";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Murmur 需要訪問你的位置以提供更好的服務";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Murmur 需要取用你的相簿";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Murmur 需要取用你的相簿才有照片功能";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -653,9 +660,12 @@
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Murmur/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Murmur 需要取用你的相機幫你拍照";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Murmur 需要訪問你的位置以提供更好的服務";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Murmur 需要取用你的相簿";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Murmur 需要取用你的相簿才有照片功能";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

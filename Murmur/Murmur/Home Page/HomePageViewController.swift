@@ -217,7 +217,7 @@ class HomePageViewController: UIViewController {
                 return
             }
 
-            user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
+            user.location = ["latitude": Double(currentCoordinate?.latitude ?? defaultCurrentCoordinate.latitude), "longitude": Double(currentCoordinate?.longitude ?? defaultCurrentCoordinate.longitude)]
 
             do {
                 try documentReference.setData(from: user)

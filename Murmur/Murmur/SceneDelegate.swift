@@ -25,6 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // MARK: - 讓 window 顯示
         self.window?.makeKeyAndVisible()
         
+        // 先跑 launch screen
+        window?.rootViewController = LaunchScreenViewController()
+        
         if let user = Auth.auth().currentUser {
             // 如果已經登入，直接到首頁
             currentUserUID = user.uid
@@ -51,8 +54,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             let customTabBarController = CustomTabBarController()
             
-            // 设置 TabBarController 为根视图控制器
-            window?.rootViewController = customTabBarController
+            // 设置 TabBarController 为根视图控制器，並且在 4.3 秒後進入
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4.3) { [self] in
+                self.window?.rootViewController = customTabBarController
+            }
             
         } else {
             
@@ -60,8 +65,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let initialVC = InitialViewController()
             let initialNavigationController = CustomNavigationController(rootViewController: initialVC)
             
-            window?.rootViewController = initialNavigationController
+            // 4.3 秒後進到起始頁面
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 4.3) { [self] in
+                self.window?.rootViewController = initialNavigationController
+            }
             
+//            self.window?.rootViewController = initialNavigationController
         }
   
     }
