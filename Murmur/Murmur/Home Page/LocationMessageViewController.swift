@@ -74,7 +74,7 @@ class LocationMessageViewController: UIViewController {
     func startTimer() {
         stopTimer()
         print("func fetchMurmur 時間器啟動")
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式

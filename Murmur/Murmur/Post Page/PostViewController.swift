@@ -76,6 +76,9 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+        
         self.tabBarController?.tabBar.isHidden
         murmurImageView.isHidden = true
         setNav()
@@ -95,6 +98,15 @@ class PostViewController: UIViewController {
         
         captureSession = AVCaptureSession()
         setupCaptureSession()
+    }
+    
+    // 當點擊view任何喔一處鍵盤收起
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     @objc func frontCameraButtonTouchUpInside() {

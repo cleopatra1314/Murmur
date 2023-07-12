@@ -128,7 +128,7 @@ class FootPrintViewController: UIViewController {
             }
             
             self.myMurmurData = murmurs
-            print(self.myMurmurData!)
+//            print(self.myMurmurData!)
             
             DispatchQueue.main.async {
                 self.setAnnotaion()
@@ -190,16 +190,21 @@ extension FootPrintViewController: MKMapViewDelegate {
         
         guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
         
-        if annotationView == nil {
+        if annotation.title == "My Location" {
+            guard var meAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? MeAnnotationView else { return MKAnnotationView() }
+            
+            meAnnotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: "MeAnnotationView.self")
+            
+        }else if annotationView == nil {
             annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
     
             // 是否要讓點擊 annotation 時顯示 title
             annotationView.canShowCallout = true
-            
+           
         } else {
             annotationView.annotation = annotation
             annotationView.label.text = annotation.title!
-
+            
          }
         return annotationView
         

@@ -19,7 +19,7 @@ class ProgressCircleView: UIView {
     var circlePath = UIBezierPath()
     let circleLayer = CAShapeLayer()
     
-    let totalTime: Int = 48
+    let totalTime: Int = 120
     
     var startDegree = Double()
     var percentagePath = UIBezierPath()
@@ -56,7 +56,7 @@ class ProgressCircleView: UIView {
 //        let startDegree = 360 * passedTimeHr / 48 - 90
 //        let percentagePath = UIBezierPath(arcCenter: CGPoint(x: lineWidth + radius, y: lineWidth + radius), radius: radius, startAngle: aDegree * startDegree, endAngle: aDegree * endDegree, clockwise: true)
 //        let percentageLayer = CAShapeLayer()
-        startDegree = 360 * Double(passedTimeHr) / 48 - 90
+        startDegree = 360 * Double(passedTimeHr) / Double(totalTime) - 90
         percentagePath = UIBezierPath(arcCenter: CGPoint(x: lineWidth + radius, y: lineWidth + radius), radius: radius, startAngle: aDegree * startDegree, endAngle: aDegree * endDegree, clockwise: true)
 
         percentageLayer.lineCap = .round

@@ -41,8 +41,8 @@ class PostsCollectionViewCell: UICollectionViewCell {
     }
     
     func layoutView() {
-        
-        self.backgroundColor = .SecondaryLight
+       
+      self.backgroundColor = .SecondaryLight
         
         self.contentView.addSubview(postsImageView)
         self.contentView.addSubview(postsLabel)
