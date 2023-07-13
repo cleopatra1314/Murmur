@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import FirebaseStorage
+import MapKit 
 
 extension UIViewController {
     
@@ -79,6 +80,46 @@ extension UIViewController {
                     }
                 }
             }
+    }
+    
+    func reverseGeocodeLocation(latitude: Double, longitude: Double, completion: @escaping (String) -> Void) {
+        let geoCoder = CLGeocoder()
+        let currentLocation = CLLocation(
+            latitude: latitude,
+            longitude: longitude
+        )
+        
+        // 设置地理编码器的区域设置为中文
+        let chineseLocale = Locale(identifier: "zh_CN")
+//        geoCoder.locale = chineseLocale
+        
+        geoCoder.reverseGeocodeLocation(currentLocation) { (placemarks, error) in
+            if let error = error {
+                // 這邊可以加入一些你的 Try Error 機制
+                print("Error: \(error.localizedDescription)")
+                completion("")
+            } else if let placemark = placemarks?.first {
+                // 处理地理编码结果
+//                let address = "\(placemark.subLocality ?? "no subLocality") \(placemark.locality ?? "no locality")\(placemark.thoroughfare ?? "")\(placemark.subThoroughfare ?? "")"
+                let address = "\(placemark.locality ?? "no locality")  \(placemark.thoroughfare ?? "")"
+                print("🇹🇼", address)
+                completion(address)
+            } else {
+                // 没有找到地理编码结果
+                completion("Find no geography decoding result.")
+            }
+            /*  name            街道地址
+             *  country         國家
+             *  province        省籍
+             *  locality        城市
+             *  sublocality     縣市、區
+             *  route           街道、路名
+             *  streetNumber    門牌號碼
+             *  postalCode      郵遞區號
+             */
+            
+        }
+    
     }
     
 }

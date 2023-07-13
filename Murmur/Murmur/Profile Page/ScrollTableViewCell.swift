@@ -17,7 +17,7 @@ class ScrollTableViewCell: UITableViewCell {
         scrollView.contentSize = CGSize(width: fullScreenSize.width * 2, height: 0)
         return scrollView
     }()
-    let postsVC = PostsViewController()
+    let postsVC = PostsOfMurmursViewController()
     let footPrintVC = FootPrintViewController()
 
     func layoutView(viewController: UIViewController) {

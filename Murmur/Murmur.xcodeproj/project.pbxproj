@@ -40,7 +40,7 @@
 		C8B007562A49EBE000049FA0 /* SegmentButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007552A49EBE000049FA0 /* SegmentButtonTableViewCell.swift */; };
 		C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */; };
 		C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */; };
-		C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */; };
+		C8B0075C2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift */; };
 		C8B627EA2A56A309002327D5 /* TimeStamp_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */; };
 		C8B627EC2A56C04E002327D5 /* newStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627EB2A56C04E002327D5 /* newStore.swift */; };
 		C8BA32052A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */; };
@@ -105,7 +105,7 @@
 		C8B007552A49EBE000049FA0 /* SegmentButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentButtonTableViewCell.swift; sourceTree = "<group>"; };
 		C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
-		C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsViewController.swift; sourceTree = "<group>"; };
+		C8B0075B2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsOfMurmursViewController.swift; sourceTree = "<group>"; };
 		C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp_Extension.swift; sourceTree = "<group>"; };
 		C8B627EB2A56C04E002327D5 /* newStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newStore.swift; sourceTree = "<group>"; };
 		C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomBaseViewController2.swift; path = Murmur/ChatRoomBaseViewController2.swift; sourceTree = SOURCE_ROOT; };
@@ -292,7 +292,7 @@
 			children = (
 				C8C4DD522A3AE4020037B4F5 /* ProfileViewController.swift */,
 				C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */,
-				C8B0075B2A4ACD2800049FA0 /* PostsViewController.swift */,
+				C8B0075B2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift */,
 				C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */,
 				C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */,
 				C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */,
@@ -453,7 +453,7 @@
 				C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */,
 				C8BAE6DF2A45D57300ED6941 /* SearchBarTableHeaderView.swift in Sources */,
 				C8F041EC2A4B41180044BE9C /* PostsCollectionViewCell.swift in Sources */,
-				C8B0075C2A4ACD2800049FA0 /* PostsViewController.swift in Sources */,
+				C8B0075C2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift in Sources */,
 				C8ABD8452A43FCA100B76ADC /* MessageTypeTextField.swift in Sources */,
 				C8C72C242A39DA350025E693 /* AppDelegate.swift in Sources */,
 				C8B007562A49EBE000049FA0 /* SegmentButtonTableViewCell.swift in Sources */,

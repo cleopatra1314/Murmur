@@ -24,17 +24,20 @@ class PostDetailsPopupView: UIView {
     let postCreatedTimeLabel: UILabel = {
         let postCreatedTimeLabel = UILabel()
         postCreatedTimeLabel.textColor = .PrimaryDark
+        postCreatedTimeLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedTimeLabel
     }()
     let postCreatedSiteLabel: UILabel = {
         let postCreatedSiteLabel = UILabel()
         postCreatedSiteLabel.textColor = .PrimaryDark
+        postCreatedSiteLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedSiteLabel
     }()
     let postContentTextView: UITextView = {
         let postContentTextView = UITextView()
         postContentTextView.backgroundColor = .PrimaryLighter
         postContentTextView.textColor = .PrimaryDark
+        postContentTextView.font = UIFont(name: "PingFangTC-Regular", size: 16)
         return postContentTextView
     }()
     lazy var tagCollectionView: UICollectionView = {
@@ -42,7 +45,7 @@ class PostDetailsPopupView: UIView {
         // section的間距
         layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         // cell間距
-        layout.minimumLineSpacing = 10
+        layout.minimumLineSpacing = 6
         // cell 長寬
         //        layout.itemSize = CGSize(width: 100, height: 30)
         // 滑動的方向
@@ -104,26 +107,26 @@ class PostDetailsPopupView: UIView {
 
         postImageView.snp.makeConstraints { make in
             make.top.equalTo(self).offset(56)
-            make.leading.equalTo(self).offset(36)
-            make.trailing.equalTo(self).offset(-36)
+            make.leading.equalTo(self).offset(30)
+            make.trailing.equalTo(self).offset(-30)
             make.height.equalTo(postImageView.snp.width)
         }
         postCreatedTimeLabel.snp.makeConstraints { make in
-            make.top.equalTo(postImageView.snp.bottom).offset(30)
+            make.top.equalTo(postImageView.snp.bottom).offset(24)
             make.centerX.equalTo(self)
         }
         postCreatedSiteLabel.snp.makeConstraints { make in
-            make.top.equalTo(postCreatedTimeLabel.snp.bottom).offset(12)
+            make.top.equalTo(postCreatedTimeLabel.snp.bottom).offset(6)
             make.centerX.equalTo(self)
         }
         tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(postCreatedSiteLabel.snp.bottom).offset(24)
-            make.leading.greaterThanOrEqualTo(self).offset(42)
-            make.trailing.greaterThanOrEqualTo(self).offset(-42)
-            make.height.equalTo(64)
+            make.top.equalTo(postCreatedSiteLabel.snp.bottom).offset(20)
+            make.leading.equalTo(self).offset(40)
+            make.trailing.equalTo(self).offset(-40)
+            make.height.equalTo(80)
         }
         postContentTextView.snp.makeConstraints { make in
-            make.top.equalTo(tagCollectionView.snp.bottom).offset(44)
+            make.top.equalTo(tagCollectionView.snp.bottom).offset(16)
             make.leading.equalTo(self).offset(60)
             make.trailing.equalTo(self).offset(-60)
             make.bottom.equalTo(self).offset(-40)
@@ -151,5 +154,47 @@ extension PostDetailsPopupView: UICollectionViewDelegate, UICollectionViewDataSo
         
         return cell
     }
-    
+        
 }
+    
+
+extension PostDetailsPopupView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+    }
+
+}
+
+//extension PostDetailsPopupView: UIContextMenuInteractionDelegate {
+//
+//    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+//
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+//
+//        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: {
+//            suggestedActions in
+//
+//            //欄位1
+//            let favoriteAction = UIAction(title: "Follow", image: UIImage(systemName: "heart.fill"), state: .off) { (action) in
+//                print("Awwwwww")
+//            }
+//            //欄位2
+//            let shareAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up.fill"), state: .off) { (action) in
+//                print("Meowwwww")
+//            }
+//            //標題
+//            return UIMenu(title: "Menu", children: [favoriteAction, shareAction])
+//        })
+//
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+//
+//
+//    }
+//
+//
+//}
+

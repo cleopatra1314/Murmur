@@ -319,7 +319,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                 popupView.postContentTextView.text = data[rowOfIndexPath].murmurMessage
                 popupView.currentRowOfIndexpath = rowOfIndexPath
                 
-                let timestamp: Timestamp = data[indexPath.row].createTime // 從 Firestore 中取得的 Timestamp 值
+                reverseGeocodeLocation(latitude: data[rowOfIndexPath].location["latitude"]!, longitude: data[rowOfIndexPath].location["longitude"]!) { address in
+                    print("地址", data[rowOfIndexPath].location["latitude"]!, data[rowOfIndexPath].location["longitude"]!)
+                    self.popupView.postCreatedSiteLabel.text = address
+                    
+                }
+                
+                let timestamp: Timestamp = data[rowOfIndexPath].createTime // 從 Firestore 中取得的 Timestamp 值
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy MM dd" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
                 let date = timestamp.dateValue()
@@ -329,7 +335,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                 self.animateScaleIn(desiredView: self.blurView)
                 self.animateScaleIn(desiredView: self.popupView)
             }
-            
             
             // 控制 scrollView 捲動到哪
             if scrollToFootPrintPage {
