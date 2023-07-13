@@ -153,7 +153,7 @@ extension PostsOfMurmursViewController: UICollectionViewDelegate {
             suggestedActions in
             
             //欄位1
-            let favoriteAction = UIAction(title: "Follow", image: UIImage(systemName: "heart.fill"), state: .off) { (action) in
+            let favoriteAction = UIAction(title: "Hide", image: UIImage(systemName: "heart.fill"), state: .off) { (action) in
                 print("Awwwwww")
             }
             //欄位2

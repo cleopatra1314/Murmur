@@ -8,20 +8,25 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import Lottie
 
 class SignInViewController: UIViewController {
     
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
-    }()
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
+    
+//    private let logoMessageTypingAnimationView: UIImageView = {
+//        let logoMessageTypingAnimationView = UIImageView()
+//        logoMessageTypingAnimationView.image = UIImage(named: "BlueParrot.png")
+//        logoMessageTypingAnimationView.contentMode = .scaleAspectFit
+//        return logoMessageTypingAnimationView
+//    }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Welcome back to the Murmur world."
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.text = "Welcome back to the Murmur world"
+        titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
+        titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
+        titleLabel.textColor = .PrimaryMidDark
         return titleLabel
     }()
     private let emailLabel: UILabel = {
@@ -84,11 +89,17 @@ class SignInViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
         
         layoutView()
+        lottieLogoMessageTyping()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
     }
     
     // 當點擊view任何喔一處鍵盤收起
@@ -154,20 +165,21 @@ class SignInViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLighter
         
-        [logoImageView, titleLabel, emailLabel, emailTextField, passwordLabel, passwordTextField, errorLabel, signInWithEmailButton].forEach { subview in
+        [logoMessageTypingAnimationView, titleLabel, emailLabel, emailTextField, passwordLabel, passwordTextField, errorLabel, signInWithEmailButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
-        logoImageView.snp.makeConstraints { make in
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(22)
             make.height.width.equalTo(34)
             make.centerX.equalTo(self.view)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(4)
-            make.leading.lessThanOrEqualTo(self.view).offset(72)
-            make.trailing.lessThanOrEqualTo(self.view).offset(-72)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
+            make.leading.greaterThanOrEqualTo(self.view).offset(60)
+            make.trailing.lessThanOrEqualTo(self.view).offset(-60)
+            make.centerX.equalTo(self.view)
         }
         
         passwordLabel.snp.makeConstraints { make in

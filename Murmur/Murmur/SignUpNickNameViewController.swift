@@ -8,25 +8,30 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import Lottie
 
 class SignUpNickNameViewController: UIViewController {
+    
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
     
     var userEmail: String?
     var userPassword: String?
     var userProfileData: Users?
     var capturedPortraitImage: UIImage?
     
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
-    }()
+//    private let logoMessageTypingAnimationView: UIImageView = {
+//        let logoMessageTypingAnimationView = UIImageView()
+//        logoMessageTypingAnimationView.image = UIImage(named: "BlueParrot.png")
+//        logoMessageTypingAnimationView.contentMode = .scaleAspectFit
+//        return logoMessageTypingAnimationView
+//    }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Create a Murmur Wall Account"
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
+        titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
+        titleLabel.textColor = .PrimaryMidDark
         return titleLabel
     }()
     private let stack: UIStackView = {
@@ -37,14 +42,14 @@ class SignUpNickNameViewController: UIViewController {
     }()
     private let ball1: UIView = {
         let ball1 = UIView()
-        ball1.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+//        ball1.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
         ball1.layer.cornerRadius = 4
         ball1.backgroundColor = .PrimaryMiddle
         return ball1
     }()
     private let ball2: UIView = {
         let ball2 = UIView()
-        ball2.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+//        ball2.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
         ball2.layer.cornerRadius = 4
         ball2.backgroundColor = .PrimaryMiddle
         return ball2
@@ -117,6 +122,7 @@ class SignUpNickNameViewController: UIViewController {
         super.viewDidLoad()
         
         layoutView()
+        lottieLogoMessageTyping()
         
     }
     
@@ -136,6 +142,11 @@ class SignUpNickNameViewController: UIViewController {
         profilePicView.layer.cornerRadius = profilePicView.frame.width / 2
         profilePicView.layer.borderColor = UIColor.lightGray.cgColor
         profilePicView.layer.borderWidth = 3
+    }
+    
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
     }
     
     @objc func signUpWithEmailButtonTouchDown() {// 点击改变背景色
@@ -290,7 +301,7 @@ class SignUpNickNameViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLighter
         
-        [logoImageView, titleLabel, stack, nickNameLabel, nickNameTextField, profilePicLabel, profilePicView, profilePicImageView, captureButton, trashButton, signUpWithEmailButton].forEach { subview in
+        [logoMessageTypingAnimationView, titleLabel, stack, nickNameLabel, nickNameTextField, profilePicLabel, profilePicView, profilePicImageView, captureButton, trashButton, signUpWithEmailButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
@@ -298,16 +309,25 @@ class SignUpNickNameViewController: UIViewController {
             stack.addArrangedSubview(subview)
         }
         
-        logoImageView.snp.makeConstraints { make in
+        ball1.snp.makeConstraints { make in
+            make.height.width.equalTo(8)
+        }
+        
+        ball2.snp.makeConstraints { make in
+            make.height.width.equalTo(8)
+        }
+        
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(22)
             make.height.width.equalTo(34)
             make.centerX.equalTo(self.view)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(4)
-            make.leading.lessThanOrEqualTo(self.view).offset(72)
-            make.trailing.lessThanOrEqualTo(self.view).offset(-72)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
+            make.leading.greaterThanOrEqualTo(self.view).offset(60)
+            make.trailing.lessThanOrEqualTo(self.view).offset(-60)
+            make.centerX.equalTo(self.view)
         }
         stack.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)

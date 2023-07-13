@@ -16,6 +16,7 @@ class InitialViewController: UIViewController {
     
     // MARK: Lottie
     let pacmanAnimationView = LottieAnimationView(name: "Pacman")
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
@@ -29,17 +30,19 @@ class InitialViewController: UIViewController {
         mainView.layer.addSaturatedShadow1()
         return mainView
     }()
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
-    }()
+//    private let logoMessageTypingAnimationView: UIImageView = {
+//        let logoMessageTypingAnimationView = UIImageView()
+//        logoMessageTypingAnimationView.image = UIImage(named: "Icons_GreenHomeIcon.png")
+//        logoMessageTypingAnimationView.contentMode = .scaleAspectFit
+//        return logoMessageTypingAnimationView
+//    }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Let’s murmur the space."
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.text = "Let’s murmur\nthe space"
+        titleLabel.numberOfLines = 0
+        titleLabel.textColor = .ShadowLight
         titleLabel.textAlignment = .center
+        titleLabel.font = UIFont(name: "CaveatBrush-Regular", size: 38)
         return titleLabel
     }()
     private lazy var signUpWithEmailButton: UIButton = {
@@ -79,7 +82,7 @@ class InitialViewController: UIViewController {
         let signInButton = UIButton()
         signInButton.frame = CGRect(x: 0, y: 0, width: 46, height: 20)
         signInButton.setTitle("Sign in", for: .normal)
-        signInButton.setTitleColor(.PrimaryMiddle, for: .normal)
+        signInButton.setTitleColor(.PrimaryMidDark, for: .normal)
         signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
         return signInButton
     }()
@@ -162,7 +165,8 @@ class InitialViewController: UIViewController {
         
         layoutBackground()
         layoutView()
-        lottiePacman()
+//        lottiePacman()
+        lottieLogoMessageTyping()
         
     }
     
@@ -177,6 +181,11 @@ class InitialViewController: UIViewController {
     func lottiePacman() {
         pacmanAnimationView.play()
         pacmanAnimationView.loopMode = .loop
+    }
+    
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
     }
     
     @objc func signUpWithEmailButtonTouchUpInside() {
@@ -209,7 +218,7 @@ class InitialViewController: UIViewController {
     }
     
     func layoutView() {
-        [logoImageView, titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack, pacmanAnimationView].forEach { subview in
+        [titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack, logoMessageTypingAnimationView].forEach { subview in
             mainView.addSubview(subview)
         }
         
@@ -235,13 +244,13 @@ class InitialViewController: UIViewController {
             make.top.equalTo(signUpWithAppleButton.snp.bottom).offset(28)
             make.centerX.equalTo(mainView)
         }
-        logoImageView.snp.makeConstraints { make in
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(mainView).offset(40)
-            make.width.equalTo(80)
+            make.width.height.equalTo(52)
             make.centerX.equalTo(mainView)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(18)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
             make.centerX.equalTo(mainView)
         }
         
@@ -252,11 +261,11 @@ class InitialViewController: UIViewController {
         signInButton.snp.makeConstraints { make in
             make.top.trailing.bottom.equalTo(stack)
         }
-        pacmanAnimationView.snp.makeConstraints { make in
-            make.height.width.equalTo(180)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
-            make.centerX.equalTo(self.view)
-        }
+//        pacmanAnimationView.snp.makeConstraints { make in
+//            make.height.width.equalTo(180)
+//            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
+//            make.centerX.equalTo(self.view)
+//        }
     }
     
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入

@@ -8,22 +8,27 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import Lottie
 
 class SignUpEmailViewController: UIViewController {
     
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
+    
     let signUpNickNameVC = SignUpNickNameViewController()
     
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
-    }()
+//    private let logoMessageTypingAnimationView: UIImageView = {
+//        let logoMessageTypingAnimationView = UIImageView()
+//        logoMessageTypingAnimationView.image = UIImage(named: "BlueParrot.png")
+//        logoMessageTypingAnimationView.contentMode = .scaleAspectFit
+//        return logoMessageTypingAnimationView
+//    }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Create a Murmur Wall Account"
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
+        titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
+        titleLabel.textColor = .PrimaryMidDark
         return titleLabel
     }()
     private let stack: UIStackView = {
@@ -78,7 +83,7 @@ class SignUpEmailViewController: UIViewController {
         let passwordTextField = MessageTypeTextField()
         passwordTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         passwordTextField.textColor = .SecondaryDark
-        passwordTextField.placeholder = "請輸入密碼"
+        passwordTextField.placeholder = "請輸入 6 個數字以上密碼"
         passwordTextField.layer.cornerRadius = 12
         passwordTextField.backgroundColor = .GrayScale20?.withAlphaComponent(0.9)
         passwordTextField.layer.addShineShadow()
@@ -107,11 +112,17 @@ class SignUpEmailViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
         
         layoutView()
+        lottieLogoMessageTyping()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
     }
     
     // 當點擊view任何一處鍵盤收起
@@ -139,7 +150,7 @@ class SignUpEmailViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLighter
         
-        [logoImageView, titleLabel, stack, emailLabel, emailTextField, passwordLabel, passwordTextField, errorLabel, nextButton].forEach { subview in
+        [logoMessageTypingAnimationView, titleLabel, stack, emailLabel, emailTextField, passwordLabel, passwordTextField, errorLabel, nextButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
@@ -147,19 +158,30 @@ class SignUpEmailViewController: UIViewController {
             stack.addArrangedSubview(subview)
         }
         
-        logoImageView.snp.makeConstraints { make in
+        ball1.snp.makeConstraints { make in
+            make.top.leading.bottom.equalTo(stack)
+            make.height.width.equalTo(8)
+        }
+        
+        ball2.snp.makeConstraints { make in
+            make.top.trailing.bottom.equalTo(stack)
+            make.height.width.equalTo(8)
+        }
+        
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(22)
             make.height.width.equalTo(34)
             make.centerX.equalTo(self.view)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(4)
-            make.leading.lessThanOrEqualTo(self.view).offset(72)
-            make.trailing.lessThanOrEqualTo(self.view).offset(-72)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
+            make.leading.greaterThanOrEqualTo(self.view).offset(60)
+            make.trailing.lessThanOrEqualTo(self.view).offset(-60)
+            make.centerX.equalTo(self.view)
         }
         stack.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.centerX.equalTo(self.view)
         }
         

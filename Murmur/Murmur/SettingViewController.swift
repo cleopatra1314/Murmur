@@ -79,12 +79,15 @@ class SettingViewController: UIViewController {
                   
                     // 刪除 userID collection
                     database.collection("userTest").document(currentUserUID).delete()
+                    
+                    self.view.window?.rootViewController?.dismiss(animated: true)
+//                    self.navigationController?.popToRootViewController(animated: true)
                 
-                    // 等到上面的 firebase 資料都刪除後再來 present
-                    let initialVC = InitialViewController()
-                    initialVC.modalPresentationStyle = .fullScreen
-                    initialVC.modalTransitionStyle = .crossDissolve
-                    self.present(initialVC, animated: true)
+//                    // 等到上面的 firebase 資料都刪除後再來 present
+//                    let initialVC = InitialViewController()
+//                    initialVC.modalPresentationStyle = .fullScreen
+//                    initialVC.modalTransitionStyle = .crossDissolve
+//                    self.present(initialVC, animated: true)
               }
             }
             
