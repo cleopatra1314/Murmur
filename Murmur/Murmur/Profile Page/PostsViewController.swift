@@ -11,6 +11,8 @@ import Kingfisher
 
 class PostsViewController: UIViewController {
     
+    var showPostsDetailsPopupClosure: (([Murmurs], Int) -> Void)?
+    
     var murmurData: [Murmurs]? {
         didSet {
             // TODO: collectionView reloadData
@@ -82,8 +84,8 @@ class PostsViewController: UIViewController {
         postsCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view).offset(16)
             make.trailing.equalTo(self.view).offset(-16)
-            make.top.equalTo(self.view).offset(16)
-            make.top.bottom.equalTo(self.view)
+            make.top.bottom.equalTo(self.view).offset(16)
+       
         }
         
     }
@@ -124,6 +126,9 @@ extension PostsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("row: \(indexPath.row)")
+        
+        self.showPostsDetailsPopupClosure!(murmurData!, indexPath.row)
+        
     }
     
 }

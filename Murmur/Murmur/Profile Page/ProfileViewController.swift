@@ -15,7 +15,6 @@ class ProfileViewController: UIViewController {
     
     var choosedPortraitFromAlbum: UIImage?
     
-//    var scrollToFootPrintPage = false
     var scrollToFootPrintPage = false {
         didSet {
             profileTableView.reloadData()
@@ -29,6 +28,16 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    let popupView: PostDetailsPopupView = {
+        let popupView = PostDetailsPopupView()
+        popupView.backgroundColor = .PrimaryLighter
+        return popupView
+    }()
+    let blurView: UIVisualEffectView = {
+        let blurView = UIVisualEffectView()
+        blurView.effect = UIBlurEffect(style: .light)
+        return blurView
+    }()
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
         backgroundImageView.image = UIImage(named: "profileBackground.jpg")
@@ -52,12 +61,59 @@ class ProfileViewController: UIViewController {
         layoutBackground()
         layoutTableView()
         layoutGradient()
+        
+        popupView.closeClosure = { [self] view, rowOfindexPath in
+            self.animateScaleOut(desiredView: self.popupView)
+            self.animateScaleOut(desiredView: self.blurView)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        blurView.bounds = self.view.bounds
+        popupView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width*0.9, height: self.view.bounds.height*0.8)
+        
         fetchUserData()
+    }
+    
+    /// Animates a view to scale in and display
+    func animateScaleIn(desiredView: UIView) {
+        let backgroundView = self.view!
+        backgroundView.addSubview(desiredView)
+        backgroundView.bringSubviewToFront(desiredView)
+        desiredView.center = backgroundView.center
+        desiredView.isHidden = false
+        
+        desiredView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        desiredView.alpha = 0
+        
+        UIView.animate(withDuration: 0.3) {
+            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            desiredView.alpha = 1
+//            desiredView.transform = CGAffineTransform.identity
+        }
+        
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    /// Animates a view to scale out remove from the display
+    func animateScaleOut(desiredView: UIView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            desiredView.alpha = 0
+            
+        }, completion: { (success: Bool) in
+            self.tabBarController?.tabBar.isHidden = false
+            desiredView.removeFromSuperview()
+        })
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            
+        }, completion: { _ in
+            
+        })
+        
     }
 
     private func layoutGradient() {
@@ -255,8 +311,25 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
             
         } else if indexPath == IndexPath(row: 0, section: 1) {
+            
             let cell = ScrollTableViewCell()
             cell.layoutView(viewController: self)
+            cell.postsVC.showPostsDetailsPopupClosure = { [self] data, rowOfIndexPath in
+                popupView.postImageView.kf.setImage(with: URL(string: data[rowOfIndexPath].murmurImage))
+                popupView.postContentTextView.text = data[rowOfIndexPath].murmurMessage
+                popupView.currentRowOfIndexpath = rowOfIndexPath
+                
+                let timestamp: Timestamp = data[indexPath.row].createTime // 從 Firestore 中取得的 Timestamp 值
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy MM dd" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
+                let date = timestamp.dateValue()
+                let formattedTime = dateFormatter.string(from: date)
+                popupView.postCreatedTimeLabel.text = formattedTime
+                
+                self.animateScaleIn(desiredView: self.blurView)
+                self.animateScaleIn(desiredView: self.popupView)
+            }
+            
             
             // 控制 scrollView 捲動到哪
             if scrollToFootPrintPage {

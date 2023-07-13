@@ -103,12 +103,24 @@ class SignUpEmailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+        
         layoutView()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
+    }
+    
+    // 當點擊view任何一處鍵盤收起
+    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     @objc func nextButtonTouchDown() {// 点击改变背景色

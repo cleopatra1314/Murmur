@@ -21,7 +21,7 @@ struct Murmurs: Codable, Identifiable {
     let murmurMessage: String
     let murmurImage: String
     let selectedTags: Array<String>
-    let createTime: Date
+    let createTime: Timestamp
 //    @ServerTimestamp var createTime: Timestamp
 }
 

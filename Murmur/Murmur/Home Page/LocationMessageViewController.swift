@@ -42,6 +42,8 @@ class LocationMessageViewController: UIViewController {
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
     
+    let regionRadius = 200.0 // 範圍半徑
+    
     private let mapView: MKMapView = {
         let mapView = MKMapView()
         return mapView
@@ -52,12 +54,22 @@ class LocationMessageViewController: UIViewController {
         super.viewDidLoad()
         
         relocateMyself()
+        
+        // 啟動 locationManager，才會執行 CLLocationManagerDelegate 的 func
+        self.locationManager.startUpdatingLocation()
+        
 //        fetchMurmur()
         layoutView()
         filterLocationMessage()
         setLocation()
 
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        
+//        drawCircleRegion()
+//    }
 
     private func layoutView() {
 
@@ -74,7 +86,7 @@ class LocationMessageViewController: UIViewController {
     func startTimer() {
         stopTimer()
         print("func fetchMurmur 時間器啟動")
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(fetchMurmur), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
@@ -147,11 +159,15 @@ class LocationMessageViewController: UIViewController {
             }
         }
         
-        // 讓範圍跟著用戶移動更新
-        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: 200)
+        drawCircleRegion()
+        
+    }
+    
+    // 讓範圍跟著用戶移動更新
+    private func drawCircleRegion() {
+        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: regionRadius)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
-        
     }
     
 }
@@ -241,7 +257,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     // CLLocationManagerDelegate 方法，當位置更新時呼叫
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        updateRegionsWithLocation(locations[0])
-        
+        drawCircleRegion()
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
     

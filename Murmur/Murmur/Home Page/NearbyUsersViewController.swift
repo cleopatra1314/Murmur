@@ -108,7 +108,7 @@ class NearbyUsersViewController: UIViewController {
     func startTimer() {
         stopTimer()
         print("func fetchUserLocation 時間器啟動")
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(fetchUserLocation), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(fetchUserLocation), userInfo: nil, repeats: true)
     }
     
     // TODO: 清除 timer 的其他方式
@@ -133,7 +133,7 @@ class NearbyUsersViewController: UIViewController {
     
     // 5. 繪製一個以自己為中心的圓圈範圍
     private func drawCircleRegion() {
-        let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
+        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: regionRadius)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
     }

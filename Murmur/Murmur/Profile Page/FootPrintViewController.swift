@@ -57,13 +57,13 @@ class FootPrintViewController: UIViewController {
         
         setLocation()
         layoutView()
-        
+        fetchMyMurmur()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        fetchMyMurmur()
+//        fetchMyMurmur()
         backToMyLocationButtonTouchUpInside()
     }
     
@@ -132,6 +132,7 @@ class FootPrintViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.setAnnotaion()
+                
             }
             
         }

@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */; };
-		C8212C5C2A5DAFC1006D2073 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5B2A5DAFC1006D2073 /* Launch Screen.storyboard */; };
+		C8212C5C2A5DAFC1006D2073 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */; };
 		C8212C5E2A5DB394006D2073 /* LogoNameFlash.json in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */; };
+		C8212C602A5EBE6C006D2073 /* PostDetailsPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8212C5F2A5EBE6C006D2073 /* PostDetailsPopupView.swift */; };
+		C8212C622A5EC4FC006D2073 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */; };
 		C82687442A4EC0F500237D68 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C82687432A4EC0F500237D68 /* SettingViewController.swift */; };
 		C831F7C62A4592AA004A9A6F /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C52A4592AA004A9A6F /* ChatViewController.swift */; };
 		C831F7C82A459CAC004A9A6F /* ChatRoomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */; };
@@ -71,8 +73,10 @@
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_Extension.swift; sourceTree = "<group>"; };
-		C8212C5B2A5DAFC1006D2073 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogoNameFlash.json; sourceTree = "<group>"; };
+		C8212C5F2A5EBE6C006D2073 /* PostDetailsPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailsPopupView.swift; sourceTree = "<group>"; };
+		C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
 		C82687432A4EC0F500237D68 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		C831F7C52A4592AA004A9A6F /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		C831F7C72A459CAC004A9A6F /* ChatRoomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomTableViewCell.swift; sourceTree = "<group>"; };
@@ -234,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				C8BA477E2A5DA7B3002D3ADC /* LaunchScreenViewController.swift */,
+				C8212C5F2A5EBE6C006D2073 /* PostDetailsPopupView.swift */,
 				C8859D912A59464B00C5B62A /* ProgressCircleView.swift */,
 				C8C72C222A39DA350025E693 /* Murmur */,
 				C8C4DD4D2A3AC1F60037B4F5 /* Murmur.app */,
@@ -261,12 +266,13 @@
 				C8AF2DB82A41559200B703E8 /* Post Page */,
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
+				C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */,
 				C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
+				C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
 				C8499F402A4009E00019D83F /* GoogleService-Info.plist */,
 				C8C72C312A39DA360025E693 /* Info.plist */,
-				C8212C5B2A5DAFC1006D2073 /* Launch Screen.storyboard */,
 			);
 			path = Murmur;
 			sourceTree = "<group>";
@@ -362,7 +368,7 @@
 				C8BA477B2A5D9FEF002D3ADC /* LogoMessageBorn.json in Resources */,
 				C8212C5E2A5DB394006D2073 /* LogoNameFlash.json in Resources */,
 				C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */,
-				C8212C5C2A5DAFC1006D2073 /* Launch Screen.storyboard in Resources */,
+				C8212C5C2A5DAFC1006D2073 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +468,7 @@
 				C8AF2DB32A41430900B703E8 /* InsideMessageAnnotation.swift in Sources */,
 				C8AC51282A53C9A700EA58B9 /* SignInViewController.swift in Sources */,
 				C831F7C82A459CAC004A9A6F /* ChatRoomTableViewCell.swift in Sources */,
+				C8212C602A5EBE6C006D2073 /* PostDetailsPopupView.swift in Sources */,
 				C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */,
 				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
 				C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */,
@@ -473,6 +480,7 @@
 				C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,
+				C8212C622A5EC4FC006D2073 /* TagCollectionViewCell.swift in Sources */,
 				C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */,
 				C8ADDECB2A4D7A3E00C9069D /* UIColor_Extension.swift in Sources */,
 				C8C4DD512A3AE3F30037B4F5 /* PostViewController.swift in Sources */,
@@ -631,8 +639,10 @@
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Murmur 需要取用你的相簿";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Murmur 需要取用你的相簿才有照片功能";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -665,8 +675,10 @@
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Murmur 需要取用你的相簿";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Murmur 需要取用你的相簿才有照片功能";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
