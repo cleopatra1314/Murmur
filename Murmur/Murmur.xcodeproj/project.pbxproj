@@ -31,9 +31,6 @@
 		C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */; };
 		C8ADDECB2A4D7A3E00C9069D /* UIColor_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ADDECA2A4D7A3E00C9069D /* UIColor_Extension.swift */; };
 		C8AE44C12A6055000058EDEF /* CaveatBrush-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C8AE44C02A6055000058EDEF /* CaveatBrush-Regular.ttf */; };
-		C8AE44C52A605C430058EDEF /* Icons_GreenHomeIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = C8AE44C22A605C430058EDEF /* Icons_GreenHomeIcon.png */; };
-		C8AE44C62A605C430058EDEF /* Icons_GreenHomeIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C8AE44C32A605C430058EDEF /* Icons_GreenHomeIcon@3x.png */; };
-		C8AE44C72A605C430058EDEF /* Icons_GreenHomeIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C8AE44C42A605C430058EDEF /* Icons_GreenHomeIcon@2x.png */; };
 		C8AE44C92A6062F90058EDEF /* LogoMessageTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = C8AE44C82A6062F90058EDEF /* LogoMessageTyping.json */; };
 		C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */; };
 		C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8AE775D2A3F4D760027CB0D /* TagButton.swift */; };
@@ -101,9 +98,6 @@
 		C8ADBC282A3C6A730085BAD3 /* LocationMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMessageViewController.swift; sourceTree = "<group>"; };
 		C8ADDECA2A4D7A3E00C9069D /* UIColor_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor_Extension.swift; sourceTree = "<group>"; };
 		C8AE44C02A6055000058EDEF /* CaveatBrush-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "CaveatBrush-Regular.ttf"; sourceTree = "<group>"; };
-		C8AE44C22A605C430058EDEF /* Icons_GreenHomeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icons_GreenHomeIcon.png; sourceTree = "<group>"; };
-		C8AE44C32A605C430058EDEF /* Icons_GreenHomeIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icons_GreenHomeIcon@3x.png"; sourceTree = "<group>"; };
-		C8AE44C42A605C430058EDEF /* Icons_GreenHomeIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icons_GreenHomeIcon@2x.png"; sourceTree = "<group>"; };
 		C8AE44C82A6062F90058EDEF /* LogoMessageTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogoMessageTyping.json; sourceTree = "<group>"; };
 		C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTagViewController.swift; sourceTree = "<group>"; };
 		C8AE775D2A3F4D760027CB0D /* TagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TagButton.swift; path = Murmur/Model/TagButton.swift; sourceTree = SOURCE_ROOT; };
@@ -138,6 +132,7 @@
 		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
 		C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = SOURCE_ROOT; };
+		C8E160D42A607142009BE56C /* MurmurRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MurmurRelease.entitlements; sourceTree = "<group>"; };
 		C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootPrintViewController.swift; sourceTree = "<group>"; };
 		C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCollectionViewCell.swift; sourceTree = "<group>"; };
 		C8F041ED2A4B49310044BE9C /* ScrollTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTableViewCell.swift; sourceTree = "<group>"; };
@@ -262,6 +257,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8E160D42A607142009BE56C /* MurmurRelease.entitlements */,
 				C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */,
 				C8CC5A862A54B19D006E3C8D /* Lottie */,
 				C8A9FD082A4FDEAD00FF6966 /* CustomNavigationController.swift */,
@@ -279,9 +275,6 @@
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
 				C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */,
-				C8AE44C22A605C430058EDEF /* Icons_GreenHomeIcon.png */,
-				C8AE44C42A605C430058EDEF /* Icons_GreenHomeIcon@2x.png */,
-				C8AE44C32A605C430058EDEF /* Icons_GreenHomeIcon@3x.png */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
@@ -377,12 +370,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8AE44C62A605C430058EDEF /* Icons_GreenHomeIcon@3x.png in Resources */,
-				C8AE44C72A605C430058EDEF /* Icons_GreenHomeIcon@2x.png in Resources */,
 				C8499F412A4009E00019D83F /* GoogleService-Info.plist in Resources */,
 				C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */,
 				C8AE44C12A6055000058EDEF /* CaveatBrush-Regular.ttf in Resources */,
-				C8AE44C52A605C430058EDEF /* Icons_GreenHomeIcon.png in Resources */,
 				C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */,
 				C8AE44C92A6062F90058EDEF /* LogoMessageTyping.json in Resources */,
 				C8BA477B2A5D9FEF002D3ADC /* LogoMessageBorn.json in Resources */,
@@ -685,6 +675,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Murmur/MurmurRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;

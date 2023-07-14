@@ -80,14 +80,14 @@ class SettingViewController: UIViewController {
                     // 刪除 userID collection
                     database.collection("userTest").document(currentUserUID).delete()
                     
+                    let initialVC = InitialViewController()
+                    let initialNavigationController = CustomNavigationController(rootViewController: initialVC)
+                    self.view.window?.rootViewController = initialNavigationController
+                    
                     self.view.window?.rootViewController?.dismiss(animated: true)
-//                    self.navigationController?.popToRootViewController(animated: true)
-                
-//                    // 等到上面的 firebase 資料都刪除後再來 present
-//                    let initialVC = InitialViewController()
-//                    initialVC.modalPresentationStyle = .fullScreen
-//                    initialVC.modalTransitionStyle = .crossDissolve
-//                    self.present(initialVC, animated: true)
+                    
+                    self.navigationController?.popToRootViewController(animated: true)
+                    
               }
             }
             
@@ -132,11 +132,22 @@ class SettingViewController: UIViewController {
                 database.collection("userTest").document(currentUserUID).setData([
                     "onlineState": false
                 ], merge: true)
-                
+                                
+                //                    // 等到上面的 firebase 資料都刪除後再來 present
+//                                    let initialVC = InitialViewController()
+                //                    initialVC.modalPresentationStyle = .fullScreen
+                //                    initialVC.modalTransitionStyle = .crossDissolve
+                //                    self.present(initialVC, animated: true)
+//                                    self.view.window?.rootViewController = initialVC
+                //                    self.navigationController?.popToRootViewController(animated: true)
                 let initialVC = InitialViewController()
-                initialVC.modalPresentationStyle = .fullScreen
-                initialVC.modalTransitionStyle = .crossDissolve
-                self.present(initialVC, animated: true)
+                let initialNavigationController = CustomNavigationController(rootViewController: initialVC)
+                self.view.window?.rootViewController = initialNavigationController
+                
+                self.view.window?.rootViewController?.dismiss(animated: true)
+                
+                self.navigationController?.popToRootViewController(animated: true)
+                
                 
             } catch let error as NSError {
                 print(error.localizedDescription)

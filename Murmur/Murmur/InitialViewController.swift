@@ -11,8 +11,10 @@ import SnapKit
 import FirebaseAuth
 import FirebaseFirestore
 import Lottie
+import AuthenticationServices
 
 class InitialViewController: UIViewController {
+    
     
     // MARK: Lottie
     let pacmanAnimationView = LottieAnimationView(name: "Pacman")
@@ -56,20 +58,23 @@ class InitialViewController: UIViewController {
         signUpWithEmailButton.layer.addWhiteShadow()
         return signUpWithEmailButton
     }()
-    private let signUpWithAppleButton: UIButton = {
-        let signUpWithAppleButton = UIButton()
-        signUpWithAppleButton.setTitle("Sign up with Apple", for: .normal)
-        signUpWithAppleButton.setTitleColor(.GrayScale0, for: .normal)
-        signUpWithAppleButton.backgroundColor = .SecondaryMiddle
-        signUpWithAppleButton.layer.cornerRadius = 12
-        signUpWithAppleButton.layer.addWhiteShadow()
-//        signUpWithAppleButton.isHidden = true
-        return signUpWithAppleButton
+    let signInWithAppleButtonView = UIView()
+    private let authorizationAppleIDButton: ASAuthorizationAppleIDButton = {
+        let authorizationAppleIDButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .white)
+//        authorizationAppleIDButton.setTitle("Sign up with Apple", for: .normal)
+//        authorizationAppleIDButton.setTitleColor(.GrayScale0, for: .normal)
+//        authorizationAppleIDButton.backgroundColor = .SecondaryMiddle
+        authorizationAppleIDButton.cornerRadius = 12
+        authorizationAppleIDButton.layer.addWhiteShadow()
+//        authorizationAppleIDButton.isHidden = true
+        authorizationAppleIDButton.addTarget(self, action: #selector(signInWithAppleButtonTouchUpInside), for: UIControl.Event.touchUpInside)
+        authorizationAppleIDButton.addTarget(self, action: #selector(signUpWithAppleButtonTouchDown), for: .touchDown)
+        return authorizationAppleIDButton
     }()
     private let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 4
+        stack.spacing = 6
         return stack
     }()
     private let noteLabel: UILabel = {
@@ -143,14 +148,14 @@ class InitialViewController: UIViewController {
 //        signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
 //        return signInButton
 //    }()
-    private lazy var signUpButton: UIButton = {
-        let signUpButton = UIButton()
-        signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-//        signUpButton.backgroundColor = .black
-        signUpButton.setTitle("Sign Up", for: .normal)
-        signUpButton.addTarget(self, action: #selector(signUpButtonTouchUpInside), for: .touchUpInside)
-        return signUpButton
-    }()
+//    private lazy var signUpButton: UIButton = {
+//        let signUpButton = UIButton()
+//        signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
+////        signUpButton.backgroundColor = .black
+//        signUpButton.setTitle("Sign Up", for: .normal)
+//        signUpButton.addTarget(self, action: #selector(signUpButtonTouchUpInside), for: .touchUpInside)
+//        return signUpButton
+//    }()
     private lazy var visitorButton: UIButton = {
         let visitorButton = UIButton()
         visitorButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
@@ -165,6 +170,7 @@ class InitialViewController: UIViewController {
         
         layoutBackground()
         layoutView()
+//        setSignUpWithAppleButton()
 //        lottiePacman()
         lottieLogoMessageTyping()
         
@@ -172,6 +178,30 @@ class InitialViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
+    }
+    
+    func setSignUpWithAppleButton() {
+        
+        authorizationAppleIDButton.frame = self.signInWithAppleButtonView.bounds
+        self.signInWithAppleButtonView.addSubview(authorizationAppleIDButton)
+        
+    }
+    
+    /// 點擊 Sign In with Apple 按鈕後，請求授權
+    @objc func signInWithAppleButtonTouchUpInside() {
+        let authorizationAppleIDRequest: ASAuthorizationAppleIDRequest = ASAuthorizationAppleIDProvider().createRequest()
+        authorizationAppleIDRequest.requestedScopes = [.fullName, .email]
+
+        let controller: ASAuthorizationController = ASAuthorizationController(authorizationRequests: [authorizationAppleIDRequest])
+
+        controller.delegate = self
+        controller.presentationContextProvider = self
+
+        controller.performRequests()
+    }
+    
+    @objc func signUpWithAppleButtonTouchDown() {// 点击改变背景色
+        authorizationAppleIDButton.backgroundColor = UIColor.SecondarySaturate
     }
     
     @objc func signUpWithEmailButtonTouchDown() {// 点击改变背景色
@@ -218,7 +248,7 @@ class InitialViewController: UIViewController {
     }
     
     func layoutView() {
-        [titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack, logoMessageTypingAnimationView].forEach { subview in
+        [titleLabel, authorizationAppleIDButton, signUpWithEmailButton, stack, logoMessageTypingAnimationView].forEach { subview in
             mainView.addSubview(subview)
         }
         
@@ -233,7 +263,7 @@ class InitialViewController: UIViewController {
             make.height.equalTo(40)
             make.centerX.equalTo(mainView)
         }
-        signUpWithAppleButton.snp.makeConstraints { make in
+        authorizationAppleIDButton.snp.makeConstraints { make in
             make.top.equalTo(signUpWithEmailButton.snp.bottom).offset(14)
             make.leading.equalTo(mainView).offset(40)
             make.trailing.equalTo(mainView).offset(-40)
@@ -241,7 +271,7 @@ class InitialViewController: UIViewController {
             make.centerX.equalTo(mainView)
         }
         stack.snp.makeConstraints { make in
-            make.top.equalTo(signUpWithAppleButton.snp.bottom).offset(28)
+            make.top.equalTo(authorizationAppleIDButton.snp.bottom).offset(28)
             make.centerX.equalTo(mainView)
         }
         logoMessageTypingAnimationView.snp.makeConstraints { make in
@@ -268,66 +298,66 @@ class InitialViewController: UIViewController {
 //        }
     }
     
-    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
-    @objc func signInButtonTouchUpInside1() {
-        
-        let userEmail = self.emailTextField.text
-        let userPassward = self.passwordTextField.text
-        
-        guard userEmail != "" else {
-            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
-            return
-        }
-        guard userPassward != "" else {
-            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
-            return
-        }
-        
-        Auth.auth().signIn(withEmail: userEmail!, password: userPassward!) { result, error in
-            // ??
-            guard error == nil else {
-                print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                self.errorLabel.text = "打錯帳號密碼齁，再給你一次機會"
-                return
-                
-            }
-            guard let userID = result?.user.uid else {
-                
-                return
-            }
-            currentUserUID = userID
-            print("\(result?.user.uid ?? "") 登入成功")
-            self.createTabBarController()
-            
-        }
-        
-    }
+//    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
+//    @objc func signInButtonTouchUpInside1() {
+//
+//        let userEmail = self.emailTextField.text
+//        let userPassward = self.passwordTextField.text
+//
+//        guard userEmail != "" else {
+//            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+//            return
+//        }
+//        guard userPassward != "" else {
+//            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+//            return
+//        }
+//
+//        Auth.auth().signIn(withEmail: userEmail!, password: userPassward!) { result, error in
+//            // ??
+//            guard error == nil else {
+//                print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
+//                self.errorLabel.text = "打錯帳號密碼齁，再給你一次機會"
+//                return
+//
+//            }
+//            guard let userID = result?.user.uid else {
+//
+//                return
+//            }
+//            currentUserUID = userID
+//            print("\(result?.user.uid ?? "") 登入成功")
+//            self.createTabBarController()
+//
+//        }
+//
+//    }
     
-    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
-    @objc func signUpButtonTouchUpInside() {
-        
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { [self] result, error in
-            guard let user = result?.user,
-                  error == nil else {
-                print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                return
-            }
-            
-            currentUserUID = user.uid
-
-            let userProfile = Users(onlineState: true, userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
-
-            self.userProfileData = userProfile
-            self.createUsers(userUID: user.uid)
-            
-            // ??
-            DispatchQueue.main.async {
-                self.createTabBarController()
-            }
-            
-        }
-        
-    }
+//    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
+//    @objc func signUpButtonTouchUpInside() {
+//
+//        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { [self] result, error in
+//            guard let user = result?.user,
+//                  error == nil else {
+//                print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
+//                return
+//            }
+//
+//            currentUserUID = user.uid
+//
+//            let userProfile = Users(onlineState: true, userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
+//
+//            self.userProfileData = userProfile
+//            self.createUsers(userUID: user.uid)
+//
+//            // ??
+//            DispatchQueue.main.async {
+//                self.createTabBarController()
+//            }
+//
+//        }
+//
+//    }
     
     // MARK: 訪客模式
     @objc func visitorButtonTouchUpInside() {
@@ -366,6 +396,59 @@ class InitialViewController: UIViewController {
 
         present(customTabBarController, animated: true)
         
+    }
+    
+}
+
+extension InitialViewController: ASAuthorizationControllerDelegate {
+    
+    /// 授權成功
+    /// - Parameters:
+    ///   - controller: _
+    ///   - authorization: _
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+                
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            print("user: \(appleIDCredential.user)")
+            print("fullName: \(String(describing: appleIDCredential.fullName))")
+            print("Email: \(String(describing: appleIDCredential.email))")
+            print("realUserStatus: \(String(describing: appleIDCredential.realUserStatus))")
+            
+            userProfileData?.id = appleIDCredential.user
+            userProfileData?.userName = String(describing: appleIDCredential.fullName)
+            userProfileData
+        }
+    }
+    
+    /// 授權失敗
+    /// - Parameters:
+    ///   - controller: _
+    ///   - error: _
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+                
+        switch (error) {
+        case ASAuthorizationError.canceled:
+            break
+        case ASAuthorizationError.failed:
+            break
+        case ASAuthorizationError.invalidResponse:
+            break
+        case ASAuthorizationError.notHandled:
+            break
+        case ASAuthorizationError.unknown:
+            break
+        default:
+            break
+        }
+                    
+        print("didCompleteWithError: \(error.localizedDescription)")
+    }
+}
+
+extension InitialViewController : ASAuthorizationControllerPresentationContextProviding {
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
     
 }
