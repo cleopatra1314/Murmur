@@ -211,14 +211,6 @@ class SignUpNickNameViewController: UIViewController {
         captureButton.isEnabled = true
     }
     
-    func createTabBarController() {
-        
-        let customTabBarController = CustomTabBarController()
-
-        present(customTabBarController, animated: true)
-        
-    }
-    
     // MARK: Sign up，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
     @objc func signUpWithEmailButtonTouchUpInside() {
         guard let userEmail else {

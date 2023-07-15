@@ -110,6 +110,7 @@
 		C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel_Extension.swift; sourceTree = "<group>"; };
 		C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C8B0075B2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsOfMurmursViewController.swift; sourceTree = "<group>"; };
+		C8B1EBBA2A61B91B00E1A5A7 /* MurmurDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MurmurDebug.entitlements; sourceTree = "<group>"; };
 		C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp_Extension.swift; sourceTree = "<group>"; };
 		C8B627EB2A56C04E002327D5 /* newStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newStore.swift; sourceTree = "<group>"; };
 		C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomBaseViewController2.swift; path = Murmur/ChatRoomBaseViewController2.swift; sourceTree = SOURCE_ROOT; };
@@ -257,6 +258,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8B1EBBA2A61B91B00E1A5A7 /* MurmurDebug.entitlements */,
 				C8E160D42A607142009BE56C /* MurmurRelease.entitlements */,
 				C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */,
 				C8CC5A862A54B19D006E3C8D /* Lottie */,
@@ -639,6 +641,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Murmur/MurmurDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;

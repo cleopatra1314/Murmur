@@ -12,6 +12,14 @@ import MapKit
 
 extension UIViewController {
     
+    func createTabBarController() {
+        
+        let customTabBarController = CustomTabBarController()
+
+        present(customTabBarController, animated: true)
+        
+    }
+    
     func showAlert(title: String, message: String, viewController: UIViewController) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "確定", style: .default, handler: nil)
