@@ -76,6 +76,8 @@ class ProfileTableViewCell: UITableViewCell {
     private lazy var settingButton: UIButton = {
         let settingButton = UIButton()
         settingButton.setImage(UIImage(systemName: "gearshape"), for: .normal)
+        // MARK: 更改 button image 尺寸
+        settingButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 22), forImageIn: .normal)
         settingButton.tintColor = .SecondaryLight
         settingButton.addTarget(self, action: #selector(settingButtonTouchUpInside), for: .touchUpInside)
         return settingButton
@@ -117,8 +119,8 @@ class ProfileTableViewCell: UITableViewCell {
         }
         
         settingButton.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
-            make.top.equalTo(self.contentView).offset(4)
+            make.width.height.equalTo(60)
+            make.top.equalTo(self.contentView)
             make.trailing.equalTo(self.contentView).offset(-16)
         }
  

@@ -13,6 +13,7 @@ import FirebaseFirestore
 import Lottie
 import AuthenticationServices // Sign in with Apple 的主體框架
 import CryptoKit // 用來產生隨機字串 (Nonce)
+import Toast_Swift
 
 class InitialViewController: UIViewController {
     
@@ -369,16 +370,21 @@ extension InitialViewController {
                 return
             }
             
-            let alertController = UIAlertController(title: "登入成功！", message: "開始 murmur", preferredStyle: .alert)
-            
-            // 加入確定的動作。
-            let okAction = UIAlertAction(title: "確定", style: .default) { [self] alertAction in
+            // 確認登入成功後所要做的動作
+            self.view.makeToast("歡迎來到 Murmur World！", duration: 2.5, position: .center, title: "登入成功") { didTap in
                 self.getFirebaseUserInfo()
             }
-            alertController.addAction(okAction)
             
-            // 呈現 alertController。
-            self.present(alertController, animated: true)
+//            let alertController = UIAlertController(title: "登入成功！", message: "開始 murmur", preferredStyle: .alert)
+//
+//            // 加入確定的動作。
+//            let okAction = UIAlertAction(title: "確定", style: .default) { [self] alertAction in
+//                self.getFirebaseUserInfo()
+//            }
+//            alertController.addAction(okAction)
+//
+//            // 呈現 alertController。
+//            self.present(alertController, animated: true)
         
         }
     }
@@ -474,9 +480,33 @@ extension InitialViewController: ASAuthorizationControllerDelegate {
                     
         print("didCompleteWithError: \(error.localizedDescription)")
     }
+    
+    // MARK: - 監聽目前的 Apple ID 的登入狀況
+    // 主動監聽
+    func checkAppleIDCredentialState(userID: String) {
+        ASAuthorizationAppleIDProvider().getCredentialState(forUserID: userID) { credentialState, error in
+            switch credentialState {
+            case .authorized:
+                self.showAlert(title: "使用者已授權！", message: "", viewController: self)
+                
+            case .revoked:
+                self.showAlert(title: "使用者憑證已被註銷！", message: "請到\n「設定 → Apple ID → 密碼與安全性 → 使用 Apple ID 的 App」\n將此 App 停止使用 Apple ID\n並再次使用 Apple ID 登入 Murmur", viewController: self)
+                
+            case .notFound:
+                self.showAlert(title: "使用者尚未使用過 Apple ID 登入！", message: "請重新登入", viewController: self)
+                
+            case .transferred:
+                self.showAlert(title: "系統提醒", message: "請與開發者團隊進行聯繫，以利進行使用者遷移！", viewController: self)
+                
+            default:
+                break
+            }
+        }
+    }
+    
 }
 
-extension InitialViewController : ASAuthorizationControllerPresentationContextProviding {
+extension InitialViewController: ASAuthorizationControllerPresentationContextProviding {
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return self.view.window ?? ASPresentationAnchor()

@@ -125,8 +125,7 @@ extension PostsOfMurmursViewController: UICollectionViewDataSource {
 extension PostsOfMurmursViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("row: \(indexPath.row)")
-        
+
         self.showPostsDetailsPopupClosure!(murmurData!, indexPath.row)
         
     }
@@ -152,14 +151,28 @@ extension PostsOfMurmursViewController: UICollectionViewDelegate {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: {
             suggestedActions in
             
-            //欄位1
-            let favoriteAction = UIAction(title: "Hide", image: UIImage(systemName: "heart.fill"), state: .off) { (action) in
-                print("Awwwwww")
+            // 欄位1
+            let favoriteAction = UIAction(title: "Hide", image: UIImage(systemName: "eye.slash"), state: .off) { action in
+                print("Hide the murmur.")
+                self.showAlert(title: "新功能開發中，敬請期待！💜", message: "", viewController: self)
             }
-            //欄位2
-            let shareAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up.fill"), state: .off) { (action) in
-                print("Meowwwww")
+            // 欄位2
+            let shareAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off) { action in
+                self.showCustomAlert(title: "提醒！", message: "刪除貼文後將無法恢復貼文紀錄，確定要刪除嗎？", viewController: self, okMessage: "確定", closeMessage: "取消") { [self] in
+                    
+                    // userTest -> postedMurmurs
+                    database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(murmurData![indexPath.row].id!).delete(completion: { error in
+                        
+                        // 刪除 murmurTest
+                        database.collection("murmurTest").document(murmurData![indexPath.row].id!).delete(completion: { error in
+                            self.view.makeToast("已刪除 murmur ", duration: 3.0, position: .top)
+                        })
+                        
+                    })
+                    
+                }
             }
+            
             //標題
             return UIMenu(title: "Menu", children: [favoriteAction, shareAction])
         })

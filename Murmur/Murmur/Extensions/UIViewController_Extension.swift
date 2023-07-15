@@ -15,12 +15,22 @@ extension UIViewController {
     ///   - message: 提示訊息
     ///   - vc: 要在哪一個 UIViewController 上呈現
     ///   - actionHandler: 按下按鈕後要執行的動作，沒有的話就填 nil
-    func showCustomAlert(title: String, message: String, vc: UIViewController, closeMessage: String, actionHandler: (() -> Void)?) {
+    func showCustomAlert(title: String, message: String, viewController: UIViewController, okMessage: String, closeMessage: String, okActionHandler: (() -> Void)?) {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let closeAction = UIAlertAction(title: closeMessage, style: .default) { action in
-            actionHandler?()
+        
+        // 加入確定的動作。
+        let okAction = UIAlertAction(title: okMessage, style: .default) { okAction in
+            okActionHandler?()
         }
+        alertController.addAction(okAction)
+        
+        let closeAction = UIAlertAction(title: closeMessage, style: .default) { action in
+            return
+        }
+        alertController.addAction(closeAction)
+        
+        viewController.present(alertController, animated: true, completion: nil)
         
     }
     

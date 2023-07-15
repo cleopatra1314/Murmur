@@ -85,7 +85,6 @@ class NearbyUsersViewController: UIViewController {
             }
             
             self.userData = users
-            print(self.userData)
             
             DispatchQueue.main.async { [self] in
                 

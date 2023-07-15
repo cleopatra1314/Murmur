@@ -138,8 +138,7 @@ class ProfileViewController: UIViewController {
             } catch {
                 print("Error: ", error)
             }
-            
-            self.profileTableView.reloadData()
+
         }
     }
     

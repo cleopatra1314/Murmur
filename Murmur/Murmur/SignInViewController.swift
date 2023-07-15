@@ -115,8 +115,6 @@ class SignInViewController: UIViewController {
         signInWithEmailButton.backgroundColor = UIColor.SecondarySaturate
     }
     
-    
-    
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
     @objc func signInWithEmailButtonTouchUpInside() {
         
