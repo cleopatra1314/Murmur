@@ -12,10 +12,21 @@ import MapKit
 
 extension UIViewController {
     
+    ///   - message: 提示訊息
+    ///   - vc: 要在哪一個 UIViewController 上呈現
+    ///   - actionHandler: 按下按鈕後要執行的動作，沒有的話就填 nil
+    func showCustomAlert(title: String, message: String, vc: UIViewController, closeMessage: String, actionHandler: (() -> Void)?) {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let closeAction = UIAlertAction(title: closeMessage, style: .default) { action in
+            actionHandler?()
+        }
+        
+    }
+    
     func createTabBarController() {
         
         let customTabBarController = CustomTabBarController()
-
         present(customTabBarController, animated: true)
         
     }

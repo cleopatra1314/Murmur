@@ -141,7 +141,6 @@ class SignInViewController: UIViewController {
                 
             }
             guard let userID = result?.user.uid else {
-                
                 return
             }
             currentUserUID = userID

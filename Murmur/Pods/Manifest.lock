@@ -738,6 +738,7 @@ PODS:
   - nanopb/encode (2.30908.0)
   - PromisesObjC (2.2.0)
   - SnapKit (5.6.0)
+  - Toast-Swift (5.0.1)
 
 DEPENDENCIES:
   - FirebaseAuth (= 9.0)
@@ -750,6 +751,7 @@ DEPENDENCIES:
   - Kingfisher (~> 7.0)
   - lottie-ios
   - SnapKit (~> 5.6.0)
+  - Toast-Swift (~> 5.0.1)
 
 SPEC REPOS:
   trunk:
@@ -780,6 +782,7 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - SnapKit
+    - Toast-Swift
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
@@ -809,7 +812,8 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
 
-PODFILE CHECKSUM: 577c45c81709ee9b470f932b1e68dd71dbf40797
+PODFILE CHECKSUM: 4b9bf5e98d8ee68e87b5f08f3b7128746d5047a0
 
 COCOAPODS: 1.12.1

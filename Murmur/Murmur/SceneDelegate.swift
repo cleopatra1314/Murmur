@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let user = Auth.auth().currentUser {
             // 如果已經登入，直接到首頁
             currentUserUID = user.uid
-            
+            print("UserUID \(user.uid) 登入")
             // Modify user onlineState
             database.collection("userTest").document(currentUserUID).getDocument { documentSnapshot, error in
                 

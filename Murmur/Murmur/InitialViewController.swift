@@ -19,6 +19,8 @@ class InitialViewController: UIViewController {
     // MARK: - Sign in with Apple 登入
     fileprivate var currentNonce: String?
     
+    private var userProfileData: Users?
+    
     // MARK: Lottie
     let pacmanAnimationView = LottieAnimationView(name: "Pacman")
     let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
@@ -57,7 +59,7 @@ class InitialViewController: UIViewController {
     }()
     let signInWithAppleButtonView = UIView()
     private let authorizationAppleIDButton: ASAuthorizationAppleIDButton = {
-        let authorizationAppleIDButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .white)
+        let authorizationAppleIDButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signUp, authorizationButtonStyle: .white)
 //        authorizationAppleIDButton.setTitle("Sign up with Apple", for: .normal)
 //        authorizationAppleIDButton.setTitleColor(.GrayScale0, for: .normal)
 //        authorizationAppleIDButton.backgroundColor = .SecondaryMiddle
@@ -65,7 +67,7 @@ class InitialViewController: UIViewController {
         authorizationAppleIDButton.layer.addWhiteShadow()
 //        authorizationAppleIDButton.isHidden = true
         authorizationAppleIDButton.addTarget(self, action: #selector(signInWithAppleButtonTouchUpInside), for: .touchUpInside)
-        authorizationAppleIDButton.addTarget(self, action: #selector(signUpWithAppleButtonTouchDown), for: .touchDown)
+//        authorizationAppleIDButton.addTarget(self, action: #selector(signUpWithAppleButtonTouchDown), for: .touchDown)
         return authorizationAppleIDButton
     }()
     private let stack: UIStackView = {
@@ -90,7 +92,6 @@ class InitialViewController: UIViewController {
     }()
     
     //--------------------------
-    private var userProfileData: Users?
 
 //    let attributes: [NSAttributedString.Key: Any] = [
 //        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
@@ -338,12 +339,7 @@ class InitialViewController: UIViewController {
         
         // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUID).setData([
-            // TODO: 這邊寫法為什麼不行
-//            guard let self.userProfileData else {
-//                print("userProfileData is nil.")
-//                return
-//            }
-            
+
             "onlineState": userProfileData.onlineState,
             "userName": userProfileData.userName,
             "userPortrait": userProfileData.userPortrait,
@@ -352,15 +348,7 @@ class InitialViewController: UIViewController {
         ])
         
     }
-    
-//    func createTabBarController() {
-//
-//        let customTabBarController = CustomTabBarController()
-//
-//        present(customTabBarController, animated: true)
-//
-//    }
-    
+
     // 由於 apple ID 登入只支援iOS 13 以上的版本，故需控制按鈕是否可使用
     func configureAppleSignInButton() {
         if #available(iOS 13.0, *) {
@@ -384,9 +372,13 @@ extension InitialViewController {
             let alertController = UIAlertController(title: "登入成功！", message: "開始 murmur", preferredStyle: .alert)
             
             // 加入確定的動作。
-            let okAction = UIAlertAction(title: "確定", style: .default) { alertAction in
-                self.createTabBarController()
+            let okAction = UIAlertAction(title: "確定", style: .default) { [self] alertAction in
+                self.getFirebaseUserInfo()
             }
+            alertController.addAction(okAction)
+            
+            // 呈現 alertController。
+            self.present(alertController, animated: true)
         
         }
     }
@@ -395,12 +387,20 @@ extension InitialViewController {
     func getFirebaseUserInfo() {
         let currentUser = Auth.auth().currentUser
         guard let user = currentUser else {
-            self.showAlert(title: "無法取得使用者資料！", message: "", viewController: self)
+            self.showAlert(title: "發生錯誤", message: "無法取得使用者資料，請聯繫開發團隊", viewController: self)
             return
         }
-        let uid = user.uid
-        let email = user.email
-        self.showAlert(title: "使用者資訊", message: "UID：\(uid)\nEmail：\(email!)", viewController: self)
+        
+//        currentUserUID = user.uid
+//        let userProfile = Users(onlineState: true, userName: credential. "User", userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+//
+//        self.userProfileData = userProfile
+        self.createUsers(userUID: user.uid)
+        
+        DispatchQueue.main.async {
+            self.createTabBarController()
+        }
+        
     }
 }
 
@@ -412,50 +412,35 @@ extension InitialViewController: ASAuthorizationControllerDelegate {
     ///   - controller: _
     ///   - authorization: _
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-//        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-        
-//        switch authorization.credential {
-//
-//        case let appleIDCredential as ASAuthorizationAppleIDCredential:
-//            let userIdentifier = appleIDCredential.user
-//            guard let authorizationCode = appleIDCredential.authorizationCode else { return }
-//            guard let authorizationCodeString = String(data: authorizationCode, encoding: .utf8) else { return }
-//            guard let identifierToken = appleIDCredential.identityToken else { return }
-//            guard let identifierTokenString = String(data: identifierToken, encoding: .utf8) else { return }
-//
-//            // TODO:
-//            print("user: \(appleIDCredential.user)")
-//            print("fullName: \(String(describing: appleIDCredential.fullName))")
-//            print("Email: \(String(describing: appleIDCredential.email))")
-//            print("realUserStatus: \(String(describing: appleIDCredential.realUserStatus))")
-//
-//            userProfileData?.id = appleIDCredential.user
-//            userProfileData?.userName = String(describing: appleIDCredential.fullName)
-//            userProfileData?.onlineState = true
-//
-//        default:
-//            break
-//
-//        }
-        
+
         // 登入成功
-                if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                    guard let nonce = currentNonce else {
-                        fatalError("Invalid state: A login callback was received, but no login request was sent.")
-                    }
-                    guard let appleIDToken = appleIDCredential.identityToken else {
-                        self.showAlert(title: "", message: "Unable to fetch identity token", viewController: self)
-                        return
-                    }
-                    guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                        self.showAlert(title: "", message: "Unable to fetch identity token", viewController: self)
-                        return
-                    }
-                    // 產生 Apple ID 登入的 Credential
-                    let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
-                    // 與 Firebase Auth 進行串接
-                    firebaseSignInWithApple(credential: credential)
-                }
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                self.showAlert(title: "", message: "Unable to fetch identity token", viewController: self)
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                self.showAlert(title: "", message: "Unable to fetch identity token", viewController: self)
+                return
+            }
+            // 產生 Apple ID 登入的 Credential
+            let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+            
+            print("user: \(appleIDCredential.user)")
+            print("fullName: \(String(describing: appleIDCredential.fullName))")
+            print("Email: \(String(describing: appleIDCredential.email))")
+            print("realUserStatus: \(String(describing: appleIDCredential.realUserStatus))")
+            
+            let userProfile = Users(id: appleIDCredential.user, onlineState: true, userName: (appleIDCredential.fullName?.familyName ?? "") + (appleIDCredential.fullName?.givenName ?? "User"), userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+            
+            userProfileData = userProfile
+            
+            // 與 Firebase Auth 進行串接
+            firebaseSignInWithApple(credential: credential)
+        }
         
     }
     
@@ -468,7 +453,8 @@ extension InitialViewController: ASAuthorizationControllerDelegate {
                 
         switch (error) {
         case ASAuthorizationError.canceled:
-            showAlert(title: "使用者取消登入", message: "\(error.localizedDescription)", viewController: self)
+            showAlert(title: "登入失敗", message: "請完成登入哦！", viewController: self)
+            print("使用者取消登入", error.localizedDescription)
             break
         case ASAuthorizationError.failed:
             showAlert(title: "授權請求失敗", message: "\(error.localizedDescription)", viewController: self)

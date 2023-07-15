@@ -13,6 +13,7 @@ import FirebaseFirestore
 import FirebaseDatabase
 
 let defaultCurrentCoordinate = CLLocationCoordinate2D(latitude: 25.0385, longitude: 121.531)
+let defaultImageUrlString = "https://firebasestorage.googleapis.com/v0/b/murmur-e5e16.appspot.com/o/0C97C374-BAC5-4A65-BFCE-D7479C0FA60C.jpg?alt=media&token=48ab6e8e-c032-4566-8a85-ce70cae32b71"
 var currentCoordinate: CLLocationCoordinate2D? {
     didSet {
 //        print("變動！目前位置", currentCoordinate)

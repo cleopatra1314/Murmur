@@ -139,10 +139,7 @@ class ProfileViewController: UIViewController {
                 print("Error: ", error)
             }
             
-//            DispatchQueue.main.async {
-                
-//            }
-            
+            self.profileTableView.reloadData()
         }
     }
     
