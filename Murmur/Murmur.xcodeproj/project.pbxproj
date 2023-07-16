@@ -19,6 +19,8 @@
 		C8499F412A4009E00019D83F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8499F402A4009E00019D83F /* GoogleService-Info.plist */; };
 		C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8499F422A4093B60019D83F /* DialogAnnotationView.swift */; };
 		C8859D922A59464B00C5B62A /* ProgressCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8859D912A59464B00C5B62A /* ProgressCircleView.swift */; };
+		C8A0EF242A633A4300B79B16 /* PostTagCollectionReusableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0EF232A633A4300B79B16 /* PostTagCollectionReusableHeaderView.swift */; };
+		C8A0EF262A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A0EF252A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift */; };
 		C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */; };
 		C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */; };
 		C8A9FD092A4FDEAD00FF6966 /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A9FD082A4FDEAD00FF6966 /* CustomNavigationController.swift */; };
@@ -62,6 +64,7 @@
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
 		C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */ = {isa = PBXBuildFile; fileRef = C8CC5A872A54B1AF006E3C8D /* Pacman.json */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
+		C8CE206E2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */; };
 		C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */; };
 		C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */; };
 		C8F041EC2A4B41180044BE9C /* PostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */; };
@@ -86,6 +89,8 @@
 		C8499F402A4009E00019D83F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C8499F422A4093B60019D83F /* DialogAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogAnnotationView.swift; sourceTree = "<group>"; };
 		C8859D912A59464B00C5B62A /* ProgressCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressCircleView.swift; sourceTree = "<group>"; };
+		C8A0EF232A633A4300B79B16 /* PostTagCollectionReusableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTagCollectionReusableHeaderView.swift; sourceTree = "<group>"; };
+		C8A0EF252A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTagCollectionReusableFooterView.swift; sourceTree = "<group>"; };
 		C8A6CBDA2A3D99B90089ED5C /* IdentifiablePlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiablePlace.swift; sourceTree = "<group>"; };
 		C8A6CBDC2A3D9EA90089ED5C /* CustomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnnotationView.swift; sourceTree = "<group>"; };
 		C8A9FD082A4FDEAD00FF6966 /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
@@ -132,6 +137,7 @@
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
+		C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectedTagCollectionViewCell.swift; path = "Murmur/Post Page/SelectedTagCollectionViewCell.swift"; sourceTree = SOURCE_ROOT; };
 		C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = SOURCE_ROOT; };
 		C8E160D42A607142009BE56C /* MurmurRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MurmurRelease.entitlements; sourceTree = "<group>"; };
 		C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootPrintViewController.swift; sourceTree = "<group>"; };
@@ -204,7 +210,11 @@
 		C8AF2DB82A41559200B703E8 /* Post Page */ = {
 			isa = PBXGroup;
 			children = (
+				C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */,
+				C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */,
 				C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */,
+				C8A0EF232A633A4300B79B16 /* PostTagCollectionReusableHeaderView.swift */,
+				C8A0EF252A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift */,
 				C8C4DD502A3AE3F30037B4F5 /* PostViewController.swift */,
 			);
 			path = "Post Page";
@@ -276,7 +286,6 @@
 				C8AF2DB82A41559200B703E8 /* Post Page */,
 				C8C72C232A39DA350025E693 /* AppDelegate.swift */,
 				C8C72C252A39DA350025E693 /* SceneDelegate.swift */,
-				C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */,
 				C8C72C292A39DA350025E693 /* Main.storyboard */,
 				C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */,
 				C8C72C2C2A39DA360025E693 /* Assets.xcassets */,
@@ -459,6 +468,7 @@
 				C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */,
 				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
 				C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */,
+				C8A0EF262A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift in Sources */,
 				C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */,
 				C8A9FD092A4FDEAD00FF6966 /* CustomNavigationController.swift in Sources */,
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
@@ -476,6 +486,7 @@
 				C8AF2DB52A4145A300B703E8 /* OutsideMessageAnnotation.swift in Sources */,
 				C8ABD8412A43EA1400B76ADC /* UserMeChatTableViewCell.swift in Sources */,
 				C831F7C62A4592AA004A9A6F /* ChatViewController.swift in Sources */,
+				C8CE206E2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift in Sources */,
 				C8ABD8432A43EA5800B76ADC /* UserTheOtherTableViewCell.swift in Sources */,
 				C8AF2DB32A41430900B703E8 /* InsideMessageAnnotation.swift in Sources */,
 				C8AC51282A53C9A700EA58B9 /* SignInViewController.swift in Sources */,
@@ -489,6 +500,7 @@
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */,
 				C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */,
+				C8A0EF242A633A4300B79B16 /* PostTagCollectionReusableHeaderView.swift in Sources */,
 				C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */,
 				C8C4DD4F2A3AE3C90037B4F5 /* ChatRoomViewController.swift in Sources */,
 				C8ADBC292A3C6A730085BAD3 /* LocationMessageViewController.swift in Sources */,

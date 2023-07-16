@@ -33,12 +33,12 @@ class PostDetailsPopupView: UIView {
         postCreatedSiteLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedSiteLabel
     }()
-    let postContentTextView: UITextView = {
-        let postContentTextView = UITextView()
-        postContentTextView.backgroundColor = .PrimaryLighter
-        postContentTextView.textColor = .PrimaryDark
-        postContentTextView.font = UIFont(name: "PingFangTC-Regular", size: 16)
-        return postContentTextView
+    let postContentLabel: UILabel = {
+        let postContentLabel = UILabel()
+        postContentLabel.backgroundColor = .PrimaryLighter
+        postContentLabel.textColor = .PrimaryDark
+        postContentLabel.font = UIFont(name: "PingFangTC-Regular", size: 16)
+        return postContentLabel
     }()
     lazy var tagCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -101,7 +101,7 @@ class PostDetailsPopupView: UIView {
     
     func layoutView() {
  
-        [postImageView, postCreatedTimeLabel, postCreatedSiteLabel, postContentTextView, tagCollectionView, closeButton].forEach { subview in
+        [postImageView, postCreatedTimeLabel, postCreatedSiteLabel, postContentLabel, tagCollectionView, closeButton].forEach { subview in
             self.addSubview(subview)
         }
 
@@ -125,7 +125,7 @@ class PostDetailsPopupView: UIView {
             make.trailing.equalTo(self).offset(-40)
             make.height.equalTo(80)
         }
-        postContentTextView.snp.makeConstraints { make in
+        postContentLabel.snp.makeConstraints { make in
             make.top.equalTo(tagCollectionView.snp.bottom).offset(16)
             make.leading.equalTo(self).offset(60)
             make.trailing.equalTo(self).offset(-60)
@@ -156,7 +156,6 @@ extension PostDetailsPopupView: UICollectionViewDelegate, UICollectionViewDataSo
     }
         
 }
-    
 
 extension PostDetailsPopupView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -164,37 +163,3 @@ extension PostDetailsPopupView: UICollectionViewDelegateFlowLayout {
     }
 
 }
-
-//extension PostDetailsPopupView: UIContextMenuInteractionDelegate {
-//
-//    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-//
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-//
-//        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: {
-//            suggestedActions in
-//
-//            //欄位1
-//            let favoriteAction = UIAction(title: "Follow", image: UIImage(systemName: "heart.fill"), state: .off) { (action) in
-//                print("Awwwwww")
-//            }
-//            //欄位2
-//            let shareAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up.fill"), state: .off) { (action) in
-//                print("Meowwwww")
-//            }
-//            //標題
-//            return UIMenu(title: "Menu", children: [favoriteAction, shareAction])
-//        })
-//
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-//
-//
-//    }
-//
-//
-//}
-

@@ -264,7 +264,7 @@ class PostViewController: UIViewController {
         
         let nextButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonItemTouchUpInside))
         nextButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
-        nextButtonItem.tintColor = .SecondaryShine
+        nextButtonItem.tintColor = .GrayScale20
         navigationItem.rightBarButtonItem = nextButtonItem
     }
     
