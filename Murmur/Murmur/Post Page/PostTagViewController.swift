@@ -262,7 +262,6 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(SelectedTagCollectionViewCell.self)", for: indexPath) as? SelectedTagCollectionViewCell else { return SelectedTagCollectionViewCell()}
             cell.titleOfButtonLabel.text = selectedTagArray[indexPath.row]
             cell.layer.addSaturatedShadow()
-            cell.layer.cornerRadius = cell.tagButton.frame.height / 2
             
             return cell
             
@@ -314,6 +313,22 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
 //            return CGSize(width: view.frame.size.width, height: view.frame.size.width / 5)
         } else {
             return .zero
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if indexPath.section == 0 {
+            let disSelectedtag = selectedTagArray.remove(at: indexPath.row)
+            MWtagArray.insert(disSelectedtag, at: 0)
+            
+        } else if indexPath.section == 1 {
+            
+            let selectedtag = MWtagArray.remove(at: indexPath.row)
+            selectedTagArray.append(selectedtag)
+            
+        } else {
+            print("Error: 未知的 section")
         }
     }
         

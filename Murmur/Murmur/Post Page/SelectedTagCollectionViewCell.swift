@@ -42,7 +42,7 @@ class SelectedTagCollectionViewCell: UICollectionViewCell{
         
         layoutCell()
         layoutIfNeeded()
-        layoutSubviews()
+//        layoutSubviews()
     }
     
     required init?(coder: NSCoder) {
@@ -64,9 +64,11 @@ class SelectedTagCollectionViewCell: UICollectionViewCell{
             titleOfButtonLabel.bottomAnchor.constraint(equalTo: tagButton.bottomAnchor, constant: -6),
             symbolOfButtonImageView.leadingAnchor.constraint(equalTo: titleOfButtonLabel.trailingAnchor, constant: 8),
             symbolOfButtonImageView.trailingAnchor.constraint(equalTo: tagButton.trailingAnchor, constant: -14),
-            symbolOfButtonImageView.topAnchor.constraint(equalTo: titleOfButtonLabel.topAnchor, constant: 4),
-            symbolOfButtonImageView.bottomAnchor.constraint(equalTo: titleOfButtonLabel.bottomAnchor, constant: -4),
-            symbolOfButtonImageView.widthAnchor.constraint(equalTo: symbolOfButtonImageView.heightAnchor),
+//            symbolOfButtonImageView.topAnchor.constraint(equalTo: titleOfButtonLabel.topAnchor, constant: 0),
+//            symbolOfButtonImageView.bottomAnchor.constraint(equalTo: titleOfButtonLabel.bottomAnchor, constant: -0),
+            symbolOfButtonImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            symbolOfButtonImageView.widthAnchor.constraint(equalToConstant: 16),
+            symbolOfButtonImageView.heightAnchor.constraint(equalToConstant: 16),
             tagButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             tagButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             tagButton.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -78,14 +80,15 @@ class SelectedTagCollectionViewCell: UICollectionViewCell{
     override func layoutIfNeeded() {
         super.layoutIfNeeded()
 
-        tagButton.layer.cornerRadius = tagButton.frame.height / 2
+        // TODO: 解決 UIView-Encapsulated-Layout
+        tagButton.layer.cornerRadius =  18   // tagButton.frame.height / 2
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        tagButton.layer.cornerRadius = tagButton.frame.height / 2
-    }
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//
+//        tagButton.layer.cornerRadius = tagButton.frame.height / 2
+//    }
     
     @objc func tagButtonTouchUpInside(){
 //        self.twitClosure!(self)

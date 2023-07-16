@@ -70,7 +70,7 @@ class TagCollectionViewCell: UICollectionViewCell{
 //        tagButton.layer.cornerRadius = tagButton.frame.height / 2
 //    }
     
-    @objc func tagButtonTouchUpInside(){
+    @objc func tagButtonTouchUpInside() {
 //        self.twitClosure!(self)
         print("點擊 \(self)")
     }
