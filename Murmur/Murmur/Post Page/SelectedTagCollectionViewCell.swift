@@ -9,32 +9,20 @@ import Foundation
 import UIKit
 
 
-class SelectedTagCollectionViewCell: UICollectionViewCell{
-    
-//    let tagButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
-    lazy var tagButton: UIButton = {
-        let tagButton = UIButton()
-        tagButton.backgroundColor = .ErrorMidDark
-        tagButton.layer.borderWidth = 0
-        tagButton.layer.borderColor = UIColor.GrayScale20?.cgColor
-//        tagButton.setTitleColor(UIColor.black, for: .normal)
-//        tagButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 8, right: 8)
-        tagButton.layer.addWhiteShadow()
-        tagButton.addTarget(self, action: #selector(tagButtonTouchUpInside), for: .touchUpInside)
-        return tagButton
+class SelectedTagCollectionViewCell: UICollectionViewCell {
+
+    let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.textColor = .GrayScale0
+        titleLabel.font = UIFont(name: "PingFangTC-Regular", size: 12)
+        return titleLabel
     }()
-    let titleOfButtonLabel: UILabel = {
-        let titleOfButtonLabel = UILabel()
-        titleOfButtonLabel.textColor = .GrayScale0
-        titleOfButtonLabel.font = UIFont(name: "PingFangTC-Medium", size: 12)
-        return titleOfButtonLabel
-    }()
-    let symbolOfButtonImageView: UIImageView = {
-        let symbolOfButtonImageView = UIImageView()
-        symbolOfButtonImageView.image = UIImage(systemName: "xmark")
-        symbolOfButtonImageView.contentMode = .scaleAspectFit
-        symbolOfButtonImageView.tintColor = .GrayScale20
-        return symbolOfButtonImageView
+    let crossImageView: UIImageView = {
+        let crossImageView = UIImageView()
+        crossImageView.image = UIImage(systemName: "xmark")
+        crossImageView.contentMode = .scaleAspectFit
+        crossImageView.tintColor = .GrayScale20
+        return crossImageView
     }()
     
     override init(frame: CGRect) {
@@ -50,52 +38,45 @@ class SelectedTagCollectionViewCell: UICollectionViewCell{
     }
     
     func layoutCell() {
-        contentView.addSubview(tagButton)
-        tagButton.addSubview(titleOfButtonLabel)
-        tagButton.addSubview(symbolOfButtonImageView)
         
-        titleOfButtonLabel.translatesAutoresizingMaskIntoConstraints = false
-        tagButton.translatesAutoresizingMaskIntoConstraints = false
-        symbolOfButtonImageView.translatesAutoresizingMaskIntoConstraints = false
+        self.backgroundColor = .ErrorMidDark
+        self.layer.borderWidth = 0
+        self.layer.borderColor = UIColor.GrayScale20?.cgColor
+        self.layer.addWhiteShadow()
+        
+        self.contentView.addSubview(titleLabel)
+        self.contentView.addSubview(crossImageView)
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        crossImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleOfButtonLabel.leadingAnchor.constraint(equalTo: tagButton.leadingAnchor, constant: 14),
+            titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 14),
 //            titleOfButtonLabel.trailingAnchor.constraint(equalTo: tagButton.trailingAnchor, constant: -14),
-            titleOfButtonLabel.topAnchor.constraint(equalTo: tagButton.topAnchor, constant: 6),
-            titleOfButtonLabel.bottomAnchor.constraint(equalTo: tagButton.bottomAnchor, constant: -6),
-            symbolOfButtonImageView.leadingAnchor.constraint(equalTo: titleOfButtonLabel.trailingAnchor, constant: 8),
-            symbolOfButtonImageView.trailingAnchor.constraint(equalTo: tagButton.trailingAnchor, constant: -14),
-//            symbolOfButtonImageView.topAnchor.constraint(equalTo: titleOfButtonLabel.topAnchor, constant: 0),
-//            symbolOfButtonImageView.bottomAnchor.constraint(equalTo: titleOfButtonLabel.bottomAnchor, constant: -0),
-            symbolOfButtonImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-            symbolOfButtonImageView.widthAnchor.constraint(equalToConstant: 16),
-            symbolOfButtonImageView.heightAnchor.constraint(equalToConstant: 16),
-            tagButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            tagButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            tagButton.topAnchor.constraint(equalTo: contentView.topAnchor),
-            tagButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 9),
+            titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -9),
+            crossImageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8),
+            crossImageView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -14),
+//            crossImageView.topAnchor.constraint(equalTo: titleOfButtonLabel.topAnchor, constant: 0),
+//            crossImageView.bottomAnchor.constraint(equalTo: titleOfButtonLabel.bottomAnchor, constant: -0),
+            crossImageView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+            crossImageView.widthAnchor.constraint(equalToConstant: 16),
+            crossImageView.heightAnchor.constraint(equalToConstant: 16),
         ])
         
     }
     
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
+//    override func layoutIfNeeded() {
+//        super.layoutIfNeeded()
 
         // TODO: 解決 UIView-Encapsulated-Layout
-        tagButton.layer.cornerRadius =  18   // tagButton.frame.height / 2
-    }
-    
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//
-//        tagButton.layer.cornerRadius = tagButton.frame.height / 2
+//        tagButton.layer.cornerRadius =  18
+//        self.layer.cornerRadius = self.frame.height / 2
 //    }
     
-    @objc func tagButtonTouchUpInside(){
-//        self.twitClosure!(self)
-        print("點擊 \(self)")
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        self.layer.cornerRadius = self.frame.height / 2
     }
-    
-    
+
 }
-
-

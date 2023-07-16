@@ -9,17 +9,14 @@ import Foundation
 import UIKit
 
 
-class TagCollectionViewCell: UICollectionViewCell{
+class TagCollectionViewCell: UICollectionViewCell {
     
-//    let tagButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
-    let tagButton = UIButton()
-    let titleOfButtonLabel: UILabel = {
-        let titleOfButtonLabel = UILabel()
-        titleOfButtonLabel.textColor = .PrimaryDark
-        titleOfButtonLabel.font = UIFont(name: "PingFangTC-Regular", size: 12)
-        return titleOfButtonLabel
+    let titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.textColor = .PrimaryDark
+        titleLabel.font = UIFont(name: "PingFangTC-Regular", size: 12)
+        return titleLabel
     }()
-//    var twitClosure: ((ChatBotBottomCollectionViewCell) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,48 +30,37 @@ class TagCollectionViewCell: UICollectionViewCell{
     }
     
     func layoutCell() {
-        contentView.addSubview(tagButton)
-        tagButton.addSubview(titleOfButtonLabel)
-        
-        titleOfButtonLabel.translatesAutoresizingMaskIntoConstraints = false
-        tagButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            titleOfButtonLabel.leadingAnchor.constraint(equalTo: tagButton.leadingAnchor, constant: 14),
-            titleOfButtonLabel.trailingAnchor.constraint(equalTo: tagButton.trailingAnchor, constant: -14),
-            titleOfButtonLabel.topAnchor.constraint(equalTo: tagButton.topAnchor, constant: 6),
-            titleOfButtonLabel.bottomAnchor.constraint(equalTo: tagButton.bottomAnchor, constant: -6),
-            tagButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            tagButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            tagButton.topAnchor.constraint(equalTo: contentView.topAnchor),
-            tagButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
-        
-        tagButton.backgroundColor = .white
-        tagButton.layer.borderWidth = 1
-        tagButton.layer.borderColor = UIColor.PrimaryMiddle?.cgColor
+        self.backgroundColor = .white
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.PrimaryMiddle?.cgColor
 //        tagButton.setTitleColor(UIColor.black, for: .normal)
 //        tagButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 8, right: 8)
-        tagButton.layer.addWhiteShadow()
-        tagButton.addTarget(self, action: #selector(tagButtonTouchUpInside), for: .touchUpInside)
+        self.layer.addWhiteShadow()
+        
+        contentView.addSubview(titleLabel)
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
+            titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 9),
+            titleLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -9)
+        ])
+        
     }
     
-    override func layoutIfNeeded() {
-        super.layoutIfNeeded()
-
-        tagButton.layer.cornerRadius = tagButton.frame.height / 2
-    }
-    
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
+//    override func layoutIfNeeded() {
+//        super.layoutIfNeeded()
 //
-//        tagButton.layer.cornerRadius = tagButton.frame.height / 2
+//        self.layer.cornerRadius = self.frame.height / 2
 //    }
     
-    @objc func tagButtonTouchUpInside() {
-//        self.twitClosure!(self)
-        print("點擊 \(self)")
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        self.layer.cornerRadius = self.frame.height / 2
     }
-    
+
     
 }
 

@@ -150,7 +150,7 @@ extension PostDetailsPopupView: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(TagCollectionViewCell.self)", for: indexPath) as? TagCollectionViewCell else { return TagCollectionViewCell()}
-        cell.titleOfButtonLabel.text = tagArray[indexPath.row]
+        cell.titleLabel.text = tagArray[indexPath.row]
         
         return cell
     }

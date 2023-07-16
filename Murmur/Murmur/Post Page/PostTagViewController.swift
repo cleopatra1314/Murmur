@@ -37,15 +37,16 @@ class PostTagViewController: UIViewController {
 //    }()
     private let numberOfTagLabel: UILabel = {
         let numberOfTagLabel = UILabel()
-        numberOfTagLabel.text = "4 of 5"
         return numberOfTagLabel
     }()
     lazy var postTagCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        // section的間距
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        // cell間距
-        layout.minimumLineSpacing = 6
+        let layout = TagCollectionViewFlowLayout()
+        // section 的間距
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        // 每行 cell 間距
+        layout.minimumLineSpacing = 12
+        // cell 之間間距
+        layout.minimumInteritemSpacing = 8
         // cell 長寬
         //        layout.itemSize = CGSize(width: 100, height: 30)
         // 滑動的方向
@@ -57,6 +58,8 @@ class PostTagViewController: UIViewController {
         let postTagCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         // 背景顏色
         postTagCollectionView.backgroundColor = .PrimaryLighter
+        // items 靠右或靠左
+        postTagCollectionView.semanticContentAttribute = UISemanticContentAttribute.forceRightToLeft
         
         // 你所註冊的cell
         postTagCollectionView.register(PostTagCollectionReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "\(PostTagCollectionReusableHeaderView.self)")
@@ -244,7 +247,7 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
             
         } else if kind == UICollectionView.elementKindSectionFooter {
             guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(PostTagCollectionReusableFooterView.self)", for: indexPath) as? PostTagCollectionReusableFooterView else { return UICollectionReusableView() }
-            footerView.label.text = "3 / 5 (At least 1)"
+            footerView.label.text = "\(selectedTagArray.count) / 5 (At least one)"
             
             return footerView
             
@@ -260,16 +263,16 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
         if indexPath.section == 0 {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(SelectedTagCollectionViewCell.self)", for: indexPath) as? SelectedTagCollectionViewCell else { return SelectedTagCollectionViewCell()}
-            cell.titleOfButtonLabel.text = selectedTagArray[indexPath.row]
-            cell.layer.addSaturatedShadow()
+            cell.titleLabel.text = selectedTagArray[indexPath.row]
+            cell.layoutSubviews()
             
             return cell
             
         } else if indexPath.section == 1 {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(TagCollectionViewCell.self)", for: indexPath) as? TagCollectionViewCell else { return TagCollectionViewCell()}
-            cell.titleOfButtonLabel.text = MWtagArray[indexPath.row]
-            cell.layer.addSaturatedShadow1()
+            cell.titleLabel.text = MWtagArray[indexPath.row]
+            cell.layoutSubviews()
             
             return cell
             
@@ -339,7 +342,7 @@ extension PostTagViewController: UICollectionViewDelegateFlowLayout {
         if section == 0 {
             return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         } else {
-            return UIEdgeInsets(top: 30, left: 16, bottom: 30, right: 16)
+            return UIEdgeInsets(top: 24, left: 16, bottom: 24, right: 16)
         }
         
     }

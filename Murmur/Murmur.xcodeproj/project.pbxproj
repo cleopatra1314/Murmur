@@ -65,6 +65,8 @@
 		C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */ = {isa = PBXBuildFile; fileRef = C8CC5A872A54B1AF006E3C8D /* Pacman.json */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
 		C8CE206E2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */; };
+		C8CE20702A640FDE00448A99 /* TagCollecionCell1.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CE206F2A640FDE00448A99 /* TagCollecionCell1.swift */; };
+		C8CE20722A643A1D00448A99 /* TagCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CE20712A643A1D00448A99 /* TagCollectionViewFlowLayout.swift */; };
 		C8CEADD32A4F2772006163EB /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */; };
 		C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */; };
 		C8F041EC2A4B41180044BE9C /* PostsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */; };
@@ -138,7 +140,9 @@
 		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
 		C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectedTagCollectionViewCell.swift; path = "Murmur/Post Page/SelectedTagCollectionViewCell.swift"; sourceTree = SOURCE_ROOT; };
-		C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = SOURCE_ROOT; };
+		C8CE206F2A640FDE00448A99 /* TagCollecionCell1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollecionCell1.swift; sourceTree = "<group>"; };
+		C8CE20712A643A1D00448A99 /* TagCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomTabBarController.swift; path = Murmur/CustomTabBarController.swift; sourceTree = SOURCE_ROOT; };
 		C8E160D42A607142009BE56C /* MurmurRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MurmurRelease.entitlements; sourceTree = "<group>"; };
 		C8F041E92A4B3D6F0044BE9C /* FootPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FootPrintViewController.swift; sourceTree = "<group>"; };
 		C8F041EB2A4B41180044BE9C /* PostsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -211,7 +215,9 @@
 			isa = PBXGroup;
 			children = (
 				C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */,
+				C8CE20712A643A1D00448A99 /* TagCollectionViewFlowLayout.swift */,
 				C8212C612A5EC4FC006D2073 /* TagCollectionViewCell.swift */,
+				C8CE206F2A640FDE00448A99 /* TagCollecionCell1.swift */,
 				C8AE775B2A3F0EE40027CB0D /* PostTagViewController.swift */,
 				C8A0EF232A633A4300B79B16 /* PostTagCollectionReusableHeaderView.swift */,
 				C8A0EF252A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift */,
@@ -270,9 +276,9 @@
 			children = (
 				C8B1EBBA2A61B91B00E1A5A7 /* MurmurDebug.entitlements */,
 				C8E160D42A607142009BE56C /* MurmurRelease.entitlements */,
-				C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */,
 				C8CC5A862A54B19D006E3C8D /* Lottie */,
 				C8A9FD082A4FDEAD00FF6966 /* CustomNavigationController.swift */,
+				C8CEADD22A4F2772006163EB /* CustomTabBarController.swift */,
 				C82687432A4EC0F500237D68 /* SettingViewController.swift */,
 				C8ADDEC92A4D7A0B00C9069D /* Extensions */,
 				C8F041EF2A4B5EAE0044BE9C /* Profile Page */,
@@ -467,9 +473,11 @@
 				C8BA477F2A5DA7B3002D3ADC /* LaunchScreenViewController.swift in Sources */,
 				C8A6CBDB2A3D99B90089ED5C /* IdentifiablePlace.swift in Sources */,
 				C8C4DD532A3AE4020037B4F5 /* ProfileViewController.swift in Sources */,
+				C8CE20722A643A1D00448A99 /* TagCollectionViewFlowLayout.swift in Sources */,
 				C8499F432A4093B60019D83F /* DialogAnnotationView.swift in Sources */,
 				C8A0EF262A6391E400B79B16 /* PostTagCollectionReusableFooterView.swift in Sources */,
 				C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */,
+				C8CE20702A640FDE00448A99 /* TagCollecionCell1.swift in Sources */,
 				C8A9FD092A4FDEAD00FF6966 /* CustomNavigationController.swift in Sources */,
 				C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */,
 				C8C3A0952A48342A000E967D /* UIView_Extension.swift in Sources */,
