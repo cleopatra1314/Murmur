@@ -50,7 +50,7 @@ class InitialViewController: UIViewController {
     private lazy var signUpWithEmailButton: UIButton = {
         let signUpWithEmailButton = UIButton()
         signUpWithEmailButton.setTitle("Sign up with Email", for: .normal)
-        signUpWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signUpWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
@@ -80,14 +80,14 @@ class InitialViewController: UIViewController {
     private let noteLabel: UILabel = {
         let noteLabel = UILabel()
         noteLabel.text = "Already have an account ?"
-        noteLabel.textColor = .SecondaryDark
+        noteLabel.textColor = .SecondaryMidDark
         return noteLabel
     }()
     private lazy var signInButton: UIButton = {
         let signInButton = UIButton()
         signInButton.frame = CGRect(x: 0, y: 0, width: 46, height: 20)
         signInButton.setTitle("Sign in", for: .normal)
-        signInButton.setTitleColor(.PrimaryMidDark, for: .normal)
+        signInButton.setTitleColor(.SecondarySaturate, for: .normal)
         signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
         return signInButton
     }()
@@ -312,7 +312,7 @@ class InitialViewController: UIViewController {
         
         noteLabel.snp.makeConstraints { make in
             make.top.leading.bottom.equalTo(stack)
-            make.trailing.equalTo(signInButton.snp.leading).offset(-4)
+            make.trailing.equalTo(signInButton.snp.leading).offset(-6)
         }
         signInButton.snp.makeConstraints { make in
             make.top.trailing.bottom.equalTo(stack)

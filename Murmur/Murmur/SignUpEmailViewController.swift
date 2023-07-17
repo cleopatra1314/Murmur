@@ -28,7 +28,7 @@ class SignUpEmailViewController: UIViewController {
         titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.textColor = .PrimaryMidDarkContrast
         return titleLabel
     }()
     private let stack: UIStackView = {
@@ -55,7 +55,7 @@ class SignUpEmailViewController: UIViewController {
     private let emailLabel: UILabel = {
         let emailLabel = UILabel()
         emailLabel.text = "Email"
-        emailLabel.textColor = .SecondaryMiddle
+        emailLabel.textColor = .SecondarySaturate
         return emailLabel
     }()
     private let emailTextField: MessageTypeTextField = {
@@ -76,7 +76,7 @@ class SignUpEmailViewController: UIViewController {
     private let passwordLabel: UILabel = {
         let passwordLabel = UILabel()
         passwordLabel.text = "Password"
-        passwordLabel.textColor = .SecondaryMiddle
+        passwordLabel.textColor = .SecondarySaturate
         return passwordLabel
     }()
     private let passwordTextField: MessageTypeTextField = {

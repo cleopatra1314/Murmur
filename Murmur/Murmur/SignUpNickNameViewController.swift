@@ -31,7 +31,7 @@ class SignUpNickNameViewController: UIViewController {
         titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.textColor = .PrimaryMidDarkContrast
         return titleLabel
     }()
     private let stack: UIStackView = {
@@ -56,15 +56,15 @@ class SignUpNickNameViewController: UIViewController {
     }()
     private let nickNameLabel: UILabel = {
         let nickNameLabel = UILabel()
-        nickNameLabel.text = "角色暱稱"
-        nickNameLabel.textColor = .SecondaryMiddle
+        nickNameLabel.text = "Nickname"
+        nickNameLabel.textColor = .SecondarySaturate
         return nickNameLabel
     }()
     private let nickNameTextField: MessageTypeTextField = {
         let nickNameTextField = MessageTypeTextField()
         nickNameTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         nickNameTextField.textColor = .SecondaryDark
-        nickNameTextField.placeholder = "為自己取一個可愛的名字吧"
+        nickNameTextField.placeholder = "取一個可愛的名字吧"
 //        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
 //            NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
 //            NSAttributedString.Key.kern: 1.5,
@@ -77,20 +77,20 @@ class SignUpNickNameViewController: UIViewController {
     }()
     private let profilePicLabel: UILabel = {
         let profilePicLabel = UILabel()
-        profilePicLabel.text = "大頭貼"
-        profilePicLabel.textColor = .SecondaryMiddle
+        profilePicLabel.text = "Profile photo"
+        profilePicLabel.textColor = .SecondarySaturate
         return profilePicLabel
     }()
     private lazy var captureButton: UIButton = {
         let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         captureButton.setImage(UIImage(named: "Icons_Capture.png"), for: .normal)
-        captureButton.tintColor = .SecondaryMidDark
+        captureButton.tintColor = .GrayScale60
         captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
         return captureButton
     }()
     let profilePicView: UIView = {
         let profilePicView = UIView()
-        profilePicView.backgroundColor = .PrimaryDefault?.withAlphaComponent(0.5)
+        profilePicView.backgroundColor = .PrimaryDefault?.withAlphaComponent(1)
         profilePicView.clipsToBounds = true
         return profilePicView
     }()
@@ -105,6 +105,7 @@ class SignUpNickNameViewController: UIViewController {
         let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         trashButton.setImage(UIImage(named: "Icons_Trash.png"), for: .normal)
         trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
+        trashButton.tintColor = .ErrorMidDark
         return trashButton
     }()
     private lazy var signUpWithEmailButton: UIButton = {
@@ -124,6 +125,8 @@ class SignUpNickNameViewController: UIViewController {
         layoutView()
         lottieLogoMessageTyping()
         
+        trashButton.isHidden = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,7 +143,7 @@ class SignUpNickNameViewController: UIViewController {
         profilePicImageView.layer.borderColor = UIColor.lightGray.cgColor
         profilePicImageView.layer.borderWidth = 3
         profilePicView.layer.cornerRadius = profilePicView.frame.width / 2
-        profilePicView.layer.borderColor = UIColor.lightGray.cgColor
+        profilePicView.layer.borderColor = UIColor.GrayScale60?.cgColor
         profilePicView.layer.borderWidth = 3
     }
     
@@ -401,6 +404,7 @@ extension SignUpNickNameViewController: UIImagePickerControllerDelegate, UINavig
             profilePicView.isHidden = true
             captureButton.isHidden = true
             captureButton.isEnabled = false
+            trashButton.isHidden = false
             
         }
         

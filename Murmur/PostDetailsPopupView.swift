@@ -136,8 +136,8 @@ class PostDetailsPopupView: UIView {
         }
         postContentLabel.snp.makeConstraints { make in
             make.top.equalTo(tagCollectionView.snp.bottom).offset(16)
-            make.leading.equalTo(self).offset(60)
-            make.trailing.lessThanOrEqualTo(self).offset(-60)
+            make.leading.equalTo(self).offset(56)
+            make.trailing.lessThanOrEqualTo(self).offset(-56)
             make.bottom.lessThanOrEqualTo(self).offset(-40)
         }
         closeButton.snp.makeConstraints { make in
