@@ -27,13 +27,13 @@ class PostDetailsPopupView: UIView {
     }()
     let postCreatedTimeLabel: UILabel = {
         let postCreatedTimeLabel = UILabel()
-        postCreatedTimeLabel.textColor = .PrimaryDark?.withAlphaComponent(0.8)
+        postCreatedTimeLabel.textColor = .PrimaryDark?.withAlphaComponent(0.7)
         postCreatedTimeLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedTimeLabel
     }()
     let postCreatedSiteLabel: UILabel = {
         let postCreatedSiteLabel = UILabel()
-        postCreatedSiteLabel.textColor = .PrimaryDark?.withAlphaComponent(0.8)
+        postCreatedSiteLabel.textColor = .PrimaryDark?.withAlphaComponent(0.7)
         postCreatedSiteLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedSiteLabel
     }()

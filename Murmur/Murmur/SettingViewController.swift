@@ -14,8 +14,11 @@ class SettingViewController: UIViewController {
     lazy var signOutButton: UIButton = {
         let signOutButton = UIButton()
         signOutButton.frame = CGRect(x: 150, y: 200, width: 120, height: 40)
-        signOutButton.backgroundColor = .SecondaryDefault
+        signOutButton.backgroundColor = .GrayScale20
+        signOutButton.layer.borderColor = UIColor.ErrorMidDark?.cgColor
+        signOutButton.layer.borderWidth = 1
         signOutButton.setTitle("登出", for: .normal)
+        signOutButton.setTitleColor(.ErrorMidDark, for: .normal)
         signOutButton.layer.cornerRadius = 10
         signOutButton.addTarget(self, action: #selector(signOut), for: .touchUpInside)
         return signOutButton
@@ -23,7 +26,7 @@ class SettingViewController: UIViewController {
     lazy var deleteAccountButton: UIButton = {
         let deleteAccountButton = UIButton()
         deleteAccountButton.frame = CGRect(x: 150, y: 260, width: 120, height: 40)
-        deleteAccountButton.backgroundColor = .SecondaryDefault
+        deleteAccountButton.backgroundColor = .ErrorMidDark
         deleteAccountButton.setTitle("刪除帳號", for: .normal)
         deleteAccountButton.layer.cornerRadius = 10
         deleteAccountButton.addTarget(self, action: #selector(deleteAccountButtonTouchUpInside), for: .touchUpInside)
@@ -34,8 +37,27 @@ class SettingViewController: UIViewController {
         super.viewDidLoad()
         
         self.view.backgroundColor = .SecondaryLight
+        layoutView()
+        
+    }
+    
+    func layoutView() {
+        
         self.view.addSubview(signOutButton)
         self.view.addSubview(deleteAccountButton)
+        
+        signOutButton.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(72)
+            make.trailing.equalTo(self.view.snp.centerX).offset(-8)
+            make.height.equalTo(40)
+            make.width.equalTo(120)
+        }
+        deleteAccountButton.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(72)
+            make.leading.equalTo(self.view.snp.centerX).offset(8)
+            make.height.equalTo(40)
+            make.width.equalTo(120)
+        }
         
     }
     
