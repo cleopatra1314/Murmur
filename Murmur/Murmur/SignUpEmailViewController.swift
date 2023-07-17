@@ -97,7 +97,8 @@ class SignUpEmailViewController: UIViewController {
     private lazy var nextButton: UIButton = {
         let nextButton = UIButton()
         nextButton.setTitle("下一步", for: .normal)
-        nextButton.setTitleColor(.GrayScale0, for: .normal)
+        nextButton.setTitleColor(.GrayScale20, for: .normal)
+        nextButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         nextButton.backgroundColor = .SecondaryMiddle
         nextButton.layer.cornerRadius = 12
         nextButton.addTarget(self, action: #selector(nextButtonTouchUpInside), for: .touchUpInside)

@@ -111,7 +111,8 @@ class SignUpNickNameViewController: UIViewController {
     private lazy var signUpWithEmailButton: UIButton = {
         let signUpWithEmailButton = UIButton()
         signUpWithEmailButton.setTitle("註冊", for: .normal)
-        signUpWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signUpWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
+        signUpWithEmailButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)

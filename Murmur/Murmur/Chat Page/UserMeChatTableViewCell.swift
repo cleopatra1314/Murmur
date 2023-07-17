@@ -25,7 +25,7 @@ class UserMeChatTableViewCell: UITableViewCell {
         dialogTextView.textContainerInset = .init(top: 8, left: 12, bottom: 8, right: 12)
         dialogTextView.backgroundColor = .SecondaryDefault
         dialogTextView.font = UIFont(name: "PingFangTC-Regular", size: 14)
-        dialogTextView.textColor = .GrayScale80
+        dialogTextView.textColor = .GrayScale90
         dialogTextView.layer.cornerRadius = 16
         dialogTextView.isScrollEnabled = false
         
@@ -33,10 +33,8 @@ class UserMeChatTableViewCell: UITableViewCell {
     }()
     let createdTimeLabel: UILabel = {
         let createdTimeLabel = UILabel()
-        createdTimeLabel.textColor = .GrayScale0
+        createdTimeLabel.textColor = .GrayScale20
         createdTimeLabel.font = UIFont(name: "PingFangTC-Regular", size: 10)
-//        createdTimeLabel.text = "\(Timestamp(date: Date()))"
-        createdTimeLabel.text = "08:20"
         return createdTimeLabel
     }()
     

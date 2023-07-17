@@ -19,7 +19,7 @@ class ChatRoomTableViewCell: UITableViewCell {
         return otherUserImageView
     }()
     let attributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
+        .font: UIFont(name: "PingFangTC-Medium", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
         .foregroundColor: UIColor.red,
         .backgroundColor: UIColor.green,
         .underlineStyle: NSUnderlineStyle.single.rawValue,
@@ -29,18 +29,19 @@ class ChatRoomTableViewCell: UITableViewCell {
     let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 6
+        stack.spacing = 4
         return stack
     }()
     let otherUserNameLabel: UILabel = {
         let otherUserNameLabel = UILabel()
-        otherUserNameLabel.textColor = .PrimaryDark
-//        otherUserNameLabel.attributedText
+        otherUserNameLabel.textColor = .PrimaryMid
+        otherUserNameLabel.font = UIFont(name: "PingFangTC-Medium", size: 18)
         return otherUserNameLabel
     }()
     let otherUserFirstMessageLabel: UILabel = {
         let otherUserFirstMessageLabel = UILabel()
-        otherUserFirstMessageLabel.textColor = .GrayScale20
+        otherUserFirstMessageLabel.textColor = .PrimaryDark?.withAlphaComponent(0.6)
+        otherUserFirstMessageLabel.font = UIFont(name: "PingFangTC-Regular", size: 14)
         return otherUserFirstMessageLabel
     }()
     let messageSendStateImageView: UIImageView = {

@@ -26,7 +26,7 @@ class SignInViewController: UIViewController {
         titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.textColor = .PrimaryMidDarkContrast
         return titleLabel
     }()
     private let emailLabel: UILabel = {
@@ -74,7 +74,8 @@ class SignInViewController: UIViewController {
     private lazy var signInWithEmailButton: UIButton = {
         let signInWithEmailButton = UIButton()
         signInWithEmailButton.setTitle("登入", for: .normal)
-        signInWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signInWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
+        signInWithEmailButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         signInWithEmailButton.backgroundColor = .SecondaryMiddle
         signInWithEmailButton.layer.cornerRadius = 12
         signInWithEmailButton.addTarget(self, action: #selector(signInWithEmailButtonTouchUpInside), for: .touchUpInside)

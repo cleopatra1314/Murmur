@@ -13,8 +13,8 @@ class TagCollectionViewCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.textColor = .PrimaryDark
-        titleLabel.font = UIFont(name: "PingFangTC-Regular", size: 12)
+        titleLabel.textColor = .PrimaryMid
+        titleLabel.font = UIFont(name: "PingFangTC-Regular", size: 13)
         return titleLabel
     }()
     
@@ -30,12 +30,12 @@ class TagCollectionViewCell: UICollectionViewCell {
     }
     
     func layoutCell() {
-        self.backgroundColor = .white
+        self.backgroundColor = .ShadowOfMessage
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.PrimaryMiddle?.cgColor
 //        tagButton.setTitleColor(UIColor.black, for: .normal)
 //        tagButton.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 8, right: 8)
-        self.layer.addWhiteShadow()
+        self.layer.addShineShadow()
         
         contentView.addSubview(titleLabel)
         

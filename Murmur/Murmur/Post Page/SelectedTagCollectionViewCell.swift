@@ -42,7 +42,7 @@ class SelectedTagCollectionViewCell: UICollectionViewCell {
         self.backgroundColor = .ErrorMidDark
         self.layer.borderWidth = 0
         self.layer.borderColor = UIColor.GrayScale20?.cgColor
-        self.layer.addWhiteShadow()
+        self.layer.addShineShadow()
         
         self.contentView.addSubview(titleLabel)
         self.contentView.addSubview(crossImageView)

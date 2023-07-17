@@ -13,7 +13,7 @@ class PostTagCollectionReusableHeaderView: UICollectionReusableView {
     let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .PrimaryDark
         label.textAlignment = .left
         return label

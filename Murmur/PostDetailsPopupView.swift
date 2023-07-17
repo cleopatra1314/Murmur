@@ -41,7 +41,7 @@ class PostDetailsPopupView: UIView {
         let postContentLabel = UILabel()
         postContentLabel.backgroundColor = .PrimaryLighter
         postContentLabel.textColor = .PrimaryDark
-        postContentLabel.textAlignment = .justified
+        postContentLabel.numberOfLines = 0
         postContentLabel.font = UIFont(name: "PingFangTC-Regular", size: 16)
         return postContentLabel
     }()

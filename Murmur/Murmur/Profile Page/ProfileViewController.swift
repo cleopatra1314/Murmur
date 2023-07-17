@@ -77,45 +77,7 @@ class ProfileViewController: UIViewController {
         fetchUserData()
     }
     
-    /// Animates a view to scale in and display
-    func animateScaleIn(desiredView: UIView) {
-        let backgroundView = self.view!
-        backgroundView.addSubview(desiredView)
-        backgroundView.bringSubviewToFront(desiredView)
-        desiredView.center = backgroundView.center
-        desiredView.isHidden = false
-        
-        desiredView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-        desiredView.alpha = 0
-        
-        UIView.animate(withDuration: 0.3) {
-            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-            desiredView.alpha = 1
-//            desiredView.transform = CGAffineTransform.identity
-        }
-        
-        self.tabBarController?.tabBar.isHidden = true
-    }
     
-    /// Animates a view to scale out remove from the display
-    func animateScaleOut(desiredView: UIView) {
-        UIView.animate(withDuration: 0.3, animations: {
-            desiredView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
-            desiredView.alpha = 0
-            
-        }, completion: { (success: Bool) in
-            self.tabBarController?.tabBar.isHidden = false
-            desiredView.removeFromSuperview()
-        })
-        
-        UIView.animate(withDuration: 0.2, animations: {
-            
-        }, completion: { _ in
-            
-        })
-        
-    }
-
     private func layoutGradient() {
         
         let gradientLayer = CAGradientLayer()
@@ -311,9 +273,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = ScrollTableViewCell()
             cell.layoutView(viewController: self)
             cell.postsVC.showPostsDetailsPopupClosure = { [self] data, rowOfIndexPath in
+                
                 popupView.postImageView.kf.setImage(with: URL(string: data[rowOfIndexPath].murmurImage))
                 popupView.postContentLabel.text = data[rowOfIndexPath].murmurMessage
-//                popupView.tagArray.removeAll()
+                //                popupView.tagArray.removeAll()
                 popupView.tagArray = data[rowOfIndexPath].selectedTags
                 popupView.currentRowOfIndexpath = rowOfIndexPath
                 

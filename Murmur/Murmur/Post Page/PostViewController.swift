@@ -40,30 +40,43 @@ class PostViewController: UIViewController {
     private let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 40
+        stack.layer.cornerRadius = 20
+        stack.clipsToBounds = true
         return stack
+    }()
+    private let separaterbar: UIView = {
+        let separaterbar = UIView()
+        separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
+        separaterbar.backgroundColor = .PrimaryLight
+        return separaterbar
     }()
     private lazy var albumButton: UIButton = {
         let albumButton = UIButton()
-        albumButton.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
-        albumButton.setImage(UIImage(named: "Icons_Album.png"), for: .normal)
+//        albumButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        albumButton.backgroundColor = .GrayScale20?.withAlphaComponent(0.7)
+        albumButton.tintColor = .SecondaryMiddle
+        albumButton.setImage(UIImage(named: "Icons_Album1.png"), for: .normal)
         albumButton.addTarget(self, action: #selector(albumButtonTouchUpInside), for: .touchUpInside)
         return albumButton
     }()
     private lazy var captureButton: UIButton = {
-        let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
-        captureButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
+//        let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+        captureButton.backgroundColor = .SecondaryMiddle?.withAlphaComponent(0.7)
+        captureButton.tintColor = .GrayScale20
+        captureButton.setImage(UIImage(named: "Icons_Camera1.png"), for: .normal)
         captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
         return captureButton
     }()
     private lazy var trashButton: UIButton = {
-        let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+//        let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        trashButton.tintColor = .GrayScale60
         trashButton.setImage(UIImage(named: "Icons_Trash.png"), for: .normal)
         trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
         return trashButton
     }()
     private lazy var frontCameraButton: UIButton = {
-        let frontCameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+//        let frontCameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        frontCameraButton.tintColor = .GrayScale60
         frontCameraButton.setImage(UIImage(named: "Icons_FrontCamera.png"), for: .normal)
         frontCameraButton.addTarget(self, action: #selector(frontCameraButtonTouchUpInside), for: .touchUpInside)
         return frontCameraButton
@@ -259,7 +272,7 @@ class PostViewController: UIViewController {
         self.navigationItem.title = "塗鴉留言"
         
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
-        closeButtonItem.tintColor = .SecondaryDefault
+        closeButtonItem.tintColor = .SecondaryLight
         navigationItem.leftBarButtonItem = closeButtonItem
         
         let nextButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonItemTouchUpInside))
@@ -287,7 +300,7 @@ class PostViewController: UIViewController {
         [murmurTextField, murmurImageView, murmurView, trashButton, frontCameraButton, stack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [albumButton, captureButton].forEach { subview in
+        [albumButton, separaterbar, captureButton].forEach { subview in
             stack.addArrangedSubview(subview)
         }
         
@@ -322,6 +335,18 @@ class PostViewController: UIViewController {
         stack.snp.makeConstraints { make in
             make.top.equalTo(murmurView.snp.bottom).offset(24)
             make.centerX.equalTo(self.view.snp.centerX)
+        }
+        captureButton.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(48)
+        }
+        separaterbar.snp.makeConstraints { make in
+            make.width.equalTo(2)
+            make.height.equalTo(48)
+        }
+        albumButton.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(48)
         }
     }
 

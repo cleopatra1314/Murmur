@@ -78,7 +78,7 @@ class FootPrintViewController: UIViewController {
             
             let coordinateOfMessage = CLLocationCoordinate2D(latitude: murmur.location["latitude"]!, longitude: murmur.location["longitude"]!)
             
-            let annotation = InsideMessageAnnotation(coordinate: coordinateOfMessage)
+            let annotation = InsideMessageAnnotation(murmurData: murmur, coordinate: coordinateOfMessage)
             annotation.title = murmur.murmurMessage
             mapView.addAnnotation(annotation)
             

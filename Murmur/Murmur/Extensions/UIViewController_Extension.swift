@@ -12,6 +12,46 @@ import MapKit
 
 extension UIViewController {
     
+    /// Animates a view to scale in and display
+    func animateScaleIn(desiredView: UIView) {
+        let backgroundView = self.view!
+        backgroundView.addSubview(desiredView)
+        backgroundView.bringSubviewToFront(desiredView)
+        desiredView.center = backgroundView.center
+        desiredView.isHidden = false
+        
+        desiredView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        desiredView.alpha = 0
+        
+        UIView.animate(withDuration: 0.3) {
+            desiredView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+            desiredView.alpha = 1
+//            desiredView.transform = CGAffineTransform.identity
+        }
+        
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    /// Animates a view to scale out remove from the display
+    func animateScaleOut(desiredView: UIView) {
+        UIView.animate(withDuration: 0.3, animations: {
+            desiredView.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            desiredView.alpha = 0
+            
+        }, completion: { (success: Bool) in
+            self.tabBarController?.tabBar.isHidden = false
+            desiredView.removeFromSuperview()
+        })
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            
+        }, completion: { _ in
+            
+        })
+        
+    }
+
+    
     ///   - message: 提示訊息
     ///   - vc: 要在哪一個 UIViewController 上呈現
     ///   - actionHandler: 按下按鈕後要執行的動作，沒有的話就填 nil

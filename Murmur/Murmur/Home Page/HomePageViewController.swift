@@ -90,7 +90,7 @@ class HomePageViewController: UIViewController {
     private let btnStack: UIStackView = {
         let btnStack = UIStackView()
         btnStack.axis = .vertical
-        btnStack.layer.cornerRadius = 10
+        btnStack.layer.cornerRadius = 12
         btnStack.clipsToBounds = true
         return btnStack
     }()
@@ -120,13 +120,13 @@ class HomePageViewController: UIViewController {
     private let separaterbar1: UIView = {
         let separaterbar = UIView()
         separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
-        separaterbar.backgroundColor = .SecondaryDefault
+        separaterbar.backgroundColor = .SecondaryShine
         return separaterbar
     }()
     private let separaterbar2: UIView = {
         let separaterbar = UIView()
         separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
-        separaterbar.backgroundColor = .SecondaryDefault
+        separaterbar.backgroundColor = .SecondaryShine
         return separaterbar
     }()
 
