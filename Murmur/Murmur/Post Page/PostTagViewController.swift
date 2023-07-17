@@ -13,12 +13,12 @@ import SnapKit
 
 class PostTagViewController: UIViewController {
     
-    var MWtagArray = ["🎨 Art", "🍜 Food", "🏍️ Motorcycle", "🤔 Mood", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "😆 Entertainment", "👩🏻‍🤝‍👨🏼 Friends", "🥨 Philodophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel"] {
+    var MWtagArray = ["🎨 Art", "🍜 Food", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "☕️ Coffee", "❓ Mystery", "🥳 Happy", "😠 Angry", "🥲 Sad", "😖 Anxious", "🥱 Tired", "🤔 Mood", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🛍️ Shopping", "😆 Entertainment", "👩🏻‍🤝‍👨🏼 Friends", "🥨 Philodophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "⚪️ White", "⚫️ Black"] {
         didSet {
             postTagCollectionView.reloadData()
         }
     }
-    var selectedTagArray = ["🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel"] {
+    var selectedTagArray = ["🎨 Art"] {
         didSet {
             postTagCollectionView.reloadData()
         }
@@ -40,6 +40,7 @@ class PostTagViewController: UIViewController {
         return numberOfTagLabel
     }()
     lazy var postTagCollectionView: UICollectionView = {
+//        let layout = UICollectionViewFlowLayout()
         let layout = TagCollectionViewFlowLayout()
         // section 的間距
 //        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
@@ -58,14 +59,16 @@ class PostTagViewController: UIViewController {
         let postTagCollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         // 背景顏色
         postTagCollectionView.backgroundColor = .PrimaryLighter
-        // items 靠右或靠左
-        postTagCollectionView.semanticContentAttribute = UISemanticContentAttribute.forceRightToLeft
+        // items 靠右
+//        postTagCollectionView.semanticContentAttribute = UISemanticContentAttribute.forceRightToLeft
+//        layout.headerReferenceSize = CGSize(width: 0, height: 180)
+        layout.sectionHeadersPinToVisibleBounds = false
         
         // 你所註冊的cell
         postTagCollectionView.register(PostTagCollectionReusableHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "\(PostTagCollectionReusableHeaderView.self)")
+        postTagCollectionView.register(PostTagCollectionReusableFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "\(PostTagCollectionReusableFooterView.self)")
         postTagCollectionView.register(SelectedTagCollectionViewCell.self, forCellWithReuseIdentifier: "\(SelectedTagCollectionViewCell.self)")
         postTagCollectionView.register(TagCollectionViewCell.self, forCellWithReuseIdentifier: "\(TagCollectionViewCell.self)")
-        postTagCollectionView.register(PostTagCollectionReusableFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "\(PostTagCollectionReusableFooterView.self)")
         
         postTagCollectionView.delegate = self
         postTagCollectionView.dataSource = self
@@ -88,6 +91,7 @@ class PostTagViewController: UIViewController {
         self.view.backgroundColor = .PrimaryLight
         setNav()
         layoutView()
+        
         
 //        postTagCollectionView.collectionViewLayout = generateLayout()
  
@@ -181,6 +185,7 @@ class PostTagViewController: UIViewController {
                 let selectedImageUrlString = url.absoluteString
                 
                 murmurData["murmurImage"] = selectedImageUrlString
+                murmurData["selectedTags"] = selectedTagArray
                 
                 createMurmur()
                 
@@ -241,8 +246,8 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         if kind == UICollectionView.elementKindSectionHeader {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(PostTagCollectionReusableHeaderView.self)", for: indexPath) as? PostTagCollectionReusableHeaderView else { return UICollectionReusableView() }
-            headerView.label.text = "你的塗鴉內容跟什麼有關呢？"  //"About your murmurs"
-            //            headerView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 50)
+            headerView.label.text = "你的塗鴉內容與什麼有關呢？"  //"About your murmurs"
+//                        headerView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 50)
             return headerView
             
         } else if kind == UICollectionView.elementKindSectionFooter {
@@ -254,8 +259,7 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
         } else {
             return UICollectionReusableView()
         }
-        
-//            return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(PostTagCollectionReusableFooterView.self)", for: indexPath)
+
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -286,15 +290,18 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
     // 調整 Header 尺寸
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if section == 0 {
-            let headerView = PostTagCollectionReusableHeaderView() // 創建一個暫時的 headerView
-            // 設定 headerView 的內容
-            headerView.label.text = "你的塗鴉內容跟什麼有關呢？"  //"About your murmurs"
-//            headerView.label.font = .systemFont(ofSize: 28)
-//            headerView.translatesAutoresizingMaskIntoConstraints = false
-//             根據內容計算動態大小
-            let fittingSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
-            let size = headerView.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-            return size
+//            let headerView = PostTagCollectionReusableHeaderView() // 創建一個暫時的 headerView
+//            // 設定 headerView 的內容
+//            headerView.label.text = "你的塗鴉內容跟什麼有關呢？"  //"About your murmurs"
+////            headerView.label.font = .systemFont(ofSize: 28)
+////            headerView.translatesAutoresizingMaskIntoConstraints = false
+////             根據內容計算動態大小
+//            let fittingSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
+//            let size = headerView.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+//            return size
+            
+            // selectedTag 區
+            return CGSize(width: 0, height: 80)
             
         } else {
             return .zero
@@ -307,8 +314,8 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
             let footerView = PostTagCollectionReusableFooterView() // 創建一個暫時的 headerView
             // 設定 headerView 的內容
             footerView.label.text = "1 / 5 (At least 1)"
-            footerView.label.font = .systemFont(ofSize: 28)
-            footerView.translatesAutoresizingMaskIntoConstraints = false
+//            footerView.label.font = .systemFont(ofSize: 28)
+//            footerView.translatesAutoresizingMaskIntoConstraints = false
             // 根據內容計算動態大小
             let fittingSize = CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height)
             let size = footerView.systemLayoutSizeFitting(fittingSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
@@ -327,6 +334,9 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
             
         } else if indexPath.section == 1 {
             
+            if selectedTagArray.count >= 5 {
+                return
+            }
             let selectedtag = MWtagArray.remove(at: indexPath.row)
             selectedTagArray.append(selectedtag)
             
@@ -340,12 +350,14 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
 extension PostTagViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if section == 0 {
-            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            return UIEdgeInsets(top: 16, left: 0, bottom: 4, right: 16)
         } else {
-            return UIEdgeInsets(top: 24, left: 16, bottom: 24, right: 16)
+            return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 16)
         }
-        
+
     }
+    
+    
 
 }
 

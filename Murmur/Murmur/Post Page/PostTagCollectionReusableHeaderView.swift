@@ -25,10 +25,10 @@ class PostTagCollectionReusableHeaderView: UICollectionReusableView {
         backgroundColor = .PrimaryLighter
         addSubview(label)
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -20),
-            label.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -20)
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
+            label.trailingAnchor.constraint(greaterThanOrEqualTo: trailingAnchor, constant: -20),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
         ])
     }
     
