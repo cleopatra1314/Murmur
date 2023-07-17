@@ -313,6 +313,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.postsVC.showPostsDetailsPopupClosure = { [self] data, rowOfIndexPath in
                 popupView.postImageView.kf.setImage(with: URL(string: data[rowOfIndexPath].murmurImage))
                 popupView.postContentLabel.text = data[rowOfIndexPath].murmurMessage
+//                popupView.tagArray.removeAll()
+                popupView.tagArray = data[rowOfIndexPath].selectedTags
                 popupView.currentRowOfIndexpath = rowOfIndexPath
                 
                 reverseGeocodeLocation(latitude: data[rowOfIndexPath].location["latitude"]!, longitude: data[rowOfIndexPath].location["longitude"]!) { address in

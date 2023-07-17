@@ -13,7 +13,11 @@ class PostDetailsPopupView: UIView {
     
     var currentRowOfIndexpath: Int?
     var closeClosure: ((UIView, Int) -> Void)?
-    var tagArray = ["food", "fun", "weird", "motorcycle"]
+    var tagArray: [String]! {
+        didSet {
+            tagCollectionView.reloadData()
+        }
+    }
 
     let postImageView: UIImageView = {
         let postImageView = UIImageView()
@@ -23,13 +27,13 @@ class PostDetailsPopupView: UIView {
     }()
     let postCreatedTimeLabel: UILabel = {
         let postCreatedTimeLabel = UILabel()
-        postCreatedTimeLabel.textColor = .PrimaryDark
+        postCreatedTimeLabel.textColor = .PrimaryDark?.withAlphaComponent(0.8)
         postCreatedTimeLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedTimeLabel
     }()
     let postCreatedSiteLabel: UILabel = {
         let postCreatedSiteLabel = UILabel()
-        postCreatedSiteLabel.textColor = .PrimaryDark
+        postCreatedSiteLabel.textColor = .PrimaryDark?.withAlphaComponent(0.8)
         postCreatedSiteLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
         return postCreatedSiteLabel
     }()
@@ -37,15 +41,18 @@ class PostDetailsPopupView: UIView {
         let postContentLabel = UILabel()
         postContentLabel.backgroundColor = .PrimaryLighter
         postContentLabel.textColor = .PrimaryDark
+        postContentLabel.textAlignment = .justified
         postContentLabel.font = UIFont(name: "PingFangTC-Regular", size: 16)
         return postContentLabel
     }()
     lazy var tagCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = TagCollectionViewFlowLayout()
         // section的間距
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        // cell間距
-        layout.minimumLineSpacing = 6
+//        layout.sectionInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        // 每行 cell 間距
+        layout.minimumLineSpacing = 8
+        // cell 之間間距
+        layout.minimumInteritemSpacing = 6
         // cell 長寬
         //        layout.itemSize = CGSize(width: 100, height: 30)
         // 滑動的方向
@@ -67,8 +74,9 @@ class PostDetailsPopupView: UIView {
     }()
     private lazy var closeButton: UIButton = {
         let closeButton = UIButton()
-        closeButton.setImage(UIImage(named: "Icons_Close.png"), for: .normal)
+        closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTouchUpInside), for: .touchUpInside)
+        closeButton.tintColor = .SecondaryDark
         return closeButton
     }()
     
@@ -115,24 +123,25 @@ class PostDetailsPopupView: UIView {
             make.top.equalTo(postImageView.snp.bottom).offset(24)
             make.centerX.equalTo(self)
         }
+        postCreatedTimeLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         postCreatedSiteLabel.snp.makeConstraints { make in
             make.top.equalTo(postCreatedTimeLabel.snp.bottom).offset(6)
             make.centerX.equalTo(self)
         }
         tagCollectionView.snp.makeConstraints { make in
             make.top.equalTo(postCreatedSiteLabel.snp.bottom).offset(20)
-            make.leading.equalTo(self).offset(40)
-            make.trailing.equalTo(self).offset(-40)
-            make.height.equalTo(80)
+            make.leading.equalTo(self).offset(32)
+            make.trailing.equalTo(self).offset(-32)
+            make.height.equalTo(84)
         }
         postContentLabel.snp.makeConstraints { make in
             make.top.equalTo(tagCollectionView.snp.bottom).offset(16)
             make.leading.equalTo(self).offset(60)
-            make.trailing.equalTo(self).offset(-60)
-            make.bottom.equalTo(self).offset(-40)
+            make.trailing.lessThanOrEqualTo(self).offset(-60)
+            make.bottom.lessThanOrEqualTo(self).offset(-40)
         }
         closeButton.snp.makeConstraints { make in
-            make.height.width.equalTo(16)
+            make.height.width.equalTo(18)
             make.leading.equalTo(24)
             make.top.equalTo(24)
         }
@@ -151,6 +160,7 @@ extension PostDetailsPopupView: UICollectionViewDelegate, UICollectionViewDataSo
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(TagCollectionViewCell.self)", for: indexPath) as? TagCollectionViewCell else { return TagCollectionViewCell()}
         cell.titleLabel.text = tagArray[indexPath.row]
+        
         
         return cell
     }
