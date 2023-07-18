@@ -33,6 +33,7 @@ class UserTheOtherTableViewCell: UITableViewCell {
         dialogTextView.textColor = .GrayScale90
         dialogTextView.layer.cornerRadius = 16
         dialogTextView.isScrollEnabled = false
+        dialogTextView.isEditable = false
         
         return dialogTextView
     }()
