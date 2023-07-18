@@ -322,7 +322,8 @@ class HomePageViewController: UIViewController {
             make.top.equalTo(self.view)
             make.leading.equalTo(self.view)
             make.trailing.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-80)
+//            make.bottom.equalTo(self.view).offset(-80)
+            make.bottom.equalTo(self.view)
         }
         btnStack.snp.makeConstraints { make in
             make.top.equalTo(self.view).offset(80)

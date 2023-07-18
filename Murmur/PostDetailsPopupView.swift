@@ -76,7 +76,7 @@ class PostDetailsPopupView: UIView {
         let closeButton = UIButton()
         closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTouchUpInside), for: .touchUpInside)
-        closeButton.tintColor = .SecondaryDark
+        closeButton.tintColor = .PrimaryMid
         return closeButton
     }()
     

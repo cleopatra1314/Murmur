@@ -42,7 +42,8 @@ class LocationMessageViewController: UIViewController {
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
     
-    let regionRadius = 200.0 // 範圍半徑
+    let myRegionRadius = 400.0 // 範圍半徑
+    let screenRegionRadius = 480.0
     
     var timer = Timer()
     
@@ -64,8 +65,10 @@ class LocationMessageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        blurView.bounds = self.view.bounds
-        popupView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width*0.9, height: self.view.bounds.height*0.8)
+        popupView.closeClosure = { [self] view, rowOfindexPath in
+            self.animateScaleOut(desiredView: self.popupView)
+            self.animateScaleOut(desiredView: self.blurView)
+        }
         
         
         relocateMyself()
@@ -80,11 +83,14 @@ class LocationMessageViewController: UIViewController {
 
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        blurView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+//        blurView.bounds = self.view.bounds
+        popupView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width*0.9, height: self.view.bounds.height*0.8)
 //        drawCircleRegion()
-//    }
+    }
 
     private func layoutView() {
 
@@ -113,7 +119,7 @@ class LocationMessageViewController: UIViewController {
     func relocateMyself() {
         
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+        let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: screenRegionRadius, longitudinalMeters: screenRegionRadius)
         mapView.setRegion(region, animated: false)
     }
     
@@ -161,7 +167,7 @@ class LocationMessageViewController: UIViewController {
             
             let distanceBetweenMeAndMessage = calculateDistance(from: coordinateOfMessage, to: coordinateOfMe)
             
-            if distanceBetweenMeAndMessage <= 200 {
+            if distanceBetweenMeAndMessage <= myRegionRadius {
                 let annotation = InsideMessageAnnotation(murmurData: murmurItem, coordinate: coordinateOfMessage)
                 annotation.title = murmurItem.murmurMessage
                 mapView.addAnnotation(annotation)
@@ -180,7 +186,7 @@ class LocationMessageViewController: UIViewController {
     
     // 讓範圍跟著用戶移動更新
     private func drawCircleRegion() {
-        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: regionRadius)
+        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: myRegionRadius)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
     }
@@ -223,10 +229,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         self.animateScaleIn(desiredView: self.blurView)
         self.animateScaleIn(desiredView: self.popupView)
         
-        popupView.closeClosure = { [self] view, rowOfindexPath in
-            self.animateScaleOut(desiredView: self.popupView)
-            self.animateScaleOut(desiredView: self.blurView)
-        }
+        
         
     }
     
