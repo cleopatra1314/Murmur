@@ -58,6 +58,7 @@ class FootPrintViewController: UIViewController {
         setLocation()
         layoutView()
         fetchMyMurmur()
+        print("****** FootPrintVC \(self) viewDidLoad")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,33 +68,10 @@ class FootPrintViewController: UIViewController {
         backToMyLocationButtonTouchUpInside()
     }
     
-    private func setAnnotaion() {
-        
-        guard let myMurmurData else { return }
-        
-        // TODO: 先把之前的 annotation 全部清除
-        mapView.removeAnnotations(mapView.annotations)
-        
-        for murmur in myMurmurData {
-            
-            let coordinateOfMessage = CLLocationCoordinate2D(latitude: murmur.location["latitude"]!, longitude: murmur.location["longitude"]!)
-            
-            let annotation = InsideMessageAnnotation(murmurData: murmur, coordinate: coordinateOfMessage)
-            annotation.title = murmur.murmurMessage
-            mapView.addAnnotation(annotation)
-            
-        }
-        
-        // 讓範圍跟著用戶移動更新
-//        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: 200)
-//        mapView.removeOverlays(mapView.overlays)
-//        mapView.addOverlay(circle)
-        
-    }
-    
     private func setLocation() {
         
         mapView.register(CustomAnnotationView.self, forAnnotationViewWithReuseIdentifier: "\(CustomAnnotationView.self)")
+        mapView.register(MeAnnotationView.self, forAnnotationViewWithReuseIdentifier: "\(MeAnnotationView.self)")
         
         // 2. 配置 locationManager
         locationManager.delegate = self
@@ -128,7 +106,7 @@ class FootPrintViewController: UIViewController {
             }
             
             self.myMurmurData = murmurs
-//            print(self.myMurmurData!)
+            print(self.myMurmurData!)
             
             DispatchQueue.main.async {
                 self.setAnnotaion()
@@ -136,6 +114,30 @@ class FootPrintViewController: UIViewController {
             }
             
         }
+        
+    }
+    
+    private func setAnnotaion() {
+        
+        guard let myMurmurData else { return }
+        
+        // TODO: 先把之前的 annotation 全部清除
+        mapView.removeAnnotations(mapView.annotations)
+        
+        for murmur in myMurmurData {
+            
+            let coordinateOfMessage = CLLocationCoordinate2D(latitude: murmur.location["latitude"]!, longitude: murmur.location["longitude"]!)
+            
+            let annotation = InsideMessageAnnotation(murmurData: murmur, coordinate: coordinateOfMessage)
+            annotation.title = murmur.murmurMessage
+            mapView.addAnnotation(annotation)
+            
+        }
+        
+        // 讓範圍跟著用戶移動更新
+//        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: 200)
+//        mapView.removeOverlays(mapView.overlays)
+//        mapView.addOverlay(circle)
         
     }
     
@@ -187,27 +189,30 @@ extension FootPrintViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
-        let identifier = "\(CustomAnnotationView.self)"
-        
-        guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
+        let identifier1 = "\(MeAnnotationView.self)"
+        let identifier2 = "\(CustomAnnotationView.self)"
         
         if annotation.title == "My Location" {
-            guard var meAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? MeAnnotationView else { return MKAnnotationView() }
+            guard var meAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier1, for: annotation) as? MeAnnotationView else { return MKAnnotationView() }
             
-            meAnnotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: "MeAnnotationView.self")
+            meAnnotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: identifier1)
             
-        }else if annotationView == nil {
-            annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            return meAnnotationView
+            //        }else if annotationView == nil {
+        } else {
+            guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier2, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
+            
+            annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier2)
     
             // 是否要讓點擊 annotation 時顯示 title
-            annotationView.canShowCallout = true
-           
-        } else {
+//            annotationView.canShowCallout = true
+            print("地標", annotation, "地標標題", annotation.title)
             annotationView.annotation = annotation
             annotationView.label.text = annotation.title!
             
+            return annotationView
          }
-        return annotationView
+        
         
     }
 }

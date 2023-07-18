@@ -26,13 +26,13 @@ import FirebaseCore
 //    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
 //        // 這個方法留空，因為您不需要在此處更新預覽的 UIKit ViewController
 //    }
-//}
+// }
 //
-//struct ContentView_Previews: PreviewProvider {
+// struct ContentView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        PreviewViewController().previewDevice("iPhone 14") // 根據您的需求選擇預覽的裝置
 //    }
-//}
+// }
 
 class LocationMessageViewController: UIViewController {
     
@@ -43,7 +43,7 @@ class LocationMessageViewController: UIViewController {
     let locationManager = CLLocationManager()
     
     let myRegionRadius = 300.0 // 範圍半徑
-    let screenRegionRadius = 350.0
+    let screenRegionRadius = 550.0
     
     var timer = Timer()
     
@@ -70,7 +70,6 @@ class LocationMessageViewController: UIViewController {
             self.animateScaleOut(desiredView: self.blurView)
         }
         
-        
         relocateMyself()
         
         // 啟動 locationManager，才會執行 CLLocationManagerDelegate 的 func
@@ -85,6 +84,8 @@ class LocationMessageViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        fetchMurmur()
         
         blurView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
 //        blurView.bounds = self.view.bounds
@@ -120,7 +121,7 @@ class LocationMessageViewController: UIViewController {
         
         // 設定初始地圖區域為使用者當前位置
         let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: screenRegionRadius, longitudinalMeters: screenRegionRadius)
-        mapView.setRegion(region, animated: false)
+        mapView.setRegion(region, animated: true)
     }
     
     // 使用者在這個頁面時，每隔幾秒 fetch 一次資料
@@ -178,6 +179,7 @@ class LocationMessageViewController: UIViewController {
                 mapView.addAnnotation(annotation)
                 
             }
+        
         }
         
         drawCircleRegion()
@@ -270,17 +272,17 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             
             guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
             
-            if annotationView == nil {
+//            if annotationView == nil {
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         
                 // 是否要讓點擊 annotation 時顯示 title
-                annotationView.canShowCallout = true
+                annotationView.canShowCallout = false
                 
-            } else {
+//            } else {
                 annotationView.annotation = annotation
                 annotationView.label.text = annotation.title!
                 
-             }
+//             }
             return annotationView
             
         } else if annotation is OutsideMessageAnnotation {
@@ -300,10 +302,11 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         } else {
             let identifier = "MeAnnotation"
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            annotationView?.canShowCallout = true
             
             if annotationView == nil {
                 annotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.canShowCallout = true
+                
             } else {
                 annotationView?.annotation = annotation
             }

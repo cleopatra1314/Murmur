@@ -129,10 +129,10 @@ class PostDetailsPopupView: UIView {
             make.centerX.equalTo(self)
         }
         tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(postCreatedSiteLabel.snp.bottom).offset(20)
+            make.top.equalTo(postCreatedSiteLabel.snp.bottom).offset(8)
             make.leading.equalTo(self).offset(32)
             make.trailing.equalTo(self).offset(-32)
-            make.height.equalTo(84)
+            make.height.equalTo(94)
         }
         postContentLabel.snp.makeConstraints { make in
             make.top.equalTo(tagCollectionView.snp.bottom).offset(16)
@@ -169,7 +169,7 @@ extension PostDetailsPopupView: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension PostDetailsPopupView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 0)
     }
 
 }
