@@ -14,7 +14,7 @@ class PostTagCollectionReusableFooterView: UICollectionReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
 //        label.text = "3 / 5 (At least 1)"
         label.font = .systemFont(ofSize: 14)
-        label.textColor = .PrimaryDark
+        label.textColor = .PrimaryMid
         label.textAlignment = .left
         return label
     }()

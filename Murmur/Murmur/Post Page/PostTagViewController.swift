@@ -13,12 +13,12 @@ import SnapKit
 
 class PostTagViewController: UIViewController {
     
-    var MWtagArray = ["🎨 Art", "🍜 Food", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "☕️ Coffee", "❓ Mystery", "🥳 Happy", "😠 Angry", "🥲 Sad", "😖 Anxious", "🥱 Tired", "🤔 Mood", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🛍️ Shopping", "😆 Entertainment", "👩🏻‍🤝‍👨🏼 Friends", "🥨 Philodophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "⚪️ White", "⚫️ Black"] {
+    var MWtagArray = ["🍜 Food","🎨 Art", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "☕️ Coffee", "❓ Mystery", "🥳 Happy", "😠 Angry", "🥲 Sad", "😖 Anxious", "🥱 Tired", "🤔 Mood", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🛍️ Shopping", "😆 Entertainment", "👩🏻‍🤝‍👨🏼 Friends", "🥨 Philodophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "⚪️ White", "⚫️ Black"] {
         didSet {
             postTagCollectionView.reloadData()
         }
     }
-    var selectedTagArray = ["🎨 Art"] {
+    var selectedTagArray = ["🚥 Street"] {
         didSet {
             postTagCollectionView.reloadData()
         }
@@ -26,19 +26,18 @@ class PostTagViewController: UIViewController {
     
     var uploadImage: UIImage?
 
-    private let titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.text = "About your murmur"
-        return titleLabel
-    }()
+//    private let titleLabel: UILabel = {
+//        let titleLabel = UILabel()
+//        return titleLabel
+//    }()
 //    private let selectedTagStack: UICollectionView = {
 //        let selectedTagStack = UICollectionView()
 //        return selectedTagStack
 //    }()
-    private let numberOfTagLabel: UILabel = {
-        let numberOfTagLabel = UILabel()
-        return numberOfTagLabel
-    }()
+//    private let numberOfTagLabel: UILabel = {
+//        let numberOfTagLabel = UILabel()
+//        return numberOfTagLabel
+//    }()
     lazy var postTagCollectionView: UICollectionView = {
 //        let layout = UICollectionViewFlowLayout()
         let layout = TagCollectionViewFlowLayout()
@@ -164,6 +163,14 @@ class PostTagViewController: UIViewController {
 //        self.navigationController?.popToViewController((self.tabBarController?.viewControllers![0])!, animated: true)
 //        present((self.tabBarController?.viewControllers![0])!, animated: true)
         
+        guard let postVC = self.navigationController?.viewControllers.first as? PostViewController else {
+            print("Error: self.navigationController?.viewControllers.first can't transform to PostViewController")
+            return
+        }
+        postVC.murmurTextField.text = ""
+        postVC.murmurView.isHidden = false
+        postVC.murmurImageView.isHidden = true
+        
         // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
         let homeVC = self.tabBarController?.viewControllers![0] as? HomePageViewController
         homeVC?.switchModeButton.setImage(UIImage(named: "Icons_People"), for: .normal)
@@ -194,14 +201,6 @@ class PostTagViewController: UIViewController {
             }
         }
         
-        guard let postVC = self.navigationController?.viewControllers.first as? PostViewController else {
-            print("Error: self.navigationController?.viewControllers.first can't transform to PostViewController")
-            return
-        }
-        print("上一頁輸入的文字為", postVC.murmurTextField.text)
-        postVC.murmurTextField.text = ""
-        postVC.murmurView.isHidden = false
-        postVC.murmurImageView.isHidden = true
         self.tabBarController?.selectedIndex = 0
         self.navigationController?.popToRootViewController(animated: true)
 //        let postVC2 = self.navigationController?.popToRootViewController as? PostViewController

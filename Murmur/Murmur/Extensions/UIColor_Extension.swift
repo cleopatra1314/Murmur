@@ -44,6 +44,8 @@ private enum MURColor: String {
     
     case ErrorDefault
     case ErrorMidDark
+    
+    case Tag
     // swiftlint:enable identifier_name
 }
 
@@ -83,6 +85,8 @@ extension UIColor {
     
     static let ErrorDefault = murColor(.ErrorDefault)
     static let ErrorMidDark = murColor(.ErrorMidDark)
+    
+    static let Tag = murColor(.Tag)
     
     private static func murColor(_ color: MURColor) -> UIColor? {
         return UIColor(named: color.rawValue)

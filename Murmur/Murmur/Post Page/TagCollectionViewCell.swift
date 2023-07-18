@@ -30,7 +30,7 @@ class TagCollectionViewCell: UICollectionViewCell {
     }
     
     func layoutCell() {
-        self.backgroundColor = .ShadowOfMessage
+        self.backgroundColor = .Tag
         self.layer.borderWidth = 1
         self.layer.borderColor = UIColor.PrimaryMiddle?.cgColor
 //        tagButton.setTitleColor(UIColor.black, for: .normal)

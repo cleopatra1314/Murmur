@@ -13,8 +13,8 @@ class SelectedTagCollectionViewCell: UICollectionViewCell {
 
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.textColor = .GrayScale0
-        titleLabel.font = UIFont(name: "PingFangTC-Regular", size: 12)
+        titleLabel.textColor = .GrayScale20
+        titleLabel.font = UIFont(name: "PingFangTC-Regular", size: 13)
         return titleLabel
     }()
     let crossImageView: UIImageView = {

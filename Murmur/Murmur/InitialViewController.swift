@@ -69,6 +69,7 @@ class InitialViewController: UIViewController {
 //        authorizationAppleIDButton.isHidden = true
         authorizationAppleIDButton.addTarget(self, action: #selector(signInWithAppleButtonTouchUpInside), for: .touchUpInside)
 //        authorizationAppleIDButton.addTarget(self, action: #selector(signUpWithAppleButtonTouchDown), for: .touchDown)
+        authorizationAppleIDButton.isHidden = true
         return authorizationAppleIDButton
     }()
     private let stack: UIStackView = {

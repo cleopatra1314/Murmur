@@ -42,8 +42,8 @@ class LocationMessageViewController: UIViewController {
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
     
-    let myRegionRadius = 400.0 // 範圍半徑
-    let screenRegionRadius = 480.0
+    let myRegionRadius = 300.0 // 範圍半徑
+    let screenRegionRadius = 350.0
     
     var timer = Timer()
     
