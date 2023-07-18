@@ -43,7 +43,7 @@ class LocationMessageViewController: UIViewController {
     let locationManager = CLLocationManager()
     
     let myRegionRadius = 300.0 // 範圍半徑
-    let screenRegionRadius = 450.0
+    let screenRegionRadius = 550.0
     
     var timer = Timer()
     
@@ -272,17 +272,17 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             
             guard var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier, for: annotation) as? CustomAnnotationView else { return MKAnnotationView() }
             
-            if annotationView == nil {
+//            if annotationView == nil {
                 annotationView = CustomAnnotationView(annotation: annotation, reuseIdentifier: identifier)
         
                 // 是否要讓點擊 annotation 時顯示 title
-                annotationView.canShowCallout = true
+                annotationView.canShowCallout = false
                 
-            } else {
+//            } else {
                 annotationView.annotation = annotation
                 annotationView.label.text = annotation.title!
                 
-             }
+//             }
             return annotationView
             
         } else if annotation is OutsideMessageAnnotation {
@@ -302,10 +302,11 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         } else {
             let identifier = "MeAnnotation"
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            annotationView?.canShowCallout = true
             
             if annotationView == nil {
                 annotationView = MeAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-                annotationView?.canShowCallout = true
+                
             } else {
                 annotationView?.annotation = annotation
             }
