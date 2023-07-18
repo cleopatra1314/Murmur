@@ -264,7 +264,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 //                cell.profileImageView.isHidden = false
 //                cell.profileView.isHidden = true
             }
-            cell.profileImageView.image = self.choosedPortraitFromAlbum ?? UIImage(named: "User1Portrait.png")
+            if let picture = self.choosedPortraitFromAlbum {
+                cell.profileImageView.image = picture
+            }
             
             return cell
             

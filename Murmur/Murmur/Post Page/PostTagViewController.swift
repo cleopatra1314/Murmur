@@ -201,12 +201,20 @@ class PostTagViewController: UIViewController {
             }
         }
         
-        self.tabBarController?.selectedIndex = 0
-        self.navigationController?.popToRootViewController(animated: true)
+        self.view.makeToast("成功發布 Murmur", duration: 2, position: .center) { didTap in
+            
+            self.tabBarController?.selectedIndex = 0
+            self.navigationController?.popToRootViewController(animated: true)
+            
+        }
+        
+        
+//        self.navigationController?.popToRootViewController(animated: true)
 //        let postVC2 = self.navigationController?.popToRootViewController as? PostViewController
         
         
-        self.navigationController?.popToRootViewController(animated: true)
+        
+        
         
     }
     

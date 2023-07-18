@@ -34,7 +34,7 @@ class ProfileTableViewCell: UITableViewCell {
     }
     var profileImageView: UIImageView = {
         let profileImageView = UIImageView()
-        profileImageView.image = UIImage(named: "User1Portrait.jpg")
+//        profileImageView.image = UIImage(named: "User1Portrait.jpg")
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.borderColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1).cgColor
         profileImageView.layer.borderWidth = 3
