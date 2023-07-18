@@ -42,21 +42,54 @@ class LocationMessageViewController: UIViewController {
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
     
+    let myRegionRadius = 300.0 // 範圍半徑
+    let screenRegionRadius = 350.0
+    
+    var timer = Timer()
+    
     private let mapView: MKMapView = {
         let mapView = MKMapView()
         return mapView
     }()
-    var timer = Timer()
+    let popupView: PostDetailsPopupView = {
+        let popupView = PostDetailsPopupView()
+        popupView.backgroundColor = .PrimaryLighter
+        return popupView
+    }()
+    let blurView: UIVisualEffectView = {
+        let blurView = UIVisualEffectView()
+        blurView.effect = UIBlurEffect(style: .light)
+        return blurView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        popupView.closeClosure = { [self] view, rowOfindexPath in
+            self.animateScaleOut(desiredView: self.popupView)
+            self.animateScaleOut(desiredView: self.blurView)
+        }
+        
+        
         relocateMyself()
+        
+        // 啟動 locationManager，才會執行 CLLocationManagerDelegate 的 func
+        self.locationManager.startUpdatingLocation()
+        
 //        fetchMurmur()
         layoutView()
         filterLocationMessage()
         setLocation()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        blurView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
+//        blurView.bounds = self.view.bounds
+        popupView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width*0.9, height: self.view.bounds.height*0.8)
+//        drawCircleRegion()
     }
 
     private func layoutView() {
@@ -86,7 +119,7 @@ class LocationMessageViewController: UIViewController {
     func relocateMyself() {
         
         // 設定初始地圖區域為使用者當前位置
-        let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: 300, longitudinalMeters: 300)
+        let region = MKCoordinateRegion(center: currentCoordinate ?? defaultCurrentCoordinate, latitudinalMeters: screenRegionRadius, longitudinalMeters: screenRegionRadius)
         mapView.setRegion(region, animated: false)
     }
     
@@ -126,37 +159,79 @@ class LocationMessageViewController: UIViewController {
         // TODO: 先把之前的 annotation 全部清除
         mapView.removeAnnotations(mapView.annotations)
         
-        for item in murmurData {
+        for murmurItem in murmurData {
 
-            let coordinateOfMessage = CLLocationCoordinate2D(latitude: item.location["latitude"]!, longitude: item.location["longitude"]!)
+            let coordinateOfMessage = CLLocationCoordinate2D(latitude: murmurItem.location["latitude"]!, longitude: murmurItem.location["longitude"]!)
             
             guard let coordinateOfMe = currentCoordinate else { return }
             
             let distanceBetweenMeAndMessage = calculateDistance(from: coordinateOfMessage, to: coordinateOfMe)
             
-            if distanceBetweenMeAndMessage <= 200 {
-                let annotation = InsideMessageAnnotation(coordinate: coordinateOfMessage)
-                annotation.title = item.murmurMessage
+            if distanceBetweenMeAndMessage <= myRegionRadius {
+                let annotation = InsideMessageAnnotation(murmurData: murmurItem, coordinate: coordinateOfMessage)
+                annotation.title = murmurItem.murmurMessage
                 mapView.addAnnotation(annotation)
                 
             } else {
                 let annotation = OutsideMessageAnnotation(coordinate: coordinateOfMessage)
-                annotation.title = item.murmurMessage
+                annotation.title = murmurItem.murmurMessage
                 mapView.addAnnotation(annotation)
                 
             }
         }
         
-        // 讓範圍跟著用戶移動更新
-        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: 200)
+        drawCircleRegion()
+        
+    }
+    
+    // 讓範圍跟著用戶移動更新
+    private func drawCircleRegion() {
+        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: myRegionRadius)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
-        
     }
     
 }
 
 extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDelegate {
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let annotation = view.annotation else {
+            return
+        }
+     
+        guard let annotationSelected = view.annotation as? InsideMessageAnnotation else {
+            print("annotationSelected 轉型 OtherUsersAnnotation 失敗")
+            return
+        }
+        
+        let murmur = annotationSelected.murmurData
+        
+        popupView.postImageView.kf.setImage(with: URL(string: murmur.murmurImage))
+        popupView.postContentLabel.text = murmur.murmurMessage
+        //                popupView.tagArray.removeAll()
+        popupView.tagArray = murmur.selectedTags
+//        popupView.currentRowOfIndexpath = rowOfIndexPath
+        
+        reverseGeocodeLocation(latitude: murmur.location["latitude"]!, longitude: murmur.location["longitude"]!) { address in
+           
+            self.popupView.postCreatedSiteLabel.text = address
+            
+        }
+        
+        let timestamp: Timestamp = murmur.createTime // 從 Firestore 中取得的 Timestamp 值
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy MM dd" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
+        let date = timestamp.dateValue()
+        let formattedTime = dateFormatter.string(from: date)
+        popupView.postCreatedTimeLabel.text = formattedTime
+        
+        self.animateScaleIn(desiredView: self.blurView)
+        self.animateScaleIn(desiredView: self.popupView)
+        
+        
+        
+    }
     
     private func setLocation() {
         
@@ -241,7 +316,7 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
     // CLLocationManagerDelegate 方法，當位置更新時呼叫
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //        updateRegionsWithLocation(locations[0])
-        
+        drawCircleRegion()
         guard let location = locations.last else { return }
         currentCoordinate = location.coordinate
     

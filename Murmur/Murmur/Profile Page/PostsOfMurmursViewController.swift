@@ -9,7 +9,9 @@ import Foundation
 import UIKit
 import Kingfisher
 
-class PostsViewController: UIViewController {
+class PostsOfMurmursViewController: UIViewController {
+    
+    var showPostsDetailsPopupClosure: (([Murmurs], Int) -> Void)?
     
     var murmurData: [Murmurs]? {
         didSet {
@@ -82,15 +84,15 @@ class PostsViewController: UIViewController {
         postsCollectionView.snp.makeConstraints { make in
             make.leading.equalTo(self.view).offset(16)
             make.trailing.equalTo(self.view).offset(-16)
-            make.top.equalTo(self.view).offset(16)
-            make.top.bottom.equalTo(self.view)
+            make.top.bottom.equalTo(self.view).offset(16)
+       
         }
         
     }
     
 }
 
-extension PostsViewController: UICollectionViewDataSource {
+extension PostsOfMurmursViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         1
@@ -120,10 +122,61 @@ extension PostsViewController: UICollectionViewDataSource {
     
 }
 
-extension PostsViewController: UICollectionViewDelegate {
+extension PostsOfMurmursViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("row: \(indexPath.row)")
+
+        self.showPostsDetailsPopupClosure!(murmurData!, indexPath.row)
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        //        // 定義UIContextMenuConfiguration物件
+        //        let config = UIContextMenuConfiguration(identifier: nil,
+        //        previewProvider: nil) { (elements) -> UIMenu? in
+        //        // 這裡定義想增加的功能，這裡是一個刪除功能
+        //        let delete = UIAction(title: "Delete") { (action) in
+        //
+        //        // 自己定義的function
+        ////        self.deleteMeme(at: indexPath)
+        //        }
+        //        // 把功能加進UIMenu物件
+        //        return UIMenu(title: "", image: nil, identifier: nil,
+        //        options: [], children: [delete])
+        //        }
+        //        return config
+        //        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: {
+            suggestedActions in
+            
+            // 欄位1
+            let favoriteAction = UIAction(title: "Hide", image: UIImage(systemName: "eye.slash"), state: .off) { action in
+                print("Hide the murmur.")
+                self.showAlert(title: "新功能開發中，敬請期待！💜", message: "", viewController: self)
+            }
+            // 欄位2
+            let shareAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off) { action in
+                self.showCustomAlert(title: "提醒！", message: "刪除貼文後將無法恢復貼文紀錄，確定要刪除嗎？", viewController: self, okMessage: "確定", closeMessage: "取消") { [self] in
+                    
+                    // userTest -> postedMurmurs
+                    database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(murmurData![indexPath.row].id!).delete(completion: { error in
+                        
+                        // 刪除 murmurTest
+                        database.collection("murmurTest").document(murmurData![indexPath.row].id!).delete(completion: { error in
+                            self.view.makeToast("已刪除 murmur ", duration: 3.0, position: .top)
+                        })
+                        
+                    })
+                    
+                }
+            }
+            
+            //標題
+            return UIMenu(title: "Menu", children: [favoriteAction, shareAction])
+        })
+        
     }
     
 }

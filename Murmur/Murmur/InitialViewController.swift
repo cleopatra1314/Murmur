@@ -11,11 +11,20 @@ import SnapKit
 import FirebaseAuth
 import FirebaseFirestore
 import Lottie
+import AuthenticationServices // Sign in with Apple 的主體框架
+import CryptoKit // 用來產生隨機字串 (Nonce)
+import Toast_Swift
 
 class InitialViewController: UIViewController {
     
+    // MARK: - Sign in with Apple 登入
+    fileprivate var currentNonce: String?
+    
+    private var userProfileData: Users?
+    
     // MARK: Lottie
     let pacmanAnimationView = LottieAnimationView(name: "Pacman")
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
     
     private let backgroundImageView: UIImageView = {
         let backgroundImageView = UIImageView()
@@ -26,62 +35,66 @@ class InitialViewController: UIViewController {
         let mainView = UIView()
         mainView.backgroundColor = .PrimaryLighter
         mainView.layer.cornerRadius = 90
+        mainView.layer.addSaturatedShadow1()
         return mainView
-    }()
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
     }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Let’s murmur the space."
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.text = "Let’s murmur\nthe space"
+        titleLabel.numberOfLines = 0
+        titleLabel.textColor = .ShadowLight
         titleLabel.textAlignment = .center
+        titleLabel.font = UIFont(name: "CaveatBrush-Regular", size: 38)
         return titleLabel
     }()
     private lazy var signUpWithEmailButton: UIButton = {
         let signUpWithEmailButton = UIButton()
         signUpWithEmailButton.setTitle("Sign up with Email", for: .normal)
-        signUpWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signUpWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
+        signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchDown), for: .touchDown)
+        signUpWithEmailButton.layer.addWhiteShadow()
         return signUpWithEmailButton
     }()
-    private let signUpWithAppleButton: UIButton = {
-        let signUpWithAppleButton = UIButton()
-        signUpWithAppleButton.setTitle("Sign up with Apple", for: .normal)
-        signUpWithAppleButton.setTitleColor(.GrayScale0, for: .normal)
-        signUpWithAppleButton.backgroundColor = .SecondaryMiddle
-        signUpWithAppleButton.layer.cornerRadius = 12
-        return signUpWithAppleButton
+    let signInWithAppleButtonView = UIView()
+    private let authorizationAppleIDButton: ASAuthorizationAppleIDButton = {
+        let authorizationAppleIDButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signUp, authorizationButtonStyle: .white)
+//        authorizationAppleIDButton.setTitle("Sign up with Apple", for: .normal)
+//        authorizationAppleIDButton.setTitleColor(.GrayScale0, for: .normal)
+//        authorizationAppleIDButton.backgroundColor = .SecondaryMiddle
+        authorizationAppleIDButton.cornerRadius = 12
+        authorizationAppleIDButton.layer.addWhiteShadow()
+//        authorizationAppleIDButton.isHidden = true
+        authorizationAppleIDButton.addTarget(self, action: #selector(signInWithAppleButtonTouchUpInside), for: .touchUpInside)
+//        authorizationAppleIDButton.addTarget(self, action: #selector(signUpWithAppleButtonTouchDown), for: .touchDown)
+        authorizationAppleIDButton.isHidden = true
+        return authorizationAppleIDButton
     }()
     private let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 4
+        stack.spacing = 6
         return stack
     }()
     private let noteLabel: UILabel = {
         let noteLabel = UILabel()
         noteLabel.text = "Already have an account ?"
-        noteLabel.textColor = .SecondaryDark
+        noteLabel.textColor = .SecondaryMidDark
         return noteLabel
     }()
     private lazy var signInButton: UIButton = {
         let signInButton = UIButton()
         signInButton.frame = CGRect(x: 0, y: 0, width: 46, height: 20)
         signInButton.setTitle("Sign in", for: .normal)
-        signInButton.setTitleColor(.PrimaryMiddle, for: .normal)
+        signInButton.setTitleColor(.SecondarySaturate, for: .normal)
         signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
         return signInButton
     }()
     
     //--------------------------
-    private var userProfileData: Users?
-    
+
 //    let attributes: [NSAttributedString.Key: Any] = [
 //        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
 //        .foregroundColor: UIColor.red,
@@ -97,8 +110,7 @@ class InitialViewController: UIViewController {
         emailTextField.placeholder = "請輸入 email"
         emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
             NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
-            NSAttributedString.Key.kern: 1.5,
-//            NSAttributedString.Key.foregroundColor: UIColor.green
+            NSAttributedString.Key.kern: 1.5
         ])
         emailTextField.layer.borderColor = UIColor.lightGray.cgColor
         emailTextField.layer.borderWidth = 1
@@ -127,22 +139,6 @@ class InitialViewController: UIViewController {
         userNameTextField.layer.borderWidth = 1
         return userNameTextField
     }()
-//    private lazy var signInButton: UIButton = {
-//        let signInButton = UIButton()
-//        signInButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-////        signInButton.backgroundColor = .black
-//        signInButton.setTitle("Sign In", for: .normal)
-//        signInButton.addTarget(self, action: #selector(signInButtonTouchUpInside), for: .touchUpInside)
-//        return signInButton
-//    }()
-    private lazy var signUpButton: UIButton = {
-        let signUpButton = UIButton()
-        signUpButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-//        signUpButton.backgroundColor = .black
-        signUpButton.setTitle("Sign Up", for: .normal)
-        signUpButton.addTarget(self, action: #selector(signUpButtonTouchUpInside), for: .touchUpInside)
-        return signUpButton
-    }()
     private lazy var visitorButton: UIButton = {
         let visitorButton = UIButton()
         visitorButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
@@ -157,7 +153,10 @@ class InitialViewController: UIViewController {
         
         layoutBackground()
         layoutView()
-        lottiePacman()
+        configureAppleSignInButton()
+//        setSignUpWithAppleButton()
+//        lottiePacman()
+        lottieLogoMessageTyping()
         
     }
     
@@ -165,16 +164,92 @@ class InitialViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
+    func setSignUpWithAppleButton() {
+        
+        authorizationAppleIDButton.frame = self.signInWithAppleButtonView.bounds
+        self.signInWithAppleButtonView.addSubview(authorizationAppleIDButton)
+        
+    }
+    
+    /// 點擊 Sign In with Apple 按鈕後，請求授權
+    @objc func signInWithAppleButtonTouchUpInside() {
+        if #available(iOS 13.0, *) {
+            let nonce = randomNonceString()
+            currentNonce = nonce
+            
+            let appleIDProvider = ASAuthorizationAppleIDProvider()
+            let request = appleIDProvider.createRequest()
+            request.requestedScopes = [.fullName, .email]
+            request.nonce = sha256(nonce)
+            
+            let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+            authorizationController.delegate = self
+            authorizationController.presentationContextProvider = self
+            authorizationController.performRequests()
+        }
+    }
+    
+    private func randomNonceString(length: Int = 32) -> String {
+        precondition(length > 0)
+        let charset: Array<Character> = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+
+        while(remainingLength > 0) {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if (errorCode != errSecSuccess) {
+                    fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+                }
+                return random
+            }
+
+            randoms.forEach { random in
+                if (remainingLength == 0) {
+                    return
+                }
+
+                if (random < charset.count) {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
+        }
+        return result
+    }
+
+    private func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        let hashString = hashedData.compactMap {
+            return String(format: "%02x", $0)
+        }.joined()
+        return hashString
+    }
+    
+    @objc func signUpWithAppleButtonTouchDown() {// 点击改变背景色
+        authorizationAppleIDButton.backgroundColor = UIColor.SecondarySaturate
+    }
+    
+    @objc func signUpWithEmailButtonTouchDown() {// 点击改变背景色
+        signUpWithEmailButton.backgroundColor = UIColor.SecondarySaturate
+    }
+    
     func lottiePacman() {
         pacmanAnimationView.play()
         pacmanAnimationView.loopMode = .loop
     }
     
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
+    }
+    
     @objc func signUpWithEmailButtonTouchUpInside() {
-        
+        signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         let signUpEmailVC = SignUpEmailViewController()
         self.navigationController?.pushViewController(signUpEmailVC, animated: true)
-        
     }
     
     @objc func signInButtonTouchUpInside() {
@@ -200,7 +275,7 @@ class InitialViewController: UIViewController {
     }
     
     func layoutView() {
-        [logoImageView, titleLabel, signUpWithAppleButton, signUpWithEmailButton, stack, pacmanAnimationView].forEach { subview in
+        [titleLabel, authorizationAppleIDButton, signUpWithEmailButton, stack, logoMessageTypingAnimationView].forEach { subview in
             mainView.addSubview(subview)
         }
         
@@ -215,102 +290,41 @@ class InitialViewController: UIViewController {
             make.height.equalTo(40)
             make.centerX.equalTo(mainView)
         }
-        signUpWithAppleButton.snp.makeConstraints { make in
-            make.top.equalTo(signUpWithEmailButton.snp.bottom).offset(12)
+        authorizationAppleIDButton.snp.makeConstraints { make in
+            make.top.equalTo(signUpWithEmailButton.snp.bottom).offset(14)
             make.leading.equalTo(mainView).offset(40)
             make.trailing.equalTo(mainView).offset(-40)
             make.height.equalTo(40)
             make.centerX.equalTo(mainView)
         }
         stack.snp.makeConstraints { make in
-            make.top.equalTo(signUpWithAppleButton.snp.bottom).offset(28)
+            make.top.equalTo(authorizationAppleIDButton.snp.bottom).offset(28)
             make.centerX.equalTo(mainView)
         }
-        logoImageView.snp.makeConstraints { make in
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(mainView).offset(40)
-            make.width.equalTo(80)
+            make.width.height.equalTo(52)
             make.centerX.equalTo(mainView)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(18)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
             make.centerX.equalTo(mainView)
         }
         
         noteLabel.snp.makeConstraints { make in
             make.top.leading.bottom.equalTo(stack)
-            make.trailing.equalTo(signInButton.snp.leading).offset(-4)
+            make.trailing.equalTo(signInButton.snp.leading).offset(-6)
         }
         signInButton.snp.makeConstraints { make in
             make.top.trailing.bottom.equalTo(stack)
         }
-        pacmanAnimationView.snp.makeConstraints { make in
-            make.height.width.equalTo(180)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
-            make.centerX.equalTo(self.view)
-        }
+//        pacmanAnimationView.snp.makeConstraints { make in
+//            make.height.width.equalTo(180)
+//            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
+//            make.centerX.equalTo(self.view)
+//        }
     }
-    
-    // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
-    @objc func signInButtonTouchUpInside1() {
         
-        let userEmail = self.emailTextField.text
-        let userPassward = self.passwordTextField.text
-        
-        guard userEmail != "" else {
-            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
-            return
-        }
-        guard userPassward != "" else {
-            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
-            return
-        }
-        
-        Auth.auth().signIn(withEmail: userEmail!, password: userPassward!) { result, error in
-            // ??
-            guard error == nil else {
-                print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                self.errorLabel.text = "打錯帳號密碼齁，再給你一次機會"
-                return
-                
-            }
-            guard let userID = result?.user.uid else {
-                
-                return
-            }
-            currentUserUID = userID
-            print("\(result?.user.uid ?? "") 登入成功")
-            self.createTabBarController()
-            
-        }
-        
-    }
-    
-    // MARK: Sign up through programmer，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
-    @objc func signUpButtonTouchUpInside() {
-        
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { [self] result, error in
-            guard let user = result?.user,
-                  error == nil else {
-                print("註冊失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                return
-            }
-            
-            currentUserUID = user.uid
-
-            let userProfile = Users(onlineState: true, userName: self.userNameTextField.text!, userPortrait: "BetaImageURL", location: ["latitude": 0.0, "longitude": 0.0])
-
-            self.userProfileData = userProfile
-            self.createUsers(userUID: user.uid)
-            
-            // ??
-            DispatchQueue.main.async {
-                self.createTabBarController()
-            }
-            
-        }
-        
-    }
-    
     // MARK: 訪客模式
     @objc func visitorButtonTouchUpInside() {
         
@@ -327,12 +341,7 @@ class InitialViewController: UIViewController {
         
         // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
         database.collection("userTest").document(userUID).setData([
-            // TODO: 這邊寫法為什麼不行
-//            guard let self.userProfileData else {
-//                print("userProfileData is nil.")
-//                return
-//            }
-            
+
             "onlineState": userProfileData.onlineState,
             "userName": userProfileData.userName,
             "userPortrait": userProfileData.userPortrait,
@@ -341,13 +350,167 @@ class InitialViewController: UIViewController {
         ])
         
     }
-    
-    func createTabBarController() {
-        
-        let customTabBarController = CustomTabBarController()
 
-        present(customTabBarController, animated: true)
+    // 由於 apple ID 登入只支援iOS 13 以上的版本，故需控制按鈕是否可使用
+    func configureAppleSignInButton() {
+        if #available(iOS 13.0, *) {
+            signUpWithEmailButton.isHidden = false
+        } else {
+            signUpWithEmailButton.isHidden = true
+        }
+    }
+    
+}
+
+extension InitialViewController {
+    // MARK: - 透過 Credential 與 Firebase Auth 串接
+    func firebaseSignInWithApple(credential: AuthCredential) {
+        Auth.auth().signIn(with: credential) { authResult, error in
+            guard error == nil else {
+                self.showAlert(title: "", message: String(describing: error!.localizedDescription), viewController: self)
+                return
+            }
+            
+            // 確認登入成功後所要做的動作
+            self.view.makeToast("歡迎來到 Murmur World！", duration: 2.5, position: .center, title: "登入成功") { didTap in
+                self.getFirebaseUserInfo()
+            }
+            
+//            let alertController = UIAlertController(title: "登入成功！", message: "開始 murmur", preferredStyle: .alert)
+//
+//            // 加入確定的動作。
+//            let okAction = UIAlertAction(title: "確定", style: .default) { [self] alertAction in
+//                self.getFirebaseUserInfo()
+//            }
+//            alertController.addAction(okAction)
+//
+//            // 呈現 alertController。
+//            self.present(alertController, animated: true)
         
+        }
+    }
+    
+    // MARK: - Firebase 取得登入使用者的資訊
+    func getFirebaseUserInfo() {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            self.showAlert(title: "發生錯誤", message: "無法取得使用者資料，請聯繫開發團隊", viewController: self)
+            return
+        }
+        
+//        currentUserUID = user.uid
+//        let userProfile = Users(onlineState: true, userName: credential. "User", userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+//
+//        self.userProfileData = userProfile
+        self.createUsers(userUID: user.uid)
+        
+        DispatchQueue.main.async {
+            self.createTabBarController()
+        }
+        
+    }
+}
+
+extension InitialViewController: ASAuthorizationControllerDelegate {
+    
+    @available(iOS 13.0, *)
+    /// 授權成功
+    /// - Parameters:
+    ///   - controller: _
+    ///   - authorization: _
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+
+        // 登入成功
+        if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+            guard let nonce = currentNonce else {
+                fatalError("Invalid state: A login callback was received, but no login request was sent.")
+            }
+            guard let appleIDToken = appleIDCredential.identityToken else {
+                self.showAlert(title: "", message: "Unable to fetch identity token", viewController: self)
+                return
+            }
+            guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                self.showAlert(title: "", message: "Unable to fetch identity token", viewController: self)
+                return
+            }
+            // 產生 Apple ID 登入的 Credential
+            let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+            
+            print("user: \(appleIDCredential.user)")
+            print("fullName: \(String(describing: appleIDCredential.fullName))")
+            print("Email: \(String(describing: appleIDCredential.email))")
+            print("realUserStatus: \(String(describing: appleIDCredential.realUserStatus))")
+            
+            let userProfile = Users(id: appleIDCredential.user, onlineState: true, userName: (appleIDCredential.fullName?.familyName ?? "") + (appleIDCredential.fullName?.givenName ?? "User"), userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+            
+            userProfileData = userProfile
+            
+            // 與 Firebase Auth 進行串接
+            firebaseSignInWithApple(credential: credential)
+        }
+        
+    }
+    
+    /// 授權失敗
+    /// - Parameters:
+    ///   - controller: _
+    ///   - error: _
+    @available(iOS 13.0, *)
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+                
+        switch (error) {
+        case ASAuthorizationError.canceled:
+            showAlert(title: "登入失敗", message: "請完成登入哦！", viewController: self)
+            print("使用者取消登入", error.localizedDescription)
+            break
+        case ASAuthorizationError.failed:
+            showAlert(title: "授權請求失敗", message: "\(error.localizedDescription)", viewController: self)
+            break
+        case ASAuthorizationError.invalidResponse:
+            showAlert(title: "授權請求無回應", message: "\(error.localizedDescription)", viewController: self)
+            break
+        case ASAuthorizationError.notHandled:
+            showAlert(title: "授權請求未處理", message: "\(error.localizedDescription)", viewController: self)
+            break
+        case ASAuthorizationError.unknown:
+            showAlert(title: "授權失敗，原因不知", message: "\(error.localizedDescription)", viewController: self)
+            break
+        default:
+            break
+        }
+                    
+        print("didCompleteWithError: \(error.localizedDescription)")
+    }
+    
+    // MARK: - 監聽目前的 Apple ID 的登入狀況
+    // 主動監聽
+    func checkAppleIDCredentialState(userID: String) {
+        ASAuthorizationAppleIDProvider().getCredentialState(forUserID: userID) { credentialState, error in
+            switch credentialState {
+            case .authorized:
+                self.showAlert(title: "使用者已授權！", message: "", viewController: self)
+                
+            case .revoked:
+                self.showAlert(title: "使用者憑證已被註銷！", message: "請到\n「設定 → Apple ID → 密碼與安全性 → 使用 Apple ID 的 App」\n將此 App 停止使用 Apple ID\n並再次使用 Apple ID 登入 Murmur", viewController: self)
+                
+            case .notFound:
+                self.showAlert(title: "使用者尚未使用過 Apple ID 登入！", message: "請重新登入", viewController: self)
+                
+            case .transferred:
+                self.showAlert(title: "系統提醒", message: "請與開發者團隊進行聯繫，以利進行使用者遷移！", viewController: self)
+                
+            default:
+                break
+            }
+        }
+    }
+    
+}
+
+extension InitialViewController: ASAuthorizationControllerPresentationContextProviding {
+    
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window ?? ASPresentationAnchor()
     }
     
 }

@@ -25,20 +25,27 @@ private enum MURColor: String {
     case PrimaryMid
     case PrimaryMiddle
     case PrimaryMidDark
+    case PrimaryMidDarkContrast
     case PrimaryDark
     
     case SecondaryDefault
     case SecondaryLight
+    case SecondaryLighter
     case SecondaryMiddle
     case SecondaryMidDark
     case SecondaryDark
     case SecondaryShine
+    case SecondarySaturate
     
     case ShadowLight
     case ShadowLight2
+    case ShadowLight3
     case ShadowOfMessage
     
     case ErrorDefault
+    case ErrorMidDark
+    
+    case Tag
     // swiftlint:enable identifier_name
 }
 
@@ -59,20 +66,27 @@ extension UIColor {
     static let PrimaryMid = murColor(.PrimaryMid)
     static let PrimaryMiddle = murColor(.PrimaryMiddle)
     static let PrimaryMidDark = murColor(.PrimaryMidDark)
+    static let PrimaryMidDarkContrast = murColor(.PrimaryMidDarkContrast)
     static let PrimaryDark = murColor(.PrimaryDark)
     
     static let SecondaryDefault = murColor(.SecondaryDefault)
     static let SecondaryLight = murColor(.SecondaryLight)
+    static let SecondaryLighter = murColor(.SecondaryLighter)
     static let SecondaryMiddle = murColor(.SecondaryMiddle)
     static let SecondaryMidDark = murColor(.SecondaryMidDark)
     static let SecondaryDark = murColor(.SecondaryDark)
     static let SecondaryShine = murColor(.SecondaryShine)
+    static let SecondarySaturate = murColor(.SecondarySaturate)
     
     static let ShadowLight = murColor(.ShadowLight)
     static let ShadowLight2 = murColor(.ShadowLight2)
+    static let ShadowLight3 = murColor(.ShadowLight3)
     static let ShadowOfMessage = murColor(.ShadowOfMessage)
     
     static let ErrorDefault = murColor(.ErrorDefault)
+    static let ErrorMidDark = murColor(.ErrorMidDark)
+    
+    static let Tag = murColor(.Tag)
     
     private static func murColor(_ color: MURColor) -> UIColor? {
         return UIColor(named: color.rawValue)

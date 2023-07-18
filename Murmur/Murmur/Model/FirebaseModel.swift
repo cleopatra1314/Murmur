@@ -21,7 +21,7 @@ struct Murmurs: Codable, Identifiable {
     let murmurMessage: String
     let murmurImage: String
     let selectedTags: Array<String>
-    let createTime: Date
+    let createTime: Timestamp
 //    @ServerTimestamp var createTime: Timestamp
 }
 
@@ -30,7 +30,7 @@ struct Users: Codable, Identifiable {
     
     var murmur: String?
     var onlineState: Bool
-    let userName: String
+    var userName: String
     var userPortrait: String
     var location: [String: Double]
 }
@@ -56,7 +56,8 @@ struct ChatRooms: Codable, Identifiable {
 struct ChatRoomMessages: Codable, Identifiable {
     @DocumentID var id: String?
     
-    var createTime: Timestamp
+    let chatRoomCreateTime: Timestamp
+    var latestMessageCreateTime: Timestamp
     let theOtherUserUID: String
     let theOtherUserName: String
     let theOtherUserPortraitUrlString: String

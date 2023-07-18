@@ -40,30 +40,43 @@ class PostViewController: UIViewController {
     private let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
-        stack.spacing = 40
+        stack.layer.cornerRadius = 20
+        stack.clipsToBounds = true
         return stack
+    }()
+    private let separaterbar: UIView = {
+        let separaterbar = UIView()
+        separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
+        separaterbar.backgroundColor = .PrimaryLight
+        return separaterbar
     }()
     private lazy var albumButton: UIButton = {
         let albumButton = UIButton()
-        albumButton.frame = CGRect(x: 0, y: 0, width: 36, height: 36)
-        albumButton.setImage(UIImage(named: "Icons_Album.png"), for: .normal)
+//        albumButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        albumButton.backgroundColor = .GrayScale20?.withAlphaComponent(0.7)
+        albumButton.tintColor = .SecondaryMiddle
+        albumButton.setImage(UIImage(named: "Icons_Album1.png"), for: .normal)
         albumButton.addTarget(self, action: #selector(albumButtonTouchUpInside), for: .touchUpInside)
         return albumButton
     }()
     private lazy var captureButton: UIButton = {
-        let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
-        captureButton.setImage(UIImage(named: "Icons_Camera.png"), for: .normal)
+        let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
+        captureButton.backgroundColor = .SecondaryMiddle?.withAlphaComponent(0.7)
+        captureButton.tintColor = .GrayScale20
+        captureButton.setImage(UIImage(named: "Icons_Camera1.png"), for: .normal)
         captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
         return captureButton
     }()
     private lazy var trashButton: UIButton = {
         let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        trashButton.tintColor = .GrayScale60
         trashButton.setImage(UIImage(named: "Icons_Trash.png"), for: .normal)
         trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
         return trashButton
     }()
     private lazy var frontCameraButton: UIButton = {
         let frontCameraButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
+        frontCameraButton.tintColor = .GrayScale60
         frontCameraButton.setImage(UIImage(named: "Icons_FrontCamera.png"), for: .normal)
         frontCameraButton.addTarget(self, action: #selector(frontCameraButtonTouchUpInside), for: .touchUpInside)
         return frontCameraButton
@@ -75,6 +88,9 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
         
         self.tabBarController?.tabBar.isHidden
         murmurImageView.isHidden = true
@@ -95,6 +111,15 @@ class PostViewController: UIViewController {
         
         captureSession = AVCaptureSession()
         setupCaptureSession()
+    }
+    
+    // 當點擊view任何喔一處鍵盤收起
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
     
     @objc func frontCameraButtonTouchUpInside() {
@@ -145,7 +170,7 @@ class PostViewController: UIViewController {
     @objc func trashButtonTouchUpInside() {
         murmurImageView.isHidden = true
         murmurView.isHidden = false
-        captureButton.isEnabled = true
+        self.captureButton.isEnabled = true
     }
     
     @objc func captureButtonTouchUpInside() {
@@ -234,25 +259,15 @@ class PostViewController: UIViewController {
     
     private func setNav() {
 
-//        let navBarAppearance = UINavigationBarAppearance()
-//        navBarAppearance.configureWithDefaultBackground()
-////        navBarAppearance.backgroundColor = .red
-//        navBarAppearance.backgroundEffect = UIBlurEffect(style: .regular)
-//        navBarAppearance.titleTextAttributes = [
-//           .foregroundColor: UIColor.black,
-//           .font: UIFont.systemFont(ofSize: 18, weight: .medium)
-//        ]
-//        self.navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-//
         self.navigationItem.title = "塗鴉留言"
         
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
-        closeButtonItem.tintColor = .SecondaryDefault
+        closeButtonItem.tintColor = .SecondaryLight
         navigationItem.leftBarButtonItem = closeButtonItem
         
         let nextButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonItemTouchUpInside))
         nextButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
-        nextButtonItem.tintColor = .SecondaryShine
+        nextButtonItem.tintColor = .GrayScale20
         navigationItem.rightBarButtonItem = nextButtonItem
     }
     
@@ -262,10 +277,15 @@ class PostViewController: UIViewController {
     }
     
     @objc func nextButtonItemTouchUpInside() {
-//        self.sendMurmurMessageClosure?(murmurTextField.text!)
-        postTagVC.murmurData["murmurMessage"] = murmurTextField.text
-        postTagVC.murmurData["murmurImage"] = self.seclectedImageUrl ?? ""
-        self.navigationController?.pushViewController(postTagVC, animated: true)
+
+        if murmurTextField.text == "" {
+            return
+        } else {
+            postTagVC.murmurData["murmurMessage"] = murmurTextField.text
+            postTagVC.murmurData["murmurImage"] = self.seclectedImageUrl ?? ""
+            self.navigationController?.pushViewController(postTagVC, animated: true)
+        }
+        
     }
     
     private func layout() {
@@ -275,7 +295,7 @@ class PostViewController: UIViewController {
         [murmurTextField, murmurImageView, murmurView, trashButton, frontCameraButton, stack].forEach { subview in
             self.view.addSubview(subview)
         }
-        [albumButton, captureButton].forEach { subview in
+        [albumButton, separaterbar, captureButton].forEach { subview in
             stack.addArrangedSubview(subview)
         }
         
@@ -297,19 +317,36 @@ class PostViewController: UIViewController {
             make.trailing.equalTo(self.view).offset(-24)
             make.height.equalTo(murmurView.snp.width)
         }
+//        trashButton.snp.makeConstraints { make in
+//            make.width.height.equalTo(28)
+//            make.top.equalTo(murmurView).offset(6)
+//            make.trailing.equalTo(murmurView).offset(-6)
+//        }
         trashButton.snp.makeConstraints { make in
             make.width.height.equalTo(28)
-            make.top.equalTo(murmurView).offset(6)
-            make.trailing.equalTo(murmurView).offset(-6)
+            make.bottom.equalTo(murmurView).offset(8)
+            make.leading.equalTo(murmurView).offset(32)
         }
         frontCameraButton.snp.makeConstraints { make in
             make.width.height.equalTo(28)
-            make.bottom.equalTo(murmurView).offset(-6)
-            make.trailing.equalTo(murmurView).offset(-6)
+            make.bottom.equalTo(murmurView).offset(8)
+            make.trailing.equalTo(murmurView).offset(-32)
         }
         stack.snp.makeConstraints { make in
             make.top.equalTo(murmurView.snp.bottom).offset(24)
             make.centerX.equalTo(self.view.snp.centerX)
+        }
+        captureButton.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(48)
+        }
+        separaterbar.snp.makeConstraints { make in
+            make.width.equalTo(2)
+            make.height.equalTo(48)
+        }
+        albumButton.snp.makeConstraints { make in
+            make.width.equalTo(64)
+            make.height.equalTo(48)
         }
     }
 
@@ -342,7 +379,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             murmurImageView.isHidden = false
             murmurView.isHidden = true
             murmurImageView.image = selectedImage
-            captureButton.isEnabled = false
+            self.captureButton.isEnabled = false
             postTagVC.uploadImage = selectedImage
         }
         
@@ -360,7 +397,7 @@ extension PostViewController: AVCapturePhotoCaptureDelegate {
             murmurImageView.isHidden = false
             murmurView.isHidden = true
             murmurImageView.image = image
-            captureButton.isEnabled = false
+            self.captureButton.isEnabled = false
             
             // 將照片傳給下一頁 postTagVC
             postTagVC.uploadImage = image

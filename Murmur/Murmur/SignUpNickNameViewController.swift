@@ -8,25 +8,30 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import Lottie
 
 class SignUpNickNameViewController: UIViewController {
+    
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
     
     var userEmail: String?
     var userPassword: String?
     var userProfileData: Users?
     var capturedPortraitImage: UIImage?
     
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
-    }()
+//    private let logoMessageTypingAnimationView: UIImageView = {
+//        let logoMessageTypingAnimationView = UIImageView()
+//        logoMessageTypingAnimationView.image = UIImage(named: "BlueParrot.png")
+//        logoMessageTypingAnimationView.contentMode = .scaleAspectFit
+//        return logoMessageTypingAnimationView
+//    }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = "Create a Murmur Wall Account"
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
+        titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
+        titleLabel.textColor = .PrimaryMidDarkContrast
         return titleLabel
     }()
     private let stack: UIStackView = {
@@ -37,29 +42,29 @@ class SignUpNickNameViewController: UIViewController {
     }()
     private let ball1: UIView = {
         let ball1 = UIView()
-        ball1.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+//        ball1.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
         ball1.layer.cornerRadius = 4
         ball1.backgroundColor = .PrimaryMiddle
         return ball1
     }()
     private let ball2: UIView = {
         let ball2 = UIView()
-        ball2.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
+//        ball2.frame = CGRect(x: 0, y: 0, width: 8, height: 8)
         ball2.layer.cornerRadius = 4
         ball2.backgroundColor = .PrimaryMiddle
         return ball2
     }()
     private let nickNameLabel: UILabel = {
         let nickNameLabel = UILabel()
-        nickNameLabel.text = "角色暱稱"
-        nickNameLabel.textColor = .SecondaryMiddle
+        nickNameLabel.text = "Nickname"
+        nickNameLabel.textColor = .SecondarySaturate
         return nickNameLabel
     }()
     private let nickNameTextField: MessageTypeTextField = {
         let nickNameTextField = MessageTypeTextField()
         nickNameTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         nickNameTextField.textColor = .SecondaryDark
-        nickNameTextField.placeholder = "為自己取一個可愛的名字吧"
+        nickNameTextField.placeholder = "取一個可愛的名字吧"
 //        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
 //            NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
 //            NSAttributedString.Key.kern: 1.5,
@@ -72,20 +77,20 @@ class SignUpNickNameViewController: UIViewController {
     }()
     private let profilePicLabel: UILabel = {
         let profilePicLabel = UILabel()
-        profilePicLabel.text = "大頭貼"
-        profilePicLabel.textColor = .SecondaryMiddle
+        profilePicLabel.text = "Profile photo"
+        profilePicLabel.textColor = .SecondarySaturate
         return profilePicLabel
     }()
     private lazy var captureButton: UIButton = {
         let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 36, height: 36))
         captureButton.setImage(UIImage(named: "Icons_Capture.png"), for: .normal)
-        captureButton.tintColor = .SecondaryMidDark
+        captureButton.tintColor = .GrayScale60
         captureButton.addTarget(self, action: #selector(captureButtonTouchUpInside), for: .touchUpInside)
         return captureButton
     }()
     let profilePicView: UIView = {
         let profilePicView = UIView()
-        profilePicView.backgroundColor = .PrimaryDefault?.withAlphaComponent(0.5)
+        profilePicView.backgroundColor = .PrimaryDefault?.withAlphaComponent(1)
         profilePicView.clipsToBounds = true
         return profilePicView
     }()
@@ -100,15 +105,18 @@ class SignUpNickNameViewController: UIViewController {
         let trashButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
         trashButton.setImage(UIImage(named: "Icons_Trash.png"), for: .normal)
         trashButton.addTarget(self, action: #selector(trashButtonTouchUpInside), for: .touchUpInside)
+        trashButton.tintColor = .ErrorMidDark
         return trashButton
     }()
     private lazy var signUpWithEmailButton: UIButton = {
         let signUpWithEmailButton = UIButton()
         signUpWithEmailButton.setTitle("註冊", for: .normal)
-        signUpWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signUpWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
+        signUpWithEmailButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
         signUpWithEmailButton.layer.cornerRadius = 12
         signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchUpInside), for: .touchUpInside)
+        signUpWithEmailButton.addTarget(self, action: #selector(signUpWithEmailButtonTouchDown), for: .touchDown)
         return signUpWithEmailButton
     }()
     
@@ -116,6 +124,9 @@ class SignUpNickNameViewController: UIViewController {
         super.viewDidLoad()
         
         layoutView()
+        lottieLogoMessageTyping()
+        
+        trashButton.isHidden = true
         
     }
     
@@ -133,8 +144,17 @@ class SignUpNickNameViewController: UIViewController {
         profilePicImageView.layer.borderColor = UIColor.lightGray.cgColor
         profilePicImageView.layer.borderWidth = 3
         profilePicView.layer.cornerRadius = profilePicView.frame.width / 2
-        profilePicView.layer.borderColor = UIColor.lightGray.cgColor
+        profilePicView.layer.borderColor = UIColor.GrayScale60?.cgColor
         profilePicView.layer.borderWidth = 3
+    }
+    
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
+    }
+    
+    @objc func signUpWithEmailButtonTouchDown() {// 点击改变背景色
+        signUpWithEmailButton.backgroundColor = UIColor.SecondarySaturate
     }
     
     @objc func captureButtonTouchUpInside() {
@@ -193,14 +213,6 @@ class SignUpNickNameViewController: UIViewController {
         profilePicImageView.isHidden = true
         captureButton.isHidden = false
         captureButton.isEnabled = true
-    }
-    
-    func createTabBarController() {
-        
-        let customTabBarController = CustomTabBarController()
-
-        present(customTabBarController, animated: true)
-        
     }
     
     // MARK: Sign up，建立帳號成功後使用者將是已登入狀態，下次重新啟動 App 也會是已登入狀態
@@ -285,7 +297,7 @@ class SignUpNickNameViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLighter
         
-        [logoImageView, titleLabel, stack, nickNameLabel, nickNameTextField, profilePicLabel, profilePicView, profilePicImageView, captureButton, trashButton, signUpWithEmailButton].forEach { subview in
+        [logoMessageTypingAnimationView, titleLabel, stack, nickNameLabel, nickNameTextField, profilePicLabel, profilePicView, profilePicImageView, captureButton, trashButton, signUpWithEmailButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
@@ -293,16 +305,25 @@ class SignUpNickNameViewController: UIViewController {
             stack.addArrangedSubview(subview)
         }
         
-        logoImageView.snp.makeConstraints { make in
+        ball1.snp.makeConstraints { make in
+            make.height.width.equalTo(8)
+        }
+        
+        ball2.snp.makeConstraints { make in
+            make.height.width.equalTo(8)
+        }
+        
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(22)
             make.height.width.equalTo(34)
             make.centerX.equalTo(self.view)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(4)
-            make.leading.lessThanOrEqualTo(self.view).offset(72)
-            make.trailing.lessThanOrEqualTo(self.view).offset(-72)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
+            make.leading.greaterThanOrEqualTo(self.view).offset(60)
+            make.trailing.lessThanOrEqualTo(self.view).offset(-60)
+            make.centerX.equalTo(self.view)
         }
         stack.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(10)
@@ -384,6 +405,7 @@ extension SignUpNickNameViewController: UIImagePickerControllerDelegate, UINavig
             profilePicView.isHidden = true
             captureButton.isHidden = true
             captureButton.isEnabled = false
+            trashButton.isHidden = false
             
         }
         

@@ -13,6 +13,18 @@ import FirebaseAuth
 
 class ChatRoomBaseViewController: UIViewController {
     
+    var keyboardSize = CGSize()
+    
+    var newChatRoomTableViewBottomConstraint = NSLayoutConstraint()
+    var chatRoomTableViewTopConstraint = NSLayoutConstraint()
+    var chatRoomTableViewBottomConstraint = NSLayoutConstraint()
+    var typingAreaViewTopConstraint = NSLayoutConstraint()
+    var typingAreaViewBottomConstraint = NSLayoutConstraint()
+    var newTypingAreaViewTopConstraint = NSLayoutConstraint()
+    var newTypingAreaViewBottomConstraint = NSLayoutConstraint()
+    var safeAreaBottomInset = Double()
+    var safeAreaHeight = Double()
+    
     var isFirstMessage = false
     
     var rowOfindexPath: Int?
@@ -27,14 +39,15 @@ class ChatRoomBaseViewController: UIViewController {
 
     private var messageTypeArray = [String]()
     private var messageDataArray = [String]()
-    var messageDataResult: [Messages] = []
-    private var meReplyText = String()
-    
+    private var messageCreateTimeArray = [Timestamp]()
+//    var messageDataResult: [Messages] = []
+//    private var meReplyText = String()
+
     let chatRoomTableView: SelfSizingTableView = {
         let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
         chatRoomTableView.allowsSelection = false
-        chatRoomTableView.backgroundColor = .SecondaryLight
+        chatRoomTableView.backgroundColor = .PrimaryLight
         return chatRoomTableView
     }()
     private let typingAreaView: UIView = {
@@ -43,6 +56,7 @@ class ChatRoomBaseViewController: UIViewController {
         typingAreaView.layer.shadowOpacity = 0.5
         typingAreaView.layer.shadowOffset = CGSizeMake(0, -4)
         typingAreaView.layer.shadowRadius = 10
+        typingAreaView.layer.addBarShadow()
         return typingAreaView
     }()
     private let typingTextField: MessageTypeTextField = {
@@ -69,13 +83,18 @@ class ChatRoomBaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+        
+        registerForKeyboardNotifications()
+        
         chatRoomTableView.delegate = self
         chatRoomTableView.dataSource = self
         typingTextField.delegate = self
         
 //        getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
-        setTypingArea()
-        setTableView()
+//        setTypingArea()
+        layoutView()
   
     }
     
@@ -88,6 +107,107 @@ class ChatRoomBaseViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         setNav()
         getRealTimeChatMessages()  // 因為要隨時監聽是否有新訊息，所以跳到其他頁面就先不關掉監聽？
+    }
+    
+    // 取得 safeArea 距離
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        
+        safeAreaBottomInset = view.safeAreaInsets.bottom
+        safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.size.height
+        print("size: \(view.safeAreaLayoutGuide.layoutFrame.size)")
+        print("top: \(view.safeAreaInsets.top)")
+        print("bottom: \(view.safeAreaInsets.bottom)")
+        layoutView()
+    }
+    
+    // 當點擊view任何一處鍵盤收起
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    // 鍵盤收合
+    func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // keyboard 出現時，輸入區跟著移動
+    @objc func keyboardWasShown(_ notification: NSNotification) {
+         guard let info = notification.userInfo,
+               let keyboardFrameValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+         let keyboardFrame = keyboardFrameValue.cgRectValue
+         keyboardSize = keyboardFrame.size
+         let keyboardHeight = keyboardSize.height
+        
+        view.bringSubviewToFront(typingAreaView)
+        
+//        UIView.animate(withDuration: 0.3) { [self] in
+//            self.typingAreaView.frame = CGRect(x: typingAreaView.frame.origin.x, y: keyboardHeight, width: self.view.frame.width, height: 94)
+//        }
+        
+        // 訊息輸入區的移動
+        UIView.animate(withDuration: 0.3) { [self] in
+                // 更新 typingAreaView 的底部约束
+            typingAreaViewTopConstraint.isActive = false
+            typingAreaViewBottomConstraint.isActive = false
+            newTypingAreaViewTopConstraint = typingAreaView.topAnchor.constraint(equalTo: self.typingTextField.topAnchor, constant: -8)
+            newTypingAreaViewBottomConstraint = typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -keyboardHeight)
+            newTypingAreaViewTopConstraint.isActive = true
+            newTypingAreaViewBottomConstraint.isActive = true
+                self.view.layoutIfNeeded() // 触发自动布局更新，以实现动画效果
+            }
+        
+        // 對話區的移動
+        if chatRoomTableView.frame.height > (safeAreaHeight - keyboardHeight) {
+            
+            chatRoomTableViewTopConstraint.isActive = false
+            chatRoomTableViewBottomConstraint.isActive = false
+            newChatRoomTableViewBottomConstraint = chatRoomTableView.bottomAnchor.constraint(equalTo: typingAreaView.topAnchor)
+            newChatRoomTableViewBottomConstraint.isActive = true
+        }
+
+    }
+    
+    @objc func keyboardWillBeHidden(_ notification: NSNotification) {
+//        guard let info = notification.userInfo,
+//              let keyboardFrameValue = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+//        let keyboardFrame = keyboardFrameValue.cgRectValue
+//        let keyboardSize = keyboardFrame.size
+//        let keyboardHeight = keyboardSize.height
+//
+//        UIView.animate(withDuration: 0.3) { [self] in
+//            // 更新 typingAreaView 的底部约束
+//            typingAreaView.topAnchor.constraint(equalTo: self.typingTextField.topAnchor, constant: -8).isActive = false
+//                typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -keyboardHeight).isActive = false
+//            typingAreaView.topAnchor.constraint(equalTo: self.typingTextField.topAnchor, constant: -8).isActive = true
+//            typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//            self.view.layoutIfNeeded() // 触发自动布局更新，以实现动画效果
+//        }
+        
+        // 移除底部约束，使 typingAreaView 回到原始位置
+//            typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        // 訊息輸入區的移動
+            UIView.animate(withDuration: 0.3) { [self] in
+                typingAreaViewTopConstraint.isActive = true
+                typingAreaViewBottomConstraint.isActive = true
+                newTypingAreaViewTopConstraint.isActive = false
+                newTypingAreaViewBottomConstraint.isActive = false
+                self.view.layoutIfNeeded() // 触发自动布局更新，以实现动画效果
+            }
+        
+        // TODO: 對話區的移動
+        if chatRoomTableView.frame.height > ( keyboardSize.height + 100) {
+            
+            chatRoomTableViewTopConstraint.isActive = true
+            chatRoomTableViewBottomConstraint.isActive = true
+            newChatRoomTableViewBottomConstraint.isActive = false
+        }
     }
     
     // 跟用戶傳出第一封訊息才要執行
@@ -201,33 +321,37 @@ class ChatRoomBaseViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    private func setTypingArea() {
-        
-        self.view.addSubview(typingAreaView)
-        typingAreaView.addSubview(typingTextField)
-        typingAreaView.addSubview(sendButton)
-        
-        typingAreaView.translatesAutoresizingMaskIntoConstraints = false
-        typingTextField.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            typingAreaView.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -94),
-            typingAreaView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            typingAreaView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            typingTextField.leadingAnchor.constraint(equalTo: typingAreaView.leadingAnchor, constant: 16),
-            typingTextField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -16),
-            typingTextField.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 12),
-            typingTextField.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            sendButton.trailingAnchor.constraint(equalTo: typingAreaView.trailingAnchor, constant: -16),
-            //            sendButton.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 8),
-            //            sendButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            sendButton.centerYAnchor.constraint(equalTo: typingTextField.centerYAnchor),
-            sendButton.heightAnchor.constraint(equalToConstant: 28),
-            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor, multiplier: 1)
-        ])
-        
-    }
+//    private func setTypingArea() {
+//
+//        self.view.addSubview(typingAreaView)
+//        typingAreaView.addSubview(typingTextField)
+//        typingAreaView.addSubview(sendButton)
+//
+//        typingAreaView.translatesAutoresizingMaskIntoConstraints = false
+//        typingTextField.translatesAutoresizingMaskIntoConstraints = false
+//        sendButton.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+////            typingAreaView.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -94),
+//            typingAreaView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+//            typingAreaView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+////            typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+//            typingTextField.leadingAnchor.constraint(equalTo: typingAreaView.leadingAnchor, constant: 16),
+//            typingTextField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -16),
+//            typingTextField.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 12),
+//            typingTextField.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+//            sendButton.trailingAnchor.constraint(equalTo: typingAreaView.trailingAnchor, constant: -16),
+//            //            sendButton.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 8),
+//            //            sendButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+//            sendButton.centerYAnchor.constraint(equalTo: typingTextField.centerYAnchor),
+//            sendButton.heightAnchor.constraint(equalToConstant: 28),
+//            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor, multiplier: 1)
+//        ])
+//        let typingAreaViewTopConstraint = typingAreaView.topAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -94)
+//        let typingAreaViewBottomConstraint = typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+//        typingAreaViewTopConstraint.isActive = true
+//        typingAreaViewBottomConstraint.isActive = true
+//
+//    }
     
     @objc func sendButtonTapped() {
         // 傳送訊息則 create chatroom data to firebase，chatroom document 名稱為 點擊的用戶 UUID
@@ -318,8 +442,7 @@ class ChatRoomBaseViewController: UIViewController {
     }
     
     private func getRealTimeChatMessages() {
-        print("房間號", chatRoomID)
-        
+      
         guard let chatRoomID else {
             print("目前還沒有房間ID")
             return
@@ -341,12 +464,15 @@ class ChatRoomBaseViewController: UIViewController {
                     
                     self.messageTypeArray = [String]()
                     self.messageDataArray = [String]()
+                    self.messageCreateTimeArray = [Timestamp]()
                     
                     for message in messages {
                         //                    self.messageTypeArray.append(message.senderUUID)
                         //                    self.messageDataArray.append(message.messageContent)
                         self.messageTypeArray.insert(message.senderUUID, at: 0)
                         self.messageDataArray.insert(message.messageContent, at: 0)
+                        self.messageCreateTimeArray.insert(message.createTime, at: 0)
+                        
                     }
                     self.chatRoomTableView.reloadData()
                     // tableView upsidedown 之後就不用 scroll 到最下面
@@ -363,23 +489,63 @@ class ChatRoomBaseViewController: UIViewController {
             
     }
 
-    private func setTableView() {
+    private func layoutView() {
+        
+        self.view.backgroundColor = .PrimaryLight
+        
+        self.view.addSubview(chatRoomTableView)
+        self.view.addSubview(typingAreaView)
+        typingAreaView.addSubview(typingTextField)
+        typingAreaView.addSubview(sendButton)
+        
+        typingAreaView.translatesAutoresizingMaskIntoConstraints = false
+        typingTextField.translatesAutoresizingMaskIntoConstraints = false
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        chatRoomTableView.translatesAutoresizingMaskIntoConstraints = false
+
+//        typingAreaView.frame = CGRect(x: 0, y: Int(fullScreenSize.height - bottomInset), width: <#T##Int#>, height: <#T##Int#>)
+        NSLayoutConstraint.activate([
+//            typingAreaView.topAnchor.constraint(equalTo: typingTextField.topAnchor, constant: -12),
+            typingAreaView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            typingAreaView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+//            typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            typingTextField.leadingAnchor.constraint(equalTo: typingAreaView.leadingAnchor, constant: 16),
+            typingTextField.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -16),
+//            typingTextField.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 12),
+            typingTextField.bottomAnchor.constraint(equalTo: typingAreaView.bottomAnchor, constant: -(8 + safeAreaBottomInset)),
+            sendButton.trailingAnchor.constraint(equalTo: typingAreaView.trailingAnchor, constant: -16),
+            //            sendButton.topAnchor.constraint(equalTo: typingAreaView.topAnchor, constant: 8),
+            //            sendButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            sendButton.centerYAnchor.constraint(equalTo: typingTextField.centerYAnchor),
+            sendButton.heightAnchor.constraint(equalToConstant: 28),
+            sendButton.widthAnchor.constraint(equalTo: sendButton.heightAnchor, multiplier: 1)
+        ])
+        typingAreaViewTopConstraint = typingAreaView.topAnchor.constraint(equalTo: typingTextField.topAnchor, constant: -12)
+        typingAreaViewBottomConstraint = typingAreaView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        typingAreaViewTopConstraint.isActive = true
+        typingAreaViewBottomConstraint.isActive = true
         
         // MARK: tableView upsideDown
         chatRoomTableView.transform = CGAffineTransform(rotationAngle: .pi)
         
         chatRoomTableView.register(UserMeChatTableViewCell.self, forCellReuseIdentifier: "\(UserMeChatTableViewCell.self)")
         chatRoomTableView.register(UserTheOtherTableViewCell.self, forCellReuseIdentifier: "\(UserTheOtherTableViewCell.self)")
+
+        NSLayoutConstraint.activate([
+            chatRoomTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            chatRoomTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+        chatRoomTableViewTopConstraint = chatRoomTableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+        chatRoomTableViewBottomConstraint = chatRoomTableView.bottomAnchor.constraint(lessThanOrEqualTo: self.view.bottomAnchor, constant: -98)
+        chatRoomTableViewTopConstraint.isActive = true
+        chatRoomTableViewBottomConstraint.isActive = true
         
-        self.view.addSubview(chatRoomTableView)
         
-        chatRoomTableView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.bottom.lessThanOrEqualTo(typingAreaView.snp.top)
-//            make.bottom.equalTo(typingAreaView.snp.top)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide)
-        }
+//        chatRoomTableView.snp.makeConstraints { make in
+//            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+//            // TODO: 如何取得距離
+//            make.bottom.lessThanOrEqualTo(self.view).offset(-98)
+//        }
 
     }
 
@@ -401,6 +567,14 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
             if let cell = tableView.dequeueReusableCell(withIdentifier: "\(UserMeChatTableViewCell.self)", for: indexPath) as? UserMeChatTableViewCell {
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.layoutCell()
+                
+                let timestamp: Timestamp = messageCreateTimeArray[indexPath.row] // 從 Firestore 中取得的 Timestamp 值
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "HH : mm" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
+                let date = timestamp.dateValue()
+                let formattedTime = dateFormatter.string(from: date)
+                cell.createdTimeLabel.text = formattedTime
+                
                 cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }
@@ -410,6 +584,14 @@ extension ChatRoomBaseViewController: UITableViewDelegate, UITableViewDataSource
                 cell.dialogTextView.text = messageDataArray[indexPath.row]
                 cell.profileImageView.kf.setImage(with: URL(string: otherUserImageURL))
                 cell.layoutCell()
+                
+                let timestamp: Timestamp = messageCreateTimeArray[indexPath.row] // 從 Firestore 中取得的 Timestamp 值
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "HH:mm" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
+                let date = timestamp.dateValue()
+                let formattedTime = dateFormatter.string(from: date)
+                cell.createdTimeLabel.text = formattedTime
+                
                 cell.contentView.transform = CGAffineTransform(rotationAngle: .pi)
                 return cell
             } else { return UITableViewCell.init() }

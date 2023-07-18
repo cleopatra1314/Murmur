@@ -8,20 +8,25 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import Lottie
 
 class SignInViewController: UIViewController {
     
-    private let logoImageView: UIImageView = {
-        let logoImageView = UIImageView()
-        logoImageView.image = UIImage(named: "BlueParrot.png")
-        logoImageView.contentMode = .scaleAspectFit
-        return logoImageView
-    }()
+    let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
+    
+//    private let logoMessageTypingAnimationView: UIImageView = {
+//        let logoMessageTypingAnimationView = UIImageView()
+//        logoMessageTypingAnimationView.image = UIImage(named: "BlueParrot.png")
+//        logoMessageTypingAnimationView.contentMode = .scaleAspectFit
+//        return logoMessageTypingAnimationView
+//    }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Welcome back to the Murmur world."
-        titleLabel.textColor = .PrimaryMidDark
+        titleLabel.text = "Welcome back to the Murmur world"
+        titleLabel.font = UIFont(name: "PingFangTC-Medium", size: 20)
+        titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
+        titleLabel.textColor = .PrimaryMidDarkContrast
         return titleLabel
     }()
     private let emailLabel: UILabel = {
@@ -69,17 +74,23 @@ class SignInViewController: UIViewController {
     private lazy var signInWithEmailButton: UIButton = {
         let signInWithEmailButton = UIButton()
         signInWithEmailButton.setTitle("登入", for: .normal)
-        signInWithEmailButton.setTitleColor(.GrayScale0, for: .normal)
+        signInWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
+        signInWithEmailButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         signInWithEmailButton.backgroundColor = .SecondaryMiddle
         signInWithEmailButton.layer.cornerRadius = 12
         signInWithEmailButton.addTarget(self, action: #selector(signInWithEmailButtonTouchUpInside), for: .touchUpInside)
+        signInWithEmailButton.addTarget(self, action: #selector(signInWithEmailButtonTouchDown), for: .touchDown)
         return signInWithEmailButton
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        view.addGestureRecognizer(tapGesture)
+        
         layoutView()
+        lottieLogoMessageTyping()
         
     }
     
@@ -87,12 +98,22 @@ class SignInViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = false
     }
     
-    func createTabBarController() {
-        
-        let customTabBarController = CustomTabBarController()
-
-        present(customTabBarController, animated: true)
-        
+    func lottieLogoMessageTyping() {
+        logoMessageTypingAnimationView.play()
+        logoMessageTypingAnimationView.loopMode = .loop
+    }
+    
+    // 當點擊view任何喔一處鍵盤收起
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @objc func handleTap(_ gestureRecognizer: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    @objc func signInWithEmailButtonTouchDown() {// 点击改变背景色
+        signInWithEmailButton.backgroundColor = UIColor.SecondarySaturate
     }
     
     // MARK: Sign in，登入後使用者將維持登入狀態，就算我們重新啟動 App ，使用者還是能保持登入
@@ -119,7 +140,6 @@ class SignInViewController: UIViewController {
                 
             }
             guard let userID = result?.user.uid else {
-                
                 return
             }
             currentUserUID = userID
@@ -137,20 +157,21 @@ class SignInViewController: UIViewController {
         
         self.view.backgroundColor = .PrimaryLighter
         
-        [logoImageView, titleLabel, emailLabel, emailTextField, passwordLabel, passwordTextField, errorLabel, signInWithEmailButton].forEach { subview in
+        [logoMessageTypingAnimationView, titleLabel, emailLabel, emailTextField, passwordLabel, passwordTextField, errorLabel, signInWithEmailButton].forEach { subview in
             self.view.addSubview(subview)
         }
         
-        logoImageView.snp.makeConstraints { make in
+        logoMessageTypingAnimationView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(22)
             make.height.width.equalTo(34)
             make.centerX.equalTo(self.view)
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoImageView.snp.bottom).offset(4)
-            make.leading.lessThanOrEqualTo(self.view).offset(72)
-            make.trailing.lessThanOrEqualTo(self.view).offset(-72)
+            make.top.equalTo(logoMessageTypingAnimationView.snp.bottom).offset(4)
+            make.leading.greaterThanOrEqualTo(self.view).offset(60)
+            make.trailing.lessThanOrEqualTo(self.view).offset(-60)
+            make.centerX.equalTo(self.view)
         }
         
         passwordLabel.snp.makeConstraints { make in

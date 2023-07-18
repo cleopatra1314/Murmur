@@ -133,7 +133,7 @@ class NearbyUsersViewController: UIViewController {
     
     // 5. 繪製一個以自己為中心的圓圈範圍
     private func drawCircleRegion() {
-        let circle = MKCircle(center: currentCoordinate!, radius: regionRadius)
+        let circle = MKCircle(center: currentCoordinate ?? defaultCurrentCoordinate, radius: regionRadius)
         mapView.removeOverlays(mapView.overlays)
         mapView.addOverlay(circle)
     }
@@ -292,6 +292,11 @@ extension NearbyUsersViewController: MKMapViewDelegate, CLLocationManagerDelegat
             print("轉型失敗")
             return
         }
+        
+        view.image = UIImage(named: "Pacman_ghost1.png")
+        
+        view.frame = CGRect(x: 0, y: 0, width: 40, height: 54)
+        view.contentMode = .scaleAspectFill
         
         // 如果之前有聊過天，則拿到點擊的那個用戶的聊天室ID；如果沒聊過則創新的聊天室
         database.collection("userTest").document(currentUserUID).collection("chatRooms").whereField("theOtherUserUID", isEqualTo: selectedAnnotation.userUID).getDocuments { querySnapshot, error in

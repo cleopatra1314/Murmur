@@ -6,19 +6,14 @@
 	<array>
 		<string>cleopatra.Murmur</string>
 	</array>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Murmur 需要取用你的相簿</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Murmur 需要取用你的相簿才有照片功能</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Murmur 需要取用你的相機幫你拍照</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string></string>
+			<string>cleopatra.Murmur</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>appleid.cleopatra.Murmur</string>
 				<string>cleopatra13141919</string>
 			</array>
 		</dict>
@@ -44,13 +39,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>external-accessory</string>
-		<string>fetch</string>
-		<string>location</string>
-		<string>processing</string>
-		<string>remote-notification</string>
-	</array>
 </dict>
 </plist>

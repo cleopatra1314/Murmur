@@ -19,7 +19,7 @@ class ChatRoomTableViewCell: UITableViewCell {
         return otherUserImageView
     }()
     let attributes: [NSAttributedString.Key: Any] = [
-        .font: UIFont(name: "Helvetica-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
+        .font: UIFont(name: "PingFangTC-Medium", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0),
         .foregroundColor: UIColor.red,
         .backgroundColor: UIColor.green,
         .underlineStyle: NSUnderlineStyle.single.rawValue,
@@ -29,18 +29,19 @@ class ChatRoomTableViewCell: UITableViewCell {
     let stack: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 6
+        stack.spacing = 4
         return stack
     }()
     let otherUserNameLabel: UILabel = {
         let otherUserNameLabel = UILabel()
-        otherUserNameLabel.textColor = .PrimaryDark
-//        otherUserNameLabel.attributedText
+        otherUserNameLabel.textColor = .PrimaryMid
+        otherUserNameLabel.font = UIFont(name: "PingFangTC-Medium", size: 18)
         return otherUserNameLabel
     }()
     let otherUserFirstMessageLabel: UILabel = {
         let otherUserFirstMessageLabel = UILabel()
-        otherUserFirstMessageLabel.textColor = .GrayScale20
+        otherUserFirstMessageLabel.textColor = .PrimaryDark?.withAlphaComponent(0.6)
+        otherUserFirstMessageLabel.font = UIFont(name: "PingFangTC-Regular", size: 14)
         return otherUserFirstMessageLabel
     }()
     let messageSendStateImageView: UIImageView = {
@@ -48,15 +49,21 @@ class ChatRoomTableViewCell: UITableViewCell {
         messageSendStateImageView.image = UIImage(named: "Icons_arrow-down-left.png")
         return messageSendStateImageView
     }()
+    let progressCircleView: ProgressCircleView = {
+        let progressCircleView = ProgressCircleView()
+        return progressCircleView
+    }()
     
     func layoutCell() {
+        
+        progressCircleView.setProgress(frameWidth: 32)
         
         self.backgroundColor = .PrimaryLight
         
         [otherUserNameLabel, otherUserFirstMessageLabel].forEach { subview in
             stack.addArrangedSubview(subview)
         }
-        [otherUserImageView, stack, messageSendStateImageView].forEach { subview in
+        [otherUserImageView, stack, progressCircleView, messageSendStateImageView].forEach { subview in
             self.contentView.addSubview(subview)
         }
         
@@ -71,13 +78,17 @@ class ChatRoomTableViewCell: UITableViewCell {
         stack.snp.makeConstraints { make in
             make.centerY.equalTo(self.contentView)
             make.leading.equalTo(otherUserImageView.snp.trailing).offset(16)
-            make.trailing.lessThanOrEqualTo(messageSendStateImageView.snp.leading).offset(-40)
+            make.trailing.greaterThanOrEqualTo(progressCircleView.snp.leading).offset(-40)
         }
         
+        progressCircleView.snp.makeConstraints { make in
+            make.height.width.equalTo(32)
+            make.centerY.equalTo(self.contentView)
+            make.trailing.equalTo(messageSendStateImageView.snp.leading).offset(-12)
+        }
         messageSendStateImageView.snp.makeConstraints { make in
             make.centerY.equalTo(self.contentView)
-            make.width.equalTo(24)
-            make.height.equalTo(messageSendStateImageView.snp.width)
+            make.width.height.equalTo(24)
             make.trailing.equalTo(self.contentView).offset(-16)
         }
         

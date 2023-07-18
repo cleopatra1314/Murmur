@@ -26,6 +26,7 @@ class SegmentButtonTableViewCell: UITableViewCell {
     private let postsLabel: UILabel = {
         let postsLabel = UILabel()
         postsLabel.text = "Posts"
+        postsLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         postsLabel.textColor = .GrayScale20
         return postsLabel
     }()
@@ -40,6 +41,7 @@ class SegmentButtonTableViewCell: UITableViewCell {
     private let footPrintLabel: UILabel = {
         let footPrintLabel = UILabel()
         footPrintLabel.text = "FootPrint"
+        footPrintLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         footPrintLabel.textColor = .GrayScale20
         return footPrintLabel
     }()

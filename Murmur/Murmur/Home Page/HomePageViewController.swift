@@ -13,9 +13,10 @@ import FirebaseFirestore
 import FirebaseDatabase
 
 let defaultCurrentCoordinate = CLLocationCoordinate2D(latitude: 25.0385, longitude: 121.531)
+let defaultImageUrlString = "https://firebasestorage.googleapis.com/v0/b/murmur-e5e16.appspot.com/o/0C97C374-BAC5-4A65-BFCE-D7479C0FA60C.jpg?alt=media&token=48ab6e8e-c032-4566-8a85-ce70cae32b71"
 var currentCoordinate: CLLocationCoordinate2D? {
     didSet {
-        print("變動！目前位置", currentCoordinate)
+//        print("變動！目前位置", currentCoordinate)
     }
 }
 var currentUserUID = "djDaiZAAUtYCPMDr0JdqTtihUN02" // 可以用 Auth.auth().currentUser?.uid 取代
@@ -89,7 +90,7 @@ class HomePageViewController: UIViewController {
     private let btnStack: UIStackView = {
         let btnStack = UIStackView()
         btnStack.axis = .vertical
-        btnStack.layer.cornerRadius = 10
+        btnStack.layer.cornerRadius = 12
         btnStack.clipsToBounds = true
         return btnStack
     }()
@@ -119,13 +120,13 @@ class HomePageViewController: UIViewController {
     private let separaterbar1: UIView = {
         let separaterbar = UIView()
         separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
-        separaterbar.backgroundColor = .SecondaryDefault
+        separaterbar.backgroundColor = .SecondaryShine
         return separaterbar
     }()
     private let separaterbar2: UIView = {
         let separaterbar = UIView()
         separaterbar.frame = CGRect(x: 0, y: 0, width: 48, height: 2)
-        separaterbar.backgroundColor = .SecondaryDefault
+        separaterbar.backgroundColor = .SecondaryShine
         return separaterbar
     }()
 
@@ -217,7 +218,7 @@ class HomePageViewController: UIViewController {
                 return
             }
 
-            user.location = ["latitude": Double(currentCoordinate!.latitude), "longitude": Double(currentCoordinate!.longitude)]
+            user.location = ["latitude": Double(currentCoordinate?.latitude ?? defaultCurrentCoordinate.latitude), "longitude": Double(currentCoordinate?.longitude ?? defaultCurrentCoordinate.longitude)]
 
             do {
                 try documentReference.setData(from: user)
@@ -321,7 +322,8 @@ class HomePageViewController: UIViewController {
             make.top.equalTo(self.view)
             make.leading.equalTo(self.view)
             make.trailing.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-80)
+//            make.bottom.equalTo(self.view).offset(-80)
+            make.bottom.equalTo(self.view)
         }
         btnStack.snp.makeConstraints { make in
             make.top.equalTo(self.view).offset(80)
