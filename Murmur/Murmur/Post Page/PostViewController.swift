@@ -303,7 +303,7 @@ class PostViewController: UIViewController {
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(16)
             make.leading.equalTo(self.view).offset(16)
             make.trailing.equalTo(self.view).offset(-16)
-            make.height.equalTo(180)
+            make.height.equalTo(160)
         }
         murmurView.snp.makeConstraints { make in
             make.top.equalTo(murmurTextField.snp.bottom).offset(8)

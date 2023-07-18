@@ -52,6 +52,7 @@ class ProfileViewController: UIViewController {
     private let profileTableView: UITableView = {
         let profileTableView = UITableView()
         profileTableView.separatorStyle = .none
+        profileTableView.register(ScrollTableViewCell.self, forCellReuseIdentifier: "\(ScrollTableViewCell.self)")
         return profileTableView
     }()
 
@@ -272,7 +273,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             
         } else if indexPath == IndexPath(row: 0, section: 1) {
             
-            let cell = ScrollTableViewCell()
+//            let cell = ScrollTableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "\(ScrollTableViewCell.self)", for: indexPath) as? ScrollTableViewCell else { return UITableViewCell() }
+            
             cell.layoutView(viewController: self)
             cell.postsVC.showPostsDetailsPopupClosure = { [self] data, rowOfIndexPath in
                 
@@ -330,7 +333,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath == IndexPath(row: 0, section: 0) {
             return fullScreenSize.height * 2/5
             
-        } else if indexPath == IndexPath(row: 0, section: 1){
+        } else if indexPath == IndexPath(row: 0, section: 1) {
             return fullScreenSize.height
             
         } else {
