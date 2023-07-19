@@ -27,7 +27,8 @@ class PostViewController: UIViewController {
         return murmurTextField
     }()
     let murmurView: UIView = {
-        let murmurView = UIView()
+        let murmurView = UIView(frame: fullScreenSize)
+//        murmurView.layer.cornerRadius = 50
         murmurView.clipsToBounds = true
         return murmurView
     }()
@@ -97,13 +98,13 @@ class PostViewController: UIViewController {
         setNav()
         layout()
         
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
+        captureSession = AVCaptureSession()
+        setupCaptureSession()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -116,8 +117,8 @@ class PostViewController: UIViewController {
         murmurView.layer.borderColor = UIColor.lightGray.cgColor
         murmurView.layer.borderWidth = 3
         
-        captureSession = AVCaptureSession()
-        setupCaptureSession()
+//        captureSession = AVCaptureSession()
+//        setupCaptureSession()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
