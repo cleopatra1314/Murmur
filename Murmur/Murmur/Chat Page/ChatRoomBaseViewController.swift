@@ -233,6 +233,7 @@ class ChatRoomBaseViewController: UIViewController {
             print("Error: ChatRoomID is nil.")
             return
         }
+        getRealTimeChatMessages()
         
         // 自己 chatRooms 的 document
         database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoomID).setData([
