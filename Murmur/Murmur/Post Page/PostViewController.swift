@@ -97,6 +97,13 @@ class PostViewController: UIViewController {
         setNav()
         layout()
         
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -113,7 +120,14 @@ class PostViewController: UIViewController {
         setupCaptureSession()
     }
     
-    // 當點擊view任何喔一處鍵盤收起
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        // 停止取用相機
+        captureSession?.stopRunning()
+    }
+    
+    // 當點擊view任何一處鍵盤收起
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
