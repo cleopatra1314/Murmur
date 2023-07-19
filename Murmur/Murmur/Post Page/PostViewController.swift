@@ -27,8 +27,9 @@ class PostViewController: UIViewController {
         return murmurTextField
     }()
     let murmurView: UIView = {
-        let murmurView = UIView(frame: fullScreenSize)
-//        murmurView.layer.cornerRadius = 50
+        let murmurView = UIView()
+        murmurView.backgroundColor = .black
+        
         murmurView.clipsToBounds = true
         return murmurView
     }()
@@ -96,19 +97,20 @@ class PostViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden
         murmurImageView.isHidden = true
         setNav()
-        layout()
+//        layout()
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        captureSession = AVCaptureSession()
-        setupCaptureSession()
+
+        layout()
+//        captureSession = AVCaptureSession()
+//        setupCaptureSession()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         
         murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
         murmurImageView.layer.borderColor = UIColor.lightGray.cgColor
@@ -119,6 +121,20 @@ class PostViewController: UIViewController {
         
 //        captureSession = AVCaptureSession()
 //        setupCaptureSession()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//        murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
+//        murmurImageView.layer.borderColor = UIColor.lightGray.cgColor
+//        murmurImageView.layer.borderWidth = 3
+//        murmurView.layer.cornerRadius = murmurView.frame.width / 2
+//        murmurView.layer.borderColor = UIColor.lightGray.cgColor
+//        murmurView.layer.borderWidth = 3
+        
+        captureSession = AVCaptureSession()
+        setupCaptureSession()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

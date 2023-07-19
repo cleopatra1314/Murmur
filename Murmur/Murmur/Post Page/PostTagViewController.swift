@@ -201,12 +201,12 @@ class PostTagViewController: UIViewController {
             }
         }
         
-        self.view.makeToast("成功發布 Murmur", duration: 2, position: .center) { didTap in
-            
-            self.tabBarController?.selectedIndex = 0
-            self.navigationController?.popToRootViewController(animated: true)
-            
-        }
+//        self.view.makeToast("成功發布 Murmur", duration: 1, position: .center) { didTap in
+//
+//            self.tabBarController?.selectedIndex = 0
+//            self.navigationController?.popToRootViewController(animated: true)
+//
+//        }
         
         
 //        self.navigationController?.popToRootViewController(animated: true)
@@ -225,7 +225,16 @@ class PostTagViewController: UIViewController {
         documentReference.setData(murmurData)
         
         // 在目前用戶的 postedMurmur 新增資料
-        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(documentReference.documentID).setData(murmurData)
+        database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(documentReference.documentID).setData(murmurData) { error in
+            
+            self.view.makeToast("成功發布 Murmur", duration: 1, position: .center) { didTap in
+                
+                self.tabBarController?.selectedIndex = 0
+                self.navigationController?.popToRootViewController(animated: true)
+                
+            }
+            
+        }
         
     }
     
