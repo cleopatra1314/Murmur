@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Kingfisher
+import Toast_Swift
 
 class PostsOfMurmursViewController: UIViewController {
     
@@ -151,21 +152,24 @@ extension PostsOfMurmursViewController: UICollectionViewDelegate {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: {
             suggestedActions in
             
-            // 欄位1
+            // 欄位1: Hide 做的操作
             let favoriteAction = UIAction(title: "Hide", image: UIImage(systemName: "eye.slash"), state: .off) { action in
                 print("Hide the murmur.")
                 self.showAlert(title: "新功能開發中，敬請期待！💜", message: "", viewController: self)
             }
-            // 欄位2
+            // 欄位2: Delete 做的操作
             let shareAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off) { action in
                 self.showCustomAlert(title: "提醒！", message: "刪除貼文後將無法恢復貼文紀錄，確定要刪除嗎？", viewController: self, okMessage: "確定", closeMessage: "取消") { [self] in
                     
+                    let idOfMurmurToBeDeleted = murmurData![indexPath.row].id!
+                    
                     // userTest -> postedMurmurs
-                    database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(murmurData![indexPath.row].id!).delete(completion: { error in
+                    database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(idOfMurmurToBeDeleted).delete(completion: { error in
                         
                         // 刪除 murmurTest
-                        database.collection("murmurTest").document(murmurData![indexPath.row].id!).delete(completion: { error in
-                            self.view.makeToast("已刪除 murmur ", duration: 3.0, position: .top)
+                        // userTest -> postedMurmurs 刪完後 murmurData![indexPath.row].id! 指到的不會是原本想刪的那個，所以用 idOfMurmurToBeDeleted 先將它存起來
+                        database.collection("murmurTest").document(idOfMurmurToBeDeleted).delete(completion: { error in
+                            self.view.makeToast("已刪除 murmur ", duration: 2.5, position: .top, style: ToastStyle())
                         })
                         
                     })

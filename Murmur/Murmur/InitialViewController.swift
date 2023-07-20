@@ -60,7 +60,7 @@ class InitialViewController: UIViewController {
     }()
     let signInWithAppleButtonView = UIView()
     private let authorizationAppleIDButton: ASAuthorizationAppleIDButton = {
-        let authorizationAppleIDButton = ASAuthorizationAppleIDButton(authorizationButtonType: .signUp, authorizationButtonStyle: .white)
+        let authorizationAppleIDButton = ASAuthorizationAppleIDButton(authorizationButtonType: .continue, authorizationButtonStyle: .white)
 //        authorizationAppleIDButton.setTitle("Sign up with Apple", for: .normal)
 //        authorizationAppleIDButton.setTitleColor(.GrayScale0, for: .normal)
 //        authorizationAppleIDButton.backgroundColor = .SecondaryMiddle
@@ -69,7 +69,7 @@ class InitialViewController: UIViewController {
 //        authorizationAppleIDButton.isHidden = true
         authorizationAppleIDButton.addTarget(self, action: #selector(signInWithAppleButtonTouchUpInside), for: .touchUpInside)
 //        authorizationAppleIDButton.addTarget(self, action: #selector(signUpWithAppleButtonTouchDown), for: .touchDown)
-        authorizationAppleIDButton.isHidden = true
+//        authorizationAppleIDButton.isHidden = true
         return authorizationAppleIDButton
     }()
     private let stack: UIStackView = {
@@ -189,6 +189,7 @@ class InitialViewController: UIViewController {
         }
     }
     
+    // use the ID token from Apple's response to create a Firebase AuthCredential object
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
         let charset: Array<Character> = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
