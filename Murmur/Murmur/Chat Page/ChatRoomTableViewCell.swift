@@ -78,9 +78,9 @@ class ChatRoomTableViewCell: UITableViewCell {
         stack.snp.makeConstraints { make in
             make.centerY.equalTo(self.contentView)
             make.leading.equalTo(otherUserImageView.snp.trailing).offset(16)
-            make.trailing.greaterThanOrEqualTo(progressCircleView.snp.leading).offset(-40)
+            make.trailing.lessThanOrEqualTo(progressCircleView.snp.leading).offset(-40)
         }
-        
+
         progressCircleView.snp.makeConstraints { make in
             make.height.width.equalTo(32)
             make.centerY.equalTo(self.contentView)
