@@ -339,6 +339,7 @@
 				C8C72C1D2A39DA350025E693 /* Frameworks */,
 				C8C72C1E2A39DA350025E693 /* Resources */,
 				B7DB7766A9F540016EB5A24E /* [CP] Embed Pods Frameworks */,
+				C8F2A8742A6A21CF0065314C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -419,10 +420,29 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Murmur/Pods-Murmur-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C8F2A8742A6A21CF0065314C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
 		C8FF94042A3AA49600B632EF /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -664,6 +684,7 @@
 				CODE_SIGN_ENTITLEMENTS = Murmur/MurmurDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 8MUTKC7BV7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Murmur/Info.plist;

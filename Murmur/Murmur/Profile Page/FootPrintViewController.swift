@@ -58,7 +58,7 @@ class FootPrintViewController: UIViewController {
         setLocation()
         layoutView()
         fetchMyMurmur()
-        print("****** FootPrintVC \(self) viewDidLoad")
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {

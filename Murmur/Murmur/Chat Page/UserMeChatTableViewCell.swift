@@ -71,6 +71,12 @@ class UserMeChatTableViewCell: UITableViewCell {
             make.trailing.equalTo(self.contentView).offset(-16)
             make.leading.greaterThanOrEqualTo(self.contentView).offset(48)
         }
+        createdTimeLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(dialogTextView.snp.leading)
+        }
+        createdTimeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+//        createdTimeLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
 //        dialogTextView.snp.makeConstraints { make in
 //            make.top.bottom.trailing.equalTo(stack)
 //        }

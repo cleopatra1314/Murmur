@@ -34,7 +34,7 @@ class NearbyUsersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         relocateMyself()
 
         // 啟動 locationManager，才會執行 CLLocationManagerDelegate 的 func
@@ -45,7 +45,7 @@ class NearbyUsersViewController: UIViewController {
         
         startTimer()
     }
-    
+
     private func layoutView() {
         self.view.addSubview(mapView)
         mapView.frame = view.bounds
