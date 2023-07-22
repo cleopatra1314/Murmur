@@ -170,6 +170,7 @@ class PostTagViewController: UIViewController {
         postVC.murmurTextField.text = ""
         postVC.murmurView.isHidden = false
         postVC.murmurImageView.isHidden = true
+        postVC.captureButton.isEnabled = true
         
         // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
         let homeVC = self.tabBarController?.viewControllers![0] as? HomePageViewController

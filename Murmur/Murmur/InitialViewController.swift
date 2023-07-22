@@ -396,11 +396,7 @@ extension InitialViewController {
                 self.showAlert(title: "", message: String(describing: error!.localizedDescription), viewController: self)
                 return
             }
-            
-            print(authResult?.user.uid)
-            print(authResult?.user.displayName)
-            print(authResult?.user.email)
-            
+
             // 先判斷是否第一次用 appleID 登入
             database.collection("userTest").document((authResult?.user.uid)!).getDocument { [self] documentSnapshot, error in
                 let currentUser = Auth.auth().currentUser
@@ -457,14 +453,7 @@ extension InitialViewController {
             self.showAlert(title: "發生錯誤", message: "無法取得使用者資料，請聯繫開發團隊", viewController: self)
             return
         }
-        
-//        currentUserUID = user.uid
-//        let userProfile = Users(onlineState: true, userName: credential. "User", userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
-//
-//        self.userProfileData = userProfile
-//        self.createUsers(userUID: user.uid)
-        
-        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+
         database.collection("userTest").document(user.uid).setData([
 
             "onlineState": userProfileData?.onlineState ?? nil,
@@ -489,10 +478,6 @@ extension InitialViewController {
         }
         
         currentUserUID = user.uid
-//        let userProfile = Users(onlineState: true, userName: credential. "User", userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
-//
-//        self.userProfileData = userProfile
-//        self.createUsers(userUID: user.uid)
         
         DispatchQueue.main.async {
             self.createTabBarController()

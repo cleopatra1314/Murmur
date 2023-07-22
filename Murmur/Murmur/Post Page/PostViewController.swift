@@ -12,6 +12,7 @@ import AVFoundation
 
 class PostViewController: UIViewController {
     
+    var switchToFrontCamera = true
     // 相機照相功能
     var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
@@ -61,7 +62,7 @@ class PostViewController: UIViewController {
         albumButton.addTarget(self, action: #selector(albumButtonTouchUpInside), for: .touchUpInside)
         return albumButton
     }()
-    private lazy var captureButton: UIButton = {
+    lazy var captureButton: UIButton = {
         let captureButton = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 50))
         captureButton.backgroundColor = .SecondaryMiddle?.withAlphaComponent(0.7)
         captureButton.tintColor = .GrayScale20
@@ -153,7 +154,8 @@ class PostViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func frontCameraButtonTouchUpInside() {
+    func setUpFrontCameraSession() {
+        
         // 獲取所有可用的攝像頭設備
         let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .unspecified)
         let availableDevices = discoverySession.devices
@@ -187,6 +189,82 @@ class PostViewController: UIViewController {
         } else {
             print("找不到前置鏡頭")
         }
+        
+    }
+    
+    @objc func frontCameraButtonTouchUpInside() {
+        
+        // 獲取所有可用的攝像頭設備
+        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+        let availableDevices = discoverySession.devices
+        
+        if switchToFrontCamera == true {
+            
+            // 選擇前置鏡頭設備
+            if let frontCamera = availableDevices.first(where: { $0.position == .front }) {
+                do {
+                    // 建立 AVCaptureDeviceInput
+                    let input = try AVCaptureDeviceInput(device: frontCamera)
+                    
+                    guard let captureSession = captureSession else { return }
+                    
+                    // 移除現有的 AVCaptureDeviceInput
+                    if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
+                        captureSession.removeInput(currentInput)
+                    }
+
+                    // 將 AVCaptureDeviceInput 設定為輸入裝置
+                    do {
+                        let newInput = try AVCaptureDeviceInput(device: frontCamera)
+                        captureSession.addInput(newInput)
+                    } catch {
+                        print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+                    }
+
+                    // 重新開始擷取
+                    captureSession.startRunning()
+                } catch {
+                    print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+                }
+            } else {
+                print("找不到前置鏡頭")
+            }
+            
+        } else {
+            
+            // 選擇前置鏡頭設備
+            if let backCamera = availableDevices.first(where: { $0.position == .back }) {
+                do {
+                    // 建立 AVCaptureDeviceInput
+                    let input = try AVCaptureDeviceInput(device: backCamera)
+                    
+                    guard let captureSession = captureSession else { return }
+                    
+                    // 移除現有的 AVCaptureDeviceInput
+                    if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
+                        captureSession.removeInput(currentInput)
+                    }
+
+                    // 將 AVCaptureDeviceInput 設定為輸入裝置
+                    do {
+                        let newInput = try AVCaptureDeviceInput(device: backCamera)
+                        captureSession.addInput(newInput)
+                    } catch {
+                        print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+                    }
+
+                    // 重新開始擷取
+                    captureSession.startRunning()
+                } catch {
+                    print("無法創建 AVCaptureDeviceInput: \(error.localizedDescription)")
+                }
+            } else {
+                print("找不到鏡頭")
+            }
+            
+        }
+        
+        switchToFrontCamera.toggle()
     }
 
     @objc func albumButtonTouchUpInside() {
@@ -239,54 +317,54 @@ class PostViewController: UIViewController {
         captureSession.startRunning()
     }
     
-    @objc func cameraButtonTouchUpInside() {
-        // 建立一個 UIImagePickerController 的實體
-        let imagePickerController = UIImagePickerController()
-
-        // 委任代理
-        imagePickerController.delegate = self
-
-        // 建立一個 UIAlertController 的實體
-        // 設定 UIAlertController 的標題與樣式為 動作清單 (actionSheet)
-        let imagePickerAlertController = UIAlertController(title: "上傳圖片", message: "請選擇要上傳的圖片", preferredStyle: .actionSheet)
-
-        // 建立三個 UIAlertAction 的實體
-        // 新增 UIAlertAction 在 UIAlertController actionSheet 的 動作 (action) 與標題
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { (void) in
-
-            // 判斷是否可以從照片圖庫取得照片來源
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-
-                // 如果可以，指定 UIImagePickerController 的照片來源為 照片圖庫 (.photoLibrary)，並 present UIImagePickerController
-                imagePickerController.sourceType = .photoLibrary
-                self.present(imagePickerController, animated: true, completion: nil)
-            }
-        }
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { (void) in
-
-            // 判斷是否可以從相機取得照片來源
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-
-                // 如果可以，指定 UIImagePickerController 的照片來源為 照片圖庫 (.camera)，並 present UIImagePickerController
-                imagePickerController.sourceType = .camera
-                self.present(imagePickerController, animated: true, completion: nil)
-            }
-        }
-
-        // 新增一個取消動作，讓使用者可以跳出 UIAlertController
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (void) in
-
-            imagePickerAlertController.dismiss(animated: true, completion: nil)
-        }
-
-        // 將上面三個 UIAlertAction 動作加入 UIAlertController
-        imagePickerAlertController.addAction(imageFromLibAction)
-        imagePickerAlertController.addAction(imageFromCameraAction)
-        imagePickerAlertController.addAction(cancelAction)
-
-        // 當使用者按下 uploadBtnAction 時會 present 剛剛建立好的三個 UIAlertAction 動作與
-        present(imagePickerAlertController, animated: true, completion: nil)
-    }
+//    @objc func cameraButtonTouchUpInside() {
+//        // 建立一個 UIImagePickerController 的實體
+//        let imagePickerController = UIImagePickerController()
+//
+//        // 委任代理
+//        imagePickerController.delegate = self
+//
+//        // 建立一個 UIAlertController 的實體
+//        // 設定 UIAlertController 的標題與樣式為 動作清單 (actionSheet)
+//        let imagePickerAlertController = UIAlertController(title: "上傳圖片", message: "請選擇要上傳的圖片", preferredStyle: .actionSheet)
+//
+//        // 建立三個 UIAlertAction 的實體
+//        // 新增 UIAlertAction 在 UIAlertController actionSheet 的 動作 (action) 與標題
+//        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { (void) in
+//
+//            // 判斷是否可以從照片圖庫取得照片來源
+//            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+//
+//                // 如果可以，指定 UIImagePickerController 的照片來源為 照片圖庫 (.photoLibrary)，並 present UIImagePickerController
+//                imagePickerController.sourceType = .photoLibrary
+//                self.present(imagePickerController, animated: true, completion: nil)
+//            }
+//        }
+//        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { (void) in
+//
+//            // 判斷是否可以從相機取得照片來源
+//            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//
+//                // 如果可以，指定 UIImagePickerController 的照片來源為 照片圖庫 (.camera)，並 present UIImagePickerController
+//                imagePickerController.sourceType = .camera
+//                self.present(imagePickerController, animated: true, completion: nil)
+//            }
+//        }
+//
+//        // 新增一個取消動作，讓使用者可以跳出 UIAlertController
+//        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (void) in
+//
+//            imagePickerAlertController.dismiss(animated: true, completion: nil)
+//        }
+//
+//        // 將上面三個 UIAlertAction 動作加入 UIAlertController
+//        imagePickerAlertController.addAction(imageFromLibAction)
+//        imagePickerAlertController.addAction(imageFromCameraAction)
+//        imagePickerAlertController.addAction(cancelAction)
+//
+//        // 當使用者按下 uploadBtnAction 時會 present 剛剛建立好的三個 UIAlertAction 動作與
+//        present(imagePickerAlertController, animated: true, completion: nil)
+//    }
     
     private func setNav() {
 
