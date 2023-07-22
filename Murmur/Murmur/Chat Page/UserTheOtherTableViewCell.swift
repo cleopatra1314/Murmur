@@ -61,6 +61,7 @@ class UserTheOtherTableViewCell: UITableViewCell {
         self.contentView.addSubview(stack)
         stack.addArrangedSubview(dialogTextView)
         stack.addArrangedSubview(createdTimeLabel)
+        dialogTextView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         stack.translatesAutoresizingMaskIntoConstraints = false

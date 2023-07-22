@@ -83,34 +83,19 @@ class PostTagViewController: UIViewController {
         "selectedTags": [String](),
         "createTime": Timestamp(date: Date())
         ]
+    lazy var postButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonItemTouchUpInside))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        postButtonItem.isEnabled = true
+        
         self.view.backgroundColor = .PrimaryLight
         setNav()
         layoutView()
-        
-        
-//        postTagCollectionView.collectionViewLayout = generateLayout()
- 
+
     }
-    
-//    func generateLayout() -> UICollectionViewLayout {
-//            let fraction: CGFloat = 1 / 3
-//            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fraction), heightDimension: .fractionalHeight(1))
-//            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(fraction))
-//            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            
-//            let section = NSCollectionLayoutSection(group: group)
-//            let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(100))
-//            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-//            section.boundarySupplementaryItems = [header]
-//            let layout = UICollectionViewCompositionalLayout(section: section)
-//            return layout
-//        }
-    
+
     func layoutView() {
         
         self.view.addSubview(postTagCollectionView)
@@ -120,25 +105,7 @@ class PostTagViewController: UIViewController {
         }
         
     }
-    
-    // MARK: 上傳到 firestorage
-//    func uploadPhoto(image: UIImage?, completion: @escaping (Result<URL, Error>) -> Void) {
-//
-//            guard let image else { return }
-//            let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
-//            if let data = image.jpegData(compressionQuality: 0.9) {
-//
-//                fileReference.putData(data, metadata: nil) { result in
-//                    switch result {
-//                    case .success:
-//                         fileReference.downloadURL(completion: completion)
-//                    case .failure(let error):
-//                        completion(.failure(error))
-//                    }
-//                }
-//            }
-//    }
-    
+
     private func setNav() {
 
         self.navigationItem.title = "塗鴉標籤"
@@ -147,7 +114,6 @@ class PostTagViewController: UIViewController {
         backButtonItem.tintColor = .SecondaryShine
         navigationItem.leftBarButtonItem = backButtonItem
         
-        let postButtonItem = UIBarButtonItem(title: "Post", style: .plain, target: self, action: #selector(postButtonItemTouchUpInside))
         postButtonItem.setTitleTextAttributes([NSAttributedString.Key.kern: 0, .font: UIFont.systemFont(ofSize: 18, weight: .medium)], for: .normal)
         postButtonItem.tintColor = .white
         navigationItem.rightBarButtonItem = postButtonItem
@@ -162,6 +128,7 @@ class PostTagViewController: UIViewController {
 //        self.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
 //        self.navigationController?.popToViewController((self.tabBarController?.viewControllers![0])!, animated: true)
 //        present((self.tabBarController?.viewControllers![0])!, animated: true)
+        postButtonItem.isEnabled = false
         
         guard let postVC = self.navigationController?.viewControllers.first as? PostViewController else {
             print("Error: self.navigationController?.viewControllers.first can't transform to PostViewController")
@@ -201,22 +168,7 @@ class PostTagViewController: UIViewController {
                 print(error)
             }
         }
-        
-//        self.view.makeToast("成功發布 Murmur", duration: 1, position: .center) { didTap in
-//
-//            self.tabBarController?.selectedIndex = 0
-//            self.navigationController?.popToRootViewController(animated: true)
-//
-//        }
-        
-        
-//        self.navigationController?.popToRootViewController(animated: true)
-//        let postVC2 = self.navigationController?.popToRootViewController as? PostViewController
-        
-        
-        
-        
-        
+
     }
     
     func createMurmur() {

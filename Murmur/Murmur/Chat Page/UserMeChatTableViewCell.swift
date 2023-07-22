@@ -71,40 +71,15 @@ class UserMeChatTableViewCell: UITableViewCell {
             make.trailing.equalTo(self.contentView).offset(-16)
             make.leading.greaterThanOrEqualTo(self.contentView).offset(48)
         }
-        createdTimeLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(dialogTextView.snp.leading)
-        }
-        createdTimeLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-//        createdTimeLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        
-//        dialogTextView.snp.makeConstraints { make in
-//            make.top.bottom.trailing.equalTo(stack)
-//        }
 //        createdTimeLabel.snp.makeConstraints { make in
-////            make.trailing.equalTo(dialogTextView.snp.leading)
-//            make.bottom.leading.equalTo(stack)
+//            make.trailing.equalTo(dialogTextView.snp.leading).offset(-8)
+//            make.leading.equalTo(stack)
 //        }
+//        createdTimeLabel.setContentHuggingPriority(.required, for: .horizontal)
+//        dialogTextView.setContentHuggingPriority(.required, for: .horizontal)
+        dialogTextView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+//        createdTimeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+
     }
-    
-//    func layoutCell() {
-//
-//        self.backgroundColor = .PrimaryLight
-//
-//        self.contentView.addSubview(dialogTextView)
-//        self.contentView.addSubview(createdTimeLabel)
-//
-//        dialogTextView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            dialogTextView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 14),
-//            dialogTextView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16),
-//            dialogTextView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12),
-//            createdTimeLabel.heightAnchor.constraint(equalToConstant: 14),
-//            createdTimeLabel.widthAnchor.constraint(equalToConstant: 30),
-//            createdTimeLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.contentView.leadingAnchor, constant: 64),
-//            createdTimeLabel.trailingAnchor.constraint(equalTo: dialogTextView.leadingAnchor, constant: -8),
-////            createdTimeLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
-////            createdTimeLabel.centerYAnchor.constraint(equalTo: dialogTextView.centerYAnchor)
-//        ])
-//    }
     
 }
