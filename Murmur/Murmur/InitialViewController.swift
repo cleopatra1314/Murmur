@@ -17,6 +17,8 @@ import Toast_Swift
 
 class InitialViewController: UIViewController {
     
+    var fullname = String()
+    
     // MARK: - Sign in with Apple 登入
     fileprivate var currentNonce: String?
     
@@ -386,35 +388,70 @@ class InitialViewController: UIViewController {
 }
 
 extension InitialViewController {
-    // MARK: - 透過 Credential 與 Firebase Auth 串接
+    // MARK: - 透過 Credential 與 Firebase Auth 串接，Sign in with Firebase.
     func firebaseSignInWithApple(credential: AuthCredential) {
+        
         Auth.auth().signIn(with: credential) { authResult, error in
             guard error == nil else {
                 self.showAlert(title: "", message: String(describing: error!.localizedDescription), viewController: self)
                 return
             }
             
-            // 確認登入成功後所要做的動作
-            self.view.makeToast("歡迎來到 Murmur World！", duration: 2.5, position: .center, title: "登入成功") { didTap in
-                self.getFirebaseUserInfo()
-            }
+            print(authResult?.user.uid)
+            print(authResult?.user.displayName)
+            print(authResult?.user.email)
             
-//            let alertController = UIAlertController(title: "登入成功！", message: "開始 murmur", preferredStyle: .alert)
-//
-//            // 加入確定的動作。
-//            let okAction = UIAlertAction(title: "確定", style: .default) { [self] alertAction in
-//                self.getFirebaseUserInfo()
-//            }
-//            alertController.addAction(okAction)
-//
-//            // 呈現 alertController。
-//            self.present(alertController, animated: true)
-        
+            // 先判斷是否第一次用 appleID 登入
+            database.collection("userTest").document((authResult?.user.uid)!).getDocument { [self] documentSnapshot, error in
+                let currentUser = Auth.auth().currentUser
+                guard let user = currentUser else {
+                    self.showAlert(title: "發生錯誤", message: "無法取得使用者資料，請聯繫開發團隊", viewController: self)
+                    return
+                }
+                
+                currentUserUID = user.uid
+                
+                if let document = documentSnapshot, document.exists {
+                    
+                    database.collection("userTest").document(user.uid).setData([
+                        "onlineState": true,
+                    ], merge: true) { error in
+                        
+                        self.view.makeToast("歡迎回來 Murmur World！", duration: 2.0, position: .center, title: "登入成功") { didTap in
+                            DispatchQueue.main.async {
+                                print("Document exists")
+                                self.createTabBarController()
+                            }
+                        }
+                    }
+                    
+                   } else {
+                       
+                       // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+                       database.collection("userTest").document(user.uid).setData([
+
+                           "onlineState": true,
+                           "userName": self.fullname,
+                           "userPortrait": nil,
+                           "location": ["latitude": 0.0, "longitude": 0.0]
+
+                       ]) { error in
+                           self.view.makeToast("歡迎來到 Murmur World！", duration: 2.0, position: .center, title: "註冊成功") { didTap in
+                               DispatchQueue.main.async {
+                                   print("Document does not exist")
+                                   self.createTabBarController()
+                               }
+                           }
+                       }
+                       
+                   }
+            }
+
         }
     }
     
     // MARK: - Firebase 取得登入使用者的資訊
-    func getFirebaseUserInfo() {
+    func firstCreateFirebaseUserInfo() {
         let currentUser = Auth.auth().currentUser
         guard let user = currentUser else {
             self.showAlert(title: "發生錯誤", message: "無法取得使用者資料，請聯繫開發團隊", viewController: self)
@@ -425,13 +462,44 @@ extension InitialViewController {
 //        let userProfile = Users(onlineState: true, userName: credential. "User", userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
 //
 //        self.userProfileData = userProfile
-        self.createUsers(userUID: user.uid)
+//        self.createUsers(userUID: user.uid)
+        
+        // setData 會更新指定 documentID 的那個 document 的資料，如果沒有那個 collection 或 document id，則會新增
+        database.collection("userTest").document(user.uid).setData([
+
+            "onlineState": userProfileData?.onlineState ?? nil,
+            "userName": userProfileData?.userName ?? nil,
+            "userPortrait": userProfileData?.userPortrait ?? nil,
+            "location": ["latitude": userProfileData?.location["latitude"], "longitude": userProfileData?.location["longitude"]]
+
+        ], merge: true)
         
         DispatchQueue.main.async {
             self.createTabBarController()
         }
         
     }
+    
+    // MARK: - Firebase 取得登入使用者的資訊
+    func getFirebaseUserInfo() {
+        let currentUser = Auth.auth().currentUser
+        guard let user = currentUser else {
+            self.showAlert(title: "發生錯誤", message: "無法取得使用者資料，請聯繫開發團隊", viewController: self)
+            return
+        }
+        
+        currentUserUID = user.uid
+//        let userProfile = Users(onlineState: true, userName: credential. "User", userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+//
+//        self.userProfileData = userProfile
+//        self.createUsers(userUID: user.uid)
+        
+        DispatchQueue.main.async {
+            self.createTabBarController()
+        }
+        
+    }
+    
 }
 
 extension InitialViewController: ASAuthorizationControllerDelegate {
@@ -457,16 +525,19 @@ extension InitialViewController: ASAuthorizationControllerDelegate {
                 return
             }
             // 產生 Apple ID 登入的 Credential
+            // Initialize a Firebase credential, including the user's full name.
             let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
             
-            print("user: \(appleIDCredential.user)")
-            print("fullName: \(String(describing: appleIDCredential.fullName))")
-            print("Email: \(String(describing: appleIDCredential.email))")
-            print("realUserStatus: \(String(describing: appleIDCredential.realUserStatus))")
+            print("appleIDCredential userIdentifier: \(appleIDCredential.user)")
+            print("appleIDCredential fullName: \(String(describing: appleIDCredential.fullName))")
+            print("appleIDCredential Email: \(String(describing: appleIDCredential.email))")
+            print("appleIDCredential realUserStatus: \(String(describing: appleIDCredential.realUserStatus))")
             
-            let userProfile = Users(id: appleIDCredential.user, onlineState: true, userName: (appleIDCredential.fullName?.familyName ?? "") + (appleIDCredential.fullName?.givenName ?? "User"), userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+            fullname = (appleIDCredential.fullName?.familyName ?? "") + (appleIDCredential.fullName?.givenName ?? "User")
             
-            userProfileData = userProfile
+//            let userProfile = Users(id: appleIDCredential.user, onlineState: true, userName: (appleIDCredential.fullName?.familyName ?? "") + (appleIDCredential.fullName?.givenName ?? "User"), userPortrait: defaultImageUrlString, location: ["latitude": 0.0, "longitude": 0.0])
+//
+//            userProfileData = userProfile
             
             // 與 Firebase Auth 進行串接
             firebaseSignInWithApple(credential: credential)
@@ -530,6 +601,7 @@ extension InitialViewController: ASAuthorizationControllerDelegate {
     
 }
 
+// 向用户呈现 Sign in with Apple 内容
 extension InitialViewController: ASAuthorizationControllerPresentationContextProviding {
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {

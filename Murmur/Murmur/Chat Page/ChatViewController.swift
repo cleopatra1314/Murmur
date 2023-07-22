@@ -149,7 +149,7 @@ class ChatViewController: UIViewController {
                             return
                         }
                         
-                        let chatRoomMessagesResult = ChatRoomMessages(chatRoomCreateTime:chatRoomResult.createTime, latestMessageCreateTime: chatRoomResult.latestMessageCreateTime ?? Timestamp(date: Date()), theOtherUserUID: chatRoom.theOtherUserUID, theOtherUserName: otherUser.userName, theOtherUserPortraitUrlString: otherUser.userPortrait, senderUUID: chatRoomResult.latestMessageSenderUUID ?? currentUserUID, latestMessage: chatRoomResult.latestMessageContent ?? "資料是空，一切是空", roomID: chatRoom.id!, otherUserOnlineState: otherUser.onlineState)
+                        let chatRoomMessagesResult = ChatRoomMessages(chatRoomCreateTime:chatRoomResult.createTime, latestMessageCreateTime: chatRoomResult.latestMessageCreateTime ?? Timestamp(date: Date()), theOtherUserUID: chatRoom.theOtherUserUID, theOtherUserName: otherUser.userName, theOtherUserPortraitUrlString: otherUser.userPortrait ?? "", senderUUID: chatRoomResult.latestMessageSenderUUID ?? currentUserUID, latestMessage: chatRoomResult.latestMessageContent ?? "資料是空，一切是空", roomID: chatRoom.id!, otherUserOnlineState: otherUser.onlineState)
                         
                         self.chatRoomMessagesData.append(chatRoomMessagesResult)
                         

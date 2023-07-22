@@ -93,7 +93,7 @@ class NearbyUsersViewController: UIViewController {
                 for user in self.userData! {
                     
                     if user.onlineState == true {
-                        self.showOtherUsersOnMap(user.onlineState, user.id!, user.userName, user.userPortrait, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
+                        self.showOtherUsersOnMap(user.onlineState, user.id!, user.userName, user.userPortrait ?? defaultImageUrlString, CLLocationCoordinate2D(latitude: user.location["latitude"]!, longitude: user.location["longitude"]!))
                     }
                     
                 }
