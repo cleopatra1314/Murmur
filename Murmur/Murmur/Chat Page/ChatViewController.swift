@@ -60,13 +60,13 @@ class ChatViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         self.tabBarController?.tabBar.isHidden = false
+        messagesCountDown()
     }
     
     private func setMessagesCountDownTimer() {
         
-        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(messagesCountDown), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(messagesCountDown), userInfo: nil, repeats: true)
         
     }
     
@@ -219,6 +219,35 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let passedSeconds = components.second ?? 0
         
         // 如果 passedHours < 0，則 delete 這個 row
+        if (72 - passedHours) < 0 {
+//            chatRoomTableView.deleteRows(at: [indexPath], with: .fade)
+            
+            // Delete 自己聊天室
+            database.collection("userTest").document(currentUserUID).collection("chatRooms").document(orderedChatRoomMessagesData[indexPath.row].roomID).delete()
+            
+            // Delete 對方聊天室
+            database.collection("userTest").document(orderedChatRoomMessagesData[indexPath.row].theOtherUserUID).collection("chatRooms").document(orderedChatRoomMessagesData[indexPath.row].roomID).delete()
+            
+            // Delete 聊天室總覽
+            // 刪除 chatRooms - messages 底下 documents
+            database.collection("chatRooms").document(orderedChatRoomMessagesData[indexPath.row].roomID).collection("messages").getDocuments { querySnapshot, error in
+                
+                if let error = error {
+                            print("Error getting documents: \(error)")
+                        } else {
+                            for document in querySnapshot!.documents {
+                                document.reference.delete()
+                            }
+                        }
+            }
+            
+            // 刪除 chatRooms 底下 documents
+            database.collection("chatRooms").document(orderedChatRoomMessagesData[indexPath.row].roomID).delete()
+            
+            orderedChatRoomMessagesData.remove(at: indexPath.row)
+            chatRoomTableView.reloadData()
+        }
+        
         cell.progressCircleView.passedTimeHr = passedHours
 //        cell.progressCircleView.setProgress(frameWidth: 32)
         
