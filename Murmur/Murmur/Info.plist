@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>You&apos;ll be able to make cutomed photo setting.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Murmur Wall will store photoes for you</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Murmur Wall need camera to take pretty photo for you</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>cleopatra.Murmur</string>

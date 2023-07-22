@@ -106,7 +106,6 @@ class FootPrintViewController: UIViewController {
             }
             
             self.myMurmurData = murmurs
-            print(self.myMurmurData!)
             
             DispatchQueue.main.async {
                 self.setAnnotaion()
@@ -206,7 +205,7 @@ extension FootPrintViewController: MKMapViewDelegate {
     
             // 是否要讓點擊 annotation 時顯示 title
 //            annotationView.canShowCallout = true
-            print("地標", annotation, "地標標題", annotation.title)
+  
             annotationView.annotation = annotation
             annotationView.label.text = annotation.title!
             

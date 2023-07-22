@@ -12,6 +12,10 @@ import AVFoundation
 
 class PostViewController: UIViewController {
     
+    // 獲取所有可用的攝像頭設備
+    let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .unspecified)
+    lazy var availableDevices = discoverySession.devices
+    
     var switchToFrontCamera = true
     // 相機照相功能
     var captureSession: AVCaptureSession?
@@ -156,9 +160,7 @@ class PostViewController: UIViewController {
     
     func setUpFrontCameraSession() {
         
-        // 獲取所有可用的攝像頭設備
-        let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .unspecified)
-        let availableDevices = discoverySession.devices
+        
         
         // 選擇前置鏡頭設備
         if let frontCamera = availableDevices.first(where: { $0.position == .front }) {
@@ -210,7 +212,10 @@ class PostViewController: UIViewController {
                     
                     // 移除現有的 AVCaptureDeviceInput
                     if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
+                        print(currentInput)
                         captureSession.removeInput(currentInput)
+                        print("🚥", availableDevices)
+                        print("🚥🚥🚥", captureSession.inputs.first)
                     }
 
                     // 將 AVCaptureDeviceInput 設定為輸入裝置
@@ -242,7 +247,9 @@ class PostViewController: UIViewController {
                     
                     // 移除現有的 AVCaptureDeviceInput
                     if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
+                        print(currentInput)
                         captureSession.removeInput(currentInput)
+                        print("🍸", availableDevices)
                     }
 
                     // 將 AVCaptureDeviceInput 設定為輸入裝置
@@ -501,17 +508,75 @@ extension PostViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let imageData = photo.fileDataRepresentation() {
             
-            let image = UIImage(data: imageData)
-            // 在此處理拍攝後的照片
-            murmurImageView.isHidden = false
-            murmurView.isHidden = true
-            murmurImageView.image = image
-            self.captureButton.isEnabled = false
+            let originalImage = UIImage(data: imageData)
             
-            // 將照片傳給下一頁 postTagVC
-            postTagVC.uploadImage = image
+//            guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
+            print("📷", availableDevices)
+            print("📷", availableDevices.first!.position.rawValue)
+//            if let captureDeviceInput = captureSession!.inputs.first as? AVCaptureDeviceInput {
+//                let backCamera = captureDeviceInput.device
+//               
+//            }
+            guard let captureDeviceInput = captureSession!.inputs.first as? AVCaptureDeviceInput else { return }
+            let backCamera = captureDeviceInput.device
+            
+            do {
+                if captureDeviceInput.device.position.rawValue == 2 {
+//                let currentInput = try AVCaptureDeviceInput(device: captureDevice)
+//                if captureSession?.inputs.first != currentInput {
+                    
+                    // 如果是前置鏡頭拍攝，進行水平翻轉
+                    if let flippedImage = originalImage?.flippedHorizontally() {
+                        // 在此處理拍攝後的照片
+                        murmurImageView.isHidden = false
+                        murmurView.isHidden = true
+                        murmurImageView.image = flippedImage
+                        self.captureButton.isEnabled = false
+                        
+                        // 將照片傳給下一頁 postTagVC
+                        postTagVC.uploadImage = flippedImage
+                    }
+                    
+                } else {
+                    
+                    // 非前置鏡頭拍攝的照片不進行處理，直接顯示在畫面上
+                    murmurImageView.isHidden = false
+                    murmurView.isHidden = true
+                    murmurImageView.image = originalImage
+                    self.captureButton.isEnabled = false
+                    
+                    // 將照片傳給下一頁 postTagVC
+                    postTagVC.uploadImage = originalImage
+                    
+                }
+            } catch {
+                print("無法獲取 currentInput")
+            }
             
         }
+        
     }
-    
 }
+
+extension UIImage {
+    
+    func flippedHorizontally() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        
+        // 繪製翻轉的圖片
+        context.translateBy(x: size.width, y: 0)
+        context.scaleBy(x: -1, y: 1)
+        draw(in: CGRect(origin: .zero, size: size))
+        
+        let flippedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return flippedImage
+    }
+}
+
+
+
+
+

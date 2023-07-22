@@ -171,7 +171,7 @@ extension UIViewController {
                 // 处理地理编码结果
 //                let address = "\(placemark.subLocality ?? "no subLocality") \(placemark.locality ?? "no locality")\(placemark.thoroughfare ?? "")\(placemark.subThoroughfare ?? "")"
                 let address = "\(placemark.locality ?? "no locality")  \(placemark.thoroughfare ?? "")"
-                print("🇹🇼", address)
+    
                 completion(address)
             } else {
                 // 没有找到地理编码结果
