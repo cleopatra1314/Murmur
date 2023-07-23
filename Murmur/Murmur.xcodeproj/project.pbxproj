@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8120E552A6CCB640060D883 /* HighlightButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8120E542A6CCB640060D883 /* HighlightButton.swift */; };
 		C813439A2A47E5D700F685F8 /* UIViewController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */; };
 		C8212C5C2A5DAFC1006D2073 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */; };
 		C8212C5E2A5DB394006D2073 /* LogoNameFlash.json in Resources */ = {isa = PBXBuildFile; fileRef = C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */; };
@@ -79,6 +80,7 @@
 
 /* Begin PBXFileReference section */
 		BFED62B540DE4FED81F92323 /* Pods_Murmur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Murmur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8120E542A6CCB640060D883 /* HighlightButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightButton.swift; sourceTree = SOURCE_ROOT; };
 		C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_Extension.swift; sourceTree = "<group>"; };
 		C8212C5B2A5DAFC1006D2073 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C8212C5D2A5DB394006D2073 /* LogoNameFlash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogoNameFlash.json; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 		C8C72C222A39DA350025E693 /* Murmur */ = {
 			isa = PBXGroup;
 			children = (
+				C8120E542A6CCB640060D883 /* HighlightButton.swift */,
 				C8B1EBBA2A61B91B00E1A5A7 /* MurmurDebug.entitlements */,
 				C8E160D42A607142009BE56C /* MurmurRelease.entitlements */,
 				C8CC5A862A54B19D006E3C8D /* Lottie */,
@@ -541,6 +544,7 @@
 				C82687442A4EC0F500237D68 /* SettingViewController.swift in Sources */,
 				C8C55F9C2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift in Sources */,
 				C8AC51262A53C97100EA58B9 /* SignUpNickNameViewController.swift in Sources */,
+				C8120E552A6CCB640060D883 /* HighlightButton.swift in Sources */,
 				C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */,
 				C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */,
 				C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */,

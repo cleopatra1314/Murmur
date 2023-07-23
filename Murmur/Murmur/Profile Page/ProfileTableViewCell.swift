@@ -20,18 +20,28 @@ class ProfileTableViewCell: UITableViewCell {
 //        return changePortraitButton
 //    }()
     var click = true
-    var changePortraitButton = UIButton() {
-        didSet {
-            
-            if click {
-                changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.0)
-            } else {
-                changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.7)
-            }
-            
-            click.toggle()
-        }
-    }
+    lazy var changePortraitButton: HighlightButton = {
+        var changePortraitButton = HighlightButton()
+//        changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.0)
+        changePortraitButton.layer.borderColor = UIColor(red: 226/255, green: 255/255, blue: 246/255, alpha: 1).cgColor
+        changePortraitButton.layer.borderWidth = 3
+        changePortraitButton.layer.cornerRadius = 16
+        changePortraitButton.addTarget(self, action: #selector(changePortraitButtonTouchUpInside), for: .touchUpInside)
+        return changePortraitButton
+    }()
+//    var changePortraitButton = UIButton() {
+//        didSet {
+//
+//            if click {
+//                changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.0)
+//            } else {
+//                changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.7)
+//            }
+//
+//            click.toggle()
+//
+//        }
+//    }
     var profileImageView: UIImageView = {
         let profileImageView = UIImageView()
 //        profileImageView.image = UIImage(named: "User1Portrait.jpg")
@@ -87,7 +97,6 @@ class ProfileTableViewCell: UITableViewCell {
         
 //        profileImageView.isHidden = false
 //        profileView.isHidden = true
-        changePortraitButton.addTarget(self, action: #selector(changePortraitButtonTouchUpInside), for: .touchUpInside)
         
         [profileView, profileImageView, changePortraitButton, userNameLabel, murmurLabel, settingButton].forEach { subview in
             self.contentView.addSubview(subview)
@@ -127,7 +136,7 @@ class ProfileTableViewCell: UITableViewCell {
     }
     
     @objc func changePortraitButtonTouchUpInside() {
-        
+//        changePortraitButton.backgroundColor = .SecondaryShine?.withAlphaComponent(0.7)
         self.changePortraitClosure!(self)
         
     }
