@@ -13,7 +13,7 @@ import SnapKit
 
 class PostTagViewController: UIViewController {
     
-    var MWtagArray = ["🧬 Born", "🚦 Intersection", "🛟 Help", "🏎️ Race", "🫧 Fleeting", "🌚 Night Mood", "🌝 Day Mood", "🦞 Difference", "📟 Retro", "⑆ Object", "💬 Whisper", "✨ BlingBling", "🙅🏻‍♀️ MeToo", "🙅🏻 MeToo", "🕊️ Peace", "📢 Speak Loud", "⏱️ Late","🖕🏻 Life", "🍜 Food", "☕️ Coffee", "🎨 Art", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "👩🏻‍🤝‍👨🏼 Friends", "❓ Mystery", "🥳 Happy", "😠 Angry", "🥲 Sad", "😖 Anxious", "🫠 Tired", "🤩 Excited", "🥱 Bored", "🦵🏻 Body", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🦾 Cyborg", "🐬 VaporWave", "🛍️ Shopping", "😆 Entertainment", "🥨 Philosophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "🟤 Brown", "⚪️ White", "⚫️ Black"] {
+    var MWtagArray = ["🥳 Happy", "😠 Angry", "🥲 Sad", "😖 Anxious", "🫠 Tired", "🤩 Excited", "🥱 Bored","🧬 Born", "🚦 Intersection", "🌚 Night Mood", "🌝 Day Mood", "🦞 Difference", "📟 Retro", "⑆ Object", "💬 Whisper", "✨ BlingBling", "🙅🏻‍♀️ MeToo", "🙅🏻 MeToo", "🕊️ Peace", "📢 Speak Loud", "⏱️ Late","🖕🏻 Life", "🍜 Food", "☕️ Coffee", "🎨 Art", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "👩🏻‍🤝‍👨🏼 Friends", "❓ Mystery", "🦵🏻 Body", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🦾 Cyborg", "🐬 VaporWave", "🛍️ Shopping", "🛟 Help", "🏎️ Race", "🫧 Fleeting", "😆 Entertainment", "🥨 Philosophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "🟤 Brown", "⚪️ White", "⚫️ Black"] {
         didSet {
             postTagCollectionView.reloadData()
         }
@@ -321,12 +321,9 @@ extension PostTagViewController: UICollectionViewDelegateFlowLayout {
         if section == 0 {
             return UIEdgeInsets(top: 16, left: 0, bottom: 4, right: 16)
         } else {
-            return UIEdgeInsets(top: 24, left: 0, bottom: 0, right: 16)
+            return UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 16)
         }
 
     }
-    
-    
 
 }
-

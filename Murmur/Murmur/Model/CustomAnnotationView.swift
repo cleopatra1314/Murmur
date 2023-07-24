@@ -34,10 +34,7 @@ class CustomAnnotationView: MKAnnotationView {
         } else {
             frame = CGRect(x: 0, y: 0, width: labelSize.width + 24, height: labelSize.height + 16)
         }
-        
-//        label.frame = CGRect(x: 0, y: 0, width: 60, height: labelSize.height + 16)
-        
-        
+    
         // 設置標籤的位置
         label.frame = bounds.inset(by: UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10))
         addSubview(label)
