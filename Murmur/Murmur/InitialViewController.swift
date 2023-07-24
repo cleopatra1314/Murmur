@@ -109,8 +109,8 @@ class InitialViewController: UIViewController {
         let emailTextField = MessageTypeTextField()
         emailTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         emailTextField.textColor = .white
-        emailTextField.placeholder = "請輸入 email"
-        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
+        emailTextField.placeholder = "Email"
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [
             NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
             NSAttributedString.Key.kern: 1.5
         ])
@@ -122,7 +122,7 @@ class InitialViewController: UIViewController {
         let passwordTextField = MessageTypeTextField()
         passwordTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         passwordTextField.textColor = .white
-        passwordTextField.placeholder = "請輸入密碼"
+        passwordTextField.placeholder = "Password"
         passwordTextField.layer.borderColor = UIColor.lightGray.cgColor
         passwordTextField.layer.borderWidth = 1
         return passwordTextField
@@ -136,7 +136,7 @@ class InitialViewController: UIViewController {
         let userNameTextField = MessageTypeTextField()
         userNameTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         userNameTextField.textColor = .white
-        userNameTextField.placeholder = "取一個暱稱"
+        userNameTextField.placeholder = "Nickname"
         userNameTextField.layer.borderColor = UIColor.darkGray.cgColor
         userNameTextField.layer.borderWidth = 1
         return userNameTextField
@@ -393,7 +393,7 @@ extension InitialViewController {
         
         Auth.auth().signIn(with: credential) { authResult, error in
             guard error == nil else {
-                self.showAlert(title: "", message: String(describing: error!.localizedDescription), viewController: self)
+                self.showAlert(title: "Ooops!", message: String(describing: error!.localizedDescription), viewController: self)
                 return
             }
 
@@ -413,7 +413,7 @@ extension InitialViewController {
                         "onlineState": true,
                     ], merge: true) { error in
                         
-                        self.view.makeToast("歡迎回來 Murmur World！", duration: 2.0, position: .center, title: "登入成功") { didTap in
+                        self.view.makeToast("Welcome Back", duration: 2.0, position: .center, title: "You are now signed in.") { didTap in
                             DispatchQueue.main.async {
                                 print("Document exists")
                                 self.createTabBarController()
@@ -432,7 +432,7 @@ extension InitialViewController {
                            "location": ["latitude": 0.0, "longitude": 0.0]
 
                        ]) { error in
-                           self.view.makeToast("歡迎來到 Murmur World！", duration: 2.0, position: .center, title: "註冊成功") { didTap in
+                           self.view.makeToast("Success!", duration: 2.0, position: .center, title: "Your account has been created successfully. Welcome to the Murmur World.") { didTap in
                                DispatchQueue.main.async {
                                    print("Document does not exist")
                                    self.createTabBarController()

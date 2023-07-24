@@ -94,11 +94,12 @@ class HomePageViewController: UIViewController {
         btnStack.clipsToBounds = true
         return btnStack
     }()
-    private let filterButton: UIButton = {
+    lazy var filterButton: UIButton = {
         let filterButton = UIButton()
         filterButton.backgroundColor = .PrimaryDefault
         filterButton.tintColor = .SecondaryLight
         filterButton.setImage(UIImage(named: "Icons_Filter"), for: .normal)
+        filterButton.addTarget(self, action: #selector(filterButtonTouchUpInside), for: .touchUpInside)
         return filterButton
     }()
     lazy var switchModeButton: UIButton = {
@@ -180,7 +181,6 @@ class HomePageViewController: UIViewController {
             
         }
         
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -193,6 +193,12 @@ class HomePageViewController: UIViewController {
         super.viewWillDisappear(animated)
         print("func modifyCurrentLocation 時間器暫停")
         stopTimer()
+    }
+    
+    @objc func filterButtonTouchUpInside() {
+        
+        showAlert(title: "", message: "New feature is under development, coming soon!", viewController: self)
+        
     }
     
     func startTimer() {

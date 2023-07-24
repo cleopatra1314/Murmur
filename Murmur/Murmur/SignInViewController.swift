@@ -39,7 +39,7 @@ class SignInViewController: UIViewController {
         let emailTextField = MessageTypeTextField()
         emailTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         emailTextField.textColor = .SecondaryDark
-        emailTextField.placeholder = "請輸入 email"
+        emailTextField.placeholder = "Email"
 //        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
 //            NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
 //            NSAttributedString.Key.kern: 1.5,
@@ -60,7 +60,7 @@ class SignInViewController: UIViewController {
         let passwordTextField = MessageTypeTextField()
         passwordTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         passwordTextField.textColor = .SecondaryDark
-        passwordTextField.placeholder = "請輸入密碼"
+        passwordTextField.placeholder = "Password"
         passwordTextField.layer.cornerRadius = 12
         passwordTextField.backgroundColor = .GrayScale20?.withAlphaComponent(0.9)
         passwordTextField.layer.addShineShadow()
@@ -73,7 +73,7 @@ class SignInViewController: UIViewController {
     }()
     private lazy var signInWithEmailButton: UIButton = {
         let signInWithEmailButton = UIButton()
-        signInWithEmailButton.setTitle("登入", for: .normal)
+        signInWithEmailButton.setTitle("Sign In", for: .normal)
         signInWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
         signInWithEmailButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         signInWithEmailButton.backgroundColor = .SecondaryMiddle
@@ -123,11 +123,11 @@ class SignInViewController: UIViewController {
         let userPassward = self.passwordTextField.text
         
         guard userEmail != "" else {
-            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+            self.errorLabel.text = "Ooops! Make sure you have filled up both account and password"
             return
         }
         guard userPassward != "" else {
-            self.errorLabel.text = "Ooops! 你是不是沒填帳號或密碼"
+            self.errorLabel.text = "Ooops! Make sure you have filled up both account and password"
             return
         }
         
@@ -135,7 +135,8 @@ class SignInViewController: UIViewController {
             // ??
             guard error == nil else {
                 print("登入失敗", error?.localizedDescription ?? "no error?.localizedDescription")
-                self.errorLabel.text = "打錯帳號密碼齁，再給你一次機會"
+                self.errorLabel.text = "Ohh, you type wrong account or password, give you one more chance"
+                // "打錯帳號密碼齁，再給你一次機會"
                 return
                 
             }

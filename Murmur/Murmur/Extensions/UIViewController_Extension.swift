@@ -83,7 +83,7 @@ extension UIViewController {
     
     func showAlert(title: String, message: String, viewController: UIViewController) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         viewController.present(alertController, animated: true, completion: nil)
     }
@@ -93,11 +93,11 @@ extension UIViewController {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         
         // 加入確定的動作。
-        let okAction = UIAlertAction(title: "確定", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Delete", style: .default, handler: nil)
         alertController.addAction(okAction)
         
         // 加入取消的動作。
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         alertController.addAction(cancelAction)
         
         // 呈現 alertController。

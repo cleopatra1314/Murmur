@@ -15,7 +15,7 @@ class CustomAnnotationView: MKAnnotationView {
     override func layoutSubviews() {
         super.layoutSubviews()
         backgroundColor = UIColor.PrimaryLightest?.withAlphaComponent(0.9)
-        frame = CGRect(x: 0, y: 0, width: 200, height: 30)
+//        frame = CGRect(x: 0, y: 0, width: 200, height: 30)
         layer.cornerRadius = 15
         layer.borderColor = UIColor.PrimaryLight?.cgColor
         layer.borderWidth = 1
@@ -27,9 +27,16 @@ class CustomAnnotationView: MKAnnotationView {
         label.font = UIFont.boldSystemFont(ofSize: 12)
         label.text = annotation?.title ?? ""
         
-        // 計算標籤的最小尺寸並調整膠囊寬度
+        // 計算標籤的最小尺寸並調整膠囊寬度不要超過 190，超過即以...表示
         let labelSize = label.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
-        frame = CGRect(x: 0, y: 0, width: labelSize.width + 24, height: labelSize.height + 16)
+        if (labelSize.width + 24) > 190 {
+            frame = CGRect(x: 0, y: 0, width: 190, height: labelSize.height + 16)
+        } else {
+            frame = CGRect(x: 0, y: 0, width: labelSize.width + 24, height: labelSize.height + 16)
+        }
+        
+//        label.frame = CGRect(x: 0, y: 0, width: 60, height: labelSize.height + 16)
+        
         
         // 設置標籤的位置
         label.frame = bounds.inset(by: UIEdgeInsets(top: 4, left: 10, bottom: 4, right: 10))

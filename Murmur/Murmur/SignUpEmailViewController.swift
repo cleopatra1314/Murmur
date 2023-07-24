@@ -62,7 +62,7 @@ class SignUpEmailViewController: UIViewController {
         let emailTextField = MessageTypeTextField()
         emailTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         emailTextField.textColor = .SecondaryDark
-        emailTextField.placeholder = "請輸入 email"
+        emailTextField.placeholder = "Email"
 //        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
 //            NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
 //            NSAttributedString.Key.kern: 1.5,
@@ -83,7 +83,7 @@ class SignUpEmailViewController: UIViewController {
         let passwordTextField = MessageTypeTextField()
         passwordTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         passwordTextField.textColor = .SecondaryDark
-        passwordTextField.placeholder = "請輸入 6 個數字以上密碼"
+        passwordTextField.placeholder = "Password must contain at least 6 characters"
         passwordTextField.layer.cornerRadius = 12
         passwordTextField.backgroundColor = .GrayScale20?.withAlphaComponent(0.9)
         passwordTextField.layer.addShineShadow()
@@ -96,7 +96,7 @@ class SignUpEmailViewController: UIViewController {
     }()
     private lazy var nextButton: UIButton = {
         let nextButton = UIButton()
-        nextButton.setTitle("下一步", for: .normal)
+        nextButton.setTitle("Next", for: .normal)
         nextButton.setTitleColor(.GrayScale20, for: .normal)
         nextButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         nextButton.backgroundColor = .SecondaryMiddle

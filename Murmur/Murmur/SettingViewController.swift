@@ -163,10 +163,10 @@ class SettingViewController: UIViewController {
     @objc func deleteAccountButtonTouchUpInside() {
         
         // 創造一個 UIAlertController 的實例。
-        let alertController = UIAlertController(title: "提醒", message: "確定要刪除帳號嗎？", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Confirm Deletion", message: "Are you sure you want to delete your Murmur Wall acount? This action cannot be undone.", preferredStyle: .alert)
         
         // 加入確定的動作。
-        let okAction = UIAlertAction(title: "確定", style: .default) { alertAction in
+        let okAction = UIAlertAction(title: "Delete", style: .default) { alertAction in
             
             let user = Auth.auth().currentUser
 
@@ -216,7 +216,7 @@ class SettingViewController: UIViewController {
         alertController.addAction(okAction)
         
         // 加入取消的動作。
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { alertAction in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { alertAction in
             return
         }
         alertController.addAction(cancelAction)
@@ -242,10 +242,10 @@ class SettingViewController: UIViewController {
 //        }
         
         // 創造一個 UIAlertController 的實例。
-        let alertController = UIAlertController(title: "提醒", message: "確定要登出嗎？", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Are you sure?", message: "Do you really want to sign out? We'll miss you.", preferredStyle: .alert)
         
         // 加入確定的動作。
-        let okAction = UIAlertAction(title: "確定", style: .default) { alertAction in
+        let okAction = UIAlertAction(title: "Sign out", style: .default) { alertAction in
             
             do {
                 try Auth.auth().signOut()
@@ -278,7 +278,7 @@ class SettingViewController: UIViewController {
         alertController.addAction(okAction)
         
         // 加入取消的動作。
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { alertAction in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { alertAction in
             return
         }
         alertController.addAction(cancelAction)

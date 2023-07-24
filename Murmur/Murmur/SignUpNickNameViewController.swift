@@ -64,7 +64,7 @@ class SignUpNickNameViewController: UIViewController {
         let nickNameTextField = MessageTypeTextField()
         nickNameTextField.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         nickNameTextField.textColor = .SecondaryDark
-        nickNameTextField.placeholder = "取一個可愛的名字吧"
+        nickNameTextField.placeholder = "Get a lovely name"
 //        emailTextField.attributedPlaceholder = NSAttributedString(string: "請輸入 email", attributes: [
 //            NSAttributedString.Key.font: UIFont(name: "Helvetica-Bold", size: 18.0),
 //            NSAttributedString.Key.kern: 1.5,
@@ -110,7 +110,7 @@ class SignUpNickNameViewController: UIViewController {
     }()
     private lazy var signUpWithEmailButton: UIButton = {
         let signUpWithEmailButton = UIButton()
-        signUpWithEmailButton.setTitle("註冊", for: .normal)
+        signUpWithEmailButton.setTitle("Sign Up", for: .normal)
         signUpWithEmailButton.setTitleColor(.GrayScale20, for: .normal)
         signUpWithEmailButton.titleLabel?.font = UIFont(name: "PingFangTC-Medium", size: 16)
         signUpWithEmailButton.backgroundColor = .SecondaryMiddle
@@ -167,11 +167,11 @@ class SignUpNickNameViewController: UIViewController {
 
         // 建立一個 UIAlertController 的實體
         // 設定 UIAlertController 的標題與樣式為 動作清單 (actionSheet)
-        let imagePickerAlertController = UIAlertController(title: "上傳圖片", message: "請選擇要上傳的圖片", preferredStyle: .actionSheet)
+        let imagePickerAlertController = UIAlertController(title: "Upload Image", message: "Select an Image", preferredStyle: .actionSheet)
 
         // 建立三個 UIAlertAction 的實體
         // 新增 UIAlertAction 在 UIAlertController actionSheet 的 動作 (action) 與標題
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { (void) in
+        let imageFromLibAction = UIAlertAction(title: "Album", style: .default) { (void) in
 
             // 判斷是否可以從照片圖庫取得照片來源
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
@@ -181,7 +181,7 @@ class SignUpNickNameViewController: UIViewController {
                 self.present(imagePickerController, animated: true, completion: nil)
             }
         }
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { (void) in
+        let imageFromCameraAction = UIAlertAction(title: "Camera", style: .default) { (void) in
 
             // 判斷是否可以從相機取得照片來源
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -193,7 +193,7 @@ class SignUpNickNameViewController: UIViewController {
         }
 
         // 新增一個取消動作，讓使用者可以跳出 UIAlertController
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { (void) in
+        let cancelAction = UIAlertAction(title: "Canecl", style: .cancel) { (void) in
 
             imagePickerAlertController.dismiss(animated: true, completion: nil)
         }

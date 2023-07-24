@@ -158,8 +158,9 @@ extension PostsOfMurmursViewController: UICollectionViewDelegate {
                 self.showAlert(title: "新功能開發中，敬請期待！💜", message: "", viewController: self)
             }
             // 欄位2: Delete 做的操作
+            // "刪除貼文後將無法恢復貼文紀錄，確定要刪除嗎？"
             let shareAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), state: .off) { action in
-                self.showCustomAlert(title: "提醒！", message: "刪除貼文後將無法恢復貼文紀錄，確定要刪除嗎？", viewController: self, okMessage: "確定", closeMessage: "取消") { [self] in
+                self.showCustomAlert(title: "Confirm Deletion", message: "Are you sure you want to delete the post? This action cannot be undone.", viewController: self, okMessage: "Delete", closeMessage: "Cancel") { [self] in
                     
                     let idOfMurmurToBeDeleted = murmurData![indexPath.row].id!
                     
