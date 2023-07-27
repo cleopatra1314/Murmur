@@ -5,13 +5,13 @@
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We need your location to post murmurs and other related features</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to post murmurs and other related features</string>
+	<string>To see locations, allow access to your location, this lets you discover places nearby</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>You&apos;ll be able to make cutomed photo setting.</string>
+	<string>Allow Murmur Wall to access your photo library, this lets you share photos to other users</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Murmur Wall will store photoes for you</string>
+	<string>Allow Murmur Wall to access your photo library, this lets you share photos to other users</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Murmur Wall need camera to take pretty photo for you</string>
+	<string>Murmur Wall need camera to take photo for you</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>cleopatra.Murmur</string>

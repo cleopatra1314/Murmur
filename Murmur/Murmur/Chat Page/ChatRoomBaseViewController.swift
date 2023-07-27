@@ -62,7 +62,7 @@ class ChatRoomBaseViewController: UIViewController {
     private let typingTextField: MessageTypeTextField = {
         let typingTextField = MessageTypeTextField()
         typingTextField.backgroundColor = .GrayScale20
-        typingTextField.textColor = .GrayScale90
+        typingTextField.textColor = .SecondaryDark
         typingTextField.layer.cornerRadius = 15
         typingTextField.layer.borderColor = UIColor.SecondaryDefault?.cgColor
         typingTextField.layer.borderWidth = 2
