@@ -9,7 +9,7 @@ Murmur, Explore, Fun
 </p>
 
 <p align="center">
-    <a href="https://raw.githubusercontent.com/cleopatra1314/test/main/WaitForReview.png"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"></a>
+    <a href="https://raw.githubusercontent.com/cleopatra1314/Murmur/main/ImagesSource/WaitForReview.png"><img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"></a>
 </p>
 
 <p align="center">
