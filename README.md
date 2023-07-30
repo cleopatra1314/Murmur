@@ -15,8 +15,8 @@ Murmur, Explore, Fun
 <p align="center">
     <img src="https://img.shields.io/badge/platform-iOS-lightgray">
     <img src="https://img.shields.io/badge/license-MIT-informational">
-    <img src="https://img.shields.io/badge/release-v1.0.1-green">
-    <img src="https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat">
+    <img src="https://img.shields.io/badge/release-v1.0-green">
+    <img src="https://img.shields.io/badge/Swift-5.8-orange.svg?style=flat">
 </p>
 
 ## About
