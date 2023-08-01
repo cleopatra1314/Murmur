@@ -419,16 +419,17 @@ class PostViewController: UIViewController {
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(16)
             make.leading.equalTo(self.view).offset(16)
             make.trailing.equalTo(self.view).offset(-16)
-            make.height.equalTo(160)
+            make.bottom.equalTo(murmurView.snp.top).offset(-8)
+//            make.height.equalTo(160)
         }
         murmurView.snp.makeConstraints { make in
-            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
+//            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
             make.leading.equalTo(self.view).offset(24)
             make.trailing.equalTo(self.view).offset(-24)
             make.height.equalTo(murmurView.snp.width)
         }
         murmurImageView.snp.makeConstraints { make in
-            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
+//            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
             make.leading.equalTo(self.view).offset(24)
             make.trailing.equalTo(self.view).offset(-24)
             make.height.equalTo(murmurView.snp.width)
@@ -451,6 +452,7 @@ class PostViewController: UIViewController {
         stack.snp.makeConstraints { make in
             make.top.equalTo(murmurView.snp.bottom).offset(24)
             make.centerX.equalTo(self.view.snp.centerX)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-24)
         }
         captureButton.snp.makeConstraints { make in
             make.width.equalTo(64)

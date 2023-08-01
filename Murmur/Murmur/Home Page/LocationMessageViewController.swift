@@ -162,7 +162,7 @@ class LocationMessageViewController: UIViewController {
         
         for murmurItem in murmurData {
 
-            let coordinateOfMessage = CLLocationCoordinate2D(latitude: murmurItem.location["latitude"]!, longitude: murmurItem.location["longitude"]!)
+            let coordinateOfMessage = CLLocationCoordinate2D(latitude: murmurItem.location["latitude"] ?? defaultCurrentCoordinate.latitude, longitude: murmurItem.location["longitude"] ?? defaultCurrentCoordinate.longitude)
             
             guard let coordinateOfMe = currentCoordinate else { return }
             
