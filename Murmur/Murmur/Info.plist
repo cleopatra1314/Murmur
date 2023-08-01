@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need your location to post murmurs and other related features</string>
+	<string>Your location lets us show the Murmur posts and users nearby.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To see locations, allow access to your location, this lets you discover places nearby</string>
+	<string>Your location lets us show the Murmur posts and users nearby.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow Murmur Wall to access your photo library, this lets you share photos to other users</string>
+	<string>Allow photo access to choose photos for Murmur posts or custom settings</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allow Murmur Wall to access your photo library, this lets you share photos to other users</string>
+	<string>Allow photo access to choose photos for Murmur posts or custom settings</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Murmur Wall need camera to take photo for you</string>
+	<string>Access to the camera allows you to take photos for Murmur posts or profile.</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>cleopatra.Murmur</string>
