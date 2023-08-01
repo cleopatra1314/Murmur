@@ -51,6 +51,25 @@ extension UIViewController {
         
     }
 
+    func showTypeAlert() {
+        let controller = UIAlertController(title: "Contact Us", message: "Feel free to say anything to us.😉", preferredStyle: .alert)
+        controller.addTextField { textField in
+           textField.placeholder = "Email"
+        }
+        controller.addTextField { textField in
+           textField.placeholder = "I want to say..."
+//           textField.isSecureTextEntry = true
+        }
+        let okAction = UIAlertAction(title: "OK", style: .default) { [unowned controller] _ in
+           let phone = controller.textFields?[0].text
+           let password = controller.textFields?[1].text
+        }
+        controller.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        present(controller, animated: true)
+    }
+    
     
     ///   - message: 提示訊息
     ///   - vc: 要在哪一個 UIViewController 上呈現

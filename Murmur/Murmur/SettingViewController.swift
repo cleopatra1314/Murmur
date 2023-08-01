@@ -19,7 +19,6 @@ class SettingViewController: UIViewController {
     
     lazy var signOutButton: UIButton = {
         let signOutButton = UIButton()
-        signOutButton.frame = CGRect(x: 150, y: 200, width: 120, height: 40)
         signOutButton.backgroundColor = .GrayScale20
         signOutButton.layer.borderColor = UIColor.ErrorMidDark?.cgColor
         signOutButton.layer.borderWidth = 1
@@ -31,12 +30,18 @@ class SettingViewController: UIViewController {
     }()
     lazy var deleteAccountButton: UIButton = {
         let deleteAccountButton = UIButton()
-        deleteAccountButton.frame = CGRect(x: 150, y: 260, width: 120, height: 40)
         deleteAccountButton.backgroundColor = .ErrorMidDark
         deleteAccountButton.setTitle("Delete Account", for: .normal)
         deleteAccountButton.layer.cornerRadius = 10
         deleteAccountButton.addTarget(self, action: #selector(deleteAccountButtonTouchUpInside), for: .touchUpInside)
         return deleteAccountButton
+    }()
+    lazy var contactUsButton: UIButton = {
+        let contactUsButton = UIButton()
+        contactUsButton.setTitle("Contact Us", for: .normal)
+        contactUsButton.setTitleColor(.ErrorMidDark, for: .normal)
+        contactUsButton.addTarget(self, action: #selector(contactUsButtonTouchUpInside), for: .touchUpInside)
+        return contactUsButton
     }()
     
     override func viewDidLoad() {
@@ -51,20 +56,31 @@ class SettingViewController: UIViewController {
         
         self.view.addSubview(signOutButton)
         self.view.addSubview(deleteAccountButton)
+        self.view.addSubview(contactUsButton)
         
         signOutButton.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(72)
             make.trailing.equalTo(self.view.snp.centerX).offset(-8)
             make.height.equalTo(40)
-            make.width.equalTo(120)
+            make.width.equalTo(140)
         }
         deleteAccountButton.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(72)
             make.leading.equalTo(self.view.snp.centerX).offset(8)
             make.height.equalTo(40)
-            make.width.equalTo(120)
+            make.width.equalTo(140)
+        }
+        contactUsButton.snp.makeConstraints { make in
+            make.centerX.equalTo(self.view)
+            make.top.equalTo(deleteAccountButton.snp.bottom).offset(24)
+            make.height.equalTo(40)
+            make.width.equalTo(140)
         }
         
+    }
+    
+    @objc func contactUsButtonTouchUpInside() {
+        showTypeAlert()
     }
     
     // use the ID token from Apple's response to create a Firebase AuthCredential object

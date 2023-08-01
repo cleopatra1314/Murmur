@@ -250,7 +250,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.settingClosure = { cell in
                 let settingViewController = SettingViewController()
                 if let sheetPresentationController = settingViewController.sheetPresentationController {
-                    sheetPresentationController.detents = [.custom(resolver: { context in 180 })]
+                    sheetPresentationController.detents = [.custom(resolver: { context in 220 })]
                     sheetPresentationController.preferredCornerRadius = 80
                     // 顯示下拉的灰色長條
                     sheetPresentationController.prefersGrabberVisible = true
