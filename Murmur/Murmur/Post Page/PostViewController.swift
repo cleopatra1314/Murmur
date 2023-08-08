@@ -432,7 +432,7 @@ class PostViewController: UIViewController {
 //            make.top.equalTo(murmurTextField.snp.bottom).offset(8)
             make.leading.equalTo(self.view).offset(24)
             make.trailing.equalTo(self.view).offset(-24)
-            make.height.equalTo(murmurView.snp.width)
+            make.height.equalTo(murmurImageView.snp.width)
         }
 //        trashButton.snp.makeConstraints { make in
 //            make.width.height.equalTo(28)
