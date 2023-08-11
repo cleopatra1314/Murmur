@@ -25,7 +25,7 @@ class PostViewController: UIViewController {
     
     let murmurTextField: UITextField = {
         let murmurTextField = UITextField()
-        murmurTextField.placeholder = "想說什麼大聲說出來"
+        murmurTextField.placeholder = "Speak up your mind"
         murmurTextField.contentVerticalAlignment = .top
         murmurTextField.textColor = .GrayScale20
         murmurTextField.layer.addTypingShadow()
@@ -34,7 +34,6 @@ class PostViewController: UIViewController {
     let murmurView: UIView = {
         let murmurView = UIView()
         murmurView.backgroundColor = .black
-        
         murmurView.clipsToBounds = true
         return murmurView
     }()
@@ -160,8 +159,6 @@ class PostViewController: UIViewController {
     
     func setUpFrontCameraSession() {
         
-        
-        
         // 選擇前置鏡頭設備
         if let frontCamera = availableDevices.first(where: { $0.position == .front }) {
             do {
@@ -214,8 +211,6 @@ class PostViewController: UIViewController {
                     if let currentInput = captureSession.inputs.first as? AVCaptureDeviceInput {
                         print(currentInput)
                         captureSession.removeInput(currentInput)
-                        print("🚥", availableDevices)
-                        print("🚥🚥🚥", captureSession.inputs.first)
                     }
 
                     // 將 AVCaptureDeviceInput 設定為輸入裝置
@@ -433,6 +428,7 @@ class PostViewController: UIViewController {
             make.leading.equalTo(self.view).offset(24)
             make.trailing.equalTo(self.view).offset(-24)
             make.height.equalTo(murmurImageView.snp.width)
+            make.bottom.equalTo(murmurView)
         }
 //        trashButton.snp.makeConstraints { make in
 //            make.width.height.equalTo(28)

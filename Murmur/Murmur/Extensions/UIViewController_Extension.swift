@@ -52,7 +52,7 @@ extension UIViewController {
     }
 
     func showTypeAlert() {
-        let controller = UIAlertController(title: "Contact Us", message: "Feel free to say anything to us.😉", preferredStyle: .alert)
+        let controller = UIAlertController(title: "Contact Us", message: "Feel free to say anything to us.😉\n Leave your email and we will reply as soon as possible.", preferredStyle: .alert)
         controller.addTextField { textField in
            textField.placeholder = "Email"
         }
