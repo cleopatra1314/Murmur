@@ -64,6 +64,7 @@
 		C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* HomePageViewController.swift */; };
 		C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C292A39DA350025E693 /* Main.storyboard */; };
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
+		C8CABECC2A8779FB007947E0 /* ChatRoomPresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CABECB2A8779FB007947E0 /* ChatRoomPresentViewController.swift */; };
 		C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */ = {isa = PBXBuildFile; fileRef = C8CC5A872A54B1AF006E3C8D /* Pacman.json */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
 		C8CE206E2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */; };
@@ -141,6 +142,7 @@
 		C8C72C2A2A39DA350025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C8C72C2C2A39DA360025E693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C8CABECB2A8779FB007947E0 /* ChatRoomPresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomPresentViewController.swift; sourceTree = "<group>"; };
 		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
 		C8CE206D2A63CFB500448A99 /* SelectedTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SelectedTagCollectionViewCell.swift; path = "Murmur/Post Page/SelectedTagCollectionViewCell.swift"; sourceTree = SOURCE_ROOT; };
@@ -203,6 +205,7 @@
 				C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */,
 				C8C4DD4E2A3AE3C90037B4F5 /* ChatRoomViewController.swift */,
 				C8C55F9B2A48A9CA00FAE03E /* ChatRoomBaseViewController.swift */,
+				C8CABECB2A8779FB007947E0 /* ChatRoomPresentViewController.swift */,
 				C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */,
 				C8ABD8402A43EA1400B76ADC /* UserMeChatTableViewCell.swift */,
 				C8ABD8422A43EA5800B76ADC /* UserTheOtherTableViewCell.swift */,
@@ -538,6 +541,7 @@
 				C8AE775C2A3F0EE40027CB0D /* PostTagViewController.swift in Sources */,
 				C8AE775E2A3F4D760027CB0D /* TagButton.swift in Sources */,
 				C8F041EA2A4B3D6F0044BE9C /* FootPrintViewController.swift in Sources */,
+				C8CABECC2A8779FB007947E0 /* ChatRoomPresentViewController.swift in Sources */,
 				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
 				C8FF7BD82A55543E00E18616 /* SelfSizingTableView.swift in Sources */,
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,

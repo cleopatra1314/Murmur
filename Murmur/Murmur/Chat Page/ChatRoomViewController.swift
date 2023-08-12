@@ -51,7 +51,7 @@ class ChatRoomViewController: UIViewController {
         
         return typingTextField
     }()
-    private let sendButton: UIButton = {
+    private lazy var sendButton: UIButton = {
         let sendButton = UIButton()
         sendButton.setBackgroundImage(UIImage(named: "Icons_Unsend.png"), for: .normal)
         sendButton.setBackgroundImage(UIImage(named: "Icons_Send.png"), for: .highlighted)

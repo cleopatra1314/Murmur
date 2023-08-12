@@ -43,6 +43,7 @@ class ChatRoomBaseViewController: UIViewController {
 //    var messageDataResult: [Messages] = []
 //    private var meReplyText = String()
 
+    let blackView = UIView(frame: UIScreen.main.bounds)
     let chatRoomTableView: SelfSizingTableView = {
         let chatRoomTableView = SelfSizingTableView()
         chatRoomTableView.separatorStyle = .none
@@ -305,7 +306,36 @@ class ChatRoomBaseViewController: UIViewController {
 
         // 将自定义视图设置为导航栏的标题视图
         navigationItem.titleView = customView
+        
+        // 添加設定按鈕
+        let setButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(setButtonItemTouchUpInside))
+        setButtonItem.tintColor = .GrayScale20
+        self.navigationItem.rightBarButtonItem = setButtonItem
 
+    }
+    
+    @objc func setButtonItemTouchUpInside() {
+        let presentVC = ChatRoomPresentViewController()
+        presentVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+//        presentVC.modalPresentationStyle = UIModalPresentationStyle.custom
+//        presentVC.modalPresentationStyle = .fullScreen
+        presentVC.modalTransitionStyle = .coverVertical
+        presentVC.otherUserName = self.otherUserName
+        self.present(presentVC, animated: true) { [self] in
+            
+            self.blackView.backgroundColor = .black
+            blackView.alpha = 0
+            self.navigationController?.view.addSubview(blackView)
+//            self.view.addSubview(self.blackView)
+//            self.view.bringSubviewToFront(self.blackView)
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.05, delay: 0) {
+                self.blackView.alpha = 0.5
+            }
+            
+        }
+        presentVC.cancelClosure = { _ in
+            self.blackView.removeFromSuperview()
+        }
     }
     
     private func setNavCloseButton() {
