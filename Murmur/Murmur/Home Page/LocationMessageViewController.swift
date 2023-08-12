@@ -39,6 +39,7 @@ class LocationMessageViewController: UIViewController {
     private let dataBase = Firestore.firestore()
     private var murmurData: [Murmurs]?
     
+    var popupClosure: ((UIViewController) -> Void)?
     // 1.創建 locationManager
     let locationManager = CLLocationManager()
     
@@ -221,6 +222,9 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
             
         }
         
+        // 隱藏 HomePageViewController 的選單
+        self.popupClosure!(self)
+        
         let timestamp: Timestamp = murmur.createTime // 從 Firestore 中取得的 Timestamp 值
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy MM dd" // 例如："yyyy-MM-dd HH:mm" -> 2023-06-10 15:30
@@ -230,8 +234,6 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         
         self.animateScaleIn(desiredView: self.blurView)
         self.animateScaleIn(desiredView: self.popupView)
-        
-        
         
     }
     

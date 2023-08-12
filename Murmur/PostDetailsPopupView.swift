@@ -79,6 +79,13 @@ class PostDetailsPopupView: UIView {
         closeButton.tintColor = .PrimaryMid
         return closeButton
     }()
+    private lazy var setButton: UIButton = {
+        let setButton = UIButton()
+        setButton.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        setButton.addTarget(self, action: #selector(setButtonTouchUpInside), for: .touchUpInside)
+        setButton.tintColor = .PrimaryMid
+        return setButton
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,9 +114,35 @@ class PostDetailsPopupView: UIView {
 //        animateScaleOut(desiredView: blurView)
     }
     
+    @objc func setButtonTouchUpInside() {
+        
+//        let presentVC = ChatRoomPresentViewController()
+//        presentVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+////        presentVC.modalPresentationStyle = UIModalPresentationStyle.custom
+////        presentVC.modalPresentationStyle = .fullScreen
+//        presentVC.modalTransitionStyle = .coverVertical
+//
+//        self.present(presentVC, animated: true) { [self] in
+//
+//            self.blackView.backgroundColor = .black
+//            blackView.alpha = 0
+//            self.navigationController?.view.addSubview(blackView)
+////            self.view.addSubview(self.blackView)
+////            self.view.bringSubviewToFront(self.blackView)
+//            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.05, delay: 0) {
+//                self.blackView.alpha = 0.5
+//            }
+//
+//        }
+//        presentVC.cancelClosure = { _ in
+//            self.blackView.removeFromSuperview()
+//        }
+        
+    }
+    
     func layoutView() {
  
-        [postImageView, postCreatedTimeLabel, postCreatedSiteLabel, postContentLabel, tagCollectionView, closeButton].forEach { subview in
+        [postImageView, postCreatedTimeLabel, postCreatedSiteLabel, postContentLabel, tagCollectionView, closeButton, setButton].forEach { subview in
             self.addSubview(subview)
         }
 
@@ -141,8 +174,13 @@ class PostDetailsPopupView: UIView {
             make.bottom.lessThanOrEqualTo(self).offset(-40)
         }
         closeButton.snp.makeConstraints { make in
-            make.height.width.equalTo(18)
+            make.height.width.equalTo(30)
             make.leading.equalTo(24)
+            make.top.equalTo(24)
+        }
+        setButton.snp.makeConstraints { make in
+            make.height.width.equalTo(30)
+            make.trailing.equalTo(-24)
             make.top.equalTo(24)
         }
         

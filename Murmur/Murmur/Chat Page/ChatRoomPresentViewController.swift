@@ -46,7 +46,7 @@ class ChatRoomPresentViewController: UIViewController {
     }
     
     @objc func blockButtonTouchupInside() {
-        self.showCustomAlert(title: "Block \(otherUserName) ?", message: "They won't be able to message you or find you on the map. Are you sure you want to block this user ?", viewController: self, okMessage: "Block", closeMessage: "Cancel") {
+        self.showCustomAlert(title: "Block \(otherUserName) ?", message: "They won't be able to message you and you won't see each other on the map. Are you sure you want to block this user ?", viewController: self, okMessage: "Block", closeMessage: "Cancel") {
             print("給我封鎖他")
         }
     }

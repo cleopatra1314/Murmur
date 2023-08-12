@@ -143,6 +143,11 @@ class HomePageViewController: UIViewController {
         childLocationMessageViewController.fetchMurmur()
         childNearbyUsersViewController.fetchUserLocation()
         
+        // 點擊 locationMessageViewController 時要讓右上選單隱藏
+        childLocationMessageViewController.popupClosure = { _ in
+            self.btnStack.isHidden = true
+        }
+        
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
 //        childLocationMessageViewController.stopTimer()
         
