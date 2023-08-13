@@ -215,7 +215,7 @@ extension PostTagViewController: UICollectionViewDelegate, UICollectionViewDataS
         
         if kind == UICollectionView.elementKindSectionHeader {
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "\(PostTagCollectionReusableHeaderView.self)", for: indexPath) as? PostTagCollectionReusableHeaderView else { return UICollectionReusableView() }
-            headerView.label.text = "你的塗鴉內容與什麼有關呢？"  //"About your murmurs"
+            headerView.label.text = "About your murmurs"  //"你的塗鴉內容與什麼有關呢？"
 //                        headerView.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 50)
             return headerView
             

@@ -52,9 +52,10 @@ class LocationMessageViewController: UIViewController {
         let mapView = MKMapView()
         return mapView
     }()
-    let popupView: PostDetailsPopupView = {
+    lazy var popupView: PostDetailsPopupView = {
         let popupView = PostDetailsPopupView()
         popupView.backgroundColor = .PrimaryLighter
+        popupView.delegate = self
         return popupView
     }()
     let blurView: UIVisualEffectView = {
@@ -340,8 +341,41 @@ extension LocationMessageViewController {
 
 }
 
+extension LocationMessageViewController: PostDetailsPopupViewDelegate {
+    
+    func showSettingMenu(view: UIView) {
+        
+        let alertController = UIAlertController(title: "", message: "More action", preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "Report", style: .default) { action in
+            
+            print(action)
+            let reportAlertController = UIAlertController(title: "", message: "Why are you reporting this post?", preferredStyle: .actionSheet)
+            let reportActions = ["I just don't like it", "Violence or dangerous organizations", "Nudity or sexual activity", "Bullying or harassment"]
+            for actionContent in reportActions {
+                let reportAction = UIAlertAction(title: actionContent, style: .default) { _ in
+                    self.showAlert(title: "Finish", message: "We have received your report message and will deal with it with 24 hrs.", viewController: self)
+                }
+                reportAlertController.addAction(reportAction)
+            }
+            let cancelReportAction = UIAlertAction(title: "Cancel", style: .cancel)
+            reportAlertController.addAction(cancelReportAction)
+            self.present(reportAlertController, animated: true)
+            
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        [action, cancelAction].forEach { action in
+            alertController.addAction(action)
+        }
+        present(alertController, animated: true)
+        
+    }
+    
+}
+
 extension UIDevice {
     static var hasDynamicIsland: Bool {
         ["iPhone 14 Pro", "iPhone 14 Pro Max"].contains(current.name)
     }
 }
+
+

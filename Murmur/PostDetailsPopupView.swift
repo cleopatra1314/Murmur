@@ -5,14 +5,21 @@
 //  Created by cleopatra on 2023/7/12.
 //
 
+protocol PostDetailsPopupViewDelegate: AnyObject {
+    func showSettingMenu(view: UIView)
+}
+
 import Foundation
 import UIKit
 import SnapKit
 
 class PostDetailsPopupView: UIView {
     
+    weak var delegate: PostDetailsPopupViewDelegate?
+    
     var currentRowOfIndexpath: Int?
     var closeClosure: ((UIView, Int) -> Void)?
+    var showMenuClosure: ((UIView) -> Void)?
     var tagArray: [String]! {
         didSet {
             tagCollectionView.reloadData()
@@ -110,11 +117,14 @@ class PostDetailsPopupView: UIView {
     @objc func closeButtonTouchUpInside() {
         
         self.closeClosure!(self, currentRowOfIndexpath ?? 0)
+        self.showMenuClosure!(self)
 //        animateScaleOut(desiredView: popupView)
 //        animateScaleOut(desiredView: blurView)
     }
     
     @objc func setButtonTouchUpInside() {
+        
+        self.delegate?.showSettingMenu(view: self)
         
 //        let presentVC = ChatRoomPresentViewController()
 //        presentVC.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext

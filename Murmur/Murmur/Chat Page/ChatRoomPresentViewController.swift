@@ -64,7 +64,7 @@ class ChatRoomPresentViewController: UIViewController {
             make.height.equalTo(44)
         }
         blockButton.snp.makeConstraints { make in
-            make.bottom.equalTo(cancelButton.snp.top).offset(-8)
+            make.bottom.equalTo(cancelButton.snp.top).offset(-12)
             make.leading.equalTo(self.view).offset(16)
             make.trailing.equalTo(self.view).offset(-16)
             make.height.equalTo(44)
