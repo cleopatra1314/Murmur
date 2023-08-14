@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Toast_Swift
 
 class ChatRoomPresentViewController: UIViewController {
     
@@ -46,8 +47,12 @@ class ChatRoomPresentViewController: UIViewController {
     }
     
     @objc func blockButtonTouchupInside() {
-        self.showCustomAlert(title: "Block \(otherUserName) ?", message: "They won't be able to message you and you won't see each other on the map. Are you sure you want to block this user ?", viewController: self, okMessage: "Block", closeMessage: "Cancel") {
-            print("給我封鎖他")
+        self.showCustomAlert(title: "Block \(otherUserName) ?", message: "They won't be able to message you and you won't see each other on the map. Are you sure you want to block this user ?", viewController: self, okMessage: "Block", closeMessage: "Cancel") { [self] in
+            
+            self.view.makeToast("\(self.otherUserName) is blocked", duration: 2.5, position: .center, style: ToastStyle()) { _ in
+                self.cancelButtonTouchupInside()
+            }
+            
         }
     }
     

@@ -152,6 +152,8 @@ class InitialViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        authorizationAppleIDButton.isHidden = true
              
         layoutBackground()
         layoutView()

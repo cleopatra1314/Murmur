@@ -170,7 +170,7 @@ extension PostsOfMurmursViewController: UICollectionViewDelegate {
                         // 刪除 murmurTest
                         // userTest -> postedMurmurs 刪完後 murmurData![indexPath.row].id! 指到的不會是原本想刪的那個，所以用 idOfMurmurToBeDeleted 先將它存起來
                         database.collection("murmurTest").document(idOfMurmurToBeDeleted).delete(completion: { error in
-                            self.view.makeToast("已刪除 murmur ", duration: 2.5, position: .top, style: ToastStyle())
+                            self.view.makeToast("Murmur deleted ", duration: 2.5, position: .top, style: ToastStyle())
                         })
                         
                     })
