@@ -17,6 +17,7 @@ class PostDetailsPopupView: UIView {
     
     weak var delegate: PostDetailsPopupViewDelegate?
     
+    let fullsize = UIScreen.main.bounds
     var currentRowOfIndexpath: Int?
     var closeClosure: ((UIView, Int) -> Void)?
     var showMenuClosure: ((UIView) -> Void)?
@@ -42,6 +43,7 @@ class PostDetailsPopupView: UIView {
         let postCreatedSiteLabel = UILabel()
         postCreatedSiteLabel.textColor = .PrimaryDark?.withAlphaComponent(0.7)
         postCreatedSiteLabel.font = UIFont(name: "PingFangTC-Medium", size: 14)
+        postCreatedSiteLabel.numberOfLines = 0
         return postCreatedSiteLabel
     }()
     let postContentLabel: UILabel = {
@@ -86,7 +88,7 @@ class PostDetailsPopupView: UIView {
         closeButton.tintColor = .PrimaryMid
         return closeButton
     }()
-    private lazy var setButton: UIButton = {
+    lazy var setButton: UIButton = {
         let setButton = UIButton()
         setButton.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         setButton.addTarget(self, action: #selector(setButtonTouchUpInside), for: .touchUpInside)
@@ -117,7 +119,9 @@ class PostDetailsPopupView: UIView {
     @objc func closeButtonTouchUpInside() {
         
         self.closeClosure!(self, currentRowOfIndexpath ?? 0)
-        self.showMenuClosure!(self)
+        if let closure = self.showMenuClosure {
+            closure(self)
+        }
 //        animateScaleOut(desiredView: popupView)
 //        animateScaleOut(desiredView: blurView)
     }
@@ -157,9 +161,9 @@ class PostDetailsPopupView: UIView {
         }
 
         postImageView.snp.makeConstraints { make in
-            make.top.equalTo(self).offset(56)
-            make.leading.equalTo(self).offset(30)
-            make.trailing.equalTo(self).offset(-30)
+            make.top.equalTo(self).offset(fullsize.height*0.06)
+            make.leading.equalTo(self).offset(fullsize.height*0.05)
+            make.trailing.equalTo(self).offset(-fullsize.height*0.05)
             make.height.equalTo(postImageView.snp.width)
         }
         postCreatedTimeLabel.snp.makeConstraints { make in
@@ -169,6 +173,8 @@ class PostDetailsPopupView: UIView {
         postCreatedTimeLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         postCreatedSiteLabel.snp.makeConstraints { make in
             make.top.equalTo(postCreatedTimeLabel.snp.bottom).offset(6)
+            make.leading.greaterThanOrEqualTo(self).offset(32)
+            make.trailing.lessThanOrEqualTo(self).offset(-32)
             make.centerX.equalTo(self)
         }
         tagCollectionView.snp.makeConstraints { make in
@@ -179,17 +185,17 @@ class PostDetailsPopupView: UIView {
         }
         postContentLabel.snp.makeConstraints { make in
             make.top.equalTo(tagCollectionView.snp.bottom).offset(16)
-            make.leading.equalTo(self).offset(56)
-            make.trailing.lessThanOrEqualTo(self).offset(-56)
-            make.bottom.lessThanOrEqualTo(self).offset(-40)
+            make.leading.equalTo(self).offset(32)
+            make.trailing.lessThanOrEqualTo(self).offset(-32)
+            make.bottom.lessThanOrEqualTo(self).offset(-fullsize.height*0.05)
         }
         closeButton.snp.makeConstraints { make in
-            make.height.width.equalTo(30)
+            make.height.width.equalTo(fullsize.height*0.03)
             make.leading.equalTo(24)
             make.top.equalTo(24)
         }
         setButton.snp.makeConstraints { make in
-            make.height.width.equalTo(30)
+            make.height.width.equalTo(fullsize.height*0.03)
             make.trailing.equalTo(-24)
             make.top.equalTo(24)
         }

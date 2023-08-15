@@ -91,7 +91,7 @@ class LocationMessageViewController: UIViewController {
         
         blurView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
 //        blurView.bounds = self.view.bounds
-        popupView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width*0.9, height: self.view.bounds.height*0.8)
+        popupView.bounds = CGRect(x: 0, y: 0, width: self.view.bounds.width*0.9, height: self.view.bounds.height*0.85)
 //        drawCircleRegion()
     }
 

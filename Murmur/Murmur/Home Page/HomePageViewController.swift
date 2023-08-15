@@ -153,6 +153,10 @@ class HomePageViewController: UIViewController {
             self.btnStack.isHidden = false
         }
         
+        childLocationMessageViewController.popupView.showMenuClosure = { _ in
+            self.btnStack.isHidden = false
+        }
+        
         // 一開始進到 homePage，LocationMessagePage timer 就會開始跑，所以要先停掉
 //        childLocationMessageViewController.stopTimer()
         

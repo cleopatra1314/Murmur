@@ -30,6 +30,8 @@ class ProfileViewController: UIViewController {
     
     let popupView: PostDetailsPopupView = {
         let popupView = PostDetailsPopupView()
+        // TODO: 從 profile 頁點開的貼文 detail 頁不用檢舉功能
+        popupView.setButton.isHidden = true
         popupView.backgroundColor = .PrimaryLighter
         return popupView
     }()
