@@ -10,6 +10,8 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
+    private var chatMessagesHaveReadObserver: NSKeyValueObservation?
+    
     init() {
         super.init(nibName: nil, bundle: nil)
         
@@ -113,9 +115,31 @@ class CustomTabBarController: UITabBarController {
                 profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
                 return profileTabBarItem
             }()
+            
+            // 添加聊天室新訊息通知的 KVO
+            chatMessagesHaveReadObserver = secondViewController.observe(
+                \.numberOfNotReadMessages,
+                options: .new,
+                changeHandler: { [weak self] _, change in
+//                    guard let newValue = change.newValue else { return }
+                    if change.newValue == 0 {
+                        tabBarItems[1].badgeValue = nil
+                    } else {
+                        tabBarItems[1].badgeValue = "\(change.newValue!)"
+                        tabBarItems[1].badgeColor = .ErrorDefault
+                    }
+                    
+//                    if newValue.count > 0 {
+//                        self?.trolleyTabBarItem?.badgeValue = String(newValue.count)
+//                    } else {
+//                        self?.trolleyTabBarItem?.badgeValue = nil
+//                    }
+                }
+            )
         }
         self.modalPresentationStyle = .fullScreen
         self.modalTransitionStyle = .crossDissolve
+        
         
     }
     

@@ -9,8 +9,11 @@ import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-
 class ChatViewController: UIViewController {
+    
+    // 聊天室新訊息通知的 KVO
+    @objc dynamic var numberOfNotReadMessages = 0 // 目前有點進聊天室茶集就算 read，不然正常應該要點進那個聊天室
+    var isInChatVC = false
     
     var chatRoomCreateTimeArray = [Timestamp]()
     var timer = Timer()
@@ -62,6 +65,13 @@ class ChatViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         messagesCountDown()
+        numberOfNotReadMessages = 0
+        isInChatVC = true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        isInChatVC = false
     }
     
     private func setMessagesCountDownTimer() {
@@ -141,6 +151,10 @@ class ChatViewController: UIViewController {
                    
                     // 取得每個聊天室的第一則訊息 info
                     database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoom.id!).getDocument { [self] documentSnapshot, error in
+                        
+                        if isInChatVC == false {
+                            numberOfNotReadMessages += 1
+                        }
                         
                         guard let documentSnapshot,
                               documentSnapshot.exists,

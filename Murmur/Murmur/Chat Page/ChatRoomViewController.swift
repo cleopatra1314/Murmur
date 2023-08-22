@@ -256,6 +256,7 @@ class ChatRoomViewController: UIViewController {
         }
         
         database.collection("chatRooms").document(chatRoomID).collection("messages").order(by: "createTime", descending: false).addSnapshotListener { documentSnapshot, error in
+            
             if let documentSnapshot = documentSnapshot {
                 for document in documentSnapshot.documents {
 //                    print(document.data())

@@ -155,7 +155,7 @@ extension PostsOfMurmursViewController: UICollectionViewDelegate {
             // 欄位1: Hide 做的操作
             let favoriteAction = UIAction(title: "Hide", image: UIImage(systemName: "eye.slash"), state: .off) { action in
                 print("Hide the murmur.")
-                self.showAlert(title: "新功能開發中，敬請期待！💜", message: "", viewController: self)
+                self.showAlert(title: "New feature is coming soon!", message: "", viewController: self) //新功能開發中，敬請期待！💜
             }
             // 欄位2: Delete 做的操作
             // "刪除貼文後將無法恢復貼文紀錄，確定要刪除嗎？"
