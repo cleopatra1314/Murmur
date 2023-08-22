@@ -95,6 +95,14 @@ class PostTagViewController: UIViewController {
         layoutView()
 
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        postButtonItem.isEnabled = true
+        selectedTagArray = [String]()
+        uploadImage = UIImage()
+        murmurData["createTime"] = Timestamp()
+    }
 
     func layoutView() {
         
@@ -137,6 +145,7 @@ class PostTagViewController: UIViewController {
         postVC.murmurTextField.text = ""
         postVC.murmurView.isHidden = false
         postVC.murmurImageView.isHidden = true
+        postVC.murmurImageView.image = UIImage()
         postVC.captureButton.isEnabled = true
         
         // Create data to firebase: 目前所在座標、塗鴉留言、照片、3個 selected tags、用戶id
@@ -159,16 +168,16 @@ class PostTagViewController: UIViewController {
                 
                 let selectedImageUrlString = url.absoluteString
                 
-                murmurData["murmurImage"] = selectedImageUrlString
-                murmurData["selectedTags"] = selectedTagArray
+                self.murmurData["murmurImage"] = selectedImageUrlString
+                self.murmurData["selectedTags"] = selectedTagArray
                 
-                createMurmur()
+//                createMurmur()
                 
             case .failure(let error):
                 print(error)
             }
         }
-
+        createMurmur()
     }
     
     func createMurmur() {

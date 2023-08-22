@@ -165,6 +165,7 @@ extension UIViewController {
                          fileReference.downloadURL(completion: completion)
                     case .failure(let error):
                         completion(.failure(error))
+                        return
                     }
                 }
             }

@@ -281,7 +281,12 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.layoutView(viewController: self)
             cell.postsVC.showPostsDetailsPopupClosure = { [self] data, rowOfIndexPath in
                 
-                popupView.postImageView.kf.setImage(with: URL(string: data[rowOfIndexPath].murmurImage))
+                if data[rowOfIndexPath].murmurImage == "" {
+                    popupView.postImageView.image = UIImage(named: "Placeholder.jpg")
+                } else {
+                    popupView.postImageView.kf.setImage(with: URL(string: data[rowOfIndexPath].murmurImage))
+                }
+                
                 popupView.postContentLabel.text = data[rowOfIndexPath].murmurMessage
                 //                popupView.tagArray.removeAll()
                 popupView.tagArray = data[rowOfIndexPath].selectedTags

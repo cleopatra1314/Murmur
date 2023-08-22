@@ -211,7 +211,12 @@ extension LocationMessageViewController: MKMapViewDelegate, CLLocationManagerDel
         
         let murmur = annotationSelected.murmurData
         
-        popupView.postImageView.kf.setImage(with: URL(string: murmur.murmurImage))
+        if murmur.murmurImage == "" {
+            popupView.postImageView.image = UIImage(named: "Placeholder.png")
+        } else {
+            popupView.postImageView.kf.setImage(with: URL(string: murmur.murmurImage))
+        }
+        
         popupView.postContentLabel.text = murmur.murmurMessage
         //                popupView.tagArray.removeAll()
         popupView.tagArray = murmur.selectedTags
@@ -377,5 +382,3 @@ extension UIDevice {
         ["iPhone 14 Pro", "iPhone 14 Pro Max"].contains(current.name)
     }
 }
-
-

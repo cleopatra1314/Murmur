@@ -390,10 +390,12 @@ class PostViewController: UIViewController {
     @objc func nextButtonItemTouchUpInside() {
 
         if murmurTextField.text == "" {
+            murmurTextField.placeholder = "Speak up your mind to do next step"
             return
         } else {
             postTagVC.murmurData["murmurMessage"] = murmurTextField.text
             postTagVC.murmurData["murmurImage"] = self.seclectedImageUrl ?? ""
+            self.seclectedImageUrl = ""
             self.navigationController?.pushViewController(postTagVC, animated: true)
         }
         
@@ -573,8 +575,3 @@ extension UIImage {
         return flippedImage
     }
 }
-
-
-
-
-
