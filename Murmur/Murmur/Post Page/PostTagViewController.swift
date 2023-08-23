@@ -116,7 +116,7 @@ class PostTagViewController: UIViewController {
 
     private func setNav() {
 
-        self.navigationItem.title = "塗鴉標籤"
+        self.navigationItem.title = "Murmur Tags" //"塗鴉標籤"
         
         let backButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonItemTouchUpInside))
         backButtonItem.tintColor = .SecondaryShine

@@ -47,6 +47,7 @@
 		C8B007582A4AB37800049FA0 /* UILabel_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */; };
 		C8B0075A2A4AC52500049FA0 /* ProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */; };
 		C8B0075C2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B0075B2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift */; };
+		C8B51EA02A959B4900114462 /* UITabBar_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B51E9F2A959B4900114462 /* UITabBar_Extension.swift */; };
 		C8B627EA2A56A309002327D5 /* TimeStamp_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */; };
 		C8B627EC2A56C04E002327D5 /* newStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8B627EB2A56C04E002327D5 /* newStore.swift */; };
 		C8BA32052A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */; };
@@ -123,6 +124,7 @@
 		C8B007592A4AC52500049FA0 /* ProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTableViewCell.swift; sourceTree = "<group>"; };
 		C8B0075B2A4ACD2800049FA0 /* PostsOfMurmursViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsOfMurmursViewController.swift; sourceTree = "<group>"; };
 		C8B1EBBA2A61B91B00E1A5A7 /* MurmurDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MurmurDebug.entitlements; sourceTree = "<group>"; };
+		C8B51E9F2A959B4900114462 /* UITabBar_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBar_Extension.swift; sourceTree = "<group>"; };
 		C8B627E92A56A309002327D5 /* TimeStamp_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStamp_Extension.swift; sourceTree = "<group>"; };
 		C8B627EB2A56C04E002327D5 /* newStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newStore.swift; sourceTree = "<group>"; };
 		C8BA32042A5B3E9A00B47C06 /* ChatRoomBaseViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ChatRoomBaseViewController2.swift; path = Murmur/ChatRoomBaseViewController2.swift; sourceTree = SOURCE_ROOT; };
@@ -217,6 +219,7 @@
 		C8ADDEC92A4D7A0B00C9069D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C8B51E9F2A959B4900114462 /* UITabBar_Extension.swift */,
 				C81343992A47E5D700F685F8 /* UIViewController_Extension.swift */,
 				C8C3A0942A48342A000E967D /* UIView_Extension.swift */,
 				C8B007572A4AB37800049FA0 /* UILabel_Extension.swift */,
@@ -564,6 +567,7 @@
 				C8F5B3152A41B6E200478D2E /* MeAnnotation.swift in Sources */,
 				C840F45B2A3F6F7B000604E6 /* FirebaseModel.swift in Sources */,
 				C8F041EE2A4B49310044BE9C /* ScrollTableViewCell.swift in Sources */,
+				C8B51EA02A959B4900114462 /* UITabBar_Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

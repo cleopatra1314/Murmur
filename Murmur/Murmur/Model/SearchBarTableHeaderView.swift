@@ -13,7 +13,7 @@ class SearchBarTableHeaderView: UITableViewHeaderFooterView {
 
     let searchBarTextField: MessageTypeTextField = {
         let searchBarTextField = MessageTypeTextField()
-        searchBarTextField.placeholder = "搜尋名字 / 訊息"
+        searchBarTextField.placeholder = "Search names / messages" //"搜尋名字 / 訊息"
         searchBarTextField.backgroundColor = UIColor.GrayScale20?.withAlphaComponent(0.2)
         searchBarTextField.textColor = .GrayScale0
         searchBarTextField.layer.cornerRadius = 10

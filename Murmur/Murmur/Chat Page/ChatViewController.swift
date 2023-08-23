@@ -12,7 +12,7 @@ import FirebaseFirestoreSwift
 class ChatViewController: UIViewController {
     
     // 聊天室新訊息通知的 KVO
-    @objc dynamic var numberOfNotReadMessages = 0 // 目前有點進聊天室茶集就算 read，不然正常應該要點進那個聊天室
+    @objc dynamic var haveReadMessages = true // 目前有點進聊天室茶集就算 read，不然正常應該要點進那個聊天室
     var isInChatVC = false
     
     var chatRoomCreateTimeArray = [Timestamp]()
@@ -65,7 +65,7 @@ class ChatViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         messagesCountDown()
-        numberOfNotReadMessages = 0
+        haveReadMessages = true
         isInChatVC = true
     }
     
@@ -88,7 +88,7 @@ class ChatViewController: UIViewController {
     }
     
     private func setNav() {
-        self.navigationItem.title = "破冰室茶集"
+        self.navigationItem.title = "Chat Room" //"破冰室茶集"
     }
     
     private func setTableView() {
@@ -153,7 +153,7 @@ class ChatViewController: UIViewController {
                     database.collection("userTest").document(currentUserUID).collection("chatRooms").document(chatRoom.id!).getDocument { [self] documentSnapshot, error in
                         
                         if isInChatVC == false {
-                            numberOfNotReadMessages += 1
+                            haveReadMessages = false
                         }
                         
                         guard let documentSnapshot,

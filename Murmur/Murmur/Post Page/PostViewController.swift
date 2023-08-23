@@ -370,7 +370,7 @@ class PostViewController: UIViewController {
     
     private func setNav() {
 
-        self.navigationItem.title = "塗鴉留言"
+        self.navigationItem.title = "Murmurs" //"塗鴉留言"
         
         let closeButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonItemTouchUpInside))
         closeButtonItem.tintColor = .SecondaryLight

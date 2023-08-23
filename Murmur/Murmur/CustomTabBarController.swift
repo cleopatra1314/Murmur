@@ -84,7 +84,7 @@ class CustomTabBarController: UITabBarController {
                 // 根据索引找到目标 TabBarItem
                 let homeTabBarItem = tabBarItems[0]
                 // 修改 TabBarItem 的属性
-                homeTabBarItem.title = "首頁"
+                homeTabBarItem.title = "Home" //"首頁"
                 homeTabBarItem.image = UIImage(named: "Icons_Home.png")
                 return homeTabBarItem
             }()
@@ -93,7 +93,7 @@ class CustomTabBarController: UITabBarController {
                 // 根据索引找到目标 TabBarItem
                 let chatRoomTabBarItem = tabBarItems[1]
                 // 修改 TabBarItem 的属性
-                chatRoomTabBarItem.title = "聊天"
+                chatRoomTabBarItem.title = "Chat" //"聊天"
                 chatRoomTabBarItem.image = UIImage(named: "Icons_ChatRoom.png")
                 return chatRoomTabBarItem
             }()
@@ -102,7 +102,7 @@ class CustomTabBarController: UITabBarController {
                 // 根据索引找到目标 TabBarItem
                 let postTabBarItem = tabBarItems[2]
                 // 修改 TabBarItem 的属性
-                postTabBarItem.title = "塗鴉"
+                postTabBarItem.title = "Murmur" //"塗鴉"
                 postTabBarItem.image = UIImage(named: "Icons_Post.png")
                 return postTabBarItem
             }()
@@ -111,29 +111,31 @@ class CustomTabBarController: UITabBarController {
                 // 根据索引找到目标 TabBarItem
                 let profileTabBarItem = tabBarItems[3]
                 // 修改 TabBarItem 的属性
-                profileTabBarItem.title = "個人"
+                profileTabBarItem.title = "Profile" //"個人"
                 profileTabBarItem.image = UIImage(named: "Icons_Profile.png")
                 return profileTabBarItem
             }()
             
             // 添加聊天室新訊息通知的 KVO
             chatMessagesHaveReadObserver = secondViewController.observe(
-                \.numberOfNotReadMessages,
+                \.haveReadMessages,
                 options: .new,
                 changeHandler: { [weak self] _, change in
-//                    guard let newValue = change.newValue else { return }
-                    if change.newValue == 0 {
-                        tabBarItems[1].badgeValue = nil
-                    } else {
-                        tabBarItems[1].badgeValue = "\(change.newValue!)"
-                        tabBarItems[1].badgeColor = .ErrorDefault
-                    }
-                    
-//                    if newValue.count > 0 {
-//                        self?.trolleyTabBarItem?.badgeValue = String(newValue.count)
+                    guard let newValue = change.newValue else { return }
+//                    if newValue == 0 {
+//                        tabBarItems[1].badgeValue = nil
 //                    } else {
-//                        self?.trolleyTabBarItem?.badgeValue = nil
+////                        tabBarItems[1].badgeValue = String(change.newValue!)
+////                        tabBarItems[1].badgeColor = .ErrorDefault
+//                        self!.tabBar.showBadgOn(index: 1)
 //                    }
+                    
+                    if newValue == false {
+                        self!.tabBar.showBadgOn(index: 1)
+                    } else {
+                        self!.tabBar.hideBadge(on: 1)
+                    }
+
                 }
             )
         }
