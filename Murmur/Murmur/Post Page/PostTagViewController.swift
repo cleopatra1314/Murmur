@@ -13,7 +13,7 @@ import SnapKit
 
 class PostTagViewController: UIViewController {
     
-    var MWtagArray = ["🥳 Happy", "😠 Angry", "🥲 Sad", "😖 Anxious", "🫠 Tired", "🤩 Excited", "🥱 Bored","🧬 Born", "🚦 Intersection", "🌚 Night Mood", "🌝 Day Mood", "🦞 Difference", "📟 Retro", "⑆ Object", "💬 Whisper", "✨ BlingBling", "🙅🏻‍♀️ MeToo", "🙅🏻 MeToo", "🕊️ Peace", "📢 Speak Loud", "⏱️ Late","🖕🏻 Life", "🍜 Food", "☕️ Coffee", "🎨 Art", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "👩🏻‍🤝‍👨🏼 Friends", "❓ Mystery", "🦵🏻 Body", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🦾 Cyborg", "🐬 VaporWave", "🛍️ Shopping", "🛟 Help", "🏎️ Race", "🫧 Fleeting", "😆 Entertainment", "🥨 Philosophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "🟤 Brown", "⚪️ White", "⚫️ Black"] {
+    var MWtagArray = ["🥳 Happy", "😠 Angry", "😍 Luvluv", "🥲 Sad", "😖 Anxious", "🫠 Tired", "🤩 Excited", "🥱 Bored", "☹️ Annoyed", "😞 Depressed", "🌚 Night Mood", "🌝 Day Mood", "💗 Fall in Love", "🧬 Born", "🚦 Intersection", "🦞 Difference", "📟 Retro", "⑆ Object", "💬 Whisper", "✨ BlingBling", "🙅🏻‍♀️ MeToo", "🙅🏻 MeToo", "🕊️ Peace", "📢 Speak Loud", "⏱️ Late","🖕🏻 Life", "🍜 Food", "☕️ Coffee", "🎨 Art", "👾 Pet", "🧍🏻‍♀️ Her", "🧍🏻‍♂️ Him", "👩🏻‍🤝‍👨🏼 Friends", "❓ Mystery", "🦵🏻 Body", "🏳️‍🌈 LGBTQ", "🚶🏻‍♀️ Nomad", "🌲 Plant", "🧗 Climbing", "🥾 Hiking", "🛣️ Road-Trip", "🏍️ Motorcycle", "🦾 Cyborg", "🐬 VaporWave", "🛍️ Shopping", "🛟 Help", "🏎️ Race", "🫧 Fleeting", "😆 Entertainment", "🥨 Philosophy", "🧋 Drinks", "🍿 Movies", "🍰 Desserts", "🧳 Travel", "🏘️ City", "🏯 Temple", "🗣️ Politics", "💒 Religion", "🔴 Red", "🟠 Orange", "🔵 Blue", "🟡 Yellow", "🟢 Green", "🟣 Purple", "🟤 Brown", "⚪️ White", "⚫️ Black"] {
         didSet {
             postTagCollectionView.reloadData()
         }
@@ -100,7 +100,7 @@ class PostTagViewController: UIViewController {
         super.viewDidDisappear(animated)
         postButtonItem.isEnabled = true
         selectedTagArray = [String]()
-        uploadImage = UIImage()
+        uploadImage = nil
         murmurData["createTime"] = Timestamp()
     }
 
@@ -171,13 +171,14 @@ class PostTagViewController: UIViewController {
                 self.murmurData["murmurImage"] = selectedImageUrlString
                 self.murmurData["selectedTags"] = selectedTagArray
                 
-//                createMurmur()
+                createMurmur()
                 
             case .failure(let error):
                 print(error)
             }
         }
-        createMurmur()
+//        uploadImage = nil
+//        createMurmur()
     }
     
     func createMurmur() {
@@ -189,7 +190,7 @@ class PostTagViewController: UIViewController {
         // 在目前用戶的 postedMurmur 新增資料
         database.collection("userTest").document(currentUserUID).collection("postedMurmurs").document(documentReference.documentID).setData(murmurData) { error in
             
-            self.view.makeToast("成功發布 Murmur", duration: 1, position: .center) { didTap in
+            self.view.makeToast("Murmur Published", duration: 1, position: .center) { didTap in // "成功發布 Murmur"
                 
                 self.tabBarController?.selectedIndex = 0
                 self.navigationController?.popToRootViewController(animated: true)

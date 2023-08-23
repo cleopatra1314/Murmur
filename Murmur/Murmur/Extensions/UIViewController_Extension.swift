@@ -153,11 +153,20 @@ extension UIViewController {
     
     // MARK: 上傳到 firestorage 並拿到 captured image URL
     func uploadPhoto(image: UIImage?, completion: @escaping (Result<URL, Error>) -> Void) {
-            
-            guard let image else { return }
+        
+        var nilImage = image
+        if nilImage == nil {
+            nilImage = UIImage(named: "Placeholder.jpg")
+        }
+//            guard let nilImage else {
+//                print("No Image")
+//
+//                nilImage = UIImage(named: "Placeholder.jpg")
+//
+//            }
             let fileReference = Storage.storage().reference().child(UUID().uuidString + ".jpg")
         
-            if let data = image.jpegData(compressionQuality: 0.3) {
+            if let data = nilImage!.jpegData(compressionQuality: 0.3) {
                 
                 fileReference.putData(data, metadata: nil) { result in
                     switch result {

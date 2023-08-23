@@ -130,13 +130,6 @@ class PostViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        murmurImageView.layer.cornerRadius = murmurImageView.frame.width / 2
-//        murmurImageView.layer.borderColor = UIColor.lightGray.cgColor
-//        murmurImageView.layer.borderWidth = 3
-//        murmurView.layer.cornerRadius = murmurView.frame.width / 2
-//        murmurView.layer.borderColor = UIColor.lightGray.cgColor
-//        murmurView.layer.borderWidth = 3
-        
         captureSession = AVCaptureSession()
         setupCaptureSession()
     }
@@ -316,7 +309,10 @@ class PostViewController: UIViewController {
         murmurView.layer.addSublayer(previewLayer!)
         
         // 啟動 AVCaptureSession
-        captureSession.startRunning()
+        DispatchQueue.global().async {
+            captureSession.startRunning()
+        }
+        
     }
     
 //    @objc func cameraButtonTouchUpInside() {
