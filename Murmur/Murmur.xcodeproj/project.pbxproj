@@ -65,6 +65,7 @@
 		C8C72C282A39DA350025E693 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C72C272A39DA350025E693 /* HomePageViewController.swift */; };
 		C8C72C2B2A39DA350025E693 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C292A39DA350025E693 /* Main.storyboard */; };
 		C8C72C2D2A39DA360025E693 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C8C72C2C2A39DA360025E693 /* Assets.xcassets */; };
+		C8C7F4142A9A623D0011AD46 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C7F4132A9A623D0011AD46 /* PopupViewController.swift */; };
 		C8CABECC2A8779FB007947E0 /* ChatRoomPresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CABECB2A8779FB007947E0 /* ChatRoomPresentViewController.swift */; };
 		C8CC5A882A54B1AF006E3C8D /* Pacman.json in Resources */ = {isa = PBXBuildFile; fileRef = C8CC5A872A54B1AF006E3C8D /* Pacman.json */; };
 		C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */; };
@@ -144,6 +145,7 @@
 		C8C72C2A2A39DA350025E693 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C8C72C2C2A39DA360025E693 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8C72C312A39DA360025E693 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C8C7F4132A9A623D0011AD46 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		C8CABECB2A8779FB007947E0 /* ChatRoomPresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomPresentViewController.swift; sourceTree = "<group>"; };
 		C8CC5A872A54B1AF006E3C8D /* Pacman.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Pacman.json; sourceTree = "<group>"; };
 		C8CC88C22A3D3FEE0090DD86 /* NearbyUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyUsersViewController.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 		C8C72C172A39DA350025E693 = {
 			isa = PBXGroup;
 			children = (
+				C8C7F4132A9A623D0011AD46 /* PopupViewController.swift */,
 				C8BA477E2A5DA7B3002D3ADC /* LaunchScreenViewController.swift */,
 				C8212C5F2A5EBE6C006D2073 /* PostDetailsPopupView.swift */,
 				C8859D912A59464B00C5B62A /* ProgressCircleView.swift */,
@@ -547,6 +550,7 @@
 				C8CABECC2A8779FB007947E0 /* ChatRoomPresentViewController.swift in Sources */,
 				C8CC88C32A3D3FEE0090DD86 /* NearbyUsersViewController.swift in Sources */,
 				C8FF7BD82A55543E00E18616 /* SelfSizingTableView.swift in Sources */,
+				C8C7F4142A9A623D0011AD46 /* PopupViewController.swift in Sources */,
 				C8A6CBDD2A3D9EA90089ED5C /* CustomAnnotationView.swift in Sources */,
 				C8AF2DB72A414EB900B703E8 /* MeAnnotationView.swift in Sources */,
 				C8AF2DBB2A415BBF00B703E8 /* OtherUsersAnnotationView.swift in Sources */,

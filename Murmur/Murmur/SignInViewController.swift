@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import FirebaseAuth
 import Lottie
+import SnapKit
 
 class SignInViewController: UIViewController {
     
@@ -69,6 +70,7 @@ class SignInViewController: UIViewController {
     private let errorLabel: UILabel = {
         let errorLabel = UILabel()
         errorLabel.textColor = .ErrorDefault
+        errorLabel.numberOfLines = 0
         return errorLabel
     }()
     private lazy var signInWithEmailButton: UIButton = {
@@ -188,6 +190,7 @@ class SignInViewController: UIViewController {
         errorLabel.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(20)
             make.leading.equalTo(passwordTextField)
+            make.trailing.equalTo(passwordTextField)
         }
         emailTextField.snp.makeConstraints { make in
             make.bottom.equalTo(passwordLabel.snp.top).offset(-18)

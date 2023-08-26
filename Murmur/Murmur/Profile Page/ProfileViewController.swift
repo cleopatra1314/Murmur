@@ -292,7 +292,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
                 popupView.tagArray = data[rowOfIndexPath].selectedTags
                 popupView.currentRowOfIndexpath = rowOfIndexPath
                 
-                reverseGeocodeLocation(latitude: data[rowOfIndexPath].location["latitude"]!, longitude: data[rowOfIndexPath].location["longitude"]!) { address in
+                reverseGeocodeLocation(latitude: data[rowOfIndexPath].location["latitude"] ?? defaultCurrentCoordinate.latitude, longitude: data[rowOfIndexPath].location["longitude"] ?? defaultCurrentCoordinate.longitude) { address in
                   
                     self.popupView.postCreatedSiteLabel.text = address
                     

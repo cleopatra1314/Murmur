@@ -42,7 +42,7 @@ class InitialViewController: UIViewController {
     }()
     private let titleLabel: UILabel = {
         let titleLabel = UILabel()
-        titleLabel.text = "Let’s murmur\nthe space"
+        titleLabel.text = "Let’s murmur\nthe world"
         titleLabel.numberOfLines = 0
         titleLabel.textColor = .ShadowLight
         titleLabel.textAlignment = .center
