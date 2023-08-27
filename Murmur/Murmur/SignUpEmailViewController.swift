@@ -13,6 +13,8 @@ import SnapKit
 
 class SignUpEmailViewController: UIViewController {
     
+//    var termsOfServiceWebView: WKWebView?
+    let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
     let blackView = UIView(frame: UIScreen.main.bounds)
     let logoMessageTypingAnimationView = LottieAnimationView(name: "LogoMessageTyping")
     
@@ -137,9 +139,16 @@ class SignUpEmailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = false
     }
+        
+    @objc func termsOfServiceButtonTouchUpInside() {
+        
+        let pushVC = TermsOfServiceViewController()
+        self.navigationController?.pushViewController(pushVC, animated: true)
+   
+    }
     
     // swiftlint:disable function_body_length
-    @objc func termsOfServiceButtonTouchUpInside() {
+    @objc func privacyPolicyButtonTouchUpInside() {
         
         let privacyPolicyText = """
                 
@@ -317,7 +326,6 @@ class SignUpEmailViewController: UIViewController {
         
         let controller = UIAlertController(title: "termsOfService", message: privacyPolicyText, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .cancel) { _ in
-           print("在行事曆裡加入送宵夜的提醒")
         }
         controller.addAction(okAction)
 //        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
@@ -342,11 +350,6 @@ class SignUpEmailViewController: UIViewController {
 //            }
             
 //        }
-   
-    }
-    
-    @objc func privacyPolicyButtonTouchUpInside() {
-        
     }
     
     func lottieLogoMessageTyping() {
