@@ -9,10 +9,10 @@ import Foundation
 import UIKit
 import WebKit
 
-class TermsOfServiceViewController: UIViewController {
+class PrivacyPolicyViewController: UIViewController {
     
     var termsOfServiceWebView: WKWebView?
-    let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
+    let url = URL(string: "https://www.privacypolicies.com/live/f0fc7078-0402-4e7d-8870-cc5c172e8c0c")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class TermsOfServiceViewController: UIViewController {
     
 }
 
-extension TermsOfServiceViewController: WKNavigationDelegate {
+extension PrivacyPolicyViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         print(error.localizedDescription)
