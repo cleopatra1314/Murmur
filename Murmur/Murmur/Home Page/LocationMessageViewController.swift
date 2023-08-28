@@ -358,7 +358,7 @@ extension LocationMessageViewController: PostDetailsPopupViewDelegate {
             let reportActions = ["I don't like it", "Violence or dangerous organizations", "Nudity or sexual activity", "Bullying or harassment"]
             for actionContent in reportActions {
                 let reportAction = UIAlertAction(title: actionContent, style: .default) { _ in
-                    self.showAlert(title: "Finish", message: "We have received your report message and will deal with it with 24 hrs.", viewController: self)
+                    self.showAlert(title: "Reported", message: "We have received your report message and will deal with it within 24 hrs.", viewController: self)
                 }
                 reportAlertController.addAction(reportAction)
             }
