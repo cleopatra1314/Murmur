@@ -383,8 +383,8 @@ extension HomePageViewController: CLLocationManagerDelegate {
             
         case .denied, .restricted:
             // TODO: 要改成跳 alert
-//            self.showAlertAndNav(title: "Oops!", message: "Please turn on your location setting to get better experience with Murmur Wall.", viewController: self)
-            self.showAlert(title: "Oops!", message: "Please turn on your location setting to get better experience with Murmur Wall.", viewController: self)
+//            self.showAlertAndNav(title: "Ooops!", message: "Please turn on your location setting to get better experience with Murmur Wall.", viewController: self)
+            self.showAlert(title: "Ooops!", message: "Your location permission is off. You can go to Settings > Privacy & Security > Location Services > Murmur, and turn on location setting to get better experience with Murmur Wall.", viewController: self)
             
         case .authorizedWhenInUse:
             locationManager.startUpdatingLocation()

@@ -301,7 +301,7 @@ class ChatRoomBaseViewController: UIViewController {
             label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 10),
             label.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
             label.trailingAnchor.constraint(lessThanOrEqualTo: customView.trailingAnchor),
-            label.widthAnchor.constraint(equalToConstant: 240)
+            label.widthAnchor.constraint(equalToConstant: 200)
         ])
 
         // 将自定义视图设置为导航栏的标题视图
@@ -309,7 +309,7 @@ class ChatRoomBaseViewController: UIViewController {
         
         // 添加設定按鈕
         let setButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(setButtonItemTouchUpInside))
-        setButtonItem.tintColor = .GrayScale20
+        setButtonItem.tintColor = .GrayScale60
         self.navigationItem.rightBarButtonItem = setButtonItem
 
     }
