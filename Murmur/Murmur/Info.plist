@@ -2,16 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Your location lets us show the Murmur posts and users nearby.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location lets us show the Murmur posts and users nearby.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow photo access to choose photos for Murmur posts or custom settings</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allow photo access to choose photos for Murmur posts or custom settings</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Access to the camera allows you to take photos for Murmur posts or profile.</string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>cleopatra.Murmur</string>
