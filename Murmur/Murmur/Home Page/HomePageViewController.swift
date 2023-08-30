@@ -133,7 +133,7 @@ class HomePageViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+ 
         self.view.backgroundColor = .PrimaryDark
         
         locationManager.delegate = self
@@ -201,6 +201,14 @@ class HomePageViewController: UIViewController {
         super.viewWillAppear(animated)
         print("func modifyCurrentLocation 時間器啟動")
         startTimer()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if locationManager.authorizationStatus == .denied {
+            self.showAlert(title: "Ooops!", message: "This page is disabled because your location permission is off. Turn it on and you can experience the map features.", viewController: self)
+        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -384,7 +392,9 @@ extension HomePageViewController: CLLocationManagerDelegate {
         case .denied, .restricted:
             // TODO: 要改成跳 alert
 //            self.showAlertAndNav(title: "Ooops!", message: "Please turn on your location setting to get better experience with Murmur Wall.", viewController: self)
-            self.showAlert(title: "Ooops!", message: "Your location permission is off. You can go to Settings > Privacy & Security > Location Services > Murmur, and turn on location setting to get better experience with Murmur Wall.", viewController: self)
+//            self.showAlert(title: "Ooops!", message: "Your location permission is off. You can go to Settings > Privacy & Security > Location Services > Murmur, and turn on location setting to get better experience with Murmur Wall.", viewController: self)
+//            self.showAlert(title: "Ooops!", message: "This page is disabled because your location permission is off. Turn it on and you can experience the map features.", viewController: self)
+            print("User denied location access")
             
         case .authorizedWhenInUse:
             locationManager.startUpdatingLocation()
